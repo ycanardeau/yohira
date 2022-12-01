@@ -1,29 +1,30 @@
-import http from 'http';
+import { IHost, runHost } from '@/hosting/IHost';
 
-class WebApp {
-	private listen = (): void => {
-		// LOG
-		const server = http /* REVIEW: https, http2 */
-			.createServer((_request, response) => {
-				response.writeHead(200, { 'Content-Type': 'application/json' });
-				response.end(
-					JSON.stringify({
-						data: 'Hello, World!',
-					}),
-				);
-			});
-		server.listen(5000 /* TODO */);
-		// TODO: Clean up.
+class WebApp implements IHost {
+	constructor(private readonly host: IHost) {}
+
+	start = (): Promise<void> => {
+		return this.host.start();
 	};
 
-	run = (): void => {
+	private listen = (): void => {
+		// IMPL
+	};
+
+	run = (): Promise<void> => {
 		this.listen();
+		return runHost(this);
 	};
 }
 
 class WebAppBuilder {
 	build = (): WebApp => {
-		return new WebApp();
+		const host: IHost = {
+			start: async (): Promise<void> => {
+				console.log('start');
+			},
+		}; /* IMPL */
+		return new WebApp(host);
 	};
 }
 
