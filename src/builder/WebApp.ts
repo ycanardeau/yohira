@@ -1,3 +1,4 @@
+import { HostAppBuilder } from '@/hosting/HostAppBuilder';
 import { IHost, runHost } from '@/hosting/IHost';
 
 class WebApp implements IHost {
@@ -18,13 +19,14 @@ class WebApp implements IHost {
 }
 
 class WebAppBuilder {
+	private readonly hostAppBuilder: HostAppBuilder;
+
+	constructor() {
+		this.hostAppBuilder = new HostAppBuilder(/* TODO */);
+	}
+
 	build = (): WebApp => {
-		const host: IHost = {
-			start: async (): Promise<void> => {
-				console.log('start');
-			},
-		}; /* IMPL */
-		return new WebApp(host);
+		return new WebApp(this.hostAppBuilder.build());
 	};
 }
 
