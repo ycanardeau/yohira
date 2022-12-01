@@ -1,6 +1,19 @@
+import http from 'http';
+
 class WebApp {
 	private listen = (): void => {
-		console.log('Hello, World!');
+		// LOG
+		const server = http /* REVIEW: https, http2 */
+			.createServer((_request, response) => {
+				response.writeHead(200, { 'Content-Type': 'application/json' });
+				response.end(
+					JSON.stringify({
+						data: 'Hello, World!',
+					}),
+				);
+			});
+		server.listen(5000 /* TODO */);
+		// TODO: Clean up.
 	};
 
 	run = (): void => {
