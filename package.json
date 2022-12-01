@@ -1,0 +1,23 @@
+{
+	"name": "yohira",
+	"version": "1.0.0",
+	"private": true,
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^3.4.0",
+		"@typescript-eslint/eslint-plugin": "^5.43.0",
+		"@typescript-eslint/parser": "^5.43.0",
+		"concurrently": "^7.6.0",
+		"eslint": "^8.27.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"prettier": "^2.7.1",
+		"tsc-alias": "^1.7.1",
+		"typescript": "^4.6.4"
+	},
+	"scripts": {
+		"build": "tsc && tsc-alias",
+		"build:watch": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
+		"start": "node dist/index.js"
+	}
+}
