@@ -1,5 +1,7 @@
 import { IHost } from '@/hosting/IHost';
+import { IHostedService } from '@/hosting/IHostedService';
 import { ILogger, LogLevel, logDebug } from '@/logging/ILogger';
+import { Container } from 'inversify';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Hosting/src/Internal/LoggerEventIds.cs#L8
 enum LoggerEventId {
@@ -31,11 +33,24 @@ export const logStarted = (logger: ILogger): void => {
 
 // https://github.com/dotnet/runtime/blob/215b39abf947da7a40b0cb137eab4bceb24ad3e3/src/libraries/Microsoft.Extensions.Hosting/src/Internal/Host.cs#L16
 export class Host implements IHost {
-	constructor(private readonly logger: ILogger) {}
+	private hostedServices?: IHostedService[];
+
+	constructor(
+		readonly services: Container,
+		private readonly logger: ILogger,
+	) {}
 
 	// https://github.com/dotnet/runtime/blob/215b39abf947da7a40b0cb137eab4bceb24ad3e3/src/libraries/Microsoft.Extensions.Hosting/src/Internal/Host.cs#L56
 	start = async (): Promise<void> => {
 		logStarting(this.logger);
+
+		// IMPL
+
+		this.hostedServices = this.services.getAll('IHostedService');
+
+		for (const hostedService of this.hostedServices) {
+			await hostedService.start();
+		}
 
 		// IMPL
 
