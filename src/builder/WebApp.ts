@@ -1,3 +1,4 @@
+import { configureWebDefaults } from '@/WebHost';
 import { BootstrapHostBuilder } from '@/hosting/BootstrapHostBuilder';
 import { GenericWebHostBuilder } from '@/hosting/GenericWebHostBuilder';
 import { HostAppBuilder } from '@/hosting/HostAppBuilder';
@@ -53,7 +54,9 @@ const configureWebHostDefaults = (
 	return configureWebHost(
 		builder,
 		(webHostBuilder) => {
-			// IMPL
+			configureWebDefaults(webHostBuilder);
+
+			configure(webHostBuilder);
 		},
 		configureOptions,
 	);
