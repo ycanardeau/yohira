@@ -1,4 +1,5 @@
 import { BootstrapHostBuilder } from '@/hosting/BootstrapHostBuilder';
+import { GenericWebHostBuilder } from '@/hosting/GenericWebHostBuilder';
 import { HostAppBuilder } from '@/hosting/HostAppBuilder';
 import { IHost, runHost } from '@/hosting/IHost';
 import { IHostBuilder } from '@/hosting/IHostBuilder';
@@ -32,7 +33,14 @@ const configureWebHost = (
 	configure: (webHostBuilder: IWebHostBuilder) => void,
 	configureWebHostBuilder: (options: WebHostBuilderOptions) => void,
 ): IHostBuilder => {
-	// IMPL
+	const webHostBuilderOptions = new WebHostBuilderOptions();
+	configureWebHostBuilder(webHostBuilderOptions);
+	const webHostBuilder = new GenericWebHostBuilder(
+		builder,
+		webHostBuilderOptions,
+	);
+	configure(webHostBuilder);
+	builder.configureServices(/* TODO */);
 	return builder;
 };
 
