@@ -1,9 +1,23 @@
+import {
+	IServiceCollection,
+	ServiceCollection,
+} from '@/dependency-injection/ServiceCollection';
+import {
+	IServiceProvider,
+	ServiceProvider,
+} from '@/dependency-injection/ServiceProvider';
 import { Host } from '@/hosting/Host';
 import { IHost } from '@/hosting/IHost';
-import { Container } from 'inversify';
+
+// https://github.com/dotnet/runtime/blob/199436b51fba6f0bee469c63ee42fa266d70222d/src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceCollectionContainerBuilderExtensions.cs#L53
+const buildServiceProvider = (
+	services: IServiceCollection /* TODO */,
+): ServiceProvider => {
+	return new ServiceProvider(services /* TODO */);
+};
 
 // https://github.com/dotnet/runtime/blob/30dc7e7aedb7aab085c7d9702afeae5bc5a43133/src/libraries/Microsoft.Extensions.Hosting/src/HostBuilder.cs#L356
-const resolveHost = (serviceProvider: Container): IHost => {
+const resolveHost = (serviceProvider: IServiceProvider): IHost => {
 	// TODO
 	const host = new Host(serviceProvider, { isEnabled: () => true });
 
@@ -12,13 +26,15 @@ const resolveHost = (serviceProvider: Container): IHost => {
 
 // https://github.com/dotnet/runtime/blob/30dc7e7aedb7aab085c7d9702afeae5bc5a43133/src/libraries/Microsoft.Extensions.Hosting/src/HostApplicationBuilder.cs#L20
 export class HostAppBuilder {
-	private createServiceProvider: () => Container;
+	readonly services = new ServiceCollection();
 
-	private appServices?: Container;
+	private createServiceProvider: () => IServiceProvider;
+
+	private appServices?: IServiceProvider;
 
 	constructor() {
-		this.createServiceProvider = (): Container => {
-			return new Container() /* TODO */;
+		this.createServiceProvider = (): IServiceProvider => {
+			return buildServiceProvider(this.services); /* TODO */
 		};
 	}
 

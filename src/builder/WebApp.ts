@@ -1,11 +1,16 @@
 import { configureWebDefaults } from '@/WebHost';
+import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
+import { ServiceDescriptor } from '@/dependency-injection/ServiceDescriptor';
 import { BootstrapHostBuilder } from '@/hosting/BootstrapHostBuilder';
 import { GenericWebHostBuilder } from '@/hosting/GenericWebHostBuilder';
+import { GenericWebHostService } from '@/hosting/GenericWebHostService';
 import { HostAppBuilder } from '@/hosting/HostAppBuilder';
 import { IHost, runHost } from '@/hosting/IHost';
 import { IHostBuilder } from '@/hosting/IHostBuilder';
+import { IHostedService } from '@/hosting/IHostedService';
 import { IWebHostBuilder } from '@/hosting/IWebHostBuilder';
 import { WebHostBuilderOptions } from '@/hosting/WebHostBuilderOptions';
+import { TYPES } from '@/types';
 
 // https://github.com/dotnet/aspnetcore/blob/39f0e0b8f40b4754418f81aef0de58a9204a1fe5/src/DefaultBuilder/src/WebApplication.cs#L21
 class WebApp implements IHost {
@@ -28,6 +33,18 @@ class WebApp implements IHost {
 	};
 }
 
+// https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.Hosting.Abstractions/src/ServiceCollectionHostedServiceExtensions.cs#L22
+const addHostedService = <THostedService extends IHostedService>(
+	services: IServiceCollection,
+	implementation: new (...args: never[]) => THostedService,
+): IServiceCollection => {
+	services.push(
+		ServiceDescriptor.singleton(TYPES.IHostedService, implementation),
+	);
+
+	return services;
+};
+
 // https://github.com/dotnet/aspnetcore/blob/c85baf8db0c72ae8e68643029d514b2e737c9fae/src/Hosting/Hosting/src/GenericHostWebHostBuilderExtensions.cs#L38
 const configureWebHost = (
 	builder: IHostBuilder,
@@ -41,7 +58,12 @@ const configureWebHost = (
 		webHostBuilderOptions,
 	);
 	configure(webHostBuilder);
-	builder.configureServices(/* TODO */);
+	builder.configureServices((/* TODO: _, */ services) =>
+		addHostedService<GenericWebHostService>(
+			services,
+			GenericWebHostService,
+		),
+	);
 	return builder;
 };
 
@@ -82,6 +104,8 @@ class WebAppBuilder {
 				// IMPL
 			},
 		);
+
+		/* TODO */ bootstrapHostBuilder.runDefaultCallbacks();
 	}
 
 	// https://github.com/dotnet/aspnetcore/blob/14c39984660a8cefb09a8d77331b47ffc48d7a22/src/DefaultBuilder/src/WebApplicationBuilder.cs#L125

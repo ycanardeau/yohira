@@ -1,7 +1,8 @@
+import { IServiceProvider } from '@/dependency-injection/ServiceProvider';
 import { IHost } from '@/hosting/IHost';
 import { IHostedService } from '@/hosting/IHostedService';
 import { ILogger, LogLevel, logDebug } from '@/logging/ILogger';
-import { Container } from 'inversify';
+import { TYPES } from '@/types';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Hosting/src/Internal/LoggerEventIds.cs#L8
 enum LoggerEventId {
@@ -36,7 +37,7 @@ export class Host implements IHost {
 	private hostedServices?: IHostedService[];
 
 	constructor(
-		readonly services: Container,
+		readonly services: IServiceProvider,
 		private readonly logger: ILogger,
 	) {}
 
@@ -46,7 +47,9 @@ export class Host implements IHost {
 
 		// IMPL
 
-		this.hostedServices = this.services.getAll('IHostedService');
+		this.hostedServices = this.services.getRequiredServices(
+			TYPES.IHostedService,
+		);
 
 		for (const hostedService of this.hostedServices) {
 			await hostedService.start();
