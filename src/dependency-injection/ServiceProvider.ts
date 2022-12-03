@@ -15,16 +15,23 @@ export class ServiceProvider implements IServiceProvider {
 	private readonly container = new Container();
 
 	constructor(serviceDescriptors: ServiceDescriptor[] /* TODO */) {
-		for (const {
-			serviceType,
-			implementationType,
-			lifetime,
-		} of serviceDescriptors) {
-			const binding = this.container
-				.bind(serviceType)
-				.to(implementationType);
+		for (const serviceDescriptor of serviceDescriptors) {
+			const binding =
+				'implementationType' in serviceDescriptor
+					? this.container
+							.bind(serviceDescriptor.serviceType)
+							.to(serviceDescriptor.implementationType)
+					: this.container
+							.bind(serviceDescriptor.serviceType)
+							.toDynamicValue(
+								() => serviceDescriptor.implementationInstance,
+							);
 
-			switch (lifetime) {
+			if (serviceDescriptor.T) {
+				binding.whenTargetNamed(serviceDescriptor.T);
+			}
+
+			switch (serviceDescriptor.lifetime) {
 				case ServiceLifetime.Singleton:
 					binding.inSingletonScope();
 					break;

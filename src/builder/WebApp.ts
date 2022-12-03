@@ -1,6 +1,6 @@
 import { configureWebDefaults } from '@/WebHost';
 import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
-import { ServiceDescriptor } from '@/dependency-injection/ServiceDescriptor';
+import { singleton } from '@/dependency-injection/ServiceDescriptor';
 import { BootstrapHostBuilder } from '@/hosting/BootstrapHostBuilder';
 import { GenericWebHostBuilder } from '@/hosting/GenericWebHostBuilder';
 import { GenericWebHostService } from '@/hosting/GenericWebHostService';
@@ -38,10 +38,7 @@ const addHostedService = <THostedService extends IHostedService>(
 	services: IServiceCollection,
 	implementation: new (...args: never[]) => THostedService,
 ): IServiceCollection => {
-	services.push(
-		ServiceDescriptor.singleton(TYPES.IHostedService, implementation),
-	);
-
+	services.push(singleton(TYPES.IHostedService, undefined, implementation));
 	return services;
 };
 

@@ -18,32 +18,39 @@ export enum ServiceLifetime {
 }
 
 // https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.DependencyInjection.Abstractions/src/ServiceDescriptor.cs#L14
-export class ServiceDescriptor {
-	constructor(
-		readonly serviceType: symbol,
-		readonly implementationType: new (
-			...args: never[]
-		) => unknown /* TODO */,
-		readonly lifetime: ServiceLifetime,
-	) {}
+export type ServiceDescriptor = {
+	serviceType: symbol;
+	T: string | undefined;
+	lifetime: ServiceLifetime;
+} & (
+	| { implementationType: new (...args: never[]) => unknown /* TODO */ }
+	| { implementationInstance: object }
+);
 
-	static describe = <TImplementation>(
-		serviceType: symbol,
-		implementationType: new (...args: never[]) => TImplementation,
-		lifetime: ServiceLifetime,
-	): ServiceDescriptor => {
-		return new ServiceDescriptor(serviceType, implementationType, lifetime);
+const describe = <TImplementation>(
+	serviceType: symbol,
+	T: string | undefined,
+	implementationType: new (...args: never[]) => TImplementation,
+	lifetime: ServiceLifetime,
+): ServiceDescriptor => {
+	return {
+		serviceType,
+		T,
+		implementationType,
+		lifetime,
 	};
+};
 
-	// https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.DependencyInjection.Abstractions/src/ServiceDescriptor.cs#L317
-	static singleton = <TImplementation>(
-		serviceType: symbol,
-		implementationType: new (...args: never[]) => TImplementation,
-	): ServiceDescriptor => {
-		return ServiceDescriptor.describe(
-			serviceType,
-			implementationType,
-			ServiceLifetime.Singleton,
-		);
-	};
-}
+// https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.DependencyInjection.Abstractions/src/ServiceDescriptor.cs#L317
+export const singleton = <TImplementation>(
+	serviceType: symbol,
+	T: string | undefined,
+	implementationType: new (...args: never[]) => TImplementation,
+): ServiceDescriptor => {
+	return describe(
+		serviceType,
+		T,
+		implementationType,
+		ServiceLifetime.Singleton,
+	);
+};
