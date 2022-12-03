@@ -41,6 +41,20 @@ const describe = <TImplementation>(
 	};
 };
 
+// https://github.com/dotnet/runtime/blob/b77aa8a9726503df52327a0388a3f4a0325989e1/src/libraries/Microsoft.Extensions.DependencyInjection.Abstractions/src/ServiceDescriptor.cs#L165
+export const transient = <TImplementation>(
+	serviceType: symbol,
+	T: string | undefined,
+	implementationType: new (...args: never[]) => TImplementation,
+): ServiceDescriptor => {
+	return describe(
+		serviceType,
+		T,
+		implementationType,
+		ServiceLifetime.Transient,
+	);
+};
+
 // https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.DependencyInjection.Abstractions/src/ServiceDescriptor.cs#L317
 export const singleton = <TImplementation>(
 	serviceType: symbol,

@@ -2,17 +2,21 @@ import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
 import {
 	ServiceLifetime,
 	singleton,
+	transient,
 } from '@/dependency-injection/ServiceDescriptor';
 import { GenericWebHostServiceOptions } from '@/hosting/GenericWebHostService';
 import { IHostBuilder } from '@/hosting/IHostBuilder';
 import { WebHostBuilderOptions } from '@/hosting/WebHostBuilderOptions';
 import { ConfigureNamedOptions } from '@/options/ConfigureNamedOptions';
+import { defaultName } from '@/options/IOptions';
+import { OptionsFactory } from '@/options/OptionsFactory';
 import { UnnamedOptionsManager } from '@/options/UnnamedOptionsManager';
 import { TYPES } from '@/types';
 
 // https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.Options/src/OptionsServiceCollectionExtensions.cs#L22
 const addOptions = (services: IServiceCollection): IServiceCollection => {
 	services.push(singleton(TYPES.IOptions, undefined, UnnamedOptionsManager));
+	services.push(transient(TYPES.IOptionsFactory, undefined, OptionsFactory));
 	// IMPL
 	return services;
 };
@@ -50,9 +54,6 @@ const configure = <TOptions>(
 	);
 	return services;
 };
-
-// https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.Options/src/Options.cs#L19
-const defaultName = '';
 
 // https://github.com/dotnet/aspnetcore/blob/600eb9aa53c052ec7327e2399744215dbe493a89/src/Hosting/Hosting/src/GenericHost/GenericWebHostBuilder.cs#L20
 export class GenericWebHostBuilder {
