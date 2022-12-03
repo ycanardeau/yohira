@@ -13,11 +13,11 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 		private readonly factory: IOptionsFactory<TOptions>,
 	) {}
 
-	get value(): TOptions {
+	getValue = (TOptions: new (...args: never[]) => TOptions): TOptions => {
 		if (this._value) {
 			return this._value;
 		}
 
-		return (this._value ??= this.factory.create(defaultName));
-	}
+		return (this._value ??= this.factory.create(TOptions, defaultName));
+	};
 }

@@ -1,3 +1,6 @@
 export interface IOptionsFactory<TOptions> {
-	create(name: string): TOptions;
+	create(
+		TOptions: new (...args: never[]) => TOptions,
+		name: string,
+	): TOptions;
 }

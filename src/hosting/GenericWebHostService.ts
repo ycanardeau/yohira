@@ -15,7 +15,7 @@ export class GenericWebHostService implements IHostedService {
 		@inject(TYPES.IOptions)
 		options: IOptions<GenericWebHostServiceOptions>,
 	) {
-		this.options = options.value;
+		this.options = options.getValue(GenericWebHostServiceOptions);
 	}
 
 	start = async (): Promise<void> => {

@@ -8,7 +8,7 @@ export class ConfigureNamedOptions<TOptions>
 	implements IConfigureNamedOptions<TOptions>
 {
 	constructor(
-		readonly TOptions: string,
+		readonly TOptions: new (...args: never[]) => TOptions,
 		readonly name: string | undefined,
 		readonly action: ((options: TOptions) => void) | undefined,
 	) {}

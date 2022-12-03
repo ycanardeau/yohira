@@ -41,7 +41,7 @@ const addSingleton = (
 // https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.Options/src/OptionsServiceCollectionExtensions.cs#L54
 const configure = <TOptions>(
 	services: IServiceCollection,
-	TOptions: string,
+	TOptions: new (...args: never[]) => TOptions,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
 ): IServiceCollection => {
@@ -49,7 +49,7 @@ const configure = <TOptions>(
 	addSingleton(
 		services,
 		TYPES.IConfigureOptions,
-		TOptions,
+		TOptions.name,
 		new ConfigureNamedOptions<TOptions>(TOptions, name, configureOptions),
 	);
 	return services;
@@ -64,7 +64,7 @@ export class GenericWebHostBuilder {
 		builder.configureServices((/* TODO */ services) => {
 			configure<GenericWebHostServiceOptions>(
 				services,
-				'GenericWebHostServiceOptions',
+				GenericWebHostServiceOptions,
 				defaultName,
 				(options) => {
 					// IMPL
