@@ -43,6 +43,11 @@ export interface ILogger {
 	isEnabled(logLevel: LogLevel): boolean;
 }
 
+// https://github.com/dotnet/runtime/blob/b77aa8a9726503df52327a0388a3f4a0325989e1/src/libraries/Microsoft.Extensions.Logging.Abstractions/src/ILoggerFactory.cs#L12
+export interface ILoggerFactory /* TODO: extends IDisposable */ {
+	createLogger(categoryName: string): ILogger;
+}
+
 // https://github.com/dotnet/runtime/blob/215b39abf947da7a40b0cb137eab4bceb24ad3e3/src/libraries/Microsoft.Extensions.Logging.Abstractions/src/LoggerExtensions.cs#L39
 export const logDebug = (
 	logger: ILogger,

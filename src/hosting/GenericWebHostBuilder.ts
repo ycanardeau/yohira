@@ -6,6 +6,7 @@ import {
 } from '@/dependency-injection/ServiceDescriptor';
 import { GenericWebHostServiceOptions } from '@/hosting/GenericWebHostService';
 import { IHostBuilder } from '@/hosting/IHostBuilder';
+import { IWebHostBuilder } from '@/hosting/IWebHostBuilder';
 import { WebHostBuilderOptions } from '@/hosting/WebHostBuilderOptions';
 import { ConfigureNamedOptions } from '@/options/ConfigureNamedOptions';
 import { defaultName } from '@/options/IOptions';
@@ -15,8 +16,20 @@ import { TYPES } from '@/types';
 
 // https://github.com/dotnet/runtime/blob/09613f3ed6cb5ce62e955d2a1979115879d707bb/src/libraries/Microsoft.Extensions.Options/src/OptionsServiceCollectionExtensions.cs#L22
 const addOptions = (services: IServiceCollection): IServiceCollection => {
-	services.push(singleton(TYPES.IOptions, undefined, UnnamedOptionsManager));
-	services.push(transient(TYPES.IOptionsFactory, undefined, OptionsFactory));
+	services.push(
+		/* TODO: tryAdd */ singleton(
+			TYPES.IOptions,
+			undefined,
+			UnnamedOptionsManager,
+		),
+	);
+	services.push(
+		/* TODO: tryAdd */ transient(
+			TYPES.IOptionsFactory,
+			undefined,
+			OptionsFactory,
+		),
+	);
 	// IMPL
 	return services;
 };
@@ -56,7 +69,7 @@ const configure = <TOptions>(
 };
 
 // https://github.com/dotnet/aspnetcore/blob/600eb9aa53c052ec7327e2399744215dbe493a89/src/Hosting/Hosting/src/GenericHost/GenericWebHostBuilder.cs#L20
-export class GenericWebHostBuilder {
+export class GenericWebHostBuilder implements IWebHostBuilder {
 	constructor(
 		private readonly builder: IHostBuilder,
 		options: WebHostBuilderOptions,
@@ -72,4 +85,15 @@ export class GenericWebHostBuilder {
 			);
 		});
 	}
+
+	// https://github.com/dotnet/aspnetcore/blob/600eb9aa53c052ec7327e2399744215dbe493a89/src/Hosting/Hosting/src/GenericHost/GenericWebHostBuilder.cs#L195
+	configureServices = (
+		configureServices: (/* TODO */ services: IServiceCollection) => void,
+	): this => {
+		this.builder.configureServices((/* TODO: context */ builder) => {
+			// TODO
+			configureServices(/* TODO: webHostBuilderContext */ builder);
+		});
+		return this;
+	};
 }

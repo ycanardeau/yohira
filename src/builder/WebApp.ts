@@ -1,4 +1,3 @@
-import { configureWebDefaults } from '@/WebHost';
 import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
 import { singleton } from '@/dependency-injection/ServiceDescriptor';
 import { BootstrapHostBuilder } from '@/hosting/BootstrapHostBuilder';
@@ -10,6 +9,7 @@ import { IHostBuilder } from '@/hosting/IHostBuilder';
 import { IHostedService } from '@/hosting/IHostedService';
 import { IWebHostBuilder } from '@/hosting/IWebHostBuilder';
 import { WebHostBuilderOptions } from '@/hosting/WebHostBuilderOptions';
+import { useKestrel } from '@/server/KestrelServerImpl';
 import { TYPES } from '@/types';
 
 // https://github.com/dotnet/aspnetcore/blob/39f0e0b8f40b4754418f81aef0de58a9204a1fe5/src/DefaultBuilder/src/WebApplication.cs#L21
@@ -38,7 +38,13 @@ const addHostedService = <THostedService extends IHostedService>(
 	services: IServiceCollection,
 	implementation: new (...args: never[]) => THostedService,
 ): IServiceCollection => {
-	services.push(singleton(TYPES.IHostedService, undefined, implementation));
+	services.push(
+		/* TODO: tryAdd */ singleton(
+			TYPES.IHostedService,
+			undefined,
+			implementation,
+		),
+	);
 	return services;
 };
 
@@ -62,6 +68,15 @@ const configureWebHost = (
 		),
 	);
 	return builder;
+};
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/DefaultBuilder/src/WebHost.cs#L216
+const configureWebDefaults = (builder: IWebHostBuilder): void => {
+	// TODO
+	useKestrel(builder, (/* TODO: builderContext */ options) => {
+		// TODO
+	});
+	// TODO
 };
 
 // https://github.com/dotnet/aspnetcore/blob/313ee06a672385ede5d2c9a01d31a7d9d35a6340/src/DefaultBuilder/src/GenericHostBuilderExtensions.cs#L61
@@ -111,6 +126,7 @@ class WebAppBuilder {
 	};
 }
 
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/DefaultBuilder/src/WebApplication.cs#L106
 export const createWebAppBuilder = (): WebAppBuilder => {
 	return new WebAppBuilder();
 };
