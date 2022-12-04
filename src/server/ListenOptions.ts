@@ -36,7 +36,7 @@ export class ListenOptions implements IConnectionBuilder {
 
 	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L156
 	build = (): ConnectionDelegate => {
-		let app = (/* TODO */): Promise<void> => {
+		let app: ConnectionDelegate = (): Promise<void> => {
 			return Promise.resolve();
 		};
 
