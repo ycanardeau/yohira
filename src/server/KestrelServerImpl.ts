@@ -8,6 +8,43 @@ import { ListenOptions } from '@/server/ListenOptions';
 import { TYPES } from '@/types';
 import { injectable } from 'inversify';
 
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L99
+const parseAddress = (/* TODO */): ListenOptions => {
+	return new ListenOptions(); /* TODO */
+};
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L141
+interface IStrategy {
+	bind(context: AddressBindContext): Promise<void>;
+}
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L146
+class DefaultAddressStrategy implements IStrategy {
+	bind = async (context: AddressBindContext): Promise<void> => {
+		const httpDefault = parseAddress(/* TODO */);
+		// TODO
+		await httpDefault.bind(context);
+
+		// TODO: context.logger.logDebug(CoreStrings.BindingToDefaultAddress, Constants.DefaultServerAddress);
+	};
+}
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L34
+const createStrategy = (): IStrategy => {
+	return new DefaultAddressStrategy /* TODO */();
+};
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L19
+const bindAddress = async (
+	/* TODO */ context: AddressBindContext,
+): Promise<void> => {
+	const strategy = createStrategy(/* TODO */);
+
+	// TODO
+
+	await strategy.bind(context);
+};
+
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/KestrelServerOptions.cs#L26
 export class KestrelServerOptions {}
 
@@ -22,7 +59,14 @@ export class KestrelServerImpl implements IServer {
 	};
 
 	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L291
-	private bind = async (): Promise<void> => {};
+	private bind = async (): Promise<void> => {
+		// TODO
+
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		await bindAddress(/* TODO */ this.addressBindContext!);
+
+		// TODO
+	};
 
 	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L140
 	start = async (): Promise<void> => {
@@ -38,6 +82,7 @@ export class KestrelServerImpl implements IServer {
 					// TODO
 
 					useHttpServer(options /* TODO */);
+					const connectionDelegate = options.build();
 
 					// TODO
 				}

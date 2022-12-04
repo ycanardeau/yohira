@@ -2,6 +2,19 @@ import {
 	ConnectionDelegate,
 	IConnectionBuilder,
 } from '@/connections/IConnectionBuilder';
+import { AddressBindContext } from '@/server/AddressBindContext';
+
+// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L85
+const bindEndpoint = async (
+	endpoint: ListenOptions,
+	context: AddressBindContext,
+): Promise<void> => {
+	// TODO: Try.
+	await context.createBinding(endpoint);
+	// TODO: Catch.
+
+	// TODO
+};
 
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L17
 export class ListenOptions implements IConnectionBuilder {
@@ -9,6 +22,7 @@ export class ListenOptions implements IConnectionBuilder {
 		next: ConnectionDelegate,
 	) => ConnectionDelegate)[] = [];
 
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L140
 	use = (
 		middleware: (next: ConnectionDelegate) => ConnectionDelegate,
 	): this => {
@@ -16,6 +30,7 @@ export class ListenOptions implements IConnectionBuilder {
 		return this;
 	};
 
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L156
 	build = (): ConnectionDelegate => {
 		let app = (/* TODO */): Promise<void> => {
 			return Promise.resolve();
@@ -27,5 +42,11 @@ export class ListenOptions implements IConnectionBuilder {
 		}
 
 		return app;
+	};
+
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L188
+	bind = async (context: AddressBindContext): Promise<void> => {
+		await bindEndpoint(this, context);
+		// TODO
 	};
 }
