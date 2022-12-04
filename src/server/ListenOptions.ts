@@ -16,11 +16,15 @@ const bindEndpoint = async (
 	// TODO
 };
 
+type EndPoint = unknown /* TODO */;
+
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L17
 export class ListenOptions implements IConnectionBuilder {
 	private readonly middleware: ((
 		next: ConnectionDelegate,
 	) => ConnectionDelegate)[] = [];
+
+	constructor(public endPoint: EndPoint) {}
 
 	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/ListenOptions.cs#L140
 	use = (

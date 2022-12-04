@@ -1,4 +1,5 @@
 const TYPES = {
+	IConnectionListenerFactory: Symbol.for('IConnectionListenerFactory'),
 	IConfigureOptions: Symbol.for('IConfigureOptions'),
 	IHostedService: Symbol.for('IHostedService'),
 	ILogger: Symbol.for('ILogger'),

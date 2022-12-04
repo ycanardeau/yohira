@@ -1,3 +1,4 @@
+import { IConnectionListenerFactory } from '@/connections/IConnectionListener';
 import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
 import { ServiceLifetime } from '@/dependency-injection/ServiceDescriptor';
 import { IServer } from '@/hosting/IServer';
@@ -5,12 +6,16 @@ import { IWebHostBuilder } from '@/hosting/IWebHostBuilder';
 import { AddressBindContext } from '@/server/AddressBindContext';
 import { useHttpServer } from '@/server/HttpConnectionMiddleware';
 import { ListenOptions } from '@/server/ListenOptions';
+import { SocketTransportFactory } from '@/server/SocketTransportFactory';
+import { TransportManager } from '@/server/TransportManager';
 import { TYPES } from '@/types';
-import { injectable } from 'inversify';
+import { inject, injectable, multiInject } from 'inversify';
 
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L99
 const parseAddress = (/* TODO */): ListenOptions => {
-	return new ListenOptions(); /* TODO */
+	return new ListenOptions({
+		/* TODO */
+	}); /* TODO */
 };
 
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/AddressBinder.cs#L141
@@ -51,7 +56,21 @@ export class KestrelServerOptions {}
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L21
 @injectable()
 export class KestrelServerImpl implements IServer {
+	private readonly transportManager: TransportManager;
+	private readonly transportFactories: IConnectionListenerFactory[];
+
 	private addressBindContext?: AddressBindContext;
+
+	constructor(
+		@multiInject(TYPES.IConnectionListenerFactory)
+		transportFactories: IConnectionListenerFactory[],
+	) {
+		this.transportFactories = Array.from(transportFactories).reverse();
+
+		this.transportManager = new TransportManager(
+			this.transportFactories /* TODO */,
+		);
+	}
 
 	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L402
 	private validateOptions = (): void => {
@@ -85,6 +104,12 @@ export class KestrelServerImpl implements IServer {
 					const connectionDelegate = options.build();
 
 					// TODO
+
+					options.endPoint = await this.transportManager.bind(
+						/* TODO */
+						connectionDelegate,
+						/* TODO */
+					);
 				}
 			};
 
@@ -152,6 +177,14 @@ export const useKestrel = (
 	// TODO
 
 	hostBuilder.configureServices((services) => {
+		addSingleton(
+			/* TODO: tryAddSingleton */ services,
+			TYPES.IConnectionListenerFactory,
+			undefined,
+			SocketTransportFactory,
+		);
+
+		// TODO
 		addSingleton(services, TYPES.IServer, undefined, KestrelServerImpl);
 	});
 
