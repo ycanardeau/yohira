@@ -2,6 +2,9 @@ import { IServiceCollection } from '@/dependency-injection/ServiceCollection';
 import { ServiceLifetime } from '@/dependency-injection/ServiceDescriptor';
 import { IServer } from '@/hosting/IServer';
 import { IWebHostBuilder } from '@/hosting/IWebHostBuilder';
+import { AddressBindContext } from '@/server/AddressBindContext';
+import { useHttpServer } from '@/server/HttpConnectionMiddleware';
+import { ListenOptions } from '@/server/ListenOptions';
 import { TYPES } from '@/types';
 import { injectable } from 'inversify';
 
@@ -11,8 +14,42 @@ export class KestrelServerOptions {}
 // https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L21
 @injectable()
 export class KestrelServerImpl implements IServer {
+	private addressBindContext?: AddressBindContext;
+
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L402
+	private validateOptions = (): void => {
+		// IMPL
+	};
+
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L291
+	private bind = async (): Promise<void> => {};
+
+	// https://github.com/dotnet/aspnetcore/blob/87c8b7869584107f57739b88d246f4d62873c2f0/src/Servers/Kestrel/Core/src/Internal/KestrelServerImpl.cs#L140
 	start = async (): Promise<void> => {
-		// TODO
+		try {
+			this.validateOptions();
+
+			// TODO
+
+			const onBind = async (
+				options: ListenOptions /* TODO */,
+			): Promise<void> => {
+				if (true /* TODO */) {
+					// TODO
+
+					useHttpServer(options /* TODO */);
+
+					// TODO
+				}
+			};
+
+			this.addressBindContext = new AddressBindContext(/* TODO */ onBind);
+
+			await this.bind();
+		} catch (error) {
+			// TODO: this.dispose();
+			throw error;
+		}
 	};
 }
 
