@@ -1,13 +1,12 @@
 import { App } from '@/App';
 import { IHttpContext } from '@/http/IHttpContext';
+import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
-export class StaticFileMiddleware {
-	constructor(private readonly next: RequestDelegate) {}
-
-	invoke = (context: IHttpContext): Promise<void> => {
-		return this.next(context);
+export class StaticFileMiddleware implements IMiddleware {
+	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
+		return next(context);
 	};
 }
 

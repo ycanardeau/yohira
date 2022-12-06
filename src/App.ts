@@ -2,6 +2,7 @@
 import { AppBuilder } from '@/http/AppBuilder';
 import { HttpContext } from '@/http/HttpContext';
 import { IHttpContext } from '@/http/IHttpContext';
+import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { IncomingMessage, ServerResponse, createServer } from 'node:http';
 import { Server } from 'node:net';
@@ -30,16 +31,12 @@ export class App {
 	};
 
 	// https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseMiddlewareExtensions.cs,e940dbf3ad65ffe4,references
-	useMiddleware = <
-		T extends {
-			invoke: (context: IHttpContext) => Promise<void>;
-		},
-	>(
-		ctor: new (next: RequestDelegate, ...args: unknown[]) => T,
+	useMiddleware = <T extends IMiddleware>(
+		ctor: new (...args: unknown[]) => T,
 	): this => {
 		return this.use(async (context, next) => {
-			const middleware = new ctor(next);
-			await middleware.invoke(context);
+			const middleware = new ctor();
+			await middleware.invoke(context, next);
 		});
 	};
 
