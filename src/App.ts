@@ -9,7 +9,7 @@ interface ILogger {
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpContext.cs,9bde6e3833d169c1,references
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface IHttpContext {}
+export interface IHttpContext {}
 
 export class HttpContext implements IHttpContext {
 	constructor(
@@ -19,7 +19,7 @@ export class HttpContext implements IHttpContext {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/RequestDelegate.cs,51d975d94569085b,references
-type RequestDelegate = (context: IHttpContext) => Promise<void>;
+export type RequestDelegate = (context: IHttpContext) => Promise<void>;
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/IApplicationBuilder.cs,8bf924cdca3bdd9e,references
 interface IAppBuilder {
@@ -69,6 +69,20 @@ export class App {
 		// https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseExtensions.cs,e5d66acebb0a871f,references
 		this.app.use((next) => (context) => middleware(context, next));
 		return this;
+	};
+
+	// https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseMiddlewareExtensions.cs,e940dbf3ad65ffe4,references
+	useMiddleware = <
+		T extends {
+			invoke: (context: IHttpContext) => Promise<void>;
+		},
+	>(
+		ctor: new (next: RequestDelegate, ...args: unknown[]) => T,
+	): this => {
+		return this.use(async (context, next) => {
+			const middleware = new ctor(next);
+			await middleware.invoke(context);
+		});
 	};
 
 	// https://github.com/koajs/koa/blob/d7894c88a511b1dd604d5402a4ab0d9903747c5b/lib/application.js#L142

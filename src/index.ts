@@ -1,4 +1,5 @@
 import { App, HttpContext } from '@/App';
+import { useStaticFiles } from '@/middleware/staticFiles/StaticFileMiddleware';
 
 const main = async (): Promise<void> => {
 	const app = new App({
@@ -7,6 +8,8 @@ const main = async (): Promise<void> => {
 		warn: (message, ...optionalParams) =>
 			console.warn(message, ...optionalParams),
 	});
+
+	useStaticFiles(app);
 
 	app.use(async (context, next) => {
 		if (!(context instanceof HttpContext)) {
