@@ -2,7 +2,10 @@ import { App } from '@/App';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
-import { useStaticFiles } from '@/middleware/staticFiles/StaticFileMiddleware';
+import {
+	addStaticFiles,
+	useStaticFiles,
+} from '@/middleware/staticFiles/StaticFileMiddleware';
 
 // TODO
 const logger: ILogger = {
@@ -15,6 +18,7 @@ container
 	.bind(ILogger)
 	.toDynamicValue(() => logger)
 	.inSingletonScope();
+addStaticFiles(container);
 
 const main = async (): Promise<void> => {
 	const app = new App(logger);
