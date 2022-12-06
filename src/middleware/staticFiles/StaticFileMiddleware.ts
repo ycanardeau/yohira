@@ -1,4 +1,6 @@
-import { App, IHttpContext, RequestDelegate } from '@/App';
+import { App } from '@/App';
+import { IHttpContext } from '@/http/IHttpContext';
+import { RequestDelegate } from '@/http/RequestDelegate';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 export class StaticFileMiddleware {

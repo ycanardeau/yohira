@@ -1,4 +1,5 @@
-import { App, HttpContext } from '@/App';
+import { App } from '@/App';
+import { HttpContext } from '@/http/HttpContext';
 import { useStaticFiles } from '@/middleware/staticFiles/StaticFileMiddleware';
 
 const main = async (): Promise<void> => {
