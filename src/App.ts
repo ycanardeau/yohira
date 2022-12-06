@@ -4,13 +4,12 @@ import { HttpContext } from '@/http/HttpContext';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
+import { container } from '@/inversify.config';
+import { ILogger } from '@/logging/ILogger';
 import { IncomingMessage, ServerResponse, createServer } from 'node:http';
 import { Server } from 'node:net';
-
-interface ILogger {
-	debug(message?: string, ...optionalParams: any[]): void;
-	warn(message?: string, ...optionalParams: any[]): void;
-}
+// TODO: Move.
+import 'reflect-metadata';
 
 export class App {
 	private readonly app = new AppBuilder();
@@ -32,10 +31,10 @@ export class App {
 
 	// https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseMiddlewareExtensions.cs,e940dbf3ad65ffe4,references
 	useMiddleware = <T extends IMiddleware>(
-		ctor: new (...args: unknown[]) => T,
+		ctor: new (...args: never[]) => T,
 	): this => {
 		return this.use(async (context, next) => {
-			const middleware = new ctor();
+			const middleware = container.get<T>(ctor);
 			await middleware.invoke(context, next);
 		});
 	};
