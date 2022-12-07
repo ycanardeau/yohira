@@ -8,7 +8,10 @@ import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
 import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
-import { isGetOrHeadMethod } from '@/middleware/staticFiles/helpers';
+import {
+	isGetOrHeadMethod,
+	tryMatchPath,
+} from '@/middleware/staticFiles/helpers';
 import {
 	logFileTypeNotSupported,
 	logPathMismatch,
@@ -68,7 +71,7 @@ export class StaticFileMiddleware implements IMiddleware {
 		context: IHttpContext,
 		matchUrl: PathString,
 	): Result<PathString, PathString> => {
-		throw new Error('Method not implemented.');
+		return tryMatchPath(context, matchUrl, false);
 	};
 
 	private static lookupContentType = (
