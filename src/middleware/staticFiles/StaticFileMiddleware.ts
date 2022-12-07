@@ -4,6 +4,8 @@ import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
 import { ILoggerFactory } from '@/logging/ILoggerFactory';
+import { isGetOrHeadMethod } from '@/middleware/staticFiles/helpers';
+import { logRequestMethodNotSupported } from '@/middleware/staticFiles/loggerExtensions';
 import { IOptions } from '@/options/IOptions';
 import { Container, inject, injectable, named } from 'inversify';
 
@@ -26,7 +28,16 @@ export class StaticFileMiddleware implements IMiddleware {
 		this.logger = loggerFactory.createLogger(StaticFileMiddleware);
 	}
 
+	private static validateMethod = (context: IHttpContext): boolean => {
+		return isGetOrHeadMethod(context.request.method);
+	};
+
 	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
+		// TODO: validateNoEndpointDelegate
+		/* TODO: else */ if (!StaticFileMiddleware.validateMethod(context)) {
+			logRequestMethodNotSupported(this.logger, context.request.method);
+		}
+
 		return next(context);
 	};
 }
