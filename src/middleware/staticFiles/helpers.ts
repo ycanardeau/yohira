@@ -1,7 +1,15 @@
+import { IFileProvider } from '@/fileProviders/IFileProvider';
+import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { PathString } from '@/http/PathString';
 import { Err, Ok, Result } from 'ts-results';
+
+export const resolveFileProvider = (
+	hostingEnv: IWebHostEnvironment,
+): IFileProvider => {
+	return hostingEnv.webRootFileProvider;
+};
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/Helpers.cs,d4e3c36ab54b6c29,references
 export const isGetOrHeadMethod = (method: string): boolean => {

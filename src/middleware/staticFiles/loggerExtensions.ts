@@ -21,3 +21,8 @@ export const logFileTypeNotSupported = (
 		`The request path ${path} does not match a supported file type`,
 	);
 };
+
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f6541ac130cc9584,references
+export const logFileNotFound = (logger: ILogger, path: string): void => {
+	logger.debug(`The request path ${path} does not match an existing file`);
+};

@@ -1,4 +1,6 @@
 import { App } from '@/App';
+import { IFileProvider } from '@/fileProviders/IFileProvider';
+import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { PathString } from '@/http/PathString';
@@ -8,11 +10,14 @@ import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
 import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
+import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import {
 	isGetOrHeadMethod,
+	resolveFileProvider,
 	tryMatchPath,
 } from '@/middleware/staticFiles/helpers';
 import {
+	logFileNotFound,
 	logFileTypeNotSupported,
 	logPathMismatch,
 	logRequestMethodNotSupported,
@@ -47,9 +52,11 @@ export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
 	private readonly matchUrl: PathString;
 	private readonly logger: ILogger;
+	private readonly fileProvider: IFileProvider;
 	private readonly contentTypeProvider: IContentTypeProvider;
 
 	constructor(
+		@inject(IWebHostEnvironment) hostingEnv: IWebHostEnvironment,
 		@inject(IOptions)
 		@named(StaticFileOptions.name)
 		options: IOptions<StaticFileOptions>,
@@ -59,8 +66,12 @@ export class StaticFileMiddleware implements IMiddleware {
 		this.contentTypeProvider =
 			this.options.contentTypeProvider ??
 			new FileExtensionContentTypeProvider();
+		this.fileProvider =
+			this.options.fileProvider ?? resolveFileProvider(hostingEnv);
 		this.matchUrl = this.options.requestPath;
 		this.logger = loggerFactory.createLogger(StaticFileMiddleware);
+
+		// TODO
 	}
 
 	private static validateMethod = (context: IHttpContext): boolean => {
@@ -98,7 +109,20 @@ export class StaticFileMiddleware implements IMiddleware {
 		contentType: string | undefined,
 		subPath: PathString,
 	): Promise<void> => {
-		// TODO
+		const fileContext = new StaticFileContext(
+			context,
+			this.options,
+			this.logger,
+			this.fileProvider,
+			contentType,
+			subPath,
+		);
+
+		if (!fileContext.lookupFileInfo()) {
+			logFileNotFound(this.logger, fileContext.subPath);
+		} else {
+			return fileContext.serveStaticFile(context, next);
+		}
 
 		return next(context);
 	};

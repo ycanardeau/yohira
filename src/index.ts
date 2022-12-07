@@ -1,4 +1,6 @@
 import { App } from '@/App';
+import { IFileInfo } from '@/fileProviders/IFileInfo';
+import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
@@ -17,6 +19,19 @@ const logger: ILogger = {
 	warn: (message, ...optionalParams) =>
 		console.warn(message, ...optionalParams),
 };
+container
+	.bind(IWebHostEnvironment)
+	.toDynamicValue(
+		(): IWebHostEnvironment => ({
+			webRootPath: '/wwwroot',
+			webRootFileProvider: {
+				getFileInfo: (subpath): IFileInfo => {
+					throw new Error('Method not implemented.');
+				},
+			},
+		}),
+	)
+	.inSingletonScope();
 container
 	.bind(IOptions)
 	.toDynamicValue((): IOptions<StaticFileOptions> => {
