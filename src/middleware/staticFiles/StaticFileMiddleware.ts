@@ -1,6 +1,7 @@
 import { App } from '@/App';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
+import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
 import { ILoggerFactory } from '@/logging/ILoggerFactory';
@@ -41,7 +42,7 @@ export class StaticFileOptions extends SharedOptionsBase {
 @injectable()
 export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
-	private readonly matchUrl: string;
+	private readonly matchUrl: PathString;
 	private readonly logger: ILogger;
 	private readonly contentTypeProvider: IContentTypeProvider;
 
@@ -65,17 +66,18 @@ export class StaticFileMiddleware implements IMiddleware {
 
 	private static validatePath = (
 		context: IHttpContext,
-		matchUrl: string,
-	): Result<string, string> => {
+		matchUrl: PathString,
+	): Result<PathString, PathString> => {
 		throw new Error('Method not implemented.');
 	};
 
 	private static lookupContentType = (
 		contentTypeProvider: IContentTypeProvider,
 		options: StaticFileOptions,
-		subPath: string,
+		subPath: PathString,
 	): Result<string | undefined, undefined> => {
-		const result = contentTypeProvider.tryGetContentType(subPath);
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const result = contentTypeProvider.tryGetContentType(subPath.value!);
 		if (result.ok) {
 			return Ok(result.val);
 		}
@@ -91,7 +93,7 @@ export class StaticFileMiddleware implements IMiddleware {
 		context: IHttpContext,
 		next: RequestDelegate,
 		contentType: string | undefined,
-		subPath: string,
+		subPath: PathString,
 	): Promise<void> => {
 		// TODO
 
@@ -109,7 +111,7 @@ export class StaticFileMiddleware implements IMiddleware {
 			);
 			if (!validatePathResult.ok) {
 				const subPath = validatePathResult.val;
-				logPathMismatch(this.logger, subPath);
+				logPathMismatch(this.logger, subPath.toString());
 			} else {
 				const subPath = validatePathResult.val;
 				const lookupContentTypeResult =
@@ -119,7 +121,7 @@ export class StaticFileMiddleware implements IMiddleware {
 						subPath,
 					);
 				if (!lookupContentTypeResult.ok) {
-					logFileTypeNotSupported(this.logger, subPath);
+					logFileTypeNotSupported(this.logger, subPath.toString());
 				} else {
 					const contentType = lookupContentTypeResult.val;
 					return this.tryServeStaticFile(
