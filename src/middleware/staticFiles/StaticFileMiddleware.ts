@@ -3,6 +3,7 @@ import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
+import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import { IOptions } from '@/options/IOptions';
 import { Container, inject, injectable, named } from 'inversify';
 
@@ -13,14 +14,16 @@ export class StaticFileOptions {}
 @injectable()
 export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
+	private readonly logger: ILogger;
 
 	constructor(
 		@inject(IOptions)
 		@named(StaticFileOptions.name)
 		options: IOptions<StaticFileOptions>,
-		@inject(ILogger) readonly logger: ILogger,
+		@inject(ILoggerFactory) loggerFactory: ILoggerFactory,
 	) {
 		this.options = options.value;
+		this.logger = loggerFactory.createLogger(StaticFileMiddleware);
 	}
 
 	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {

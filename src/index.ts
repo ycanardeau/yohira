@@ -2,6 +2,7 @@ import { App } from '@/App';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
+import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import {
 	StaticFileOptions,
 	addStaticFiles,
@@ -25,8 +26,13 @@ container
 	.inSingletonScope()
 	.whenTargetNamed(StaticFileOptions.name);
 container
-	.bind(ILogger)
-	.toDynamicValue(() => logger)
+	.bind(ILoggerFactory)
+	.toDynamicValue(
+		(): ILoggerFactory => ({
+			createLogger: (): ILogger => logger,
+			dispose: async (): Promise<void> => {},
+		}),
+	)
 	.inSingletonScope();
 addStaticFiles(container);
 
