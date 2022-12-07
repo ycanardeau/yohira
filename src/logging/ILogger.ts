@@ -1,5 +1,5 @@
 export const ILogger = Symbol.for('ILogger');
 export interface ILogger {
-	debug(message?: string, ...optionalParams: any[]): void;
-	warn(message?: string, ...optionalParams: any[]): void;
+	debug(message?: any, ...optionalParams: any[]): void;
+	warn(message?: any, ...optionalParams: any[]): void;
 }

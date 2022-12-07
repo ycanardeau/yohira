@@ -3,9 +3,11 @@ import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
 import {
+	StaticFileOptions,
 	addStaticFiles,
 	useStaticFiles,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { IOptions } from '@/options/IOptions';
 
 // TODO
 const logger: ILogger = {
@@ -14,6 +16,14 @@ const logger: ILogger = {
 	warn: (message, ...optionalParams) =>
 		console.warn(message, ...optionalParams),
 };
+container
+	.bind(IOptions)
+	.toDynamicValue((): IOptions<StaticFileOptions> => {
+		const options = new StaticFileOptions();
+		return { value: options };
+	})
+	.inSingletonScope()
+	.whenTargetNamed(StaticFileOptions.name);
 container
 	.bind(ILogger)
 	.toDynamicValue(() => logger)

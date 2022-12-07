@@ -3,12 +3,25 @@ import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
-import { Container, inject, injectable } from 'inversify';
+import { IOptions } from '@/options/IOptions';
+import { Container, inject, injectable, named } from 'inversify';
+
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileOptions.cs,fecf371ff955674d,references
+export class StaticFileOptions {}
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 @injectable()
 export class StaticFileMiddleware implements IMiddleware {
-	constructor(@inject(ILogger) readonly logger: ILogger) {}
+	private readonly options: StaticFileOptions;
+
+	constructor(
+		@inject(IOptions)
+		@named(StaticFileOptions.name)
+		options: IOptions<StaticFileOptions>,
+		@inject(ILogger) readonly logger: ILogger,
+	) {
+		this.options = options.value;
+	}
 
 	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
 		return next(context);
