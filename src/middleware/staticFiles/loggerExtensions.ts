@@ -1,5 +1,12 @@
 import { ILogger } from '@/logging/ILogger';
 
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,3068b930094bf334,references
+export const logEndpointMatched = (logger: ILogger): void => {
+	logger.debug(
+		'Static files was skipped as the request already matched an endpoint.',
+	);
+};
+
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,10e3cf5b010f8900,references
 export const logRequestMethodNotSupported = (
 	logger: ILogger,

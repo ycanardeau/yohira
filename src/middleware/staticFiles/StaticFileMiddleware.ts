@@ -1,7 +1,7 @@
 import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { IAppBuilder, useMiddleware } from '@/http/IAppBuilder';
-import { IHttpContext } from '@/http/IHttpContext';
+import { IHttpContext, getEndpoint } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
@@ -17,6 +17,7 @@ import {
 	tryMatchPath,
 } from '@/middleware/staticFiles/helpers';
 import {
+	logEndpointMatched,
 	logFileNotFound,
 	logFileTypeNotSupported,
 	logPathMismatch,
@@ -74,6 +75,12 @@ export class StaticFileMiddleware implements IMiddleware {
 		// TODO
 	}
 
+	private static validateNoEndpointDelegate = (
+		context: IHttpContext,
+	): boolean => {
+		return getEndpoint(context)?.requestDelegate === undefined;
+	};
+
 	private static validateMethod = (context: IHttpContext): boolean => {
 		return isGetOrHeadMethod(context.request.method);
 	};
@@ -128,8 +135,9 @@ export class StaticFileMiddleware implements IMiddleware {
 	};
 
 	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
-		// TODO: validateNoEndpointDelegate
-		/* TODO: else */ if (!StaticFileMiddleware.validateMethod(context)) {
+		if (!StaticFileMiddleware.validateNoEndpointDelegate(context)) {
+			logEndpointMatched(this.logger);
+		} else if (!StaticFileMiddleware.validateMethod(context)) {
 			logRequestMethodNotSupported(this.logger, context.request.method);
 		} else {
 			const validatePathResult = StaticFileMiddleware.validatePath(
