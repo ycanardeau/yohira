@@ -1,6 +1,6 @@
-import { App } from '@/App';
 import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { IWebHostEnv } from '@/hosting/IWebHostEnv';
+import { IAppBuilder, useMiddleware } from '@/http/IAppBuilder';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { PathString } from '@/http/PathString';
@@ -23,7 +23,7 @@ import {
 	logRequestMethodNotSupported,
 } from '@/middleware/staticFiles/loggerExtensions';
 import { IOptions } from '@/options/IOptions';
-import { Container, inject, injectable, named } from 'inversify';
+import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileOptions.cs,fecf371ff955674d,references
@@ -165,11 +165,7 @@ export class StaticFileMiddleware implements IMiddleware {
 	};
 }
 
-export const addStaticFiles = (container: Container): void => {
-	container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
-};
-
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileExtensions.cs,d2a2db085a036bf0,references
-export const useStaticFiles = (app: App): App => {
-	return app.useMiddleware(StaticFileMiddleware);
+export const useStaticFiles = (app: IAppBuilder): IAppBuilder => {
+	return useMiddleware(app, StaticFileMiddleware);
 };
