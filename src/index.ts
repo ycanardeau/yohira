@@ -1,5 +1,8 @@
 import { App } from '@/App';
-import { IFileInfo } from '@/fileProviders/IFileInfo';
+import {
+	HostingEnvironment,
+	initialize,
+} from '@/fileProviders/HostingEnvironment';
 import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
@@ -13,25 +16,13 @@ import {
 import { IOptions } from '@/options/IOptions';
 
 // TODO
-const logger: ILogger = {
-	debug: (message, ...optionalParams) =>
-		console.debug(message, ...optionalParams),
-	warn: (message, ...optionalParams) =>
-		console.warn(message, ...optionalParams),
-};
+const hostingEnvironment = new HostingEnvironment();
+initialize(hostingEnvironment, '' /* TODO */, {} /* TODO */);
 container
 	.bind(IWebHostEnvironment)
-	.toDynamicValue(
-		(): IWebHostEnvironment => ({
-			webRootPath: '/wwwroot',
-			webRootFileProvider: {
-				getFileInfo: (subpath): IFileInfo => {
-					throw new Error('Method not implemented.');
-				},
-			},
-		}),
-	)
+	.toDynamicValue(() => hostingEnvironment)
 	.inSingletonScope();
+
 container
 	.bind(IOptions)
 	.toDynamicValue((): IOptions<StaticFileOptions> => {
@@ -40,6 +31,13 @@ container
 	})
 	.inSingletonScope()
 	.whenTargetNamed(StaticFileOptions.name);
+
+const logger: ILogger = {
+	debug: (message, ...optionalParams) =>
+		console.debug(message, ...optionalParams),
+	warn: (message, ...optionalParams) =>
+		console.warn(message, ...optionalParams),
+};
 container
 	.bind(ILoggerFactory)
 	.toDynamicValue(
@@ -49,6 +47,7 @@ container
 		}),
 	)
 	.inSingletonScope();
+
 addStaticFiles(container);
 
 const main = async (): Promise<void> => {

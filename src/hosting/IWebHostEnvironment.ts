@@ -1,8 +1,9 @@
 import { IFileProvider } from '@/fileProviders/IFileProvider';
+import { IHostEnvironment } from '@/hosting/IHostEnvironment';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Abstractions/IWebHostEnvironment.cs,30ac66307b7b40c9,references
 export const IWebHostEnvironment = Symbol.for('IWebHostEnvironment');
-export interface IWebHostEnvironment /* TODO: extends IHostEnvironment */ {
+export interface IWebHostEnvironment extends IHostEnvironment {
 	/**
 	 * Gets or sets the absolute path to the directory that contains the web-servable application content files.
 	 * This defaults to the 'wwwroot' subfolder.
