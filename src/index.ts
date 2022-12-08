@@ -1,6 +1,6 @@
 import { App } from '@/App';
-import { HostingEnv, initialize } from '@/fileProviders/HostingEnv';
-import { IWebHostEnv } from '@/hosting/IWebHostEnv';
+import { HostingEnv } from '@/fileProviders/HostingEnv';
+import { IWebHostEnv, initialize } from '@/hosting/IWebHostEnv';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';

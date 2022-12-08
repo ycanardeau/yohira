@@ -8,11 +8,12 @@ export const logRequestMethodNotSupported = (
 	logger.debug(`${method} requests are not supported`);
 };
 
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e240e32d569094bc,references
 export const logPathMismatch = (logger: ILogger, path: string): void => {
 	logger.debug(`The request path ${path} does not match the path filter`);
 };
 
-// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f2c41a9493102814
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f2c41a9493102814,references
 export const logFileTypeNotSupported = (
 	logger: ILogger,
 	path: string,
