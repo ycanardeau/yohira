@@ -4,7 +4,10 @@ import { IHttpContext } from '@/http/IHttpContext';
 import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
-import { StaticFileOptions } from '@/middleware/staticFiles/StaticFileMiddleware';
+import {
+	StaticFileMiddleware,
+	StaticFileOptions,
+} from '@/middleware/staticFiles/StaticFileMiddleware';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileContext.cs,24617c4390017df9,references
 export class StaticFileContext {
@@ -13,7 +16,7 @@ export class StaticFileContext {
 	constructor(
 		private readonly context: IHttpContext,
 		private readonly options: StaticFileOptions,
-		private readonly logger: ILogger,
+		private readonly logger: ILogger<StaticFileMiddleware>,
 		private readonly fileProvider: IFileProvider,
 		private readonly conteType: string | undefined,
 		private readonly _subPath: PathString,

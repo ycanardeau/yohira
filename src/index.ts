@@ -34,11 +34,17 @@ container
 	.bind(ILoggerFactory)
 	.toDynamicValue(
 		(): ILoggerFactory => ({
-			createLogger: (): ILogger => ({
+			createLogger: <T>(
+				categoryName: new (...args: never[]) => T,
+			): ILogger<T> => ({
 				debug: (message, ...optionalParams) =>
-					console.debug(message, ...optionalParams),
+					console.debug(
+						categoryName.name,
+						message,
+						...optionalParams,
+					),
 				warn: (message, ...optionalParams) =>
-					console.warn(message, ...optionalParams),
+					console.warn(categoryName.name, message, ...optionalParams),
 			}),
 			dispose: async (): Promise<void> => {},
 		}),

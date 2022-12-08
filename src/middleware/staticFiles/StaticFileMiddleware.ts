@@ -52,7 +52,7 @@ export class StaticFileOptions extends SharedOptionsBase {
 export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
 	private readonly matchUrl: PathString;
-	private readonly logger: ILogger;
+	private readonly logger: ILogger<StaticFileMiddleware>;
 	private readonly fileProvider: IFileProvider;
 	private readonly contentTypeProvider: IContentTypeProvider;
 
