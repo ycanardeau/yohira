@@ -1,9 +1,6 @@
 import { App } from '@/App';
-import {
-	HostingEnvironment,
-	initialize,
-} from '@/fileProviders/HostingEnvironment';
-import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
+import { HostingEnv, initialize } from '@/fileProviders/HostingEnv';
+import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { HttpContext } from '@/http/HttpContext';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
@@ -16,11 +13,11 @@ import {
 import { IOptions } from '@/options/IOptions';
 
 // TODO
-const hostingEnvironment = new HostingEnvironment();
-initialize(hostingEnvironment, '' /* TODO */, {} /* TODO */);
+const hostingEnv = new HostingEnv();
+initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
 container
-	.bind(IWebHostEnvironment)
-	.toDynamicValue(() => hostingEnvironment)
+	.bind(IWebHostEnv)
+	.toDynamicValue(() => hostingEnv)
 	.inSingletonScope();
 
 container

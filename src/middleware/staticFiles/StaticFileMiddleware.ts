@@ -1,6 +1,6 @@
 import { App } from '@/App';
 import { IFileProvider } from '@/fileProviders/IFileProvider';
-import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
+import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { PathString } from '@/http/PathString';
@@ -56,7 +56,7 @@ export class StaticFileMiddleware implements IMiddleware {
 	private readonly contentTypeProvider: IContentTypeProvider;
 
 	constructor(
-		@inject(IWebHostEnvironment) hostingEnv: IWebHostEnvironment,
+		@inject(IWebHostEnv) hostingEnv: IWebHostEnv,
 		@inject(IOptions)
 		@named(StaticFileOptions.name)
 		options: IOptions<StaticFileOptions>,

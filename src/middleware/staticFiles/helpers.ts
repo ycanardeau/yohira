@@ -1,13 +1,11 @@
 import { IFileProvider } from '@/fileProviders/IFileProvider';
-import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
+import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { PathString } from '@/http/PathString';
 import { Err, Ok, Result } from 'ts-results';
 
-export const resolveFileProvider = (
-	hostingEnv: IWebHostEnvironment,
-): IFileProvider => {
+export const resolveFileProvider = (hostingEnv: IWebHostEnv): IFileProvider => {
 	return hostingEnv.webRootFileProvider;
 };
 

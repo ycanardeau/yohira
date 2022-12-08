@@ -1,7 +1,7 @@
 import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { NullFileProvider } from '@/fileProviders/NullFileProvider';
 import { PhysicalFileProvider } from '@/fileProviders/PhysicalFileProvider';
-import { IWebHostEnvironment } from '@/hosting/IWebHostEnvironment';
+import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { WebHostOptions } from '@/hosting/WebHostOptions';
 import { injectable } from 'inversify';
 import { existsSync } from 'node:fs';
@@ -9,7 +9,7 @@ import { resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironment.cs,0e08dcc04b780183,references
 @injectable()
-export class HostingEnvironment implements IWebHostEnvironment {
+export class HostingEnv implements IWebHostEnv {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	webRootPath: string = undefined!;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -20,39 +20,36 @@ export class HostingEnvironment implements IWebHostEnvironment {
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironmentExtensions.cs,cfa8d9a4a73c54e3
 export const initialize = (
-	hostingEnvironment: IWebHostEnvironment,
+	hostingEnv: IWebHostEnv,
 	contentRootPath: string,
 	options: WebHostOptions,
 ): void => {
 	// TODO
 
-	// TODO: hostingEnvironment.applicationName =
-	hostingEnvironment.contentRootPath = contentRootPath;
-	// TODO: hostingEnvironment.contentRootFileProvider =
+	// TODO: hostingEnv.appName =
+	hostingEnv.contentRootPath = contentRootPath;
+	// TODO: hostingEnv.contentRootFileProvider =
 
 	const webRoot = options.webRoot;
 	if (webRoot === undefined) {
-		const wwwroot = resolve(hostingEnvironment.contentRootPath, 'wwwroot');
+		const wwwroot = resolve(hostingEnv.contentRootPath, 'wwwroot');
 		if (existsSync(wwwroot)) {
-			hostingEnvironment.webRootPath = wwwroot;
+			hostingEnv.webRootPath = wwwroot;
 		}
 	} else {
-		hostingEnvironment.webRootPath = resolve(
-			hostingEnvironment.contentRootPath,
-			webRoot,
-		);
+		hostingEnv.webRootPath = resolve(hostingEnv.contentRootPath, webRoot);
 	}
 
-	if (hostingEnvironment.webRootPath) {
-		// TODO: hostingEnvironment.webRootPath = getFullPath(hostingEnvironment.webRootPath);
-		/* TODO: if (!Directory.exists(hostingEnvironment.webRootPath)) {
-			Directory.createDirectory(hostingEnvironment.webRootPath);
+	if (hostingEnv.webRootPath) {
+		// TODO: hostingEnv.webRootPath = getFullPath(hostingEnv.webRootPath);
+		/* TODO: if (!Directory.exists(hostingEnv.webRootPath)) {
+			Directory.createDirectory(hostingEnv.webRootPath);
 		}*/
-		hostingEnvironment.webRootFileProvider = new PhysicalFileProvider(
-			hostingEnvironment.webRootPath,
+		hostingEnv.webRootFileProvider = new PhysicalFileProvider(
+			hostingEnv.webRootPath,
 		);
 	} else {
-		hostingEnvironment.webRootFileProvider = new NullFileProvider();
+		hostingEnv.webRootFileProvider = new NullFileProvider();
 	}
 
 	// TODO
