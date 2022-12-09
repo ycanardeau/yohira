@@ -8,21 +8,21 @@ import { RequestDelegate } from '@/http/RequestDelegate';
 import { ILogger } from '@/logging/ILogger';
 import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
-import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
-import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
-import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import {
 	isGetOrHeadMethod,
 	resolveFileProvider,
 	tryMatchPath,
-} from '@/middleware/staticFiles/helpers';
+} from '@/middleware/staticFiles/Helpers';
+import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
 import {
 	logEndpointMatched,
 	logFileNotFound,
 	logFileTypeNotSupported,
 	logPathMismatch,
 	logRequestMethodNotSupported,
-} from '@/middleware/staticFiles/loggerExtensions';
+} from '@/middleware/staticFiles/LoggerExtensions';
+import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
+import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import { IOptions } from '@/options/IOptions';
 import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';
