@@ -23,7 +23,8 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 			return new NotFoundFileInfo(subpath);
 		}
 
-		subpath = subpath /* TODO: trimStart */;
+		// Relative paths starting with leading slashes are okay
+		subpath = subpath.replace(/^[\\/]+/, '') /* TODO */;
 
 		// Absolute paths not permitted.
 		if (isAbsolute(subpath)) {
