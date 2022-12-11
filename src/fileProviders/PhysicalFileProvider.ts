@@ -2,20 +2,49 @@ import { IDisposable } from '@/base/IDisposable';
 import { IFileInfo } from '@/fileProviders/IFileInfo';
 import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { NotFoundFileInfo } from '@/fileProviders/NotFoundFileInfo';
-import { hasInvalidPathChars } from '@/fileProviders/PathUtils';
+import {
+	ensureTrailingSlash,
+	hasInvalidPathChars,
+	pathNavigatesAboveRoot,
+} from '@/fileProviders/PathUtils';
 import { PhysicalFileInfo } from '@/fileProviders/PhysicalFileInfo';
-import { isAbsolute } from 'node:path';
+import { isAbsolute, resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references
 export class PhysicalFileProvider implements IFileProvider, IDisposable {
-	constructor(root: string) {}
+	readonly root: string;
+
+	constructor(root: string) {
+		if (!isAbsolute(root)) {
+			throw new Error('The path must be absolute.');
+		}
+
+		const fullRoot = resolve(root);
+		this.root = ensureTrailingSlash(fullRoot);
+
+		// TODO
+	}
 
 	dispose = async (): Promise<void> => {
 		// TODO
 	};
 
+	private isUnderneathRoot = (fullPath: string): boolean => {
+		return fullPath.toLowerCase().startsWith(this.root.toLowerCase());
+	};
+
 	private getFullPath = (path: string): string | undefined => {
-		return undefined; /* TODO */
+		if (pathNavigatesAboveRoot(path)) {
+			return undefined;
+		}
+
+		const fullPath = resolve(this.root, path); /* TODO */
+
+		if (!this.isUnderneathRoot(fullPath)) {
+			return undefined;
+		}
+
+		return fullPath;
 	};
 
 	getFileInfo = (subpath: string): IFileInfo => {
@@ -24,7 +53,10 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		}
 
 		// Relative paths starting with leading slashes are okay
-		subpath = subpath.replace(/^[\\/]+/, '') /* TODO */;
+		subpath = subpath.replace(
+			/^[\\/]+/ /* TODO: pathSeparators */,
+			'',
+		) /* TODO */;
 
 		// Absolute paths not permitted.
 		if (isAbsolute(subpath)) {
