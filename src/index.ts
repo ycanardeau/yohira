@@ -1,5 +1,5 @@
 import { createWebAppBuilder } from '@/builder/WebApp';
-import { HostingEnv } from '@/fileProviders/HostingEnv';
+import { HostingEnv } from '@/hosting/HostingEnv';
 import { IWebHostEnv, initialize } from '@/hosting/IWebHostEnv';
 import { HttpContext } from '@/http/HttpContext';
 import { use } from '@/http/IAppBuilder';
