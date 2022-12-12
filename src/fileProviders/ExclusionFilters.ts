@@ -9,11 +9,11 @@ export enum ExclusionFilters {
 	 */
 	DotPrefixed = 0x0001,
 	/**
-	 * Exclude files and directories when <see cref="FileAttributes.Hidden"/> is set on <see cref="FileSystemInfo.Attributes"/>.
+	 * Exclude files and directories when {@link FileAttributes.Hidden} is set on {@link FileSystemInfo.attributes}.
 	 */
 	Hidden = 0x0002,
 	/**
-	 * Exclude files and directories when <see cref="FileAttributes.System"/> is set on <see cref="FileSystemInfo.Attributes"/>.
+	 * Exclude files and directories when {@link FileAttributes.System} is set on {@link FileSystemInfo.attributes}.
 	 */
 	System = 0x0004,
 	/**
