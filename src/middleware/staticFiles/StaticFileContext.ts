@@ -3,7 +3,7 @@ import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IHttpRequest, getTypedHeaders } from '@/http/IHttpRequest';
-import { IHttpResponse } from '@/http/IHttpResponse';
+import { IHttpResponse, sendFile } from '@/http/IHttpResponse';
 import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { RequestHeaders } from '@/http/RequestHeaders';
@@ -37,6 +37,8 @@ export class StaticFileContext {
 
 	private fileInfo: IFileInfo;
 
+	private length: number;
+
 	private requestType: RequestType;
 
 	constructor(
@@ -57,6 +59,8 @@ export class StaticFileContext {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.fileInfo = undefined!;
 		// TODO
+
+		this.length = 0;
 
 		if (isGet(this.method)) {
 			this.requestType = RequestType.IsGet;
@@ -96,6 +100,8 @@ export class StaticFileContext {
 	lookupFileInfo = (): boolean => {
 		this.fileInfo = this.fileProvider.getFileInfo(this.subPath);
 		if (this.fileInfo.exists) {
+			this.length = this.fileInfo.length;
+
 			// TODO
 		}
 		return this.fileInfo.exists;
@@ -152,7 +158,18 @@ export class StaticFileContext {
 
 	private send = async (): Promise<void> => {
 		// TODO
-		throw new Error('Method not implemented.');
+		try {
+			await sendFile(
+				this.context.response,
+				this.fileInfo,
+				0,
+				this.length,
+				// TODO: this.context.requestAborted,
+			);
+		} catch (error) {
+			// TODO
+			throw error;
+		}
 	};
 
 	serveStaticFile = async (

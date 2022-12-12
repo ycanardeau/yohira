@@ -8,6 +8,10 @@ export class NotFoundFileInfo implements IFileInfo {
 		return false;
 	}
 
+	get length(): number {
+		return -1;
+	}
+
 	get physicalPath(): string | undefined {
 		return undefined;
 	}

@@ -8,6 +8,10 @@ export interface IFileInfo {
 	 */
 	readonly exists: boolean;
 	/**
+	 * The length of the file in bytes, or -1 for a directory or non-existing files.
+	 */
+	readonly length: number;
+	/**
 	 * The path to the file, including the file name. Return null if the file is not directly accessible.
 	 */
 	readonly physicalPath: string | undefined;

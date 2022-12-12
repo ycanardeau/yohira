@@ -9,11 +9,15 @@ export class PhysicalFileInfo implements IFileInfo {
 		return this.info.exists;
 	}
 
+	get length(): number {
+		return this.info.length;
+	}
+
 	get physicalPath(): string {
 		return this.info.fullName;
 	}
 
 	get name(): string {
-		return ''; /* TODO */
+		return this.info.name;
 	}
 }

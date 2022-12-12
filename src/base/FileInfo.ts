@@ -1,16 +1,36 @@
 import { FileSystemInfo } from '@/base/FileSystemInfo';
+import { basename, resolve } from 'node:path';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/FileInfo.cs,4ee673c1a4ecad41,references
 export class FileInfo extends FileSystemInfo {
-	constructor(fileName: string) {
+	constructor(
+		originalPath: string,
+		fullPath: string | undefined = undefined,
+		fileName: string | undefined = undefined,
+		isNormalized = false,
+	) {
 		super();
+
+		this.originalPath = originalPath;
+
+		fullPath ??= originalPath;
+		// TODO
+
+		this.fullPath = isNormalized
+			? fullPath ?? originalPath
+			: resolve(fullPath) /* TODO */;
+		this._name = fileName;
 	}
 
-	get fullName(): string {
-		return ''; /* TODO */
+	get name(): string {
+		return (this._name ??= basename(this.originalPath));
+	}
+
+	get length(): number {
+		return 0; /* TODO */
 	}
 
 	get exists(): boolean {
-		return false; /* TODO */
+		return true; /* TODO */
 	}
 }
