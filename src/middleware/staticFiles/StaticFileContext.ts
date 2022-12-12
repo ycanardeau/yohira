@@ -3,6 +3,7 @@ import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IHttpRequest, getTypedHeaders } from '@/http/IHttpRequest';
+import { IHttpResponse } from '@/http/IHttpResponse';
 import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { RequestHeaders } from '@/http/RequestHeaders';
@@ -31,6 +32,7 @@ enum RequestType {
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileContext.cs,24617c4390017df9,references
 export class StaticFileContext {
 	private readonly request: IHttpRequest;
+	private readonly response: IHttpResponse;
 	private readonly method: string;
 
 	private fileInfo: IFileInfo;
@@ -50,6 +52,7 @@ export class StaticFileContext {
 		}
 
 		this.request = context.request;
+		this.response = context.response;
 		this.method = this.request.method;
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.fileInfo = undefined!;
