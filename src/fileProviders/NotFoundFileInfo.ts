@@ -7,4 +7,8 @@ export class NotFoundFileInfo implements IFileInfo {
 	get exists(): boolean {
 		return false;
 	}
+
+	get physicalPath(): string | undefined {
+		return undefined;
+	}
 }

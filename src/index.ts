@@ -43,6 +43,8 @@ container
 						message,
 						...optionalParams,
 					),
+				info: (message, ...optionalParams) =>
+					console.info(categoryName.name, message, ...optionalParams),
 				warn: (message, ...optionalParams) =>
 					console.warn(categoryName.name, message, ...optionalParams),
 			}),

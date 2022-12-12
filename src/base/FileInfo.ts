@@ -6,6 +6,10 @@ export class FileInfo extends FileSystemInfo {
 		super();
 	}
 
+	get fullName(): string {
+		return ''; /* TODO */
+	}
+
 	get exists(): boolean {
 		return false; /* TODO */
 	}

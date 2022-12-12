@@ -1,6 +1,29 @@
 import { ILogger } from '@/logging/ILogger';
 import { StaticFileMiddleware } from '@/middleware/staticFiles/StaticFileMiddleware';
 
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e84a4b406304d9b0,references
+const logFileServedCore = (
+	logger: ILogger<StaticFileMiddleware>,
+	virtualPath: string,
+	physicalPath: string,
+): void => {
+	logger.info(
+		`Sending file. Request path: '${virtualPath}'. Physical path: '${physicalPath}'`,
+	);
+};
+
+// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,64fe8c23a73b59bd,references
+export const logFileServed = (
+	logger: ILogger<StaticFileMiddleware>,
+	virtualPath: string,
+	physicalPath: string,
+): void => {
+	if (!physicalPath.trim()) {
+		physicalPath = 'N/A';
+	}
+	logFileServedCore(logger, virtualPath, physicalPath);
+};
+
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,3068b930094bf334,references
 export const logEndpointMatched = (
 	logger: ILogger<StaticFileMiddleware>,

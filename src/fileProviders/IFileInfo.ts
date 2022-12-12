@@ -8,6 +8,10 @@ export interface IFileInfo {
 	 */
 	readonly exists: boolean;
 	/**
+	 * The path to the file, including the file name. Return null if the file is not directly accessible.
+	 */
+	readonly physicalPath: string | undefined;
+	/**
 	 * The name of the file or directory, not including any path.
 	 */
 	readonly name: string;
