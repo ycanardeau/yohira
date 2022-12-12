@@ -1,4 +1,7 @@
+import { FileInfo } from '@/base/FileInfo';
 import { IDisposable } from '@/base/IDisposable';
+import { ExclusionFilters } from '@/fileProviders/ExclusionFilters';
+import { isExcluded } from '@/fileProviders/FileSystemInfoHelper';
 import { IFileInfo } from '@/fileProviders/IFileInfo';
 import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { NotFoundFileInfo } from '@/fileProviders/NotFoundFileInfo';
@@ -14,7 +17,10 @@ import { isAbsolute, resolve } from 'node:path';
 export class PhysicalFileProvider implements IFileProvider, IDisposable {
 	readonly root: string;
 
-	constructor(root: string) {
+	constructor(
+		root: string,
+		private readonly filters = ExclusionFilters.Sensitive,
+	) {
 		if (!isAbsolute(root)) {
 			throw new Error('The path must be absolute.');
 		}
@@ -68,11 +74,11 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 			return new NotFoundFileInfo(subpath);
 		}
 
-		// TODO: const fileInfo = new FileInfo(fullPath);
-		if (true /* TODO: isExcluded(fileInfo, this.filters) */) {
+		const fileInfo = new FileInfo(fullPath);
+		if (isExcluded(fileInfo, this.filters)) {
 			return new NotFoundFileInfo(subpath);
 		}
 
-		return new PhysicalFileInfo(/* TODO */);
+		return new PhysicalFileInfo(fileInfo);
 	};
 }
