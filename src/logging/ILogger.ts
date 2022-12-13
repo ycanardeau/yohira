@@ -1,5 +1,7 @@
+import { LogLevel } from '@/logging/LogLevel';
+
+// https://source.dot.net/#Microsoft.Extensions.Logging.Abstractions/ILogger.cs,0976525f5d1b9e54,references
 export interface ILogger<TCategoryName> {
-	debug(message?: any, ...optionalParams: any[]): void;
-	info(message?: any, ...optionalParams: any[]): void;
-	warn(message?: any, ...optionalParams: any[]): void;
+	log(logLevel: LogLevel, message?: any, ...optionalParams: any[]): void;
+	isEnabled(logLevel: LogLevel): boolean;
 }

@@ -6,12 +6,19 @@ import { use } from '@/http/IAppBuilder';
 import { container } from '@/inversify.config';
 import { ILogger } from '@/logging/ILogger';
 import { ILoggerFactory } from '@/logging/ILoggerFactory';
+import { LogLevel } from '@/logging/LogLevel';
+import {
+	HttpLoggingMiddleware,
+	useHttpLogging,
+} from '@/middleware/httpLogging/HttpLoggingMiddleware';
+import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
 import {
 	StaticFileMiddleware,
 	StaticFileOptions,
 	useStaticFiles,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
 import { IOptions } from '@/options/IOptions';
+import { IOptionsMonitor } from '@/options/IOptionsMonitor';
 
 // TODO
 const hostingEnv = new HostingEnv();
@@ -31,22 +38,81 @@ container
 	.whenTargetNamed(StaticFileOptions.name);
 
 container
+	.bind(IOptionsMonitor)
+	.toDynamicValue((): IOptionsMonitor<HttpLoggingOptions> => {
+		const options = new HttpLoggingOptions();
+		return { currentValue: options };
+	})
+	.inSingletonScope()
+	.whenTargetNamed(HttpLoggingOptions.name);
+
+container
 	.bind(ILoggerFactory)
 	.toDynamicValue(
 		(): ILoggerFactory => ({
 			createLogger: <T>(
 				categoryName: new (...args: never[]) => T,
 			): ILogger<T> => ({
-				debug: (message, ...optionalParams) =>
-					console.debug(
-						categoryName.name,
-						message,
-						...optionalParams,
-					),
-				info: (message, ...optionalParams) =>
-					console.info(categoryName.name, message, ...optionalParams),
-				warn: (message, ...optionalParams) =>
-					console.warn(categoryName.name, message, ...optionalParams),
+				log: (logLevel, message, ...optionalParams): void => {
+					switch (logLevel) {
+						case LogLevel.Trace:
+							console.trace(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.Debug:
+							console.debug(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.Information:
+							console.info(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.Warning:
+							console.warn(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.Error:
+							console.error(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.Critical:
+							console.error(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+
+						case LogLevel.None:
+							console.log(
+								categoryName.name,
+								message,
+								...optionalParams,
+							);
+							break;
+					}
+				},
+				isEnabled: (): boolean => true,
 			}),
 			dispose: async (): Promise<void> => {},
 		}),
@@ -54,6 +120,8 @@ container
 	.inSingletonScope();
 
 container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
+
+container.bind(HttpLoggingMiddleware).toSelf().inSingletonScope();
 
 const main = async (): Promise<void> => {
 	const builder = createWebAppBuilder(/* TODO */);
@@ -63,6 +131,8 @@ const main = async (): Promise<void> => {
 	const app = builder.build();
 
 	useStaticFiles(app);
+
+	useHttpLogging(app);
 
 	use(app, async (context, next) => {
 		if (!(context instanceof HttpContext)) {

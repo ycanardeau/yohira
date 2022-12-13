@@ -1,4 +1,5 @@
 import { ILogger } from '@/logging/ILogger';
+import { LogLevel } from '@/logging/LogLevel';
 import { StaticFileMiddleware } from '@/middleware/staticFiles/StaticFileMiddleware';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e84a4b406304d9b0,references
@@ -7,7 +8,8 @@ const logFileServedCore = (
 	virtualPath: string,
 	physicalPath: string,
 ): void => {
-	logger.info(
+	logger.log(
+		LogLevel.Information,
 		`Sending file. Request path: '${virtualPath}'. Physical path: '${physicalPath}'`,
 	);
 };
@@ -28,7 +30,8 @@ export const logFileServed = (
 export const logEndpointMatched = (
 	logger: ILogger<StaticFileMiddleware>,
 ): void => {
-	logger.debug(
+	logger.log(
+		LogLevel.Debug,
 		'Static files was skipped as the request already matched an endpoint.',
 	);
 };
@@ -38,7 +41,7 @@ export const logRequestMethodNotSupported = (
 	logger: ILogger<StaticFileMiddleware>,
 	method: string,
 ): void => {
-	logger.debug(`${method} requests are not supported`);
+	logger.log(LogLevel.Debug, `${method} requests are not supported`);
 };
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e240e32d569094bc,references
@@ -46,7 +49,10 @@ export const logPathMismatch = (
 	logger: ILogger<StaticFileMiddleware>,
 	path: string,
 ): void => {
-	logger.debug(`The request path ${path} does not match the path filter`);
+	logger.log(
+		LogLevel.Debug,
+		`The request path ${path} does not match the path filter`,
+	);
 };
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f2c41a9493102814,references
@@ -54,7 +60,8 @@ export const logFileTypeNotSupported = (
 	logger: ILogger<StaticFileMiddleware>,
 	path: string,
 ): void => {
-	logger.debug(
+	logger.log(
+		LogLevel.Debug,
 		`The request path ${path} does not match a supported file type`,
 	);
 };
@@ -64,5 +71,8 @@ export const logFileNotFound = (
 	logger: ILogger<StaticFileMiddleware>,
 	path: string,
 ): void => {
-	logger.debug(`The request path ${path} does not match an existing file`);
+	logger.log(
+		LogLevel.Debug,
+		`The request path ${path} does not match an existing file`,
+	);
 };
