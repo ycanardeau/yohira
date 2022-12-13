@@ -15,7 +15,7 @@ export interface IWebHostEnv extends IHostEnv {
 	 */
 	webRootPath: string;
 	/**
-	 * Gets or sets an {@link IFileProvider} pointing at {@link webRootPath}.
+	 * Gets or sets an {@link IFileProvider} pointing at {@link IWebHostEnv.webRootPath}.
 	 * This defaults to referencing files from the 'wwwroot' subfolder.
 	 */
 	webRootFileProvider: IFileProvider;

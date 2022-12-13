@@ -2,15 +2,25 @@ import { IHttpContext } from '@/http/IHttpContext';
 import { IHttpResponse } from '@/http/IHttpResponse';
 import { StatusCodes } from '@/http/StatusCodes';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,d36a5786d91e7a26,references
 export class HttpResponse implements IHttpResponse {
 	constructor(readonly httpContext: IHttpContext) {}
 
+	// TODO
+	private _statusCode = StatusCodes.Status200OK;
 	get statusCode(): StatusCodes {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this._statusCode;
 	}
 	set statusCode(value: StatusCodes) {
-		// TODO
-		throw new Error('Method not implemented.');
+		this._statusCode = value;
+	}
+
+	// TODO
+	private _contentType?: string;
+	get contentType(): string | undefined {
+		return this._contentType;
+	}
+	set contentType(value: string | undefined) {
+		this._contentType = value;
 	}
 }

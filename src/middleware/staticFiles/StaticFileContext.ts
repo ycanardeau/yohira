@@ -46,7 +46,7 @@ export class StaticFileContext {
 		private readonly options: StaticFileOptions,
 		private readonly logger: ILogger<StaticFileMiddleware>,
 		private readonly fileProvider: IFileProvider,
-		private readonly conteType: string | undefined,
+		private readonly contentType: string | undefined,
 		private readonly _subPath: PathString,
 	) {
 		if (_subPath.value === undefined) {
@@ -146,6 +146,26 @@ export class StaticFileContext {
 		return PreconditionState.Unspecified; /* TODO */
 	};
 
+	applyResponseHeaders = (statusCode: StatusCodes): Promise<void> => {
+		this.response.statusCode = statusCode;
+		if (statusCode < StatusCodes.Status400BadRequest) {
+			if (this.contentType) {
+				this.response.contentType = this.contentType;
+			}
+
+			// TODO
+		}
+		if (statusCode === StatusCodes.Status200OK) {
+			// this header is only returned here for 200
+			// it already set to the returned range for 206
+			// it is not returned for 304, 412, and 416
+			// TODO: this.response.contentLength = this.length;
+		}
+
+		// TODO
+		return Promise.resolve();
+	};
+
 	private sendStatus = (statusCode: StatusCodes): Promise<void> => {
 		// TODO
 		throw new Error('Method not implemented.');
@@ -158,6 +178,7 @@ export class StaticFileContext {
 
 	private send = async (): Promise<void> => {
 		// TODO
+		await this.applyResponseHeaders(StatusCodes.Status200OK);
 		try {
 			await sendFile(
 				this.context.response,
