@@ -32,8 +32,7 @@ export class StaticFileOptions extends SharedOptionsBase {
 	/**
 	 * Used to map files to content-types.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	contentTypeProvider: IContentTypeProvider = undefined!;
+	contentTypeProvider!: IContentTypeProvider;
 	/**
 	 * The default content type for a request if the ContentTypeProvider cannot determine one.
 	 * None is provided by default, so the client must determine the format themselves.
