@@ -1,16 +1,17 @@
-import { ExclusionFilters } from '@/fileProviders/ExclusionFilters';
-import { isExcluded } from '@/fileProviders/FileSystemInfoHelper';
-import { IFileInfo } from '@/fileProviders/IFileInfo';
-import { IFileProvider } from '@/fileProviders/IFileProvider';
-import { NotFoundFileInfo } from '@/fileProviders/NotFoundFileInfo';
+import { FileInfo, IDisposable } from '@yohira/base';
+import { isAbsolute, resolve } from 'node:path';
+
+import { ExclusionFilters } from './ExclusionFilters';
+import { isExcluded } from './FileSystemInfoHelper';
+import { IFileInfo } from './IFileInfo';
+import { IFileProvider } from './IFileProvider';
+import { NotFoundFileInfo } from './NotFoundFileInfo';
 import {
 	ensureTrailingSlash,
 	hasInvalidPathChars,
 	pathNavigatesAboveRoot,
-} from '@/fileProviders/PathUtils';
-import { PhysicalFileInfo } from '@/fileProviders/PhysicalFileInfo';
-import { FileInfo, IDisposable } from '@yohira/base';
-import { isAbsolute, resolve } from 'node:path';
+} from './PathUtils';
+import { PhysicalFileInfo } from './PhysicalFileInfo';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references
 export class PhysicalFileProvider implements IFileProvider, IDisposable {

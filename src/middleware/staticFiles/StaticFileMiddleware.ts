@@ -1,4 +1,3 @@
-import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { IAppBuilder, useMiddleware } from '@/http/IAppBuilder';
 import { IHttpContext, getEndpoint } from '@/http/IHttpContext';
@@ -21,6 +20,7 @@ import {
 } from '@/middleware/staticFiles/LoggerExtensions';
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
 import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
+import { IFileProvider } from '@yohira/file-providers';
 import { ILogger, ILoggerFactory } from '@yohira/logging';
 import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';

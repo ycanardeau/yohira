@@ -1,5 +1,3 @@
-import { IFileInfo } from '@/fileProviders/IFileInfo';
-import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IHttpRequest, getTypedHeaders } from '@/http/IHttpRequest';
@@ -13,6 +11,7 @@ import {
 	StaticFileMiddleware,
 	StaticFileOptions,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { IFileInfo, IFileProvider } from '@yohira/file-providers';
 import { ILogger } from '@yohira/logging';
 
 enum PreconditionState {

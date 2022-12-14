@@ -11,6 +11,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
 		"@yohira/base": "^1.0.0",
+		"@yohira/file-providers": "^1.0.0",
 		"@yohira/logging": "^1.0.0",
 		"@yohira/options": "^1.0.0",
 		"concurrently": "^7.6.0",

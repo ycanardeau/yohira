@@ -1,5 +1,5 @@
-import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { PathString } from '@/http/PathString';
+import { IFileProvider } from '@yohira/file-providers';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/Infrastructure/SharedOptionsBase.cs,cb3c3719df64d2f0,references
 export abstract class SharedOptionsBase {

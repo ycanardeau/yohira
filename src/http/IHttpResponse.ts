@@ -1,7 +1,7 @@
-import { IFileInfo } from '@/fileProviders/IFileInfo';
 import { HttpContext } from '@/http/HttpContext';
 import { IHttpContext } from '@/http/IHttpContext';
 import { StatusCodes } from '@/http/StatusCodes';
+import { IFileInfo } from '@yohira/file-providers';
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 

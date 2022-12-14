@@ -1,8 +1,10 @@
-import { IFileProvider } from '@/fileProviders/IFileProvider';
-import { NullFileProvider } from '@/fileProviders/NullFileProvider';
-import { PhysicalFileProvider } from '@/fileProviders/PhysicalFileProvider';
 import { IHostEnv } from '@/hosting/IHostEnv';
 import { WebHostOptions } from '@/hosting/WebHostOptions';
+import {
+	IFileProvider,
+	NullFileProvider,
+	PhysicalFileProvider,
+} from '@yohira/file-providers';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 

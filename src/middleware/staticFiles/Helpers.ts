@@ -1,8 +1,8 @@
-import { IFileProvider } from '@/fileProviders/IFileProvider';
 import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { isGet, isHead } from '@/http/HttpMethods';
 import { IHttpContext } from '@/http/IHttpContext';
 import { PathString } from '@/http/PathString';
+import { IFileProvider } from '@yohira/file-providers';
 import { Err, Ok, Result } from 'ts-results';
 
 export const resolveFileProvider = (hostingEnv: IWebHostEnv): IFileProvider => {
