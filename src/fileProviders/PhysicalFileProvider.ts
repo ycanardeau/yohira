@@ -1,5 +1,3 @@
-import { FileInfo } from '@/base/FileInfo';
-import { IDisposable } from '@/base/IDisposable';
 import { ExclusionFilters } from '@/fileProviders/ExclusionFilters';
 import { isExcluded } from '@/fileProviders/FileSystemInfoHelper';
 import { IFileInfo } from '@/fileProviders/IFileInfo';
@@ -11,6 +9,7 @@ import {
 	pathNavigatesAboveRoot,
 } from '@/fileProviders/PathUtils';
 import { PhysicalFileInfo } from '@/fileProviders/PhysicalFileInfo';
+import { FileInfo, IDisposable } from '@yohira/base';
 import { isAbsolute, resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references

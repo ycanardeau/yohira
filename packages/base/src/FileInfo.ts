@@ -1,5 +1,6 @@
-import { FileSystemInfo } from '@/base/FileSystemInfo';
 import { basename, resolve } from 'node:path';
+
+import { FileSystemInfo } from './FileSystemInfo';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/FileInfo.cs,4ee673c1a4ecad41,references
 export class FileInfo extends FileSystemInfo {
