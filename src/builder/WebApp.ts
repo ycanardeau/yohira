@@ -1,8 +1,10 @@
 import { WebAppBuilder } from '@/builder/WebAppBuilder';
-import { AppBuilder } from '@/http/AppBuilder';
-import { HttpContext } from '@/http/HttpContext';
-import { IAppBuilder } from '@/http/IAppBuilder';
-import { RequestDelegate } from '@/http/RequestDelegate';
+import {
+	AppBuilder,
+	HttpContext,
+	IAppBuilder,
+	RequestDelegate,
+} from '@yohira/http';
 import {
 	IncomingMessage,
 	Server,

@@ -1,7 +1,7 @@
-import { IHttpContext } from '@/http/IHttpContext';
-import { IMiddleware } from '@/http/IMiddleware';
-import { RequestDelegate } from '@/http/RequestDelegate';
-import { container } from '@/inversify.config';
+import { IHttpContext } from './IHttpContext';
+import { IMiddleware } from './IMiddleware';
+import { RequestDelegate } from './RequestDelegate';
+import { container } from './inversify.config';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/IApplicationBuilder.cs,8bf924cdca3bdd9e,references
 export interface IAppBuilder {

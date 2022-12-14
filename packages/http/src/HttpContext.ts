@@ -1,9 +1,10 @@
-import { HttpRequest } from '@/http/HttpRequest';
-import { HttpResponse } from '@/http/HttpResponse';
-import { IHttpContext } from '@/http/IHttpContext';
-import { IHttpRequest } from '@/http/IHttpRequest';
-import { IHttpResponse } from '@/http/IHttpResponse';
 import { IncomingMessage, ServerResponse } from 'node:http';
+
+import { HttpRequest } from './HttpRequest';
+import { HttpResponse } from './HttpResponse';
+import { IHttpContext } from './IHttpContext';
+import { IHttpRequest } from './IHttpRequest';
+import { IHttpResponse } from './IHttpResponse';
 
 export class HttpContext implements IHttpContext {
 	readonly request: IHttpRequest;

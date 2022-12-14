@@ -1,6 +1,6 @@
-import { IHttpContext } from '@/http/IHttpContext';
-import { PathString } from '@/http/PathString';
-import { RequestHeaders } from '@/http/RequestHeaders';
+import { IHttpContext } from './IHttpContext';
+import { PathString } from './PathString';
+import { RequestHeaders } from './RequestHeaders';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpRequest.cs,ea81be9b74317002,references
 export interface IHttpRequest {

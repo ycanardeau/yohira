@@ -1,6 +1,6 @@
-import { Endpoint } from '@/http/Endpoint';
-import { IHttpRequest } from '@/http/IHttpRequest';
-import { IHttpResponse } from '@/http/IHttpResponse';
+import { Endpoint } from './Endpoint';
+import { IHttpRequest } from './IHttpRequest';
+import { IHttpResponse } from './IHttpResponse';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpContext.cs,9bde6e3833d169c1,references
 export interface IHttpContext {

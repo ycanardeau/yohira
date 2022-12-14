@@ -1,17 +1,22 @@
-import { isGet, isHead } from '@/http/HttpMethods';
-import { IHttpContext } from '@/http/IHttpContext';
-import { IHttpRequest, getTypedHeaders } from '@/http/IHttpRequest';
-import { IHttpResponse, sendFile } from '@/http/IHttpResponse';
-import { PathString } from '@/http/PathString';
-import { RequestDelegate } from '@/http/RequestDelegate';
-import { RequestHeaders } from '@/http/RequestHeaders';
-import { StatusCodes } from '@/http/StatusCodes';
 import { logFileServed } from '@/middleware/staticFiles/LoggerExtensions';
 import {
 	StaticFileMiddleware,
 	StaticFileOptions,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
 import { IFileInfo, IFileProvider } from '@yohira/file-providers';
+import {
+	IHttpContext,
+	IHttpRequest,
+	IHttpResponse,
+	PathString,
+	RequestDelegate,
+	RequestHeaders,
+	StatusCodes,
+	getTypedHeaders,
+	isGet,
+	isHead,
+	sendFile,
+} from '@yohira/http';
 import { ILogger } from '@yohira/logging';
 
 enum PreconditionState {

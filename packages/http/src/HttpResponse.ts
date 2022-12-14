@@ -1,6 +1,6 @@
-import { IHttpContext } from '@/http/IHttpContext';
-import { IHttpResponse } from '@/http/IHttpResponse';
-import { StatusCodes } from '@/http/StatusCodes';
+import { IHttpContext } from './IHttpContext';
+import { IHttpResponse } from './IHttpResponse';
+import { StatusCodes } from './StatusCodes';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,d36a5786d91e7a26,references
 export class HttpResponse implements IHttpResponse {

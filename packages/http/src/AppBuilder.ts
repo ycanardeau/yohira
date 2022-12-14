@@ -1,5 +1,5 @@
-import { IAppBuilder } from '@/http/IAppBuilder';
-import { RequestDelegate } from '@/http/RequestDelegate';
+import { IAppBuilder } from './IAppBuilder';
+import { RequestDelegate } from './RequestDelegate';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Builder/ApplicationBuilder.cs,036bfc42ede25c42,references
 export class AppBuilder implements IAppBuilder {

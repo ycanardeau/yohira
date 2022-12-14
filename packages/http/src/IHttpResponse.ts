@@ -1,9 +1,10 @@
-import { HttpContext } from '@/http/HttpContext';
-import { IHttpContext } from '@/http/IHttpContext';
-import { StatusCodes } from '@/http/StatusCodes';
 import { IFileInfo } from '@yohira/file-providers';
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
+
+import { HttpContext } from './HttpContext';
+import { IHttpContext } from './IHttpContext';
+import { StatusCodes } from './StatusCodes';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpResponse.cs,7642421540ea6ef2,references
 export interface IHttpResponse {

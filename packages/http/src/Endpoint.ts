@@ -1,4 +1,4 @@
-import { RequestDelegate } from '@/http/RequestDelegate';
+import { RequestDelegate } from './RequestDelegate';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Routing/Endpoint.cs,ae012ccd7b848f8e,references
 export class Endpoint {

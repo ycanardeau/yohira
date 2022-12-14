@@ -1,9 +1,4 @@
 import { IWebHostEnv } from '@/hosting/IWebHostEnv';
-import { IAppBuilder, useMiddleware } from '@/http/IAppBuilder';
-import { IHttpContext, getEndpoint } from '@/http/IHttpContext';
-import { IMiddleware } from '@/http/IMiddleware';
-import { PathString } from '@/http/PathString';
-import { RequestDelegate } from '@/http/RequestDelegate';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
 import {
 	isGetOrHeadMethod,
@@ -21,6 +16,15 @@ import {
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
 import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import { IFileProvider } from '@yohira/file-providers';
+import {
+	IAppBuilder,
+	IHttpContext,
+	IMiddleware,
+	PathString,
+	RequestDelegate,
+	getEndpoint,
+	useMiddleware,
+} from '@yohira/http';
 import { ILogger, ILoggerFactory } from '@yohira/logging';
 import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
