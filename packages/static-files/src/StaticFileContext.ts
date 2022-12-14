@@ -1,8 +1,3 @@
-import { logFileServed } from '@/middleware/staticFiles/LoggerExtensions';
-import {
-	StaticFileMiddleware,
-	StaticFileOptions,
-} from '@/middleware/staticFiles/StaticFileMiddleware';
 import { IFileInfo, IFileProvider } from '@yohira/file-providers';
 import {
 	IHttpContext,
@@ -18,6 +13,12 @@ import {
 	sendFile,
 } from '@yohira/http';
 import { ILogger } from '@yohira/logging';
+
+import { logFileServed } from './LoggerExtensions';
+import {
+	StaticFileMiddleware,
+	StaticFileOptions,
+} from './StaticFileMiddleware';
 
 enum PreconditionState {
 	Unspecified,

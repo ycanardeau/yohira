@@ -1,5 +1,6 @@
-import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
 import { Err, Ok, Result } from 'ts-results';
+
+import { IContentTypeProvider } from './IContentTypeProvider';
 
 // TODO: Move.
 const isNullOrWhiteSpace = (value: string | undefined): boolean => {

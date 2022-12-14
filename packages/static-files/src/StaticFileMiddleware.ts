@@ -1,19 +1,3 @@
-import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
-import {
-	isGetOrHeadMethod,
-	resolveFileProvider,
-	tryMatchPath,
-} from '@/middleware/staticFiles/Helpers';
-import { IContentTypeProvider } from '@/middleware/staticFiles/IContentTypeProvider';
-import {
-	logEndpointMatched,
-	logFileNotFound,
-	logFileTypeNotSupported,
-	logPathMismatch,
-	logRequestMethodNotSupported,
-} from '@/middleware/staticFiles/LoggerExtensions';
-import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
-import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import { IFileProvider } from '@yohira/file-providers';
 import { IWebHostEnv } from '@yohira/hosting';
 import {
@@ -29,6 +13,23 @@ import { ILogger, ILoggerFactory } from '@yohira/logging';
 import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';
+
+import { FileExtensionContentTypeProvider } from './FileExtensionContentTypeProvider';
+import {
+	isGetOrHeadMethod,
+	resolveFileProvider,
+	tryMatchPath,
+} from './Helpers';
+import { IContentTypeProvider } from './IContentTypeProvider';
+import {
+	logEndpointMatched,
+	logFileNotFound,
+	logFileTypeNotSupported,
+	logPathMismatch,
+	logRequestMethodNotSupported,
+} from './LoggerExtensions';
+import { SharedOptionsBase } from './SharedOptionsBase';
+import { StaticFileContext } from './StaticFileContext';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileOptions.cs,fecf371ff955674d,references
 export class StaticFileOptions extends SharedOptionsBase {

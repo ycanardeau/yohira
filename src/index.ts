@@ -4,15 +4,15 @@ import {
 	useHttpLogging,
 } from '@/middleware/httpLogging/HttpLoggingMiddleware';
 import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
-import {
-	StaticFileMiddleware,
-	StaticFileOptions,
-	useStaticFiles,
-} from '@/middleware/staticFiles/StaticFileMiddleware';
 import { HostingEnv, IWebHostEnv, initialize } from '@yohira/hosting';
 import { HttpContext, container, use } from '@yohira/http';
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptions, IOptionsMonitor } from '@yohira/options';
+import {
+	StaticFileMiddleware,
+	StaticFileOptions,
+	useStaticFiles,
+} from '@yohira/static-files';
 
 // TODO
 const hostingEnv = new HostingEnv();
