@@ -5,8 +5,6 @@ import { IHttpContext, getEndpoint } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
-import { ILogger } from '@/logging/ILogger';
-import { ILoggerFactory } from '@/logging/ILoggerFactory';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
 import {
 	isGetOrHeadMethod,
@@ -23,6 +21,7 @@ import {
 } from '@/middleware/staticFiles/LoggerExtensions';
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
 import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
+import { ILogger, ILoggerFactory } from '@yohira/logging';
 import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';

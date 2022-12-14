@@ -4,9 +4,6 @@ import { IWebHostEnv, initialize } from '@/hosting/IWebHostEnv';
 import { HttpContext } from '@/http/HttpContext';
 import { use } from '@/http/IAppBuilder';
 import { container } from '@/inversify.config';
-import { ILogger } from '@/logging/ILogger';
-import { ILoggerFactory } from '@/logging/ILoggerFactory';
-import { LogLevel } from '@/logging/LogLevel';
 import {
 	HttpLoggingMiddleware,
 	useHttpLogging,
@@ -17,6 +14,7 @@ import {
 	StaticFileOptions,
 	useStaticFiles,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptions, IOptionsMonitor } from '@yohira/options';
 
 // TODO

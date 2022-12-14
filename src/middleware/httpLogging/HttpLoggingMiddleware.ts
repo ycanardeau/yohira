@@ -2,13 +2,11 @@ import { IAppBuilder, useMiddleware } from '@/http/IAppBuilder';
 import { IHttpContext } from '@/http/IHttpContext';
 import { IMiddleware } from '@/http/IMiddleware';
 import { RequestDelegate } from '@/http/RequestDelegate';
-import { ILogger } from '@/logging/ILogger';
-import { ILoggerFactory } from '@/logging/ILoggerFactory';
-import { LogLevel } from '@/logging/LogLevel';
 import { logRequestLog } from '@/middleware/httpLogging/HttpLoggingExtensions';
 import { HttpLoggingFields } from '@/middleware/httpLogging/HttpLoggingFields';
 import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
 import { HttpRequestLog } from '@/middleware/httpLogging/HttpRequestLog';
+import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptionsMonitor } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
 

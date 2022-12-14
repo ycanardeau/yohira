@@ -8,12 +8,12 @@ import { PathString } from '@/http/PathString';
 import { RequestDelegate } from '@/http/RequestDelegate';
 import { RequestHeaders } from '@/http/RequestHeaders';
 import { StatusCodes } from '@/http/StatusCodes';
-import { ILogger } from '@/logging/ILogger';
 import { logFileServed } from '@/middleware/staticFiles/LoggerExtensions';
 import {
 	StaticFileMiddleware,
 	StaticFileOptions,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { ILogger } from '@yohira/logging';
 
 enum PreconditionState {
 	Unspecified,

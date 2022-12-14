@@ -1,6 +1,5 @@
-import { ILogger } from '@/logging/ILogger';
-import { LogLevel } from '@/logging/LogLevel';
 import { StaticFileMiddleware } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { ILogger, LogLevel } from '@yohira/logging';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e84a4b406304d9b0,references
 const logFileServedCore = (
