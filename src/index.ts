@@ -17,8 +17,7 @@ import {
 	StaticFileOptions,
 	useStaticFiles,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
-import { IOptions } from '@/options/IOptions';
-import { IOptionsMonitor } from '@/options/IOptionsMonitor';
+import { IOptions, IOptionsMonitor } from '@yohira/options';
 
 // TODO
 const hostingEnv = new HostingEnv();

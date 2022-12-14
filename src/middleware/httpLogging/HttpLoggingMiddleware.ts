@@ -9,7 +9,7 @@ import { logRequestLog } from '@/middleware/httpLogging/HttpLoggingExtensions';
 import { HttpLoggingFields } from '@/middleware/httpLogging/HttpLoggingFields';
 import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
 import { HttpRequestLog } from '@/middleware/httpLogging/HttpRequestLog';
-import { IOptionsMonitor } from '@/options/IOptionsMonitor';
+import { IOptionsMonitor } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references

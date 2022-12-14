@@ -23,7 +23,7 @@ import {
 } from '@/middleware/staticFiles/LoggerExtensions';
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
 import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
-import { IOptions } from '@/options/IOptions';
+import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';
 
