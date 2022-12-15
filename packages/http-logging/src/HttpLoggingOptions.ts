@@ -1,4 +1,4 @@
-import { HeaderNames } from '@yohira/http';
+import { HeaderNames } from '@yohira/base';
 
 import { HttpLoggingFields } from './HttpLoggingFields';
 

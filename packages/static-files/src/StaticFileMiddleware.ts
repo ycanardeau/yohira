@@ -8,7 +8,7 @@ import {
 	RequestDelegate,
 	getEndpoint,
 	useMiddleware,
-} from '@yohira/http';
+} from '@yohira/http.abstractions';
 import { ILogger, ILoggerFactory } from '@yohira/logging';
 import { IOptions } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';

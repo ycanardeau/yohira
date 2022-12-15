@@ -1,6 +1,11 @@
 import { IFileProvider } from '@yohira/file-providers';
 import { IWebHostEnv } from '@yohira/hosting';
-import { IHttpContext, PathString, isGet, isHead } from '@yohira/http';
+import {
+	IHttpContext,
+	PathString,
+	isGet,
+	isHead,
+} from '@yohira/http.abstractions';
 import { Err, Ok, Result } from 'ts-results';
 
 export const resolveFileProvider = (hostingEnv: IWebHostEnv): IFileProvider => {

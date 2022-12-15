@@ -5,13 +5,15 @@ import {
 	IHttpResponse,
 	PathString,
 	RequestDelegate,
-	RequestHeaders,
 	StatusCodes,
-	getTypedHeaders,
 	isGet,
 	isHead,
+} from '@yohira/http.abstractions';
+import {
+	RequestHeaders,
+	getTypedHeaders,
 	sendFile,
-} from '@yohira/http';
+} from '@yohira/http.extensions';
 import { ILogger } from '@yohira/logging';
 
 import { logFileServed } from './LoggerExtensions';

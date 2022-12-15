@@ -4,7 +4,7 @@ import {
 	IMiddleware,
 	RequestDelegate,
 	useMiddleware,
-} from '@yohira/http';
+} from '@yohira/http.abstractions';
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptionsMonitor } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
