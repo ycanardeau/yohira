@@ -1,7 +1,8 @@
+import { container } from '@yohira/http';
+
 import { IHttpContext } from './IHttpContext';
 import { IMiddleware } from './IMiddleware';
 import { RequestDelegate } from './RequestDelegate';
-import { container } from './inversify.config';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/IApplicationBuilder.cs,8bf924cdca3bdd9e,references
 export interface IAppBuilder {

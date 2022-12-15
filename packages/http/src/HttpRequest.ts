@@ -1,8 +1,12 @@
-import { HttpContext } from './HttpContext';
-import { IHttpContext } from './IHttpContext';
-import { IHttpRequest } from './IHttpRequest';
-import { PathString } from './PathString';
+import {
+	IHttpContext,
+	IHttpRequest,
+	PathString,
+} from '@yohira/http.abstractions';
 
+import { HttpContext } from './HttpContext';
+
+// https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpRequest.cs,7c96c43ce8999806,references
 export class HttpRequest implements IHttpRequest {
 	constructor(readonly httpContext: IHttpContext) {}
 

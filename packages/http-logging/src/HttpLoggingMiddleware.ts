@@ -8,8 +8,8 @@ import {
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptionsMonitor } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
-import { logRequestLog } from 'packages/http-logging/src/HttpLoggingExtensions';
 
+import { logRequestLog } from './HttpLoggingExtensions';
 import { HttpLoggingFields } from './HttpLoggingFields';
 import { HttpLoggingOptions } from './HttpLoggingOptions';
 import { HttpRequestLog } from './HttpRequestLog';
