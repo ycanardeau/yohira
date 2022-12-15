@@ -1,4 +1,3 @@
-import { WebAppBuilder } from '@/builder/WebAppBuilder';
 import { AppBuilder, HttpContext } from '@yohira/http';
 import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
 import {
@@ -9,6 +8,8 @@ import {
 } from 'node:http';
 // TODO: Move.
 import 'reflect-metadata';
+
+import { WebAppBuilder } from './WebAppBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
 export class WebApp implements IAppBuilder {
