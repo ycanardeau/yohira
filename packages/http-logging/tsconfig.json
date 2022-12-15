@@ -1,14 +1,4 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
-		"composite": true
-	},
-	"references": [
-		{ "path": "../base" },
-		{ "path": "../http.abstractions" },
-		{ "path": "../logging" },
-		{ "path": "../options" }
-	]
+	"extends": "../../tsconfig.json",
+	"include": ["src/**/*"]
 }

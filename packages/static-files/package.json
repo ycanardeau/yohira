@@ -1,5 +1,18 @@
 {
 	"name": "@yohira/static-files",
 	"version": "1.0.0",
-	"main": "dist/index.js"
+	"main": "dist/index.js",
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"compile": "tsc -p tsconfig.build.json",
+		"build": "yarn clean && yarn compile"
+	},
+	"dependencies": {
+		"@yohira/file-providers": "*",
+		"@yohira/hosting": "*",
+		"@yohira/http.abstractions": "*",
+		"@yohira/http.extensions": "*",
+		"@yohira/logging": "*",
+		"@yohira/options": "*"
+	}
 }

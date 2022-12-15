@@ -1,5 +1,16 @@
 {
 	"name": "@yohira/http-logging",
 	"version": "1.0.0",
-	"main": "dist/index.js"
+	"main": "dist/index.js",
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"compile": "tsc -p tsconfig.build.json",
+		"build": "yarn clean && yarn compile"
+	},
+	"dependencies": {
+		"@yohira/base": "*",
+		"@yohira/http.abstractions": "*",
+		"@yohira/logging": "*",
+		"@yohira/options": "*"
+	}
 }

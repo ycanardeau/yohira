@@ -1,6 +1,3 @@
-// TODO: Do not import @yohira/http.
-import { container } from '@yohira/http';
-
 import { IHttpContext } from './IHttpContext';
 import { IMiddleware } from './IMiddleware';
 import { RequestDelegate } from './RequestDelegate';
@@ -25,7 +22,6 @@ export const useMiddleware = <T extends IMiddleware>(
 	ctor: new (...args: never[]) => T,
 ): IAppBuilder => {
 	return use(app, async (context, next) => {
-		const middleware = container.get<T>(ctor);
-		await middleware.invoke(context, next);
+		// TODO
 	});
 };

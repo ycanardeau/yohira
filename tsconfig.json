@@ -1,3 +1,10 @@
+// https://github.com/mikro-orm/mikro-orm/blob/636e8610573bd0f0c69da6331d048213794114e3/tsconfig.json
 {
-	"extends": "./tsconfig.base.json"
+	"extends": "./tsconfig.build.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@mikro-orm/*": ["packages/*/src"]
+		}
+	}
 }

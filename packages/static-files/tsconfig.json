@@ -1,16 +1,4 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
-		"composite": true
-	},
-	"references": [
-		{ "path": "../file-providers" },
-		{ "path": "../hosting" },
-		{ "path": "../http.abstractions" },
-		{ "path": "../http.extensions" },
-		{ "path": "../logging" },
-		{ "path": "../options" }
-	]
+	"extends": "../../tsconfig.json",
+	"include": ["src/**/*"]
 }
