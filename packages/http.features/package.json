@@ -1,5 +1,5 @@
 {
-	"name": "@yohira/http",
+	"name": "@yohira/http.features",
 	"version": "1.0.0",
 	"main": "dist/index.js",
 	"scripts": {
@@ -8,7 +8,7 @@
 		"build": "yarn clean && yarn compile"
 	},
 	"dependencies": {
-		"@yohira/http.abstractions": "*",
-		"@yohira/http.features": "*"
+		"@yohira/base": "*",
+		"@yohira/dependency-injection.abstractions": "*"
 	}
 }

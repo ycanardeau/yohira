@@ -1894,6 +1894,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@yohira/dependency-injection.abstractions@*, @yohira/dependency-injection.abstractions@workspace:packages/dependency-injection.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/dependency-injection.abstractions@workspace:packages/dependency-injection.abstractions"
+  languageName: unknown
+  linkType: soft
+
 "@yohira/file-providers@*, @yohira/file-providers@workspace:packages/file-providers":
   version: 0.0.0-use.local
   resolution: "@yohira/file-providers@workspace:packages/file-providers"
@@ -1924,6 +1930,8 @@ __metadata:
 "@yohira/http.abstractions@*, @yohira/http.abstractions@workspace:packages/http.abstractions":
   version: 0.0.0-use.local
   resolution: "@yohira/http.abstractions@workspace:packages/http.abstractions"
+  dependencies:
+    "@yohira/dependency-injection.abstractions": "*"
   languageName: unknown
   linkType: soft
 
@@ -1937,11 +1945,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@yohira/http.features@*, @yohira/http.features@workspace:packages/http.features":
+  version: 0.0.0-use.local
+  resolution: "@yohira/http.features@workspace:packages/http.features"
+  dependencies:
+    "@yohira/base": "*"
+    "@yohira/dependency-injection.abstractions": "*"
+  languageName: unknown
+  linkType: soft
+
 "@yohira/http@*, @yohira/http@workspace:packages/http":
   version: 0.0.0-use.local
   resolution: "@yohira/http@workspace:packages/http"
   dependencies:
     "@yohira/http.abstractions": "*"
+    "@yohira/http.features": "*"
   languageName: unknown
   linkType: soft
 

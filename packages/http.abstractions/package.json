@@ -6,5 +6,8 @@
 		"clean": "rimraf ./dist",
 		"compile": "tsc -p tsconfig.build.json",
 		"build": "yarn clean && yarn compile"
+	},
+	"dependencies": {
+		"@yohira/dependency-injection.abstractions": "*"
 	}
 }

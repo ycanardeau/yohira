@@ -1,8 +1,13 @@
+import { IServiceProvider } from '@yohira/dependency-injection.abstractions';
 import {
 	IHttpContext,
 	IHttpRequest,
 	IHttpResponse,
 } from '@yohira/http.abstractions';
+import {
+	IServiceProvidersFeature,
+	RequestServicesFeature,
+} from '@yohira/http.features';
 import { IncomingMessage, ServerResponse } from 'node:http';
 
 import { HttpRequest } from './HttpRequest';
@@ -19,5 +24,18 @@ export class HttpContext implements IHttpContext {
 	) {
 		this.request = new HttpRequest(this);
 		this.response = new HttpResponse(this);
+	}
+
+	// TODO
+	private _serviceProvidersFeature = new RequestServicesFeature();
+	private get serviceProvidersFeature(): IServiceProvidersFeature {
+		return this._serviceProvidersFeature;
+	}
+
+	get requestServices(): IServiceProvider {
+		return this.serviceProvidersFeature.requestServices;
+	}
+	set requestServices(value: IServiceProvider) {
+		this.serviceProvidersFeature.requestServices = value;
 	}
 }

@@ -1,14 +1,10 @@
 {
-	"name": "@yohira/http",
+	"name": "@yohira/dependency-injection.abstractions",
 	"version": "1.0.0",
 	"main": "dist/index.js",
 	"scripts": {
 		"clean": "rimraf ./dist",
 		"compile": "tsc -p tsconfig.build.json",
 		"build": "yarn clean && yarn compile"
-	},
-	"dependencies": {
-		"@yohira/http.abstractions": "*",
-		"@yohira/http.features": "*"
 	}
 }

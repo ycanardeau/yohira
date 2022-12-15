@@ -1,4 +1,5 @@
 import { IFileInfo } from '@yohira/file-providers';
+// TODO: Do not import @yohira/http.
 import { HttpContext } from '@yohira/http';
 import { IHttpResponse } from '@yohira/http.abstractions';
 import { createReadStream } from 'node:fs';
