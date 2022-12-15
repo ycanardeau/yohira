@@ -4,5 +4,11 @@
 		"rootDir": "src",
 		"outDir": "dist",
 		"composite": true
-	}
+	},
+	"references": [
+		{ "path": "../base" },
+		{ "path": "../http.abstractions" },
+		{ "path": "../logging" },
+		{ "path": "../options" }
+	]
 }
