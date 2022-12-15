@@ -1,6 +1,7 @@
-import { HttpLoggingMiddleware } from '@/middleware/httpLogging/HttpLoggingMiddleware';
-import { HttpRequestLog } from '@/middleware/httpLogging/HttpRequestLog';
 import { ILogger, LogLevel } from '@yohira/logging';
+
+import { HttpLoggingMiddleware } from './HttpLoggingMiddleware';
+import { HttpRequestLog } from './HttpRequestLog';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingExtensions.cs,5183288c97b153d3,references
 export const logRequestLog = (

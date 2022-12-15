@@ -1,11 +1,11 @@
 import { createWebAppBuilder } from '@/builder/WebApp';
-import {
-	HttpLoggingMiddleware,
-	useHttpLogging,
-} from '@/middleware/httpLogging/HttpLoggingMiddleware';
-import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
 import { HostingEnv, IWebHostEnv, initialize } from '@yohira/hosting';
 import { HttpContext, container, use } from '@yohira/http';
+import {
+	HttpLoggingMiddleware,
+	HttpLoggingOptions,
+	useHttpLogging,
+} from '@yohira/http-logging';
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptions, IOptionsMonitor } from '@yohira/options';
 import {

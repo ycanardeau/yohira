@@ -1,7 +1,3 @@
-import { logRequestLog } from '@/middleware/httpLogging/HttpLoggingExtensions';
-import { HttpLoggingFields } from '@/middleware/httpLogging/HttpLoggingFields';
-import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
-import { HttpRequestLog } from '@/middleware/httpLogging/HttpRequestLog';
 import {
 	IAppBuilder,
 	IHttpContext,
@@ -12,6 +8,11 @@ import {
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptionsMonitor } from '@yohira/options';
 import { inject, injectable, named } from 'inversify';
+import { logRequestLog } from 'packages/http-logging/src/HttpLoggingExtensions';
+
+import { HttpLoggingFields } from './HttpLoggingFields';
+import { HttpLoggingOptions } from './HttpLoggingOptions';
+import { HttpRequestLog } from './HttpRequestLog';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references
 @injectable()
