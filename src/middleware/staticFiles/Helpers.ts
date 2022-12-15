@@ -1,5 +1,5 @@
-import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { IFileProvider } from '@yohira/file-providers';
+import { IWebHostEnv } from '@yohira/hosting';
 import { IHttpContext, PathString, isGet, isHead } from '@yohira/http';
 import { Err, Ok, Result } from 'ts-results';
 

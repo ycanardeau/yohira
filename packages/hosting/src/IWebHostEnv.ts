@@ -1,5 +1,3 @@
-import { IHostEnv } from '@/hosting/IHostEnv';
-import { WebHostOptions } from '@/hosting/WebHostOptions';
 import {
 	IFileProvider,
 	NullFileProvider,
@@ -7,6 +5,9 @@ import {
 } from '@yohira/file-providers';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+import { IHostEnv } from './IHostEnv';
+import { WebHostOptions } from './WebHostOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Abstractions/IWebHostEnvironment.cs,30ac66307b7b40c9,references
 export const IWebHostEnv = Symbol.for('IWebHostEnv');

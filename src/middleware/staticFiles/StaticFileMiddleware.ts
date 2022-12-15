@@ -1,4 +1,3 @@
-import { IWebHostEnv } from '@/hosting/IWebHostEnv';
 import { FileExtensionContentTypeProvider } from '@/middleware/staticFiles/FileExtensionContentTypeProvider';
 import {
 	isGetOrHeadMethod,
@@ -16,6 +15,7 @@ import {
 import { SharedOptionsBase } from '@/middleware/staticFiles/SharedOptionsBase';
 import { StaticFileContext } from '@/middleware/staticFiles/StaticFileContext';
 import { IFileProvider } from '@yohira/file-providers';
+import { IWebHostEnv } from '@yohira/hosting';
 import {
 	IAppBuilder,
 	IHttpContext,

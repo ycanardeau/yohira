@@ -1,6 +1,4 @@
 import { createWebAppBuilder } from '@/builder/WebApp';
-import { HostingEnv } from '@/hosting/HostingEnv';
-import { IWebHostEnv, initialize } from '@/hosting/IWebHostEnv';
 import {
 	HttpLoggingMiddleware,
 	useHttpLogging,
@@ -11,6 +9,7 @@ import {
 	StaticFileOptions,
 	useStaticFiles,
 } from '@/middleware/staticFiles/StaticFileMiddleware';
+import { HostingEnv, IWebHostEnv, initialize } from '@yohira/hosting';
 import { HttpContext, container, use } from '@yohira/http';
 import { ILogger, ILoggerFactory, LogLevel } from '@yohira/logging';
 import { IOptions, IOptionsMonitor } from '@yohira/options';
