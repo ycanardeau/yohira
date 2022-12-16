@@ -21,6 +21,9 @@
 			"@yohira/hosting.abstractions/*": [
 				"packages/hosting.abstractions/src/*"
 			],
+			"@yohira/hosting.server.abstractions/*": [
+				"packages/hosting.server.abstractions/src/*"
+			],
 			"@yohira/http/*": ["packages/http/src/*"],
 			"@yohira/http-logging/*": ["packages/http-logging/src/*"],
 			"@yohira/http.abstractions/*": ["packages/http.abstractions/src/*"],

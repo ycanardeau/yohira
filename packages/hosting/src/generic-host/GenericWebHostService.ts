@@ -1,4 +1,5 @@
 import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
+import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { HostingApp } from '@yohira/hosting/internal/HostingApp';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
@@ -8,11 +9,15 @@ import { inject, injectable } from 'inversify';
 @injectable()
 export class GenericWebHostService implements IHostedService {
 	constructor(
+		@inject(IServer)
+		readonly server: IServer,
 		@inject(IAppBuilderFactory)
 		readonly appBuilderFactory: IAppBuilderFactory,
 	) {}
 
 	start = async (): Promise<void> => {
+		// TODO: Log.
+
 		// TODO
 
 		let app: RequestDelegate | undefined = undefined;
@@ -24,11 +29,16 @@ export class GenericWebHostService implements IHostedService {
 
 			app = builder.build();
 		} catch (error) {
+			// TODO: Log.
+
 			// TODO
 			throw error;
 		}
 
 		const httpApp = new HostingApp(app);
+
+		await this.server.start(httpApp);
+		// TODO: Log.
 
 		// TODO
 	};

@@ -1,6 +1,7 @@
 import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
 import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
+import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
@@ -24,8 +25,33 @@ import {
 	StaticFileOptions,
 	useStaticFiles,
 } from '@yohira/static-files/StaticFileMiddleware';
+import { IncomingMessage, ServerResponse, createServer } from 'node:http';
 
 // TODO
+container
+	.bind(IServer)
+	.toDynamicValue((): IServer => {
+		return {
+			start: async (app): Promise<void> => {
+				// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
+				const server = createServer(
+					async (
+						request: IncomingMessage,
+						response: ServerResponse<IncomingMessage>,
+					): Promise<void> => {
+						const context = app.createContext();
+
+						await app.processRequest(context);
+					},
+				);
+				server.listen(8000 /* TODO */);
+			},
+			stop: async (): Promise<void> => {},
+			dispose: async (): Promise<void> => {},
+		};
+	})
+	.inSingletonScope();
+
 container.bind(IAppBuilderFactory).to(AppBuilderFactory).inSingletonScope();
 container.bind(IHostedService).to(GenericWebHostService).inSingletonScope();
 
