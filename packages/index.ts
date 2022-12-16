@@ -1,4 +1,5 @@
 import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
+import { FeatureCollection } from '@yohira/features/FeatureCollection';
 import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';
@@ -41,7 +42,13 @@ container
 						request: IncomingMessage,
 						response: ServerResponse<IncomingMessage>,
 					): Promise<void> => {
-						const context = app.createContext();
+						const featureCollection = new FeatureCollection();
+						featureCollection.set(IncomingMessage, request);
+						featureCollection.set(
+							ServerResponse<IncomingMessage>,
+							response,
+						);
+						const context = app.createContext(featureCollection);
 
 						await app.processRequest(context);
 					},

@@ -16,6 +16,7 @@
 		"paths": {
 			"@yohira/base/*": ["packages/base/src/*"],
 			"@yohira/core/*": ["packages/core/src/*"],
+			"@yohira/features/*": ["packages/features/src/*"],
 			"@yohira/file-providers/*": ["packages/file-providers/src/*"],
 			"@yohira/hosting/*": ["packages/hosting/src/*"],
 			"@yohira/hosting.abstractions/*": [

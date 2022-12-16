@@ -1,3 +1,4 @@
+import { IFeatureCollection } from '@yohira/features/IFeatureCollection';
 import { IHttpApp } from '@yohira/hosting.server.abstractions/IHttpApp';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
@@ -15,9 +16,11 @@ export class HostingApp implements IHttpApp<HostingAppContext> {
 	) {}
 
 	// TODO
-	createContext = (): HostingAppContext => {
+	createContext = (
+		contextFeatures: IFeatureCollection,
+	): HostingAppContext => {
 		const hostContext = new HostingAppContext();
-		const httpContext = this.httpContextFactory.create();
+		const httpContext = this.httpContextFactory.create(contextFeatures);
 		hostContext.httpContext = httpContext;
 
 		// TODO: this.diagnostics.beginRequest(httpContext, hostContext);
@@ -25,8 +28,8 @@ export class HostingApp implements IHttpApp<HostingAppContext> {
 	};
 
 	processRequest = (context: HostingAppContext): Promise<void> => {
-		// TODO
-		throw new Error('Method not implemented.');
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this.app(context.httpContext!);
 	};
 
 	disposeContext = (

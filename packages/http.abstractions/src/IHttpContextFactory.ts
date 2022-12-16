@@ -1,8 +1,9 @@
+import { IFeatureCollection } from '@yohira/features/IFeatureCollection';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/IHttpContextFactory.cs,06b07e148b00ced6,references
 export const IHttpContextFactory = Symbol.for('IHttpContextFactory');
 export interface IHttpContextFactory {
-	create(/* TODO: featureCollection */): IHttpContext;
+	create(featureCollection: IFeatureCollection): IHttpContext;
 	dispose(httpContext: IHttpContext): void;
 }
