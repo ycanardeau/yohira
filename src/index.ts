@@ -1,24 +1,25 @@
-import { createWebAppBuilder } from '@/builder/WebApp';
-import { HostingEnv } from '@/hosting/HostingEnv';
-import { IWebHostEnv, initialize } from '@/hosting/IWebHostEnv';
-import { HttpContext } from '@/http/HttpContext';
-import { use } from '@/http/IAppBuilder';
-import { container } from '@/inversify.config';
-import { ILogger } from '@/logging/ILogger';
-import { ILoggerFactory } from '@/logging/ILoggerFactory';
-import { LogLevel } from '@/logging/LogLevel';
+import { createWebAppBuilder } from '@/core/default-builder/WebApp';
+import { IWebHostEnv } from '@/hosting.abstractions/IWebHostEnv';
+import { HostingEnv } from '@/hosting/internal/HostingEnv';
+import { initialize } from '@/hosting/internal/HostingEnvironmentExtensions';
 import {
 	HttpLoggingMiddleware,
 	useHttpLogging,
-} from '@/middleware/httpLogging/HttpLoggingMiddleware';
-import { HttpLoggingOptions } from '@/middleware/httpLogging/HttpLoggingOptions';
+} from '@/http-logging/HttpLoggingMiddleware';
+import { HttpLoggingOptions } from '@/http-logging/HttpLoggingOptions';
+import { use } from '@/http.abstractions/extensions/UseExtensions';
+import { container } from '@/http.abstractions/inversify.config';
+import { HttpContext } from '@/http/HttpContext';
+import { ILogger } from '@/logging.abstractions/ILogger';
+import { ILoggerFactory } from '@/logging.abstractions/ILoggerFactory';
+import { LogLevel } from '@/logging.abstractions/LogLevel';
+import { IOptions } from '@/options/IOptions';
+import { IOptionsMonitor } from '@/options/IOptionsMonitor';
 import {
 	StaticFileMiddleware,
 	StaticFileOptions,
 	useStaticFiles,
-} from '@/middleware/staticFiles/StaticFileMiddleware';
-import { IOptions } from '@/options/IOptions';
-import { IOptionsMonitor } from '@/options/IOptionsMonitor';
+} from '@/static-files/StaticFileMiddleware';
 
 // TODO
 const hostingEnv = new HostingEnv();
