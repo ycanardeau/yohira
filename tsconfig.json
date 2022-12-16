@@ -14,7 +14,22 @@
 		"skipLibCheck": true,
 		"baseUrl": "./",
 		"paths": {
-			"@/*": ["src/*"]
+			"@yohira/base/*": ["packages/base/src/*"],
+			"@yohira/core/*": ["packages/core/src/*"],
+			"@yohira/file-providers/*": ["packages/file-providers/src/*"],
+			"@yohira/hosting/*": ["packages/hosting/src/*"],
+			"@yohira/hosting.abstractions/*": [
+				"packages/hosting.abstractions/src/*"
+			],
+			"@yohira/http/*": ["packages/http/src/*"],
+			"@yohira/http-logging/*": ["packages/http-logging/src/*"],
+			"@yohira/http.abstractions/*": ["packages/http.abstractions/src/*"],
+			"@yohira/http.extensions/*": ["packages/http.extensions/src/*"],
+			"@yohira/logging.abstractions/*": [
+				"packages/logging.abstractions/src/*"
+			],
+			"@yohira/options/*": ["packages/options/src/*"],
+			"@yohira/static-files/*": ["packages/static-files/src/*"]
 		}
 	}
 }
