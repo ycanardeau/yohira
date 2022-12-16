@@ -5,6 +5,7 @@ import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
+import { HttpContextFactory } from '@yohira/hosting/http/HttpContextFactory';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
 import { initialize } from '@yohira/hosting/internal/HostingEnvironmentExtensions';
 import {
@@ -12,6 +13,7 @@ import {
 	useHttpLogging,
 } from '@yohira/http-logging/HttpLoggingMiddleware';
 import { HttpLoggingOptions } from '@yohira/http-logging/HttpLoggingOptions';
+import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
 import { container } from '@yohira/http.abstractions/inversify.config';
 import { HttpContext } from '@yohira/http/HttpContext';
@@ -53,6 +55,7 @@ container
 	.inSingletonScope();
 
 container.bind(IAppBuilderFactory).to(AppBuilderFactory).inSingletonScope();
+container.bind(IHttpContextFactory).to(HttpContextFactory).inSingletonScope();
 container.bind(IHostedService).to(GenericWebHostService).inSingletonScope();
 
 const hostingEnv = new HostingEnv();

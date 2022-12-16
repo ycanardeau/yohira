@@ -2,6 +2,7 @@ import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { HostingApp } from '@yohira/hosting/internal/HostingApp';
+import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { inject, injectable } from 'inversify';
 
@@ -11,6 +12,8 @@ export class GenericWebHostService implements IHostedService {
 	constructor(
 		@inject(IServer)
 		readonly server: IServer,
+		@inject(IHttpContextFactory)
+		readonly httpContextFactory: IHttpContextFactory,
 		@inject(IAppBuilderFactory)
 		readonly appBuilderFactory: IAppBuilderFactory,
 	) {}
@@ -35,7 +38,7 @@ export class GenericWebHostService implements IHostedService {
 			throw error;
 		}
 
-		const httpApp = new HostingApp(app);
+		const httpApp = new HostingApp(app, this.httpContextFactory);
 
 		await this.server.start(httpApp);
 		// TODO: Log.
