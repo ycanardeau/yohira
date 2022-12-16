@@ -151,7 +151,7 @@ const main = async (): Promise<void> => {
 		await next(context);
 	});
 
-	app.run();
+	await app.run();
 };
 
 main();

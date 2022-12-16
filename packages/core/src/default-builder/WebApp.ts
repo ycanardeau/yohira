@@ -1,24 +1,31 @@
 import { WebAppBuilder } from '@yohira/core/default-builder/WebAppBuilder';
+import { run } from '@yohira/hosting.abstractions/HostingAbstractionsHostExtensions';
+import { IHost } from '@yohira/hosting.abstractions/IHost';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { HttpContext } from '@yohira/http/HttpContext';
 import { AppBuilder } from '@yohira/http/builder/AppBuilder';
-import {
-	IncomingMessage,
-	Server,
-	ServerResponse,
-	createServer,
-} from 'node:http';
 // TODO: Move.
 import 'reflect-metadata';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
-export class WebApp implements IAppBuilder {
+export class WebApp implements IHost, IAppBuilder {
 	readonly appBuilder: IAppBuilder;
 
-	constructor() {
+	constructor(private readonly host: IHost) {
 		this.appBuilder = new AppBuilder(/* TODO */);
 	}
+
+	start = (): Promise<void> => {
+		return this.host.start();
+	};
+
+	stop = (): Promise<void> => {
+		return this.host.stop();
+	};
+
+	dispose = (): Promise<void> => {
+		return this.host.dispose();
+	};
 
 	use = (middleware: (next: RequestDelegate) => RequestDelegate): this => {
 		this.appBuilder.use(middleware);
@@ -29,26 +36,11 @@ export class WebApp implements IAppBuilder {
 		return this.appBuilder.build();
 	};
 
-	// https://github.com/koajs/koa/blob/d7894c88a511b1dd604d5402a4ab0d9903747c5b/lib/application.js#L142
-	private callback = (
-		request: IncomingMessage,
-		response: ServerResponse<IncomingMessage>,
-	): void => {
-		const requestDelegate = this.build();
-		const context = new HttpContext(request, response);
-		requestDelegate(context);
-	};
+	listen = (): void => {};
 
-	// https://github.com/koajs/koa/blob/d7894c88a511b1dd604d5402a4ab0d9903747c5b/lib/application.js#L84
-	listen = (...args: Parameters<Server['listen']>): void => {
-		// TODO: this.logger.debug('listen');
-		// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
-		const server = createServer(this.callback);
-		server.listen(...args);
-	};
-
-	run = (): void => {
-		this.listen(8000 /* TODO */);
+	run = (): Promise<void> => {
+		this.listen();
+		return run(this);
 	};
 }
 
