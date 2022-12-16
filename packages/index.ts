@@ -1,5 +1,7 @@
 import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
+import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
+import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
 import { initialize } from '@yohira/hosting/internal/HostingEnvironmentExtensions';
 import {
@@ -22,6 +24,8 @@ import {
 } from '@yohira/static-files/StaticFileMiddleware';
 
 // TODO
+container.bind(IHostedService).to(GenericWebHostService).inSingletonScope();
+
 const hostingEnv = new HostingEnv();
 initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
 container
