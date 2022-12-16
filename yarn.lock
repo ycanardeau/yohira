@@ -3543,6 +3543,7 @@ __metadata:
     inversify: ^6.0.1
     prettier: ^2.7.1
     reflect-metadata: ^0.1.13
+    rimraf: ^3.0.2
     ts-results: ^3.3.0
     tsc-alias: ^1.7.1
     typescript: ^4.9.3
