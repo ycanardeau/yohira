@@ -25,5 +25,6 @@
 		"inversify": "^6.0.1",
 		"reflect-metadata": "^0.1.13",
 		"ts-results": "^3.3.0"
-	}
+	},
+	"packageManager": "yarn@3.3.0"
 }
