@@ -34,6 +34,8 @@ export class WebAppBuilder {
 			configure(webHostBuilder, this.configureApp);
 		});
 
+		/* TODO: this.genericWebHostServiceDescriptor = */ bootstrapHostBuilder.runDefaultCallbacks();
+
 		// TODO
 	}
 

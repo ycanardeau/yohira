@@ -11,4 +11,14 @@ export class BootstrapHostBuilder implements IHostBuilder {
 		this.configureServicesActions.push(configureDelegate);
 		return this;
 	};
+
+	runDefaultCallbacks = (): void /* TODO: ServiceDescriptor */ => {
+		// TODO
+
+		for (const configureServicesAction of this.configureServicesActions) {
+			configureServicesAction(/* TODO */);
+		}
+
+		// TODO
+	};
 }
