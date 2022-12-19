@@ -1,3 +1,4 @@
+import { configureWebDefaults } from '@yohira/core/default-builder/WebHost';
 import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { configureWebHost } from '@yohira/hosting/GenericHostWebHostBuilderExtensions';
@@ -11,7 +12,7 @@ export const configureWebHostDefaults = (
 	return configureWebHost(
 		builder,
 		(webHostBuilder) => {
-			// TODO: configureWebDefaults
+			configureWebDefaults(webHostBuilder);
 
 			configure(webHostBuilder);
 		} /* TODO: configureOptions */,

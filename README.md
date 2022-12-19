@@ -13,3 +13,4 @@ Yohira is an experimental project to port ASP.NET Core to TypeScript.
 -   [koajs/koa: Expressive middleware for node.js using ES2017 async functions](https://github.com/koajs/koa)
 -   [asp.net core - What is the difference between IWebHost WebHostBuilder BuildWebHost - Stack Overflow](https://stackoverflow.com/questions/52085806/what-is-the-difference-between-iwebhost-webhostbuilder-buildwebhost)
 -   [.NET Generic Host - .NET | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/core/extensions/generic-host)
+-   [aspnetcore/BuildFromSource.md at 6956f42a0a01ed4fb8fc2cb889c2535f8fe5f735 · dotnet/aspnetcore](https://github.com/dotnet/aspnetcore/blob/6956f42a0a01ed4fb8fc2cb889c2535f8fe5f735/docs/BuildFromSource.md)

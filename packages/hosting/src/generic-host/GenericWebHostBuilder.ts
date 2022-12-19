@@ -9,8 +9,8 @@ export class GenericWebHostBuilder implements IWebHostBuilder {
 		configureServices: (/* TODO: context: WebHostBuilderContext */) => void,
 	): this => {
 		this.builder.configureServices(() => {
-			// TODO
-			throw new Error('Method not implemented.');
+			// TODO: webHostBuilderContext
+			configureServices(/* TODO */);
 		});
 
 		return this;
