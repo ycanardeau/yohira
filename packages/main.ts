@@ -69,6 +69,9 @@ container
 	.bind(IOptions)
 	.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
 		const options = new GenericWebHostServiceOptions();
+		options.configureApp = (app): void => {
+			// TODO
+		};
 		return { value: options };
 	})
 	.inSingletonScope()
