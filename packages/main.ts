@@ -6,6 +6,7 @@ import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
+import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
 import { HttpContextFactory } from '@yohira/hosting/http/HttpContextFactory';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
 import { initialize } from '@yohira/hosting/internal/HostingEnvironmentExtensions';
@@ -63,6 +64,15 @@ container
 
 container.bind(IAppBuilderFactory).to(AppBuilderFactory).inSingletonScope();
 container.bind(IHttpContextFactory).to(HttpContextFactory).inSingletonScope();
+
+container
+	.bind(IOptions)
+	.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
+		const options = new GenericWebHostServiceOptions();
+		return { value: options };
+	})
+	.inSingletonScope()
+	.whenTargetNamed(GenericWebHostServiceOptions.name);
 container.bind(IHostedService).to(GenericWebHostService).inSingletonScope();
 
 const hostingEnv = new HostingEnv();
