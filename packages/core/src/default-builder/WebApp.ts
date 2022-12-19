@@ -4,8 +4,6 @@ import { IHost } from '@yohira/hosting.abstractions/IHost';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { AppBuilder } from '@yohira/http/builder/AppBuilder';
-// TODO: Move.
-import 'reflect-metadata';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
 export class WebApp implements IHost, IAppBuilder {
