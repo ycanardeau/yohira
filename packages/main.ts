@@ -17,7 +17,6 @@ import {
 import { HttpLoggingOptions } from '@yohira/http-logging/HttpLoggingOptions';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
-import { container } from '@yohira/http.abstractions/inversify.config';
 import { HttpContext } from '@yohira/http/HttpContext';
 import { ILoggerFactory } from '@yohira/logging.abstractions/ILoggerFactory';
 import { LoggerFactory } from '@yohira/logging/LoggerFactory';

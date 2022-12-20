@@ -1,7 +1,5 @@
 import { IHost } from '@yohira/hosting.abstractions/IHost';
 import { Host } from '@yohira/hosting/internal/Host';
-// TODO: Do not import @yohira/http.abstractions.
-import { container } from '@yohira/http.abstractions/inversify.config';
 import { ILoggerFactory } from '@yohira/logging.abstractions/ILoggerFactory';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,328ee38355596558,references

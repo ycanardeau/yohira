@@ -7,7 +7,6 @@ import {
 	logStopped,
 	logStopping,
 } from '@yohira/hosting/internal/HostingLoggerExtensions';
-import { container } from '@yohira/http.abstractions/inversify.config';
 import { ILogger } from '@yohira/logging.abstractions/ILogger';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references

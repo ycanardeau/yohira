@@ -1,7 +1,6 @@
 import { HostFilteringStartupFilter } from '@yohira/core/default-builder/HostFilteringStartupFilter';
 import { IStartupFilter } from '@yohira/hosting.abstractions/IStartupFilter';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { container } from '@yohira/http.abstractions/inversify.config';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebHost.cs,ca2002fa0bfdb774,references
 export const configureWebDefaults = (builder: IWebHostBuilder): void => {
