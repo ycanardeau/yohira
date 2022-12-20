@@ -1,5 +1,8 @@
 import { IHost } from '@yohira/hosting.abstractions/IHost';
-import { resolveHost } from '@yohira/hosting/HostBuilder';
+import {
+	populateServiceCollection,
+	resolveHost,
+} from '@yohira/hosting/HostBuilder';
 import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostApplicationBuilder.cs,c659330adb7f1ad0,references
@@ -7,6 +10,14 @@ export class HostAppBuilder {
 	readonly services = new Container();
 
 	private hostBuilt = false;
+
+	constructor() {
+		// TODO
+
+		populateServiceCollection(this.services);
+
+		// TODO
+	}
 
 	build = (): IHost => {
 		if (this.hostBuilt) {

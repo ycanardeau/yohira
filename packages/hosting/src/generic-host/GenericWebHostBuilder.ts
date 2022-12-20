@@ -1,8 +1,12 @@
 import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
+import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
+import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
 import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
+import { HttpContextFactory } from '@yohira/hosting/http/HttpContextFactory';
 import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartup';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { configureOptionsServices } from '@yohira/options/OptionsServiceCollectionExtensions';
 import { Container } from 'inversify';
 
@@ -12,7 +16,25 @@ export class GenericWebHostBuilder
 {
 	private startupObject?: unknown;
 
-	constructor(private readonly builder: IHostBuilder /* TODO: options */) {}
+	constructor(private readonly builder: IHostBuilder /* TODO: options */) {
+		// TODO
+
+		builder.configureServices((/* TODO */ services) => {
+			// TODO
+
+			services
+				.bind(IAppBuilderFactory)
+				.to(AppBuilderFactory)
+				.inSingletonScope();
+			// TODO: IMiddlewareFactory
+			services
+				.bind(IHttpContextFactory)
+				.to(HttpContextFactory)
+				.inSingletonScope();
+
+			// TODO
+		});
+	}
 
 	configureServices = (
 		configureServices: (
