@@ -29,6 +29,7 @@
 			"@yohira/http-logging/*": ["packages/http-logging/src/*"],
 			"@yohira/http.abstractions/*": ["packages/http.abstractions/src/*"],
 			"@yohira/http.extensions/*": ["packages/http.extensions/src/*"],
+			"@yohira/logging/*": ["packages/logging/src/*"],
 			"@yohira/logging.abstractions/*": [
 				"packages/logging.abstractions/src/*"
 			],
