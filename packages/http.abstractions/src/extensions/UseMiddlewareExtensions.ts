@@ -8,7 +8,7 @@ export const useMiddleware = <T extends IMiddleware>(
 	ctor: new (...args: never[]) => T,
 ): IAppBuilder => {
 	return use(app, async (context, next) => {
-		const middleware = container.get<T>(ctor);
+		const middleware = context.requestServices.get<T>(ctor);
 		await middleware.invoke(context, next);
 	});
 };

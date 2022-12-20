@@ -4,6 +4,7 @@ import { WebApp } from '@yohira/core/default-builder/WebApp';
 import { HostAppBuilder } from '@yohira/hosting/HostAppBuilder';
 import { configure } from '@yohira/hosting/WebHostBuilderExtensions';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplicationBuilder.cs,25a352b50e81d95b,references
 export class WebAppBuilder {
@@ -37,6 +38,10 @@ export class WebAppBuilder {
 		/* TODO: this.genericWebHostServiceDescriptor = */ bootstrapHostBuilder.runDefaultCallbacks();
 
 		// TODO
+	}
+
+	get services(): Container {
+		return this.hostAppBuilder.services;
 	}
 
 	build = (): WebApp => {

@@ -27,88 +27,105 @@ import {
 	StaticFileOptions,
 	useStaticFiles,
 } from '@yohira/static-files/StaticFileMiddleware';
+import { Container } from 'inversify';
 import { IncomingMessage, ServerResponse, createServer } from 'node:http';
-
-// TODO
-container
-	.bind(IServer)
-	.toDynamicValue((): IServer => {
-		return {
-			start: async (app): Promise<void> => {
-				// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
-				const server = createServer(
-					async (
-						request: IncomingMessage,
-						response: ServerResponse<IncomingMessage>,
-					): Promise<void> => {
-						const featureCollection = new FeatureCollection();
-						featureCollection.set(IncomingMessage, request);
-						featureCollection.set(
-							ServerResponse<IncomingMessage>,
-							response,
-						);
-						const context = app.createContext(featureCollection);
-
-						await app.processRequest(context);
-					},
-				);
-				server.listen(8000 /* TODO */);
-			},
-			stop: async (): Promise<void> => {},
-			dispose: async (): Promise<void> => {},
-		};
-	})
-	.inSingletonScope();
-
-container.bind(IAppBuilderFactory).to(AppBuilderFactory).inSingletonScope();
-container.bind(IHttpContextFactory).to(HttpContextFactory).inSingletonScope();
-
-container
-	.bind(IOptions)
-	.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
-		const options = new GenericWebHostServiceOptions();
-		options.configureApp = (app): void => {
-			// TODO
-		};
-		return { value: options };
-	})
-	.inSingletonScope()
-	.whenTargetNamed(GenericWebHostServiceOptions.name);
-container.bind(IHostedService).to(GenericWebHostService).inSingletonScope();
-
-const hostingEnv = new HostingEnv();
-initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
-container
-	.bind(IWebHostEnv)
-	.toDynamicValue(() => hostingEnv)
-	.inSingletonScope();
-
-container
-	.bind(IOptions)
-	.toDynamicValue((): IOptions<StaticFileOptions> => {
-		const options = new StaticFileOptions();
-		return { value: options };
-	})
-	.inSingletonScope()
-	.whenTargetNamed(StaticFileOptions.name);
-
-container
-	.bind(IOptionsMonitor)
-	.toDynamicValue((): IOptionsMonitor<HttpLoggingOptions> => {
-		const options = new HttpLoggingOptions();
-		return { currentValue: options };
-	})
-	.inSingletonScope()
-	.whenTargetNamed(HttpLoggingOptions.name);
-
-container.bind(ILoggerFactory).to(LoggerFactory).inSingletonScope();
-
-container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
-
-container.bind(HttpLoggingMiddleware).toSelf().inSingletonScope();
 
 export const main = async (): Promise<void> => {
 	const builder = createWebAppBuilder(/* TODO */);
+
+	// TODO: Remove.
+	{
+		const container = builder.services;
+
+		container
+			.bind(IServer)
+			.toDynamicValue((): IServer => {
+				return {
+					start: async (app): Promise<void> => {
+						// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
+						const server = createServer(
+							async (
+								request: IncomingMessage,
+								response: ServerResponse<IncomingMessage>,
+							): Promise<void> => {
+								const featureCollection =
+									new FeatureCollection();
+								featureCollection.set(IncomingMessage, request);
+								featureCollection.set(
+									ServerResponse<IncomingMessage>,
+									response,
+								);
+								featureCollection.set(Container, container);
+								const context =
+									app.createContext(featureCollection);
+
+								await app.processRequest(context);
+							},
+						);
+						server.listen(8000 /* TODO */);
+					},
+					stop: async (): Promise<void> => {},
+					dispose: async (): Promise<void> => {},
+				};
+			})
+			.inSingletonScope();
+
+		container
+			.bind(IAppBuilderFactory)
+			.to(AppBuilderFactory)
+			.inSingletonScope();
+		container
+			.bind(IHttpContextFactory)
+			.to(HttpContextFactory)
+			.inSingletonScope();
+
+		container
+			.bind(IOptions)
+			.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
+				const options = new GenericWebHostServiceOptions();
+				options.configureApp = (app): void => {
+					// TODO
+				};
+				return { value: options };
+			})
+			.inSingletonScope()
+			.whenTargetNamed(GenericWebHostServiceOptions.name);
+		container
+			.bind(IHostedService)
+			.to(GenericWebHostService)
+			.inSingletonScope();
+
+		const hostingEnv = new HostingEnv();
+		initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
+		container
+			.bind(IWebHostEnv)
+			.toDynamicValue(() => hostingEnv)
+			.inSingletonScope();
+
+		container
+			.bind(IOptions)
+			.toDynamicValue((): IOptions<StaticFileOptions> => {
+				const options = new StaticFileOptions();
+				return { value: options };
+			})
+			.inSingletonScope()
+			.whenTargetNamed(StaticFileOptions.name);
+
+		container
+			.bind(IOptionsMonitor)
+			.toDynamicValue((): IOptionsMonitor<HttpLoggingOptions> => {
+				const options = new HttpLoggingOptions();
+				return { currentValue: options };
+			})
+			.inSingletonScope()
+			.whenTargetNamed(HttpLoggingOptions.name);
+
+		container.bind(ILoggerFactory).to(LoggerFactory).inSingletonScope();
+
+		container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
+
+		container.bind(HttpLoggingMiddleware).toSelf().inSingletonScope();
+	}
 
 	// TODO
 

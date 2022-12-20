@@ -8,13 +8,17 @@ import {
 	logStopping,
 } from '@yohira/hosting/internal/HostingLoggerExtensions';
 import { ILogger } from '@yohira/logging.abstractions/ILogger';
+import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, IDisposable {
 	private hostedServices?: IHostedService[];
 	private stopCalled = false;
 
-	constructor(private readonly logger: ILogger<Host>) {}
+	constructor(
+		readonly services: Container,
+		private readonly logger: ILogger<Host>,
+	) {}
 
 	start = async (): Promise<void> => {
 		logStarting(this.logger);
@@ -22,7 +26,7 @@ export class Host implements IHost, IDisposable {
 		// TODO
 
 		// TODO
-		this.hostedServices = container.getAll(IHostedService);
+		this.hostedServices = this.services.getAll(IHostedService);
 
 		for (const hostedService of this.hostedServices) {
 			await hostedService.start();

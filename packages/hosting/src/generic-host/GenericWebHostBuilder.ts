@@ -2,6 +2,7 @@ import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartup';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references
 export class GenericWebHostBuilder
@@ -12,11 +13,13 @@ export class GenericWebHostBuilder
 	constructor(private readonly builder: IHostBuilder /* TODO: options */) {}
 
 	configureServices = (
-		configureServices: (/* TODO: context: WebHostBuilderContext */) => void,
+		configureServices: (
+			/* TODO: context: WebHostBuilderContext */ services: Container,
+		) => void,
 	): this => {
-		this.builder.configureServices(() => {
+		this.builder.configureServices((/* TODO */ builder) => {
 			// TODO: webHostBuilderContext
-			configureServices(/* TODO */);
+			configureServices(/* TODO */ builder);
 		});
 
 		return this;
@@ -29,7 +32,7 @@ export class GenericWebHostBuilder
 
 		this.startupObject = configure;
 
-		this.builder.configureServices((/* TODO */) => {
+		this.builder.configureServices((/* TODO */ services) => {
 			if (this.startupObject === configure) {
 				// TODO
 			}
