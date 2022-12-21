@@ -1,6 +1,6 @@
 import { WebAppBuilder } from '@yohira/core/default-builder/WebAppBuilder';
-import { run } from '@yohira/hosting.abstractions/HostingAbstractionsHostExtensions';
-import { IHost } from '@yohira/hosting.abstractions/IHost';
+import { run } from '@yohira/extensions.hosting.abstractions/HostingAbstractionsHostExtensions';
+import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { AppBuilder } from '@yohira/http/builder/AppBuilder';

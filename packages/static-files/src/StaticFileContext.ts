@@ -1,5 +1,6 @@
-import { IFileInfo } from '@yohira/file-providers/IFileInfo';
-import { IFileProvider } from '@yohira/file-providers/IFileProvider';
+import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
+import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
+import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
 import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IHttpRequest } from '@yohira/http.abstractions/IHttpRequest';
@@ -10,7 +11,6 @@ import { StatusCodes } from '@yohira/http.abstractions/StatusCodes';
 import { getTypedHeaders } from '@yohira/http.extensions/HeaderDictionaryTypeExtensions';
 import { RequestHeaders } from '@yohira/http.extensions/RequestHeaders';
 import { sendFile } from '@yohira/http.extensions/SendFileResponseExtensions';
-import { ILogger } from '@yohira/logging.abstractions/ILogger';
 import { logFileServed } from '@yohira/static-files/LoggerExtensions';
 import {
 	StaticFileMiddleware,

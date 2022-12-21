@@ -1,4 +1,6 @@
 import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
+import { IOptions } from '@yohira/extensions.options/IOptions';
+import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
@@ -10,8 +12,6 @@ import {
 import { HttpLoggingOptions } from '@yohira/http-logging/HttpLoggingOptions';
 import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
 import { HttpContext } from '@yohira/http/HttpContext';
-import { IOptions } from '@yohira/options/IOptions';
-import { IOptionsMonitor } from '@yohira/options/IOptionsMonitor';
 import {
 	StaticFileMiddleware,
 	StaticFileOptions,

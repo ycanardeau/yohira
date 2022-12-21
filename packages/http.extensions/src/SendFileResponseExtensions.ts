@@ -1,4 +1,4 @@
-import { IFileInfo } from '@yohira/file-providers/IFileInfo';
+import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
 import { IHttpResponse } from '@yohira/http.abstractions/IHttpResponse';
 // TODO: Do not import @yohira/http.
 import { HttpContext } from '@yohira/http/HttpContext';

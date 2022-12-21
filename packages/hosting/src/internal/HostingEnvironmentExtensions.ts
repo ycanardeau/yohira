@@ -1,5 +1,5 @@
-import { NullFileProvider } from '@yohira/file-providers/NullFileProvider';
-import { PhysicalFileProvider } from '@yohira/file-providers/PhysicalFileProvider';
+import { NullFileProvider } from '@yohira/extensions.file-providers/NullFileProvider';
+import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { WebHostOptions } from '@yohira/hosting/internal/WebHostOptions';
 import { existsSync } from 'node:fs';

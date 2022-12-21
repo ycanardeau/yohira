@@ -1,4 +1,5 @@
-import { IHostedService } from '@yohira/hosting.abstractions/IHostedService';
+import { IHostedService } from '@yohira/extensions.hosting.abstractions/IHostedService';
+import { IOptions } from '@yohira/extensions.options/IOptions';
 import { IStartupFilter } from '@yohira/hosting.abstractions/IStartupFilter';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
@@ -6,7 +7,6 @@ import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/Gener
 import { HostingApp } from '@yohira/hosting/internal/HostingApp';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { IOptions } from '@yohira/options/IOptions';
 import { inject, injectable, multiInject, named } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostService.cs,fd20321226ab7078,references

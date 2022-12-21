@@ -1,4 +1,7 @@
-import { IFileProvider } from '@yohira/file-providers/IFileProvider';
+import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
+import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
+import { IOptions } from '@yohira/extensions.options/IOptions';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
@@ -7,9 +10,6 @@ import { PathString } from '@yohira/http.abstractions/PathString';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { useMiddleware } from '@yohira/http.abstractions/extensions/UseMiddlewareExtensions';
 import { getEndpoint } from '@yohira/http.abstractions/routing/EndpointHttpContextExtensions';
-import { ILogger } from '@yohira/logging.abstractions/ILogger';
-import { ILoggerFactory } from '@yohira/logging.abstractions/ILoggerFactory';
-import { IOptions } from '@yohira/options/IOptions';
 import { FileExtensionContentTypeProvider } from '@yohira/static-files/FileExtensionContentTypeProvider';
 import {
 	isGetOrHeadMethod,

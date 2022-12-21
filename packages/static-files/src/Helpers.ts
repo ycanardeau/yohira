@@ -1,4 +1,4 @@
-import { IFileProvider } from '@yohira/file-providers/IFileProvider';
+import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';

@@ -1,3 +1,7 @@
+import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
+import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
+import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
 import { logRequestLog } from '@yohira/http-logging/HttpLoggingExtensions';
 import { HttpLoggingFields } from '@yohira/http-logging/HttpLoggingFields';
 import { HttpLoggingOptions } from '@yohira/http-logging/HttpLoggingOptions';
@@ -7,10 +11,6 @@ import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { useMiddleware } from '@yohira/http.abstractions/extensions/UseMiddlewareExtensions';
-import { ILogger } from '@yohira/logging.abstractions/ILogger';
-import { ILoggerFactory } from '@yohira/logging.abstractions/ILoggerFactory';
-import { LogLevel } from '@yohira/logging.abstractions/LogLevel';
-import { IOptionsMonitor } from '@yohira/options/IOptionsMonitor';
 import { inject, injectable, named } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references

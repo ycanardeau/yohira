@@ -1,5 +1,5 @@
 import { HostFilteringStartupFilter } from '@yohira/core/default-builder/HostFilteringStartupFilter';
-import { FeatureCollection } from '@yohira/features/FeatureCollection';
+import { FeatureCollection } from '@yohira/extensions.features/FeatureCollection';
 import { IStartupFilter } from '@yohira/hosting.abstractions/IStartupFilter';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';

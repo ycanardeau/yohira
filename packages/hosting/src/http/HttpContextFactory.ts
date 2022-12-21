@@ -1,4 +1,4 @@
-import { IFeatureCollection } from '@yohira/features/IFeatureCollection';
+import { IFeatureCollection } from '@yohira/extensions.features/IFeatureCollection';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { HttpContext } from '@yohira/http/HttpContext';

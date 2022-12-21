@@ -1,6 +1,6 @@
-import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
+import { addHostedService } from '@yohira/extensions.hosting.abstractions/ServiceCollectionHostedServiceExtensions';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { addHostedService } from '@yohira/hosting.abstractions/ServiceCollectionHostedServiceExtensions';
 import { GenericWebHostBuilder } from '@yohira/hosting/generic-host/GenericWebHostBuilder';
 import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
 

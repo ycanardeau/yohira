@@ -1,5 +1,5 @@
-import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
-import { HostAppBuilder } from '@yohira/hosting/HostAppBuilder';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
+import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
 import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/BootstrapHostBuilder.cs,9f38532326a07c2d,references

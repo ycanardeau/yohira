@@ -1,4 +1,5 @@
-import { IHostBuilder } from '@yohira/hosting.abstractions/IHostBuilder';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
+import { configureOptionsServices } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '@yohira/hosting/builder/IAppBuilderFactory';
@@ -7,7 +8,6 @@ import { HttpContextFactory } from '@yohira/hosting/http/HttpContextFactory';
 import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartup';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
-import { configureOptionsServices } from '@yohira/options/OptionsServiceCollectionExtensions';
 import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references

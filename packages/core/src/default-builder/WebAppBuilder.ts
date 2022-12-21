@@ -1,7 +1,7 @@
 import { BootstrapHostBuilder } from '@yohira/core/default-builder/BootstrapHostBuilder';
 import { configureWebHostDefaults } from '@yohira/core/default-builder/GenericHostBuilderExtensions';
 import { WebApp } from '@yohira/core/default-builder/WebApp';
-import { HostAppBuilder } from '@yohira/hosting/HostAppBuilder';
+import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
 import { configure } from '@yohira/hosting/WebHostBuilderExtensions';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { Container } from 'inversify';
