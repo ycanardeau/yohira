@@ -12,10 +12,8 @@ import { getTypedHeaders } from '@yohira/http.extensions/HeaderDictionaryTypeExt
 import { RequestHeaders } from '@yohira/http.extensions/RequestHeaders';
 import { sendFile } from '@yohira/http.extensions/SendFileResponseExtensions';
 import { logFileServed } from '@yohira/static-files/LoggerExtensions';
-import {
-	StaticFileMiddleware,
-	StaticFileOptions,
-} from '@yohira/static-files/StaticFileMiddleware';
+import { StaticFileMiddleware } from '@yohira/static-files/StaticFileMiddleware';
+import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
 
 enum PreconditionState {
 	Unspecified,

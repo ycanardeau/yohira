@@ -4,6 +4,7 @@ import { WebApp } from '@yohira/core/default-builder/WebApp';
 import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
 import { configure } from '@yohira/hosting/WebHostBuilderExtensions';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { run } from '@yohira/http.abstractions/extensions/RunExtensions';
 import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplicationBuilder.cs,25a352b50e81d95b,references
@@ -16,8 +17,19 @@ export class WebAppBuilder {
 		/* TODO: context: WebHostBuilderContext, */
 		app: IAppBuilder,
 	): void => {
+		const { builtApp } = this;
+		if (builtApp === undefined) {
+			throw new Error('Assertion failed.');
+		}
+
 		// TODO
-		throw new Error('Method not implemented.');
+
+		app.use((next) => {
+			run(builtApp, next);
+			return builtApp.build();
+		});
+
+		// TODO
 	};
 
 	constructor() {

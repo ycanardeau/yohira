@@ -24,29 +24,10 @@ import {
 	logPathMismatch,
 	logRequestMethodNotSupported,
 } from '@yohira/static-files/LoggerExtensions';
-import { SharedOptionsBase } from '@yohira/static-files/SharedOptionsBase';
 import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
+import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
 import { inject, injectable, named } from 'inversify';
 import { Err, Ok, Result } from 'ts-results';
-
-// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileOptions.cs,fecf371ff955674d,references
-export class StaticFileOptions extends SharedOptionsBase {
-	/**
-	 * Used to map files to content-types.
-	 */
-	contentTypeProvider!: IContentTypeProvider;
-	/**
-	 * The default content type for a request if the ContentTypeProvider cannot determine one.
-	 * None is provided by default, so the client must determine the format themselves.
-	 * http://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7
-	 */
-	defaultContentType?: string;
-	/**
-	 * If the file is not a recognized content-type should it be served?
-	 * Default: false.
-	 */
-	serveUnknownFileTypes = false;
-}
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 @injectable()

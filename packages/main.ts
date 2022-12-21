@@ -2,7 +2,6 @@ import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
 import { IOptions } from '@yohira/extensions.options/IOptions';
 import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
-import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
 import { initialize } from '@yohira/hosting/internal/HostingEnvironmentExtensions';
 import {
@@ -14,9 +13,9 @@ import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
 import { HttpContext } from '@yohira/http/HttpContext';
 import {
 	StaticFileMiddleware,
-	StaticFileOptions,
 	useStaticFiles,
 } from '@yohira/static-files/StaticFileMiddleware';
+import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
 
 export const main = async (): Promise<void> => {
 	const builder = createWebAppBuilder(/* TODO */);
@@ -24,18 +23,6 @@ export const main = async (): Promise<void> => {
 	// TODO: Remove.
 	{
 		const container = builder.services;
-
-		container
-			.bind(IOptions)
-			.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
-				const options = new GenericWebHostServiceOptions();
-				options.configureApp = (app): void => {
-					// TODO
-				};
-				return { value: options };
-			})
-			.inSingletonScope()
-			.whenTargetNamed(GenericWebHostServiceOptions.name);
 
 		const hostingEnv = new HostingEnv();
 		initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
@@ -52,6 +39,7 @@ export const main = async (): Promise<void> => {
 			})
 			.inSingletonScope()
 			.whenTargetNamed(StaticFileOptions.name);
+		container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
 
 		container
 			.bind(IOptionsMonitor)
@@ -61,9 +49,6 @@ export const main = async (): Promise<void> => {
 			})
 			.inSingletonScope()
 			.whenTargetNamed(HttpLoggingOptions.name);
-
-		container.bind(StaticFileMiddleware).toSelf().inSingletonScope();
-
 		container.bind(HttpLoggingMiddleware).toSelf().inSingletonScope();
 	}
 
