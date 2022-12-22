@@ -5,7 +5,11 @@ import { Type } from '@yohira/base/Type';
 import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
+import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
+import { CallSiteFactory } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteFactory';
 import { CallSiteValidator } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteValidator';
+import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
+import { ServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngine';
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
 
 const getOrAdd = <K, V>(
@@ -26,6 +30,9 @@ const getOrAdd = <K, V>(
 export class ServiceProvider implements IServiceProvider, IDisposable {
 	private readonly callSiteValidator?: CallSiteValidator;
 
+	// Internal for testing
+	/** @internal */ engine: ServiceProviderEngine;
+
 	private readonly _createServiceAccessor: (
 		serviceType: Type,
 	) => (
@@ -41,14 +48,37 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		) => object | undefined
 	>;
 
+	readonly callSiteFactory: CallSiteFactory;
+
 	root: ServiceProviderEngineScope;
+
+	private getEngine = (): ServiceProviderEngine => {
+		// TODO
+		throw new Error('Method not implemented.');
+	};
+
+	private onCreate = (callSite: ServiceCallSite): void => {
+		// TODO
+		throw new Error('Method not implemented.');
+	};
 
 	private createServiceAccessor = (
 		serviceType: Type,
 	): ((
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined) => {
-		// TODO
+		const callSite = this.callSiteFactory.getCallSite(
+			serviceType,
+			new CallSiteChain(),
+		);
+		if (callSite !== undefined) {
+			// TODO: Log.
+			this.onCreate(callSite);
+
+			// TODO: Optimize singleton case
+
+			return this.engine.realizeService(callSite);
+		}
 
 		return () => undefined;
 	};
@@ -58,7 +88,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		options: ServiceProviderOptions,
 	) {
 		this.root = new ServiceProviderEngineScope(this, true);
-		// TODO
+		this.engine = this.getEngine();
 		this._createServiceAccessor = this.createServiceAccessor;
 		this.realizedServices = new Map<
 			string,
@@ -67,15 +97,13 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 			) => object | undefined
 		>();
 
+		this.callSiteFactory = new CallSiteFactory(serviceDescriptors);
+		// TODO
+
 		// TODO
 
 		// TODO: Log.
 	}
-
-	private onCreate = (/* TODO */): void => {
-		// TODO
-		throw new Error('Method not implemented.');
-	};
 
 	private onResolve = (serviceType: Type, scope: IServiceScope): void => {
 		this.callSiteValidator?.validateResolution(
