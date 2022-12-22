@@ -1,6 +1,5 @@
 import { List } from '@yohira/base/List';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { SR } from '@yohira/extensions.dependency-injection.abstractions/SR';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollection.cs,beaaadffb389924e,references
@@ -18,7 +17,9 @@ export class ServiceCollection implements IServiceCollection {
 
 	private checkReadonly = (): void => {
 		if (this._isReadonly) {
-			throw new Error(SR.ServiceCollectionReadOnly);
+			throw new Error(
+				'The service collection cannot be modified because it is read-only.' /* LOC */,
+			);
 		}
 	};
 
