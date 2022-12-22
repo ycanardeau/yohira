@@ -8,6 +8,7 @@ import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/
 import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
 import { CallSiteFactory } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteFactory';
 import { CallSiteValidator } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteValidator';
+import { RuntimeServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/RuntimeServiceProviderEngine';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { ServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngine';
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
@@ -53,8 +54,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	root: ServiceProviderEngineScope;
 
 	private getEngine = (): ServiceProviderEngine => {
-		// TODO
-		throw new Error('Method not implemented.');
+		return RuntimeServiceProviderEngine.instance; /* TODO */
 	};
 
 	private onCreate = (callSite: ServiceCallSite): void => {
