@@ -16,6 +16,20 @@ const tryGetValue = <K, V>(map: Map<K, V>, key: K): Result<V, undefined> => {
 	}
 };
 
+const isConstructedGenericType = (type: Type): boolean => {
+	return !!type.match(/[\w]+<[\w]+>/);
+};
+
+const getGenericTypeDefinition = (type: Type): Type => {
+	const match = type.match(/([\w]+)<[\w]+>/);
+	if (!match) {
+		throw new Error(
+			'This operation is only valid on generic types.' /* LOC */,
+		);
+	}
+	return `${match[1]}<>`;
+};
+
 class ServiceDescriptorCacheItem {
 	private item?: ServiceDescriptor;
 	private items?: List<ServiceDescriptor>;
@@ -96,6 +110,7 @@ class ServiceDescriptorCacheItem {
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteFactory.cs,b3200cd3834458b8,references
 export class CallSiteFactory implements IServiceProviderIsService {
 	private static readonly defaultSlot = 0;
+	private readonly descriptors: ServiceDescriptor[];
 	private readonly callSiteCache = new Map<number, ServiceCallSite>();
 	private readonly descriptorLookup = new Map<
 		Type,
@@ -103,13 +118,93 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	>();
 	// REVIEW: callSiteLocks
 
-	constructor(descriptors: ICollection<ServiceDescriptor>) {}
+	private populate = (): void => {
+		for (const descriptor of this.descriptors) {
+			const serviceType = descriptor.serviceType;
+			// TODO
+
+			const cacheKey = serviceType;
+			const tryGetValueResult = tryGetValue(
+				this.descriptorLookup,
+				cacheKey,
+			);
+			this.descriptorLookup.set(
+				cacheKey,
+				(tryGetValueResult.val ?? new ServiceDescriptorCacheItem()).add(
+					descriptor,
+				),
+			);
+		}
+	};
+
+	constructor(descriptors: ICollection<ServiceDescriptor>) {
+		// TODO
+		this.descriptors = Array.from(descriptors);
+
+		this.populate();
+	}
+
+	private tryCreateExactCore = (
+		descriptor: ServiceDescriptor,
+		serviceType: Type,
+		callSiteChain: CallSiteChain,
+		slot: number,
+	): ServiceCallSite | undefined => {
+		if (serviceType === descriptor.serviceType) {
+			// TODO
+		}
+
+		return undefined;
+	};
 
 	private tryCreateExact = (
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite | undefined => {
-		// TODO
+		const tryGetValueResult = tryGetValue(
+			this.descriptorLookup,
+			serviceType,
+		);
+		if (tryGetValueResult.ok) {
+			return this.tryCreateExactCore(
+				tryGetValueResult.val.last,
+				serviceType,
+				callSiteChain,
+				CallSiteFactory.defaultSlot,
+			);
+		}
+
+		return undefined;
+	};
+
+	private tryCreateOpenGenericCore = (
+		descriptor: ServiceDescriptor,
+		serviceType: Type,
+		callSiteChain: CallSiteChain,
+		slot: number,
+		throwOnConstraintViolation: boolean,
+	): ServiceCallSite | undefined => {
+		if (
+			isConstructedGenericType(serviceType) &&
+			getGenericTypeDefinition(serviceType) === descriptor.serviceType
+		) {
+			const callSiteKey = new ServiceCacheKey(serviceType, slot);
+			const callSiteKeyHashCode = callSiteKey.getHashCode();
+			const tryGetValueResult = tryGetValue(
+				this.callSiteCache,
+				callSiteKeyHashCode,
+			);
+			if (tryGetValueResult.ok) {
+				return tryGetValueResult.val;
+			}
+
+			if (descriptor.implType === undefined) {
+				throw new Error('Assertion failed.');
+			}
+			// TODO
+
+			// TODO
+		}
 
 		return undefined;
 	};
@@ -118,7 +213,21 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite | undefined => {
-		// TODO
+		if (isConstructedGenericType(serviceType)) {
+			const tryGetValueResult = tryGetValue(
+				this.descriptorLookup,
+				getGenericTypeDefinition(serviceType),
+			);
+			if (tryGetValueResult.ok) {
+				return this.tryCreateOpenGenericCore(
+					tryGetValueResult.val.last,
+					serviceType,
+					callSiteChain,
+					CallSiteFactory.defaultSlot,
+					true,
+				);
+			}
+		}
 
 		return undefined;
 	};
