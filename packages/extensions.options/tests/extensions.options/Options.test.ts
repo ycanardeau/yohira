@@ -1,10 +1,14 @@
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { addSingletonType } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
+import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
+import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { IOptions } from '@yohira/extensions.options/IOptions';
 import { Options } from '@yohira/extensions.options/Options';
+import { UnnamedOptionsManager } from '@yohira/extensions.options/UnnamedOptionsManager';
 import { expect, test } from 'vitest';
 
 import { FakeOptions } from './FakeOptions';
@@ -13,6 +17,14 @@ import { FakeOptionsFactory } from './FakeOptionsFactory';
 // TODO: Remove.
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,4909ed65f60d1c84,references
 const addOptions = (services: IServiceCollection): IServiceCollection => {
+	tryAdd(
+		services,
+		ServiceDescriptor.fromType(
+			ServiceLifetime.Singleton,
+			'IOptions<>',
+			UnnamedOptionsManager,
+		),
+	);
 	// TODO
 	return services;
 };
