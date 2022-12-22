@@ -4,6 +4,7 @@ import { Type } from '@yohira/base/Type';
 import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
+import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { Err, Ok, Result } from 'ts-results-es';
@@ -17,11 +18,11 @@ const tryGetValue = <K, V>(map: Map<K, V>, key: K): Result<V, undefined> => {
 };
 
 const isConstructedGenericType = (type: Type): boolean => {
-	return !!type.match(/[\w]+<[\w]+>/);
+	return !!type.match(/^[\w]+<[\w]+>$/);
 };
 
 const getGenericTypeDefinition = (type: Type): Type => {
-	const match = type.match(/([\w]+)<[\w]+>/);
+	const match = type.match(/^([\w]+)<[\w]+>$/);
 	if (!match) {
 		throw new Error(
 			'This operation is only valid on generic types.' /* LOC */,
@@ -177,6 +178,16 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return undefined;
 	};
 
+	private createConstructorCallSite = (
+		lifetime: ResultCache,
+		serviceType: Type,
+		implType: new (...args: never[]) => unknown,
+		callSiteChain: CallSiteChain,
+	): ServiceCallSite => {
+		// TODO
+		throw new Error('Method not implemented.');
+	};
+
 	private tryCreateOpenGenericCore = (
 		descriptor: ServiceDescriptor,
 		serviceType: Type,
@@ -201,9 +212,21 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			if (descriptor.implType === undefined) {
 				throw new Error('Assertion failed.');
 			}
+			const lifetime = new ResultCache(
+				descriptor.lifetime,
+				serviceType,
+				slot,
+			);
 			// TODO
 
-			// TODO
+			const callSite = this.createConstructorCallSite(
+				lifetime,
+				serviceType,
+				descriptor.implType /* TODO: closedType */,
+				callSiteChain,
+			);
+			this.callSiteCache.set(callSiteKeyHashCode, callSite);
+			return callSite;
 		}
 
 		return undefined;
