@@ -16,6 +16,15 @@
 		"paths": {
 			"@yohira/base/*": ["packages/base/src/*"],
 			"@yohira/core/*": ["packages/core/src/*"],
+			"@yohira/extensions.dependency-injection/*": [
+				"packages/extensions.dependency-injection/src/*"
+			],
+			"@yohira/extensions.dependency-injection.abstractions/*": [
+				"packages/extensions.dependency-injection.abstractions/src/*"
+			],
+			"@yohira/extensions.dependency-injection.specification.tests/*": [
+				"packages/extensions.dependency-injection.specification.tests/src/*"
+			],
 			"@yohira/extensions.features/*": [
 				"packages/extensions.features/src/*"
 			],
