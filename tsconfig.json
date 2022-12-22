@@ -60,5 +60,6 @@
 			"@yohira/http.extensions/*": ["packages/http.extensions/src/*"],
 			"@yohira/static-files/*": ["packages/static-files/src/*"]
 		}
-	}
+	},
+	"include": ["packages/**/*"]
 }

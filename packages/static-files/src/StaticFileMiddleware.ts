@@ -27,7 +27,7 @@ import {
 import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
 import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
 import { inject, injectable, named } from 'inversify';
-import { Err, Ok, Result } from 'ts-results';
+import { Err, Ok, Result } from 'ts-results-es';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 @injectable()
@@ -82,14 +82,14 @@ export class StaticFileMiddleware implements IMiddleware {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const result = contentTypeProvider.tryGetContentType(subPath.value!);
 		if (result.ok) {
-			return Ok(result.val);
+			return new Ok(result.val);
 		}
 
 		if (options.serveUnknownFileTypes) {
-			return Ok(options.defaultContentType);
+			return new Ok(options.defaultContentType);
 		}
 
-		return Err(undefined);
+		return new Err(undefined);
 	};
 
 	private tryServeStaticFile = (

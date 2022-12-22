@@ -3704,10 +3704,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-results@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "ts-results@npm:3.3.0"
-  checksum: 426c272901d7a0cf8e9539ed90739d03f8e99245fb669beabba8c6729b92da6574698018f9dc8d5d92e8a3e833a40899f855192208ff8dd7e4a68178f7740132
+"ts-results-es@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "ts-results-es@npm:3.5.0"
+  checksum: 35d371781a04c43dbb941ab5f34b800c53a2a28c54784f9e600cd87cb63c4ee4c3fec0ebb2b0d0771fe44e3d81f7bb6d25ccebfc04adcb72e00349d435d9a89f
   languageName: node
   linkType: hard
 
@@ -4088,7 +4088,7 @@ __metadata:
     prettier: ^2.7.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    ts-results: ^3.3.0
+    ts-results-es: ^3.5.0
     tsc-alias: ^1.7.1
     typescript: ^4.9.3
     vitest: ^0.26.2

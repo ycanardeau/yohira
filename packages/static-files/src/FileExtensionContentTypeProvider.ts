@@ -1,5 +1,5 @@
 import { IContentTypeProvider } from '@yohira/static-files/IContentTypeProvider';
-import { Err, Ok, Result } from 'ts-results';
+import { Err, Ok, Result } from 'ts-results-es';
 
 // TODO: Move.
 const isNullOrWhiteSpace = (value: string | undefined): boolean => {
@@ -418,9 +418,9 @@ export class FileExtensionContentTypeProvider implements IContentTypeProvider {
 		const extension =
 			FileExtensionContentTypeProvider.getExtension(subpath);
 		if (!extension) {
-			return Err(undefined);
+			return new Err(undefined);
 		}
 		const mapping = this.mappings[extension];
-		return mapping !== undefined ? Ok(mapping) : Err(undefined);
+		return mapping !== undefined ? new Ok(mapping) : new Err(undefined);
 	};
 }

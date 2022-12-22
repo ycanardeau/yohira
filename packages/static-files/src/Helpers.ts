@@ -3,7 +3,7 @@ import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { PathString } from '@yohira/http.abstractions/PathString';
-import { Err, Ok, Result } from 'ts-results';
+import { Err, Ok, Result } from 'ts-results-es';
 
 export const resolveFileProvider = (hostingEnv: IWebHostEnv): IFileProvider => {
 	return hostingEnv.webRootFileProvider;
@@ -33,7 +33,7 @@ export const tryMatchPath = (
 
 	const { ret, remaining: subpath } = path.startsWithSegments(matchUrl);
 	if (ret) {
-		return Ok(subpath);
+		return new Ok(subpath);
 	}
-	return Err(subpath);
+	return new Err(subpath);
 };
