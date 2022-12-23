@@ -17,12 +17,14 @@ const tryGetValue = <K, V>(map: Map<K, V>, key: K): Result<V, undefined> => {
 	}
 };
 
+const genericTypeRegExp = /^([\w]+)<[\w]+>$/;
+
 const isConstructedGenericType = (type: Type): boolean => {
-	return !!type.match(/^[\w]+<[\w]+>$/);
+	return genericTypeRegExp.test(type);
 };
 
 const getGenericTypeDefinition = (type: Type): Type => {
-	const match = type.match(/^([\w]+)<[\w]+>$/);
+	const match = genericTypeRegExp.exec(type);
 	if (!match) {
 		throw new Error(
 			'This operation is only valid on generic types.' /* LOC */,
@@ -178,7 +180,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return undefined;
 	};
 
-	private createConstructorCallSite = (
+	private createCtorCallSite = (
 		lifetime: ResultCache,
 		serviceType: Type,
 		implType: new (...args: never[]) => unknown,
@@ -219,7 +221,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			);
 			// TODO
 
-			const callSite = this.createConstructorCallSite(
+			const callSite = this.createCtorCallSite(
 				lifetime,
 				serviceType,
 				descriptor.implType /* TODO: closedType */,

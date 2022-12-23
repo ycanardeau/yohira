@@ -58,8 +58,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	};
 
 	private onCreate = (callSite: ServiceCallSite): void => {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.callSiteValidator?.validateCallSite(callSite);
 	};
 
 	private createServiceAccessor = (
