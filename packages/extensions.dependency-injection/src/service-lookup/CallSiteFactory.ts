@@ -1,12 +1,16 @@
 import { ICollection } from '@yohira/base/ICollection';
 import { List } from '@yohira/base/List';
-import { Type } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
+import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
+import { METADATA_KEY, MetadataReader } from 'inversify';
+// TODO: Move.
+import 'reflect-metadata';
 import { Err, Ok, Result } from 'ts-results-es';
 
 const tryGetValue = <K, V>(map: Map<K, V>, key: K): Result<V, undefined> => {
@@ -154,7 +158,41 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		slot: number,
 	): ServiceCallSite | undefined => {
 		if (serviceType === descriptor.serviceType) {
-			// TODO
+			const callSiteKey = new ServiceCacheKey(serviceType, slot);
+			const callSiteKeyHashCode = callSiteKey.getHashCode();
+			const tryGetValueResult = tryGetValue(
+				this.callSiteCache,
+				callSiteKeyHashCode,
+			);
+			if (tryGetValueResult.ok) {
+				return tryGetValueResult.val;
+			}
+
+			let callSite: ServiceCallSite;
+			const lifetime = new ResultCache(
+				descriptor.lifetime,
+				serviceType,
+				slot,
+			);
+			if (descriptor.implInstance !== undefined) {
+				// TODO
+				throw new Error('Method not implemented.');
+			} else if (descriptor.implFactory !== undefined) {
+				// TODO
+				throw new Error('Method not implemented.');
+			} else if (descriptor.implCtor !== undefined) {
+				callSite = this.createCtorCallSite(
+					lifetime,
+					descriptor.serviceType,
+					descriptor.implCtor,
+					callSiteChain,
+				);
+			} else {
+				throw new Error('Invalid service descriptor' /* LOC */);
+			}
+
+			this.callSiteCache.set(callSiteKeyHashCode, callSite);
+			return callSite;
 		}
 
 		return undefined;
@@ -180,14 +218,73 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return undefined;
 	};
 
+	private createArgumentCallSites = (
+		implCtor: Ctor<unknown>,
+		callSiteChain: CallSiteChain,
+		parameterTypes: Type[],
+		throwIfCallSiteNotFound: boolean,
+	): ServiceCallSite[] | undefined => {
+		const parameterCallSites: ServiceCallSite[] = [];
+		for (let index = 0; index < parameterTypes.length; index++) {
+			const parameterType = parameterTypes[index];
+			const callSite = this.getCallSite(parameterType, callSiteChain);
+
+			if (callSite === undefined) {
+				// TODO
+			}
+
+			if (callSite === undefined) {
+				if (throwIfCallSiteNotFound) {
+					throw new Error(
+						`Unable to resolve service for type '${parameterType}' while attempting to activate '${implCtor.name}'.` /* LOC */,
+					);
+				}
+
+				return undefined;
+			}
+
+			parameterCallSites.push(callSite);
+		}
+
+		return parameterCallSites;
+	};
+
 	private createCtorCallSite = (
 		lifetime: ResultCache,
 		serviceType: Type,
-		implType: new (...args: never[]) => unknown,
+		implCtor: Ctor<object>,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite => {
+		const metadataReader = new MetadataReader();
+		const metadata = metadataReader.getConstructorMetadata(implCtor);
+		const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
+		const parameterTypes = Object.values(ctorArgsMetadata).map(
+			(metadata) =>
+				metadata.find(({ key }) => key === METADATA_KEY.INJECT_TAG)
+					?.value as string,
+		);
+		// TODO: Remove.
+		if (parameterTypes.length !== implCtor.length) {
+			throw new Error(/* TODO */);
+		}
+		if (parameterTypes.length === 0) {
+			return new CtorCallSite(lifetime, serviceType, implCtor);
+		}
+
 		// TODO
-		throw new Error('Method not implemented.');
+		const parameterCallSites = this.createArgumentCallSites(
+			implCtor,
+			callSiteChain,
+			parameterTypes,
+			true,
+		);
+
+		return new CtorCallSite(
+			lifetime,
+			serviceType,
+			implCtor,
+			parameterCallSites,
+		);
 	};
 
 	private tryCreateOpenGenericCore = (
@@ -211,7 +308,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 				return tryGetValueResult.val;
 			}
 
-			if (descriptor.implType === undefined) {
+			if (descriptor.implCtor === undefined) {
 				throw new Error('Assertion failed.');
 			}
 			const lifetime = new ResultCache(
@@ -224,7 +321,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			const callSite = this.createCtorCallSite(
 				lifetime,
 				serviceType,
-				descriptor.implType /* TODO: closedType */,
+				descriptor.implCtor /* TODO: closedType */,
 				callSiteChain,
 			);
 			this.callSiteCache.set(callSiteKeyHashCode, callSite);

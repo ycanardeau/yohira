@@ -1,4 +1,5 @@
-import { Type } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base/Type';
+import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteKind';
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 
@@ -6,10 +7,14 @@ import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service
 export class CtorCallSite extends ServiceCallSite {
 	constructor(
 		cache: ResultCache,
-		serviceType: Type,
-		/* TODO: ctorInfo */
-		parameterCallSites: ServiceCallSite[] = [],
+		readonly serviceType: Type,
+		readonly implCtor: Ctor<object>,
+		readonly parameterCallSites: ServiceCallSite[] = [],
 	) {
 		super(cache);
+	}
+
+	get kind(): CallSiteKind {
+		return CallSiteKind.Ctor;
 	}
 }

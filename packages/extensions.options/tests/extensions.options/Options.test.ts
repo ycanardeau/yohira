@@ -19,7 +19,7 @@ import { FakeOptionsFactory } from './FakeOptionsFactory';
 const addOptions = (services: IServiceCollection): IServiceCollection => {
 	tryAdd(
 		services,
-		ServiceDescriptor.fromType(
+		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
 			'IOptions<>',
 			UnnamedOptionsManager,

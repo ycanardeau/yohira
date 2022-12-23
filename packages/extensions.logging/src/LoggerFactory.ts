@@ -19,7 +19,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.Debug:
 						console.debug(
 							categoryName.name,
@@ -27,7 +26,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.Information:
 						console.info(
 							categoryName.name,
@@ -35,7 +33,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.Warning:
 						console.warn(
 							categoryName.name,
@@ -43,7 +40,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.Error:
 						console.error(
 							categoryName.name,
@@ -51,7 +47,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.Critical:
 						console.error(
 							categoryName.name,
@@ -59,7 +54,6 @@ export class LoggerFactory implements ILoggerFactory {
 							...optionalParams,
 						);
 						break;
-
 					case LogLevel.None:
 						console.log(
 							categoryName.name,

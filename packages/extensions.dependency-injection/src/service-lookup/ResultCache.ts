@@ -21,15 +21,12 @@ export class ResultCache {
 			case ServiceLifetime.Singleton:
 				this.location = CallSiteResultCacheLocation.Root;
 				break;
-
 			case ServiceLifetime.Scoped:
 				this.location = CallSiteResultCacheLocation.Scope;
 				break;
-
 			case ServiceLifetime.Transient:
 				this.location = CallSiteResultCacheLocation.Dispose;
 				break;
-
 			default:
 				this.location = CallSiteResultCacheLocation.None;
 				break;

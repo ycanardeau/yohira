@@ -1,38 +1,38 @@
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Type } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base/Type';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceDescriptor.cs,b593fd2837338f2a,references
-export class ServiceDescriptor<T = unknown> {
+export class ServiceDescriptor {
 	private constructor(
 		readonly lifetime: ServiceLifetime,
 		readonly serviceType: Type,
-		readonly implType: (new (...args: never[]) => T) | undefined,
-		readonly implInstance: T | undefined,
+		readonly implCtor: Ctor<object> | undefined,
+		readonly implInstance: object | undefined,
 		readonly implFactory:
-			| ((serviceProvider: IServiceProvider) => T)
+			| ((serviceProvider: IServiceProvider) => object)
 			| undefined,
 	) {}
 
-	static fromType = <T>(
+	static fromCtor = (
 		lifetime: ServiceLifetime,
 		serviceType: Type,
-		type: new (...args: never[]) => T,
-	): ServiceDescriptor<T> => {
+		ctor: Ctor<object>,
+	): ServiceDescriptor => {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
-			type,
+			ctor,
 			undefined,
 			undefined,
 		);
 	};
 
-	static fromInstance = <T>(
+	static fromInstance = (
 		lifetime: ServiceLifetime,
 		serviceType: Type,
-		instance: T,
-	): ServiceDescriptor<T> => {
+		instance: object,
+	): ServiceDescriptor => {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -45,8 +45,8 @@ export class ServiceDescriptor<T = unknown> {
 	static fromFactory = <T>(
 		lifetime: ServiceLifetime,
 		serviceType: Type,
-		factory: (serviceProvider: IServiceProvider) => T,
-	): ServiceDescriptor<T> => {
+		factory: (serviceProvider: IServiceProvider) => object,
+	): ServiceDescriptor => {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -61,8 +61,8 @@ export class ServiceDescriptor<T = unknown> {
 			ServiceLifetime[this.lifetime]
 		} `;
 
-		if (this.implType !== undefined) {
-			return `${lifetime}implType: ${this.implType.name}`;
+		if (this.implCtor !== undefined) {
+			return `${lifetime}implCtor: ${this.implCtor.name}`;
 		}
 
 		if (this.implFactory !== undefined) {

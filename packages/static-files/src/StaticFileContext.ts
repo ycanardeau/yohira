@@ -221,15 +221,12 @@ export class StaticFileContext {
 				}
 				await next(context);
 				return;
-
 			case PreconditionState.NotModified:
 				// TODO
 				return;
-
 			case PreconditionState.PreconditionFailed:
 				// TODO
 				return;
-
 			default:
 				throw new Error('Method not implemented.');
 		}
