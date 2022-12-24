@@ -8,7 +8,7 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 	private _value?: TOptions;
 
 	constructor(
-		@inject('IOptionsFactory<FakeOptions>' /* TODO: Remove FakeOptions. */)
+		@inject('IOptionsFactory<>')
 		private readonly factory: IOptionsFactory<TOptions>,
 	) {}
 
