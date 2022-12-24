@@ -1,6 +1,9 @@
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { addTransientCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import {
+	addSingletonInstance,
+	addTransientCtor,
+} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { expect, test } from 'vitest';
@@ -75,6 +78,30 @@ test('SelfCircularDependencyGenericIndirect', () => {
 			'SelfCircularDependencyGeneric<number>',
 		),
 	).toThrowError(expectedMessage);
+});
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L93
+test('NoCircularDependencyGeneric', () => {
+	let $: IServiceCollection;
+	$ = new ServiceCollection();
+	$ = addSingletonInstance(
+		$,
+		'SelfCircularDependencyGeneric<string>',
+		new SelfCircularDependencyGeneric<string>(),
+	);
+	$ = addTransientCtor(
+		$,
+		'SelfCircularDependencyGeneric<number>',
+		SelfCircularDependencyGeneric,
+	);
+	const serviceProvider = buildServiceProvider($);
+
+	// This will not throw because we are creating an instance of the first time
+	// using the parameterless constructor which has no circular dependency
+	const resolvedService = getRequiredService<
+		SelfCircularDependencyGeneric<number>
+	>(serviceProvider, 'SelfCircularDependencyGeneric<number>');
+	expect(resolvedService).not.toBeUndefined();
 });
 
 // TODO

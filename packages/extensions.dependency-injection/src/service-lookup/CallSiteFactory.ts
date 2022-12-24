@@ -4,6 +4,7 @@ import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
+import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
@@ -169,14 +170,16 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			}
 
 			let callSite: ServiceCallSite;
-			const lifetime = new ResultCache(
+			const lifetime = ResultCache.create(
 				descriptor.lifetime,
 				serviceType,
 				slot,
 			);
 			if (descriptor.implInstance !== undefined) {
-				// TODO
-				throw new Error('Method not implemented.');
+				callSite = new ConstantCallSite(
+					descriptor.serviceType,
+					descriptor.implInstance,
+				);
 			} else if (descriptor.implFactory !== undefined) {
 				// TODO
 				throw new Error('Method not implemented.');
@@ -320,7 +323,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			if (descriptor.implCtor === undefined) {
 				throw new Error('Assertion failed.');
 			}
-			const lifetime = new ResultCache(
+			const lifetime = ResultCache.create(
 				descriptor.lifetime,
 				serviceType,
 				slot,

@@ -1,5 +1,6 @@
 import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteKind';
 import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
+import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 
@@ -10,10 +11,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		argument: TArgument,
 	): TResult;
 
-	/* TODO: protected abstract visitConstant(
+	protected abstract visitConstant(
 		constantCallSite: ConstantCallSite,
 		argument: TArgument,
-	): TResult;*/
+	): TResult;
 
 	/* TODO: protected abstract visitServiceProvider(
 		serviceProviderCallSite: ServiceProviderCallSite,
@@ -42,7 +43,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 			case CallSiteKind.Ctor:
 				return this.visitCtor(callSite as CtorCallSite, argument);
 			case CallSiteKind.Constant:
-				throw new Error('Method not implemented.');
+				return this.visitConstant(
+					callSite as ConstantCallSite,
+					argument,
+				);
 			case CallSiteKind.ServiceProvider:
 				throw new Error('Method not implemented.');
 		}

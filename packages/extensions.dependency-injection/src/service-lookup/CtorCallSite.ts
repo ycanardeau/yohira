@@ -5,6 +5,8 @@ import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ConstructorCallSite.cs,312901d8ccc89353,references
 export class CtorCallSite extends ServiceCallSite {
+	readonly kind = CallSiteKind.Ctor;
+
 	constructor(
 		cache: ResultCache,
 		readonly serviceType: Type,
@@ -12,9 +14,5 @@ export class CtorCallSite extends ServiceCallSite {
 		readonly parameterCallSites: ServiceCallSite[] = [],
 	) {
 		super(cache);
-	}
-
-	get kind(): CallSiteKind {
-		return CallSiteKind.Ctor;
 	}
 }

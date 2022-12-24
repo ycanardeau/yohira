@@ -5,32 +5,38 @@ import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ResultCache.cs,29fb1ee4290bb7fa,references
 export class ResultCache {
-	location: CallSiteResultCacheLocation;
-	key: ServiceCacheKey;
+	private constructor(
+		public location: CallSiteResultCacheLocation,
+		public key: ServiceCacheKey,
+	) {}
 
-	constructor(
+	static readonly none = new ResultCache(
+		CallSiteResultCacheLocation.None,
+		ServiceCacheKey.empty,
+	);
+
+	static create = (
 		lifetime: ServiceLifetime,
 		type: Type | undefined,
 		slot: number,
-	) {
+	): ResultCache => {
 		if (lifetime !== ServiceLifetime.Transient && type === undefined) {
 			throw new Error('Assertion failed.');
 		}
 
+		const key = new ServiceCacheKey(type, slot);
 		switch (lifetime) {
 			case ServiceLifetime.Singleton:
-				this.location = CallSiteResultCacheLocation.Root;
-				break;
+				return new ResultCache(CallSiteResultCacheLocation.Root, key);
 			case ServiceLifetime.Scoped:
-				this.location = CallSiteResultCacheLocation.Scope;
-				break;
+				return new ResultCache(CallSiteResultCacheLocation.Scope, key);
 			case ServiceLifetime.Transient:
-				this.location = CallSiteResultCacheLocation.Dispose;
-				break;
+				return new ResultCache(
+					CallSiteResultCacheLocation.Dispose,
+					key,
+				);
 			default:
-				this.location = CallSiteResultCacheLocation.None;
-				break;
+				return new ResultCache(CallSiteResultCacheLocation.None, key);
 		}
-		this.key = new ServiceCacheKey(type, slot);
-	}
+	};
 }

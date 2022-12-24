@@ -18,6 +18,20 @@ export const addSingletonCtor = (
 	return services;
 };
 
+export const addSingletonInstance = (
+	services: IServiceCollection,
+	serviceType: Type,
+	implInstance: object,
+): IServiceCollection => {
+	const descriptor = ServiceDescriptor.fromInstance(
+		ServiceLifetime.Singleton,
+		serviceType,
+		implInstance,
+	);
+	services.add(descriptor);
+	return services;
+};
+
 export const addTransientCtor = (
 	services: IServiceCollection,
 	serviceType: Type,

@@ -1,4 +1,5 @@
 import { CallSiteVisitor } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteVisitor';
+import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
@@ -23,6 +24,12 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 				this.visitCallSite(parameterCallSite, context),
 		);
 		return new ctorCallSite.implCtor(...parameterValues);
+	};
+
+	protected visitConstant = (
+		constantCallSite: ConstantCallSite,
+	): object | undefined => {
+		return constantCallSite.defaultValue;
 	};
 
 	resolve = (
