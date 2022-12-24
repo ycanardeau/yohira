@@ -4,6 +4,6 @@ import { inject } from 'inversify';
 export class SelfCircularDependencyGeneric<TDependency> {
 	constructor(
 		@inject('SelfCircularDependencyGeneric<string>')
-		self?: SelfCircularDependencyGeneric<string>,
+		readonly self?: SelfCircularDependencyGeneric<string>,
 	) {}
 }
