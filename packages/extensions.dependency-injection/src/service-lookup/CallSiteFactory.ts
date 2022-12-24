@@ -260,37 +260,42 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		genericType: Type | undefined,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite => {
-		const metadataReader = new MetadataReader();
-		const metadata = metadataReader.getConstructorMetadata(implCtor);
-		const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
-		const parameterTypes = Object.values(ctorArgsMetadata).map(
-			(metadata) =>
-				metadata.find(({ key }) => key === METADATA_KEY.INJECT_TAG)
-					?.value as string,
-		);
-		// TODO: Remove.
-		if (parameterTypes.length !== implCtor.length) {
-			throw new Error(/* TODO */);
-		}
-		if (parameterTypes.length === 0) {
-			return new CtorCallSite(lifetime, serviceType, implCtor);
-		}
+		try {
+			callSiteChain.add(serviceType, implCtor, genericType);
+			const metadataReader = new MetadataReader();
+			const metadata = metadataReader.getConstructorMetadata(implCtor);
+			const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
+			const parameterTypes = Object.values(ctorArgsMetadata).map(
+				(metadata) =>
+					metadata.find(({ key }) => key === METADATA_KEY.INJECT_TAG)
+						?.value as string,
+			);
+			// TODO: Remove.
+			if (parameterTypes.length !== implCtor.length) {
+				throw new Error(/* TODO */);
+			}
+			if (parameterTypes.length === 0) {
+				return new CtorCallSite(lifetime, serviceType, implCtor);
+			}
 
-		// TODO
-		const parameterCallSites = this.createArgumentCallSites(
-			implCtor,
-			genericType,
-			callSiteChain,
-			parameterTypes,
-			true,
-		);
+			// TODO
+			const parameterCallSites = this.createArgumentCallSites(
+				implCtor,
+				genericType,
+				callSiteChain,
+				parameterTypes,
+				true,
+			);
 
-		return new CtorCallSite(
-			lifetime,
-			serviceType,
-			implCtor,
-			parameterCallSites,
-		);
+			return new CtorCallSite(
+				lifetime,
+				serviceType,
+				implCtor,
+				parameterCallSites,
+			);
+		} finally {
+			callSiteChain.remove(serviceType);
+		}
 	};
 
 	private tryCreateOpenGenericCore = (
@@ -375,6 +380,8 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		// REVIEW
 
 		// REVIEW: Lock.
+		callSiteChain.checkCircularDependency(serviceType);
+
 		const callSite =
 			this.tryCreateExact(serviceType, callSiteChain) ??
 			this.tryCreateOpenGeneric(serviceType, callSiteChain) ??

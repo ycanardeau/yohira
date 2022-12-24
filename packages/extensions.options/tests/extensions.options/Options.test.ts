@@ -1,6 +1,6 @@
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { addSingletonType } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
@@ -59,19 +59,16 @@ export const configureOptionsServices = <TOptions>(
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsTest.cs#L18
 test('UsesFactory', () => {
-	const services = new ServiceCollection();
-	addSingletonType(
-		services,
-		'IOptionsFactory<FakeOptions>',
-		FakeOptionsFactory,
-	);
-	configureOptionsServices(services, FakeOptions, (o) => {
+	let $: IServiceCollection;
+	$ = new ServiceCollection();
+	$ = addSingletonCtor($, 'IOptionsFactory<FakeOptions>', FakeOptionsFactory);
+	$ = configureOptionsServices($, FakeOptions, (o) => {
 		o.message = 'Ignored';
 	});
-	const provider = buildServiceProvider(services);
+	const services = buildServiceProvider($);
 
 	const snap = getRequiredService<IOptions<FakeOptions>>(
-		provider,
+		services,
 		'IOptions<FakeOptions>',
 	);
 	expect(snap.value).toBe(FakeOptionsFactory.options);

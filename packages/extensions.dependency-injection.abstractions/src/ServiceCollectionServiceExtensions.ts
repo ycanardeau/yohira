@@ -4,13 +4,27 @@ import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstr
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollectionServiceExtensions.cs,865c289313a49193,references
-export const addSingletonType = (
+export const addSingletonCtor = (
 	services: IServiceCollection,
 	serviceType: Type,
 	implCtor: Ctor<object>,
 ): IServiceCollection => {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
+		serviceType,
+		implCtor,
+	);
+	services.add(descriptor);
+	return services;
+};
+
+export const addTransientCtor = (
+	services: IServiceCollection,
+	serviceType: Type,
+	implCtor: Ctor<object>,
+): IServiceCollection => {
+	const descriptor = ServiceDescriptor.fromCtor(
+		ServiceLifetime.Transient,
 		serviceType,
 		implCtor,
 	);
