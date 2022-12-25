@@ -1,6 +1,7 @@
 import { ICollection } from '@yohira/base/ICollection';
 import { IDisposable } from '@yohira/base/IDisposable';
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { getOrAdd } from '@yohira/base/MapExtensions';
 import { Type } from '@yohira/base/Type';
 import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
@@ -12,20 +13,6 @@ import { RuntimeServiceProviderEngine } from '@yohira/extensions.dependency-inje
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { ServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngine';
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
-
-const getOrAdd = <K, V>(
-	map: Map<K, V>,
-	key: K,
-	valueFactory: (key: K) => V,
-): V => {
-	if (map.has(key)) {
-		return map.get(key) as V;
-	} else {
-		const value = valueFactory(key);
-		map.set(key, value);
-		return value;
-	}
-};
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceProvider.cs,7b97f84895159f6d,references
 export class ServiceProvider implements IServiceProvider, IDisposable {
@@ -98,6 +85,10 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 		this.callSiteFactory = new CallSiteFactory(serviceDescriptors);
 		// TODO
+
+		if (options.validateScopes) {
+			this.callSiteValidator = new CallSiteValidator();
+		}
 
 		// TODO
 

@@ -1,5 +1,6 @@
 import { ICollection } from '@yohira/base/ICollection';
 import { List } from '@yohira/base/List';
+import { tryGetValue } from '@yohira/base/MapExtensions';
 import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
@@ -12,15 +13,6 @@ import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service
 import { METADATA_KEY, MetadataReader } from 'inversify';
 // TODO: Move.
 import 'reflect-metadata';
-import { Err, Ok, Result } from 'ts-results-es';
-
-const tryGetValue = <K, V>(map: Map<K, V>, key: K): Result<V, undefined> => {
-	if (map.has(key)) {
-		return new Ok(map.get(key) as V);
-	} else {
-		return new Err(undefined);
-	}
-};
 
 const genericTypeRegExp = /^([\w]+)<([\w]+)>$/;
 

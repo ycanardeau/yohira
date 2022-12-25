@@ -84,7 +84,7 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		callSite: ServiceCallSite,
 		argument: TArgument,
 	): TResult => {
-		// TODO
+		// REVIEW: tryEnterOnCurrentStack
 
 		switch (callSite.cache.location) {
 			case CallSiteResultCacheLocation.Root:
