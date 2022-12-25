@@ -4,6 +4,7 @@ import { IServiceScope } from '@yohira/extensions.dependency-injection.abstracti
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 import { CallSiteVisitor } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteVisitor';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 
 class CallSiteValidatorState {
@@ -68,6 +69,14 @@ export class CallSiteValidator extends CallSiteVisitor<
 			result ??= scoped;
 		}
 		return result;
+	};
+
+	protected visitIterable = (
+		iterableCallSite: IterableCallSite,
+		state: CallSiteValidatorState,
+	): Type | undefined => {
+		// TODO
+		throw new Error('Method not implemented.');
 	};
 
 	protected visitConstant = (): Type | undefined => {

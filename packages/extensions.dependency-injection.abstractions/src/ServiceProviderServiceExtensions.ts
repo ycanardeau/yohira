@@ -17,3 +17,10 @@ export const getRequiredService = <T>(
 
 	return service;
 };
+
+export const getServices = <T>(
+	provider: IServiceProvider,
+	serviceType: Type,
+): T[] => {
+	return getRequiredService<T[]>(provider, `Iterable<${serviceType}>`);
+};

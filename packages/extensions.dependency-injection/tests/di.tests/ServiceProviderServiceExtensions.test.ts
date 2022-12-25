@@ -1,7 +1,13 @@
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { addTransientCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
+import {
+	addSingletonInstance,
+	addTransientCtor,
+} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import {
+	getRequiredService,
+	getServices,
+} from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { expect, test } from 'vitest';
 
@@ -59,6 +65,33 @@ test('GetRequiredService_Throws_WhenNoServiceRegistered', () => {
 	expect(() => getRequiredService(serviceProvider, 'IFoo')).toThrowError(
 		"No service for type 'IFoo' has been registered.",
 	);
+});
+
+// TODO
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L83
+test('GetServices_Returns_AllServices', () => {
+	const serviceProvider = createTestServiceProvider(2);
+
+	const services = getServices<IFoo>(serviceProvider, 'IFoo');
+
+	expect(services.find((item) => item instanceof Foo1)).not.toBeUndefined();
+	expect(services.find((item) => item instanceof Foo2)).not.toBeUndefined();
+	expect(services.length).toBe(2);
+});
+
+// TODO
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L186
+test('GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvailable', () => {
+	const serviceCollection = new ServiceCollection();
+	addSingletonInstance(serviceCollection, 'Iterable<IFoo>', []);
+	const serviceProvider = buildServiceProvider(serviceCollection);
+
+	const services = getServices<IFoo>(serviceProvider, 'IFoo');
+
+	expect(services.length).toBe(0);
+	expect(services).instanceof(Array);
 });
 
 // TODO

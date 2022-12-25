@@ -2,6 +2,7 @@ import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lo
 import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
 import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteVisitor.cs,830d006141417efa,references
@@ -21,10 +22,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		argument: TArgument,
 	): TResult;*/
 
-	/* TODO: protected abstract visitIEnumerable(
-		enumerableCallSite: IEnumerableCallSite,
+	protected abstract visitIterable(
+		iterableCallSite: IterableCallSite,
 		argument: TArgument,
-	): TResult;*/
+	): TResult;
 
 	/* TODO: protected abstract visitFactory(
 		factoryCallSite: FactoryCallSite,
@@ -38,8 +39,11 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		switch (callSite.kind) {
 			case CallSiteKind.Factory:
 				throw new Error('Method not implemented.');
-			case CallSiteKind.IEnumerable:
-				throw new Error('Method not implemented.');
+			case CallSiteKind.Iterable:
+				return this.visitIterable(
+					callSite as IterableCallSite,
+					argument,
+				);
 			case CallSiteKind.Ctor:
 				return this.visitCtor(callSite as CtorCallSite, argument);
 			case CallSiteKind.Constant:

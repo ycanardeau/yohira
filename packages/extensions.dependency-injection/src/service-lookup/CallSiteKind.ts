@@ -3,6 +3,6 @@ export enum CallSiteKind {
 	Factory,
 	Ctor,
 	Constant,
-	IEnumerable,
+	Iterable,
 	ServiceProvider,
 }

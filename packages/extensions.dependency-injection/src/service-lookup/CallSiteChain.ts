@@ -3,8 +3,7 @@ import { Ctor, Type } from '@yohira/base/Type';
 class ChainItemInfo {
 	constructor(
 		readonly order: number,
-		readonly implCtor: Ctor<unknown>,
-		readonly genericType: Type | undefined,
+		readonly implCtor: Ctor<unknown> | undefined,
 	) {}
 }
 
@@ -33,14 +32,10 @@ export class CallSiteChain {
 		this.callSiteChain.delete(serviceType);
 	};
 
-	add = (
-		serviceType: Type,
-		implCtor: Ctor<unknown>,
-		genericType: Type | undefined,
-	): void => {
+	add = (serviceType: Type, implCtor: Ctor<unknown> | undefined): void => {
 		this.callSiteChain.set(
 			serviceType,
-			new ChainItemInfo(this.callSiteChain.size, implCtor, genericType),
+			new ChainItemInfo(this.callSiteChain.size, implCtor),
 		);
 	};
 }

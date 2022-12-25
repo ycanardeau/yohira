@@ -5,14 +5,17 @@ import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
+import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
 import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { METADATA_KEY, MetadataReader } from 'inversify';
 // TODO: Move.
 import 'reflect-metadata';
+import { Result } from 'ts-results-es';
 
 const genericTypeRegExp = /^([\w]+)<([\w]+)>$/;
 
@@ -256,7 +259,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite => {
 		try {
-			callSiteChain.add(serviceType, implCtor, genericType);
+			callSiteChain.add(serviceType, implCtor);
 			const metadataReader = new MetadataReader();
 			const metadata = metadataReader.getConstructorMetadata(implCtor);
 			const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
@@ -359,13 +362,102 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return undefined;
 	};
 
-	private tryCreateEnumerable = (
+	private static getCommonCacheLocation = (
+		locationA: CallSiteResultCacheLocation,
+		locationB: CallSiteResultCacheLocation,
+	): CallSiteResultCacheLocation => {
+		return Math.max(locationA, locationB);
+	};
+
+	private tryCreateIterable = (
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite | undefined => {
-		// TODO
+		const callSiteKey = new ServiceCacheKey(
+			serviceType,
+			CallSiteFactory.defaultSlot,
+		);
+		const callSiteKeyHashCode = callSiteKey.getHashCode();
+		const tryGetValueResult = tryGetValue(
+			this.callSiteCache,
+			callSiteKeyHashCode,
+		);
+		if (tryGetValueResult.ok) {
+			return tryGetValueResult.val;
+		}
 
-		return undefined;
+		try {
+			callSiteChain.add(serviceType, undefined);
+
+			const match = genericTypeRegExp.exec(serviceType);
+			if (match && `${match[1]}<>` === 'Iterable<>') {
+				const itemType = match[2];
+				let cacheLocation = CallSiteResultCacheLocation.Root;
+
+				const callSites: ServiceCallSite[] = [];
+
+				// If item type is not generic we can safely use descriptor cache
+				let tryGetValueResult: Result<
+					ServiceDescriptorCacheItem,
+					undefined
+				>;
+				if (
+					!isConstructedGenericType(itemType) &&
+					(tryGetValueResult = tryGetValue(
+						this.descriptorLookup,
+						itemType,
+					)) &&
+					tryGetValueResult.ok
+				) {
+					const { val: descriptors } = tryGetValueResult;
+					for (let i = 0; i < descriptors.count; i++) {
+						const descriptor = descriptors.get(i);
+
+						// Last service should get slot 0
+						const slot = descriptors.count - i - 1;
+						// There may not be any open generics here
+						const callSite = this.tryCreateExactCore(
+							descriptor,
+							itemType,
+							callSiteChain,
+							slot,
+						);
+						if (callSite === undefined) {
+							throw new Error('Assertion failed.');
+						}
+
+						cacheLocation = CallSiteFactory.getCommonCacheLocation(
+							cacheLocation,
+							callSite.cache.location,
+						);
+						callSites.push(callSite);
+					}
+				} else {
+					// TODO
+					throw new Error('Method not implemented.');
+				}
+
+				let resultCache = ResultCache.none;
+				if (
+					cacheLocation === CallSiteResultCacheLocation.Scope ||
+					cacheLocation === CallSiteResultCacheLocation.Root
+				) {
+					resultCache = new ResultCache(cacheLocation, callSiteKey);
+				}
+
+				const callSite = new IterableCallSite(
+					resultCache,
+					itemType,
+					callSites,
+				);
+				this.callSiteCache.set(callSiteKeyHashCode, callSite);
+				return callSite;
+			}
+
+			return undefined;
+		} finally {
+			callSiteChain.remove(serviceType);
+		}
 	};
 
 	private createCallSite = (
@@ -380,7 +472,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		const callSite =
 			this.tryCreateExact(serviceType, callSiteChain) ??
 			this.tryCreateOpenGeneric(serviceType, callSiteChain) ??
-			this.tryCreateEnumerable(serviceType, callSiteChain);
+			this.tryCreateIterable(serviceType, callSiteChain);
 
 		return callSite;
 	};

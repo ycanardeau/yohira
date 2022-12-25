@@ -5,7 +5,7 @@ import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ResultCache.cs,29fb1ee4290bb7fa,references
 export class ResultCache {
-	private constructor(
+	constructor(
 		public location: CallSiteResultCacheLocation,
 		public key: ServiceCacheKey,
 	) {}
