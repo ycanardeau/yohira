@@ -1,6 +1,7 @@
 import { CallSiteVisitor } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteVisitor';
 import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
 import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
@@ -27,6 +28,12 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		return new ctorCallSite.implCtor(...parameterValues);
 	};
 
+	protected visitConstant = (
+		constantCallSite: ConstantCallSite,
+	): object | undefined => {
+		return constantCallSite.defaultValue;
+	};
+
 	protected visitIterable = (
 		iterableCallSite: IterableCallSite,
 		context: RuntimeResolverContext,
@@ -36,11 +43,18 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		);
 	};
 
-	protected visitConstant = (
-		constantCallSite: ConstantCallSite,
+	protected visitFactory = (
+		factoryCallSite: FactoryCallSite,
+		context: RuntimeResolverContext,
 	): object | undefined => {
-		return constantCallSite.defaultValue;
+		return factoryCallSite.factory(context.scope);
 	};
+
+	// TODO: visitRootCache
+
+	// TODO: visitScopeCache
+
+	// TODO: visitDisposeCache
 
 	resolve = (
 		callSite: ServiceCallSite,

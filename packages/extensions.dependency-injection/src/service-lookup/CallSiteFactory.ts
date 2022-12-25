@@ -8,6 +8,7 @@ import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-l
 import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
 import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
 import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
@@ -176,8 +177,11 @@ export class CallSiteFactory implements IServiceProviderIsService {
 					descriptor.implInstance,
 				);
 			} else if (descriptor.implFactory !== undefined) {
-				// TODO
-				throw new Error('Method not implemented.');
+				callSite = new FactoryCallSite(
+					lifetime,
+					descriptor.serviceType,
+					descriptor.implFactory,
+				);
 			} else if (descriptor.implCtor !== undefined) {
 				callSite = this.createCtorCallSite(
 					lifetime,

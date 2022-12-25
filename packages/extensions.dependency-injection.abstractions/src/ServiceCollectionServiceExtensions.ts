@@ -1,3 +1,4 @@
+import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
@@ -27,6 +28,20 @@ export const addSingletonInstance = (
 		ServiceLifetime.Singleton,
 		serviceType,
 		implInstance,
+	);
+	services.add(descriptor);
+	return services;
+};
+
+export const addSingletonFactory = (
+	services: IServiceCollection,
+	serviceType: Type,
+	implFactory: (serviceProvider: IServiceProvider) => object,
+): IServiceCollection => {
+	const descriptor = ServiceDescriptor.fromFactory(
+		ServiceLifetime.Singleton,
+		serviceType,
+		implFactory,
 	);
 	services.add(descriptor);
 	return services;

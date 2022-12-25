@@ -2,6 +2,7 @@ import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lo
 import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
 import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
 import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
+import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
 import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 
@@ -27,10 +28,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		argument: TArgument,
 	): TResult;
 
-	/* TODO: protected abstract visitFactory(
+	protected abstract visitFactory(
 		factoryCallSite: FactoryCallSite,
 		argument: TArgument,
-	): TResult;*/
+	): TResult;
 
 	protected visitCallSiteMain = (
 		callSite: ServiceCallSite,
@@ -38,7 +39,7 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 	): TResult => {
 		switch (callSite.kind) {
 			case CallSiteKind.Factory:
-				throw new Error('Method not implemented.');
+				return this.visitFactory(callSite as FactoryCallSite, argument);
 			case CallSiteKind.Iterable:
 				return this.visitIterable(
 					callSite as IterableCallSite,
