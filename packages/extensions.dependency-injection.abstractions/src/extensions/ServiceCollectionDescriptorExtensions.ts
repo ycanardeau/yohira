@@ -16,3 +16,11 @@ export const tryAdd = (
 
 	collection.add(descriptor);
 };
+
+export const tryAddIterable = (
+	collection: IServiceCollection,
+	descriptor: ServiceDescriptor,
+): void => {
+	// TODO
+	tryAdd(collection, descriptor);
+};
