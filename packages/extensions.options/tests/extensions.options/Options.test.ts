@@ -1,3 +1,4 @@
+import { Ctor } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
@@ -33,7 +34,7 @@ const addOptions = (services: IServiceCollection): IServiceCollection => {
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
 const configureNamedOptionsServices = <TOptions>(
 	services: IServiceCollection,
-	optionsType: new (...args: never[]) => TOptions,
+	optionsType: Ctor<TOptions>,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
 ): IServiceCollection => {
@@ -46,7 +47,7 @@ const configureNamedOptionsServices = <TOptions>(
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
 export const configureOptionsServices = <TOptions>(
 	services: IServiceCollection,
-	optionsType: new (...args: never[]) => TOptions,
+	optionsType: Ctor<TOptions>,
 	configureOptions: (options: TOptions) => void,
 ): IServiceCollection => {
 	return configureNamedOptionsServices(

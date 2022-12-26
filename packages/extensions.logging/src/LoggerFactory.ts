@@ -1,3 +1,4 @@
+import { Ctor } from '@yohira/base/Type';
 import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
 import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
@@ -6,9 +7,7 @@ import { injectable } from 'inversify';
 // https://source.dot.net/#Microsoft.Extensions.Logging/LoggerFactory.cs,173b9b523cabe719,references
 @injectable()
 export class LoggerFactory implements ILoggerFactory {
-	createLogger = <T>(
-		categoryName: new (...args: never[]) => T,
-	): ILogger<T> => {
+	createLogger = <T>(categoryName: Ctor<T>): ILogger<T> => {
 		return {
 			log: (logLevel, message, ...optionalParams): void => {
 				switch (logLevel) {

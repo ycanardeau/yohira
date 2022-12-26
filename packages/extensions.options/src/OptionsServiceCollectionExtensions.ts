@@ -1,3 +1,4 @@
+import { Ctor } from '@yohira/base/Type';
 import { ConfigureNamedOptions } from '@yohira/extensions.options/ConfigureNamedOptions';
 import { IConfigureOptions } from '@yohira/extensions.options/IConfigureOptions';
 import { IOptions } from '@yohira/extensions.options/IOptions';
@@ -8,7 +9,7 @@ import { Container } from 'inversify';
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
 const configureNamedOptionsServices = <TOptions>(
 	services: Container,
-	optionsType: new (...args: never[]) => TOptions,
+	optionsType: Ctor<TOptions>,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
 ): Container => {
@@ -37,7 +38,7 @@ const configureNamedOptionsServices = <TOptions>(
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
 export const configureOptionsServices = <TOptions>(
 	services: Container,
-	optionsType: new (...args: never[]) => TOptions,
+	optionsType: Ctor<TOptions>,
 	configureOptions: (options: TOptions) => void,
 ): Container => {
 	return configureNamedOptionsServices(
