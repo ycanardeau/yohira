@@ -9,7 +9,7 @@ import { Container } from 'inversify';
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
 const configureNamedOptionsServices = <TOptions>(
 	services: Container,
-	optionsType: Ctor<TOptions>,
+	optionsCtor: Ctor<TOptions>,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
 ): Container => {
@@ -31,19 +31,19 @@ const configureNamedOptionsServices = <TOptions>(
 			() => new ConfigureNamedOptions<TOptions>(name, configureOptions),
 		)
 		.inSingletonScope()
-		.whenTargetNamed(optionsType.name);
+		.whenTargetNamed(optionsCtor.name);
 	return services;
 };
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
 export const configureOptionsServices = <TOptions>(
 	services: Container,
-	optionsType: Ctor<TOptions>,
+	optionsCtor: Ctor<TOptions>,
 	configureOptions: (options: TOptions) => void,
 ): Container => {
 	return configureNamedOptionsServices(
 		services,
-		optionsType,
+		optionsCtor,
 		Options.defaultName,
 		configureOptions,
 	);

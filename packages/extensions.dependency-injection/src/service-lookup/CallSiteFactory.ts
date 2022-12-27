@@ -18,7 +18,7 @@ import { METADATA_KEY, MetadataReader } from 'inversify';
 import 'reflect-metadata';
 import { Result } from 'ts-results-es';
 
-const genericTypeRegExp = /^([\w]+)<([\w]+)>$/;
+const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 
 const isConstructedGenericType = (type: Type): boolean => {
 	return genericTypeRegExp.test(type);
@@ -437,8 +437,38 @@ export class CallSiteFactory implements IServiceProviderIsService {
 						callSites.push(callSite);
 					}
 				} else {
-					// TODO
-					throw new Error('Method not implemented.');
+					let slot = 0;
+					// We are going in reverse so the last service in descriptor list gets slot 0
+					for (let i = this.descriptors.length - 1; i >= 0; i--) {
+						const descriptor = this.descriptors[i];
+						const callSite =
+							this.tryCreateExactCore(
+								descriptor,
+								itemType,
+								callSiteChain,
+								slot,
+							) ??
+							this.tryCreateOpenGenericCore(
+								descriptor,
+								itemType,
+								callSiteChain,
+								slot,
+								false,
+							);
+
+						if (callSite !== undefined) {
+							slot++;
+
+							cacheLocation =
+								CallSiteFactory.getCommonCacheLocation(
+									cacheLocation,
+									callSite.cache.location,
+								);
+							callSites.push(callSite);
+						}
+					}
+
+					callSites.reverse();
 				}
 
 				let resultCache = ResultCache.none;

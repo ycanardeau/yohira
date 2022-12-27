@@ -1,3 +1,4 @@
+import { Ctor } from '@yohira/base/Type';
 import { IOptions } from '@yohira/extensions.options/IOptions';
 import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
 import { Options } from '@yohira/extensions.options/Options';
@@ -12,11 +13,14 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 		private readonly factory: IOptionsFactory<TOptions>,
 	) {}
 
-	get value(): TOptions {
+	getValue = (optionsCtor: Ctor<TOptions>): TOptions => {
 		if (this._value !== undefined) {
 			return this._value;
 		}
 
-		return (this._value ??= this.factory.create(Options.defaultName));
-	}
+		return (this._value ??= this.factory.create(
+			optionsCtor,
+			Options.defaultName,
+		));
+	};
 }
