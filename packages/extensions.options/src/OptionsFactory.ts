@@ -8,9 +8,7 @@ import { inject } from 'inversify';
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsFactory.cs,89202ae8d1498a3f,references
 export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 	constructor(
-		@inject(
-			'Iterable<IConfigureOptions<FakeOptions>>' /* TODO: Remove FakeOptions */,
-		)
+		@inject('Iterable<IConfigureOptions<>>')
 		private readonly setups: (
 			| IConfigureOptions<TOptions>
 			| IConfigureNamedOptions<TOptions>
@@ -19,7 +17,8 @@ export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 
 	protected createInstance = (
 		optionsCtor: Ctor<TOptions>,
-		name: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_name: string,
 	): TOptions => {
 		return new optionsCtor();
 	};

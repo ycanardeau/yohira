@@ -187,7 +187,6 @@ export class CallSiteFactory implements IServiceProviderIsService {
 					lifetime,
 					descriptor.serviceType,
 					descriptor.implCtor,
-					undefined,
 					callSiteChain,
 				);
 			} else {
@@ -223,17 +222,13 @@ export class CallSiteFactory implements IServiceProviderIsService {
 
 	private createArgumentCallSites = (
 		implCtor: Ctor<unknown>,
-		genericType: Type | undefined,
 		callSiteChain: CallSiteChain,
 		parameterTypes: Type[],
 		throwIfCallSiteNotFound: boolean,
 	): ServiceCallSite[] | undefined => {
 		const parameterCallSites: ServiceCallSite[] = [];
 		for (const parameterType of parameterTypes) {
-			const callSite = this.getCallSite(
-				parameterType.replace(/^([\w]+)<>$/, `$1<${genericType}>`),
-				callSiteChain,
-			);
+			const callSite = this.getCallSite(parameterType, callSiteChain);
 
 			if (callSite === undefined) {
 				// TODO
@@ -259,7 +254,6 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		lifetime: ResultCache,
 		serviceType: Type,
 		implCtor: Ctor<object>,
-		genericType: Type | undefined,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite => {
 		try {
@@ -267,10 +261,16 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			const metadataReader = new MetadataReader();
 			const metadata = metadataReader.getConstructorMetadata(implCtor);
 			const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
+			const match = genericTypeRegExp.exec(serviceType);
 			const parameterTypes = Object.values(ctorArgsMetadata).map(
-				(metadata) =>
-					metadata.find(({ key }) => key === METADATA_KEY.INJECT_TAG)
-						?.value as string,
+				(metadata) => {
+					const parameterType = metadata.find(
+						({ key }) => key === METADATA_KEY.INJECT_TAG,
+					)?.value as string;
+					return match
+						? parameterType.replace('<>', `<${match[2]}>`)
+						: parameterType;
+				},
 			);
 			// TODO: Remove.
 			if (parameterTypes.length !== implCtor.length) {
@@ -283,7 +283,6 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			// TODO
 			const parameterCallSites = this.createArgumentCallSites(
 				implCtor,
-				genericType,
 				callSiteChain,
 				parameterTypes,
 				true,
@@ -333,7 +332,6 @@ export class CallSiteFactory implements IServiceProviderIsService {
 				lifetime,
 				serviceType,
 				descriptor.implCtor /* TODO: closedType */,
-				match[2],
 				callSiteChain,
 			);
 			this.callSiteCache.set(callSiteKeyHashCode, callSite);

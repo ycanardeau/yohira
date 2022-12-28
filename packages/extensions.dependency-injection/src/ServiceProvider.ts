@@ -104,7 +104,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	};
 
 	getService = <T>(
-		serviceType: string,
+		serviceType: Type,
 		serviceProviderEngineScope = this.root,
 	): T | undefined => {
 		if (this.disposed) {
