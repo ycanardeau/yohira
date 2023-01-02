@@ -1,9 +1,12 @@
 import { HostFilteringStartupFilter } from '@yohira/core/default-builder/HostFilteringStartupFilter';
+import {
+	addSingletonFactory,
+	addTransientCtor,
+} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { ServiceProvider } from '@yohira/extensions.dependency-injection/ServiceProvider';
 import { FeatureCollection } from '@yohira/extensions.features/FeatureCollection';
-import { IStartupFilter } from '@yohira/hosting.abstractions/IStartupFilter';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';
-import { Container } from 'inversify';
 import { IncomingMessage, ServerResponse, createServer } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebHost.cs,ca2002fa0bfdb774,references
@@ -12,10 +15,11 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 	builder
 		.configureServices(
 			/* TODO */ (/* TODO */ services) => {
-				services
-					.bind(IServer)
-					.toDynamicValue(
-						(): IServer => ({
+				addSingletonFactory(
+					services,
+					'IServer',
+					(serviceProvider): IServer => {
+						return {
 							start: async (app): Promise<void> => {
 								// https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener
 								const server = createServer(
@@ -34,8 +38,8 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 											response,
 										);
 										featureCollection.set(
-											Container,
-											services,
+											ServiceProvider,
+											serviceProvider,
 										);
 										const context =
 											app.createContext(
@@ -55,19 +59,20 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 								// TODO
 								throw new Error('Method not implemented.');
 							},
-						}),
-					)
-					.inSingletonScope();
+						};
+					},
+				);
 			},
 		)
 		.configureServices((/* TODO */ services) => {
 			// TODO
 
-			// TODO: Use IServiceCollection.
-			services
-				.bind(IStartupFilter)
-				.to(HostFilteringStartupFilter)
-				.inTransientScope();
+			addTransientCtor(
+				services,
+				'IStartupFilter',
+				HostFilteringStartupFilter,
+			);
+			// TODO
 
 			// TODO
 		});

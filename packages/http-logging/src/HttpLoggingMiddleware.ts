@@ -11,7 +11,7 @@ import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { useMiddleware } from '@yohira/http.abstractions/extensions/UseMiddlewareExtensions';
-import { inject, injectable, named } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references
 @injectable()
@@ -19,10 +19,9 @@ export class HttpLoggingMiddleware implements IMiddleware {
 	private readonly logger: ILogger<HttpLoggingMiddleware>;
 
 	constructor(
-		@inject(IOptionsMonitor)
-		@named(HttpLoggingOptions.name)
+		@inject('IOptionsMonitor<HttpLoggingOptions>')
 		private readonly options: IOptionsMonitor<HttpLoggingOptions>,
-		@inject(ILoggerFactory)
+		@inject('ILoggerFactory')
 		loggerFactory: ILoggerFactory /* TODO: ILogger */,
 	) {
 		this.logger = loggerFactory.createLogger(HttpLoggingMiddleware);

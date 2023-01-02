@@ -1,11 +1,11 @@
 import { BootstrapHostBuilder } from '@yohira/core/default-builder/BootstrapHostBuilder';
 import { configureWebHostDefaults } from '@yohira/core/default-builder/GenericHostBuilderExtensions';
 import { WebApp } from '@yohira/core/default-builder/WebApp';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
 import { configure } from '@yohira/hosting/WebHostBuilderExtensions';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { run } from '@yohira/http.abstractions/extensions/RunExtensions';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplicationBuilder.cs,25a352b50e81d95b,references
 export class WebAppBuilder {
@@ -52,7 +52,7 @@ export class WebAppBuilder {
 		// TODO
 	}
 
-	get services(): Container {
+	get services(): IServiceCollection {
 		return this.hostAppBuilder.services;
 	}
 

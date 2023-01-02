@@ -1,4 +1,5 @@
 import { Ctor } from '@yohira/base/Type';
+import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
 import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
@@ -9,7 +10,10 @@ export const useMiddleware = <T extends IMiddleware>(
 	ctor: Ctor<T>,
 ): IAppBuilder => {
 	return use(app, async (context, next) => {
-		const middleware = context.requestServices.get<T>(ctor);
+		const middleware = getRequiredService<T>(
+			context.requestServices,
+			ctor.name,
+		);
 		await middleware.invoke(context, next);
 	});
 };

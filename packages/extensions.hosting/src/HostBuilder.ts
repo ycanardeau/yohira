@@ -1,20 +1,24 @@
+import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
+import { addSingletonFactory } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import { Host } from '@yohira/extensions.hosting/internal/Host';
-import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
+import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
 import { addLogging } from '@yohira/extensions.logging/LoggingServiceCollectionExtensions';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,a8c4578a1465d84d,references
-export const populateServiceCollection = (services: Container): void => {
+export const populateServiceCollection = (
+	services: IServiceCollection,
+	serviceProviderGetter: () => IServiceProvider,
+): void => {
 	// TODO
 
-	services.bind(IHost).toDynamicValue(() => {
-		// TODO
+	addSingletonFactory(services, 'IHost', () => {
+		const appServices = serviceProviderGetter();
 		return new Host(
-			services,
-			services
-				.get<ILoggerFactory>(ILoggerFactory)
-				.createLogger(Host) /* TODO */,
+			appServices,
+			getRequiredService<ILogger<Host>>(appServices, 'ILogger<Host>'),
 		);
 	});
 	// TODO
@@ -22,10 +26,12 @@ export const populateServiceCollection = (services: Container): void => {
 };
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,328ee38355596558,references
-export const resolveHost = (serviceProvider: Container /* TODO */): IHost => {
+export const resolveHost = (
+	serviceProvider: IServiceProvider /* TODO */,
+): IHost => {
 	// TODO
 
-	const host = serviceProvider.get<IHost>(IHost);
+	const host = getRequiredService<IHost>(serviceProvider, 'IHost');
 
 	// TODO
 

@@ -1,46 +1,70 @@
 import { Ctor } from '@yohira/base/Type';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
+import { addSingletonInstance } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
+import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
+import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
 import { ConfigureNamedOptions } from '@yohira/extensions.options/ConfigureNamedOptions';
-import { IConfigureOptions } from '@yohira/extensions.options/IConfigureOptions';
-import { IOptions } from '@yohira/extensions.options/IOptions';
 import { Options } from '@yohira/extensions.options/Options';
-import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
-import { Container } from 'inversify';
+import { OptionsFactory } from '@yohira/extensions.options/OptionsFactory';
+import { OptionsMonitor } from '@yohira/extensions.options/OptionsMonitor';
+import { UnnamedOptionsManager } from '@yohira/extensions.options/UnnamedOptionsManager';
+
+// https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,4909ed65f60d1c84,references
+export const addOptions = (
+	services: IServiceCollection,
+): IServiceCollection => {
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			'IOptions<>',
+			UnnamedOptionsManager,
+		),
+	);
+	// TODO
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			'IOptionsMonitor<>',
+			OptionsMonitor,
+		),
+	);
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Transient,
+			'IOptionsFactory<>',
+			OptionsFactory,
+		),
+	);
+	// TODO
+	return services;
+};
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
-const configureNamedOptionsServices = <TOptions>(
-	services: Container,
+export const configureNamedOptionsServices = <TOptions>(
+	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
-): Container => {
-	// TODO: Remove.
-	services
-		.bind(IOptions)
-		.toDynamicValue((): IOptions<GenericWebHostServiceOptions> => {
-			const options = new GenericWebHostServiceOptions();
-			configureOptions(options as TOptions);
-			return { value: options };
-		})
-		.inSingletonScope()
-		.whenTargetNamed(GenericWebHostServiceOptions.name);
-
-	// TODO: addOptions
-	services
-		.bind(IConfigureOptions)
-		.toDynamicValue(
-			() => new ConfigureNamedOptions<TOptions>(name, configureOptions),
-		)
-		.inSingletonScope()
-		.whenTargetNamed(optionsCtor.name);
+): IServiceCollection => {
+	addOptions(services);
+	addSingletonInstance(
+		services,
+		`IConfigureOptions<${optionsCtor.name}>`,
+		new ConfigureNamedOptions(name, configureOptions),
+	);
 	return services;
 };
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
 export const configureOptionsServices = <TOptions>(
-	services: Container,
+	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
 	configureOptions: (options: TOptions) => void,
-): Container => {
+): IServiceCollection => {
 	return configureNamedOptionsServices(
 		services,
 		optionsCtor,

@@ -26,7 +26,7 @@ import {
 } from '@yohira/static-files/LoggerExtensions';
 import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
 import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
-import { inject, injectable, named } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Err, Ok, Result } from 'ts-results-es';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
@@ -39,13 +39,12 @@ export class StaticFileMiddleware implements IMiddleware {
 	private readonly contentTypeProvider: IContentTypeProvider;
 
 	constructor(
-		@inject(IWebHostEnv) hostingEnv: IWebHostEnv,
-		@inject(IOptions)
-		@named(StaticFileOptions.name)
+		@inject('IWebHostEnv') hostingEnv: IWebHostEnv,
+		@inject('IOptions<StaticFileOptions>')
 		options: IOptions<StaticFileOptions>,
-		@inject(ILoggerFactory) loggerFactory: ILoggerFactory,
+		@inject('ILoggerFactory') loggerFactory: ILoggerFactory,
 	) {
-		this.options = options.value;
+		this.options = options.getValue(StaticFileOptions);
 		this.contentTypeProvider =
 			this.options.contentTypeProvider ??
 			new FileExtensionContentTypeProvider();

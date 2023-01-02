@@ -1,6 +1,6 @@
+import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { IHttpRequest } from '@yohira/http.abstractions/IHttpRequest';
 import { IHttpResponse } from '@yohira/http.abstractions/IHttpResponse';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpContext.cs,9bde6e3833d169c1,references
 export interface IHttpContext {
@@ -12,5 +12,8 @@ export interface IHttpContext {
 	 * Gets the {@link IHttpResponse} object for this request.
 	 */
 	readonly response: IHttpResponse;
-	requestServices: Container;
+	/**
+	 * Gets or sets the {@link IServiceProvider} that provides access to the request's service container.
+	 */
+	requestServices: IServiceProvider;
 }

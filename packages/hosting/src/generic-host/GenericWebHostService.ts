@@ -7,7 +7,7 @@ import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/Gener
 import { HostingApp } from '@yohira/hosting/internal/HostingApp';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { inject, injectable, multiInject, named } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostService.cs,fd20321226ab7078,references
 @injectable()
@@ -15,19 +15,18 @@ export class GenericWebHostService implements IHostedService {
 	private readonly options: GenericWebHostServiceOptions;
 
 	constructor(
-		@inject(IOptions)
-		@named(GenericWebHostServiceOptions.name)
+		@inject('IOptions<GenericWebHostServiceOptions>')
 		options: IOptions<GenericWebHostServiceOptions>,
-		@inject(IServer)
+		@inject('IServer')
 		readonly server: IServer,
-		@inject(IHttpContextFactory)
+		@inject('IHttpContextFactory')
 		readonly httpContextFactory: IHttpContextFactory,
-		@inject(IAppBuilderFactory)
+		@inject('IAppBuilderFactory')
 		readonly appBuilderFactory: IAppBuilderFactory,
-		@multiInject(IStartupFilter)
+		@inject('Iterable<IStartupFilter>')
 		readonly startupFilters: readonly IStartupFilter[],
 	) {
-		this.options = options.value;
+		this.options = options.getValue(GenericWebHostServiceOptions);
 	}
 
 	start = async (): Promise<void> => {

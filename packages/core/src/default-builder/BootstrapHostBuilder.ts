@@ -1,17 +1,17 @@
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
 import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/BootstrapHostBuilder.cs,9f38532326a07c2d,references
 export class BootstrapHostBuilder implements IHostBuilder {
 	private readonly configureServicesActions: ((
-		/* TODO */ services: Container,
+		/* TODO */ services: IServiceCollection,
 	) => void)[] = [];
 
 	constructor(private readonly builder: HostAppBuilder) {}
 
 	configureServices = (
-		configureDelegate: (/* TODO */ services: Container) => void,
+		configureDelegate: (/* TODO */ services: IServiceCollection) => void,
 	): this => {
 		this.configureServicesActions.push(configureDelegate);
 		return this;

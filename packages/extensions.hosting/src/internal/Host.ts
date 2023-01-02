@@ -1,4 +1,6 @@
 import { IDisposable } from '@yohira/base/IDisposable';
+import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { getServices } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import { IHostedService } from '@yohira/extensions.hosting.abstractions/IHostedService';
 import {
@@ -8,7 +10,6 @@ import {
 	logStopping,
 } from '@yohira/extensions.hosting/internal/HostingLoggerExtensions';
 import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, IDisposable {
@@ -16,7 +17,7 @@ export class Host implements IHost, IDisposable {
 	private stopCalled = false;
 
 	constructor(
-		readonly services: Container,
+		readonly services: IServiceProvider,
 		private readonly logger: ILogger<Host>,
 	) {}
 
@@ -26,7 +27,10 @@ export class Host implements IHost, IDisposable {
 		// TODO
 
 		// TODO
-		this.hostedServices = this.services.getAll(IHostedService);
+		this.hostedServices = getServices<IHostedService>(
+			this.services,
+			'IHostedService',
+		);
 
 		for (const hostedService of this.hostedServices) {
 			await hostedService.start();

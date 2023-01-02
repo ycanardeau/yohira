@@ -1,13 +1,23 @@
 import { Ctor } from '@yohira/base/Type';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
+import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
+import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
+import { tryAddIterable } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
 import { IHostedService } from '@yohira/extensions.hosting.abstractions/IHostedService';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting.Abstractions/ServiceCollectionHostedServiceExtensions.cs,7a9ac7b282b7b4d3,references
 export const addHostedService = <THostedService extends IHostedService>(
-	services: Container,
+	services: IServiceCollection,
 	hostedServiceType: Ctor<THostedService>,
-): Container => {
-	services.bind(IHostedService).to(hostedServiceType).inSingletonScope();
+): IServiceCollection => {
+	tryAddIterable(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			'IHostedService',
+			hostedServiceType,
+		),
+	);
 
 	return services;
 };

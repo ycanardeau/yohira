@@ -2,7 +2,6 @@ import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
 import { IHostEnv } from '@yohira/extensions.hosting.abstractions/IHostEnv';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Abstractions/IWebHostEnvironment.cs,30ac66307b7b40c9,references
-export const IWebHostEnv = Symbol.for('IWebHostEnv');
 export interface IWebHostEnv extends IHostEnv {
 	/**
 	 * Gets or sets the absolute path to the directory that contains the web-servable application content files.

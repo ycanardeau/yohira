@@ -1,22 +1,41 @@
+import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
+import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import {
 	populateServiceCollection,
 	resolveHost,
 } from '@yohira/extensions.hosting/HostBuilder';
-import { Container } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostApplicationBuilder.cs,c659330adb7f1ad0,references
 export class HostAppBuilder {
-	readonly services = new Container();
+	private readonly serviceCollection = new ServiceCollection();
+
+	private createServiceProvider: () => IServiceProvider;
 
 	private hostBuilt = false;
+	private appServices?: IServiceProvider;
 
 	constructor() {
 		// TODO
 
-		populateServiceCollection(this.services);
+		populateServiceCollection(
+			this.services,
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			() => this.appServices!,
+		);
 
 		// TODO
+
+		this.createServiceProvider = (): IServiceProvider => {
+			// TODO
+			return buildServiceProvider(this.services);
+		};
+	}
+
+	get services(): IServiceCollection {
+		return this.serviceCollection;
 	}
 
 	build = (): IHost => {
@@ -26,6 +45,11 @@ export class HostAppBuilder {
 		this.hostBuilt = true;
 
 		// TODO
-		return resolveHost(this.services /* TODO */);
+
+		this.appServices = this.createServiceProvider();
+
+		this.serviceCollection.makeReadonly();
+
+		return resolveHost(this.appServices /* TODO */);
 	};
 }
