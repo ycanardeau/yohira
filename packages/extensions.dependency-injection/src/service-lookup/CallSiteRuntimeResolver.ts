@@ -50,11 +50,65 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		return factoryCallSite.factory(context.scope);
 	};
 
-	// TODO: visitRootCache
+	visitRootCache = (
+		callSite: ServiceCallSite,
+		context: RuntimeResolverContext,
+	): object | undefined => {
+		if (callSite.value !== undefined) {
+			// Value already calculated, return it directly
+			return callSite.value;
+		}
 
-	// TODO: visitScopeCache
+		// REVIEW: Lock.
+		const serviceProviderEngine = context.scope.rootProvider.root;
 
-	// TODO: visitDisposeCache
+		// REVIEW: Lock.
+		if (callSite.value !== undefined) {
+			return callSite.value;
+		}
+
+		const resolved = this.visitCallSiteMain(
+			callSite,
+			new RuntimeResolverContext(serviceProviderEngine),
+		);
+		// TODO: serviceProviderEngine.captureDisposable(resolved);
+		callSite.value = resolved;
+		return resolved;
+	};
+
+	private visitCache = (
+		callSite: ServiceCallSite,
+		context: RuntimeResolverContext,
+		serviceProviderEngine: ServiceProviderEngineScope,
+		// TODO
+	): object | undefined => {
+		// TODO
+		throw new Error('Method not implemented.');
+	};
+
+	visitScopeCache = (
+		callSite: ServiceCallSite,
+		context: RuntimeResolverContext,
+	): object | undefined => {
+		return context.scope.isRootScope
+			? this.visitRootCache(callSite, context)
+			: this.visitCache(
+					callSite,
+					context,
+					context.scope,
+					// TODO: RuntimeResolverLock.Scope,
+			  );
+	};
+
+	visitDisposeCache = (
+		transientCallSite: ServiceCallSite,
+		context: RuntimeResolverContext,
+	): object | undefined => {
+		/* TODO: return context.scope.captureDisposable(
+			this.visitCallSiteMain(transientCallSite, context),
+		); */
+		return this.visitCallSiteMain(transientCallSite, context);
+	};
 
 	resolve = (
 		callSite: ServiceCallSite,

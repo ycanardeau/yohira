@@ -6,6 +6,10 @@ import { Options } from '@yohira/extensions.options/Options';
 export class OptionsCache<TOptions> implements IOptionsMonitorCache<TOptions> {
 	private readonly cache = new Map<string, TOptions>();
 
+	clear = (): void => {
+		this.cache.clear();
+	};
+
 	getOrAdd = (
 		name: string | undefined,
 		createOptions: () => TOptions,
@@ -33,11 +37,6 @@ export class OptionsCache<TOptions> implements IOptionsMonitorCache<TOptions> {
 	};
 
 	tryRemove = (name: string | undefined): boolean => {
-		// TODO
-		throw new Error('Method not implemented.');
-	};
-
-	clear = (): void => {
 		// TODO
 		throw new Error('Method not implemented.');
 	};

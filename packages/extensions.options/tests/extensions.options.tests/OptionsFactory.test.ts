@@ -3,8 +3,9 @@ import { getRequiredService } from '@yohira/extensions.dependency-injection.abst
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
 import { configureNamedOptionsServices } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
-import { FakeOptions } from 'packages/extensions.options/tests/extensions.options/FakeOptions';
 import { expect, test } from 'vitest';
+
+import { FakeOptions } from './FakeOptions';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsFactoryTests.cs#L13
 test('CreateSupportsNames', () => {
