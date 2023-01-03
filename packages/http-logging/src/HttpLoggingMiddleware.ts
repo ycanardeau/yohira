@@ -34,7 +34,7 @@ export class HttpLoggingMiddleware implements IMiddleware {
 		context: IHttpContext,
 		next: RequestDelegate,
 	): Promise<void> => {
-		const options = this.options.currentValue;
+		const options = this.options.getCurrentValue(HttpLoggingOptions);
 		// TODO
 
 		if (

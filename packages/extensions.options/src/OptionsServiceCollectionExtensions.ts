@@ -6,6 +6,7 @@ import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstrac
 import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
 import { ConfigureNamedOptions } from '@yohira/extensions.options/ConfigureNamedOptions';
 import { Options } from '@yohira/extensions.options/Options';
+import { OptionsCache } from '@yohira/extensions.options/OptionsCache';
 import { OptionsFactory } from '@yohira/extensions.options/OptionsFactory';
 import { OptionsMonitor } from '@yohira/extensions.options/OptionsMonitor';
 import { UnnamedOptionsManager } from '@yohira/extensions.options/UnnamedOptionsManager';
@@ -39,7 +40,14 @@ export const addOptions = (
 			OptionsFactory,
 		),
 	);
-	// TODO
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			'IOptionsMonitorCache<>',
+			OptionsCache,
+		),
+	);
 	return services;
 };
 
