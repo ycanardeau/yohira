@@ -1,10 +1,10 @@
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
 import { StaticFileMiddleware } from '@yohira/static-files/StaticFileMiddleware';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e84a4b406304d9b0,references
 const logFileServedCore = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	virtualPath: string,
 	physicalPath: string,
 ): void => {
@@ -16,7 +16,7 @@ const logFileServedCore = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,64fe8c23a73b59bd,references
 export const logFileServed = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	virtualPath: string,
 	physicalPath: string,
 ): void => {
@@ -28,7 +28,7 @@ export const logFileServed = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,3068b930094bf334,references
 export const logEndpointMatched = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 ): void => {
 	logger.log(
 		LogLevel.Debug,
@@ -38,7 +38,7 @@ export const logEndpointMatched = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,10e3cf5b010f8900,references
 export const logRequestMethodNotSupported = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	method: string,
 ): void => {
 	logger.log(LogLevel.Debug, `${method} requests are not supported`);
@@ -46,7 +46,7 @@ export const logRequestMethodNotSupported = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e240e32d569094bc,references
 export const logPathMismatch = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	path: string,
 ): void => {
 	logger.log(
@@ -57,7 +57,7 @@ export const logPathMismatch = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f2c41a9493102814,references
 export const logFileTypeNotSupported = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	path: string,
 ): void => {
 	logger.log(
@@ -68,7 +68,7 @@ export const logFileTypeNotSupported = (
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,f6541ac130cc9584,references
 export const logFileNotFound = (
-	logger: ILogger<StaticFileMiddleware>,
+	logger: ILoggerT<StaticFileMiddleware>,
 	path: string,
 ): void => {
 	logger.log(

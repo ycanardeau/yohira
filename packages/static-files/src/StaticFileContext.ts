@@ -12,7 +12,6 @@ import { getTypedHeaders } from '@yohira/http.extensions/HeaderDictionaryTypeExt
 import { RequestHeaders } from '@yohira/http.extensions/RequestHeaders';
 import { sendFile } from '@yohira/http.extensions/SendFileResponseExtensions';
 import { logFileServed } from '@yohira/static-files/LoggerExtensions';
-import { StaticFileMiddleware } from '@yohira/static-files/StaticFileMiddleware';
 import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
 
 enum PreconditionState {
@@ -44,7 +43,7 @@ export class StaticFileContext {
 	constructor(
 		private readonly context: IHttpContext,
 		private readonly options: StaticFileOptions,
-		private readonly logger: ILogger<StaticFileMiddleware>,
+		private readonly logger: ILogger,
 		private readonly fileProvider: IFileProvider,
 		private readonly contentType: string | undefined,
 		private readonly _subPath: PathString,

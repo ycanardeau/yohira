@@ -1,69 +1,26 @@
-import { Ctor } from '@yohira/base/Type';
+import { tryGetValue } from '@yohira/base/MapExtensions';
 import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
+import { Logger } from '@yohira/extensions.logging/Logger';
 import { injectable } from 'inversify';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/LoggerFactory.cs,173b9b523cabe719,references
 @injectable()
 export class LoggerFactory implements ILoggerFactory {
-	createLogger = <T>(categoryName: Ctor<T>): ILogger<T> => {
-		return {
-			log: (logLevel, message, ...optionalParams): void => {
-				switch (logLevel) {
-					case LogLevel.Trace:
-						console.trace(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.Debug:
-						console.debug(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.Information:
-						console.info(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.Warning:
-						console.warn(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.Error:
-						console.error(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.Critical:
-						console.error(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-					case LogLevel.None:
-						console.log(
-							categoryName.name,
-							message,
-							...optionalParams,
-						);
-						break;
-				}
-			},
-			isEnabled: (): boolean => true,
-		}; /* TODO */
+	private readonly loggers = new Map<string, Logger>();
+
+	createLogger = (categoryName: string): ILogger => {
+		// TODO
+
+		// REVIEW: Lock.
+		const tryGetValueResult = tryGetValue(this.loggers, categoryName);
+		if (tryGetValueResult.ok) {
+			return tryGetValueResult.val;
+		}
+		const logger = new Logger(/* TODO */);
+		// TODO
+		this.loggers.set(categoryName, logger);
+		return logger;
 	};
 
 	dispose = (): Promise<void> => {

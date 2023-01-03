@@ -4,7 +4,7 @@ import { addSingletonFactory } from '@yohira/extensions.dependency-injection.abs
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import { Host } from '@yohira/extensions.hosting/internal/Host';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 import { addLogging } from '@yohira/extensions.logging/LoggingServiceCollectionExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,a8c4578a1465d84d,references
@@ -18,7 +18,7 @@ export const populateServiceCollection = (
 		const appServices = serviceProviderGetter();
 		return new Host(
 			appServices,
-			getRequiredService<ILogger<Host>>(appServices, 'ILogger<Host>'),
+			getRequiredService<ILoggerT<Host>>(appServices, 'ILogger<Host>'),
 		);
 	});
 	// TODO

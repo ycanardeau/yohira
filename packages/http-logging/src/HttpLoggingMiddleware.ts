@@ -1,5 +1,4 @@
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
 import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
 import { logRequestLog } from '@yohira/http-logging/HttpLoggingExtensions';
@@ -16,16 +15,12 @@ import { inject, injectable } from 'inversify';
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references
 @injectable()
 export class HttpLoggingMiddleware implements IMiddleware {
-	private readonly logger: ILogger<HttpLoggingMiddleware>;
-
 	constructor(
 		@inject('IOptionsMonitor<HttpLoggingOptions>')
 		private readonly options: IOptionsMonitor<HttpLoggingOptions>,
-		@inject('ILoggerFactory')
-		loggerFactory: ILoggerFactory /* TODO: ILogger */,
-	) {
-		this.logger = loggerFactory.createLogger(HttpLoggingMiddleware);
-	}
+		@inject('ILogger<HttpLoggingMiddleware>')
+		private readonly logger: ILoggerT<HttpLoggingMiddleware>,
+	) {}
 
 	private static addToList = (
 		list: [string, string | undefined][],

@@ -1,6 +1,6 @@
 import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 import { IOptions } from '@yohira/extensions.options/IOptions';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
@@ -34,7 +34,7 @@ import { Err, Ok, Result } from 'ts-results-es';
 export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
 	private readonly matchUrl: PathString;
-	private readonly logger: ILogger<StaticFileMiddleware>;
+	private readonly logger: ILoggerT<StaticFileMiddleware>;
 	private readonly fileProvider: IFileProvider;
 	private readonly contentTypeProvider: IContentTypeProvider;
 
@@ -51,7 +51,7 @@ export class StaticFileMiddleware implements IMiddleware {
 		this.fileProvider =
 			this.options.fileProvider ?? resolveFileProvider(hostingEnv);
 		this.matchUrl = this.options.requestPath;
-		this.logger = loggerFactory.createLogger(StaticFileMiddleware);
+		this.logger = loggerFactory.createLogger(StaticFileMiddleware.name);
 
 		// TODO
 	}

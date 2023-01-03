@@ -9,7 +9,7 @@ import {
 	logStopped,
 	logStopping,
 } from '@yohira/extensions.hosting/internal/HostingLoggerExtensions';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, IDisposable {
@@ -18,7 +18,7 @@ export class Host implements IHost, IDisposable {
 
 	constructor(
 		readonly services: IServiceProvider,
-		private readonly logger: ILogger<Host>,
+		private readonly logger: ILoggerT<Host>,
 	) {}
 
 	start = async (): Promise<void> => {

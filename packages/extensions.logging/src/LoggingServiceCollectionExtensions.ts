@@ -2,7 +2,7 @@ import { IServiceCollection } from '@yohira/extensions.dependency-injection.abst
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
-import { Logger } from '@yohira/extensions.logging.abstractions/Logger';
+import { LoggerT } from '@yohira/extensions.logging.abstractions/LoggerT';
 import { LoggerFactory } from '@yohira/extensions.logging/LoggerFactory';
 import { addOptions } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
 
@@ -25,7 +25,7 @@ export const addLogging = (
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
 			'ILogger<>',
-			Logger,
+			LoggerT,
 		),
 	);
 
