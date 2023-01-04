@@ -5,6 +5,18 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@yohira/base': resolve(__dirname, './packages/base/src'),
+			'@yohira/extensions.config': resolve(
+				__dirname,
+				'./packages/extensions.config/src',
+			),
+			'@yohira/extensions.config.abstractions': resolve(
+				__dirname,
+				'./packages/extensions.config.abstractions/src',
+			),
+			'@yohira/extensions.config.binder': resolve(
+				__dirname,
+				'./packages/extensions.config.binder/src',
+			),
 			'@yohira/extensions.dependency-injection': resolve(
 				__dirname,
 				'./packages/extensions.dependency-injection/src',
@@ -21,6 +33,10 @@ export default defineConfig({
 			'@yohira/extensions.options': resolve(
 				__dirname,
 				'./packages/extensions.options/src',
+			),
+			'@yohira/extensions.options.config-extensions': resolve(
+				__dirname,
+				'./packages/extensions.options.config-extensions/src',
 			),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,

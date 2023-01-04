@@ -16,6 +16,13 @@
 		"paths": {
 			"@yohira/base/*": ["packages/base/src/*"],
 			"@yohira/core/*": ["packages/core/src/*"],
+			"@yohira/extensions.config/*": ["packages/extensions.config/src/*"],
+			"@yohira/extensions.config.abstractions/*": [
+				"packages/extensions.config.abstractions/src/*"
+			],
+			"@yohira/extensions.config.binder/*": [
+				"packages/extensions.config.binder/src/*"
+			],
 			"@yohira/extensions.dependency-injection/*": [
 				"packages/extensions.dependency-injection/src/*"
 			],
@@ -45,6 +52,9 @@
 			],
 			"@yohira/extensions.options/*": [
 				"packages/extensions.options/src/*"
+			],
+			"@yohira/extensions.options.config-extensions/*": [
+				"packages/extensions.options.config-extensions/src/*"
 			],
 			"@yohira/features/*": ["packages/features/src/*"],
 			"@yohira/hosting/*": ["packages/hosting/src/*"],

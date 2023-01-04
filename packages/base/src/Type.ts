@@ -29,4 +29,4 @@ export class Type {
 	};
 }
 
-export type Ctor<T> = new (...args: any[]) => T;
+export type Ctor<T = unknown> = new (...args: any[]) => T;

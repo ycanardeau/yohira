@@ -220,7 +220,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	};
 
 	private createArgumentCallSites = (
-		implCtor: Ctor<unknown>,
+		implCtor: Ctor,
 		callSiteChain: CallSiteChain,
 		parameterTypes: Type[],
 		throwIfCallSiteNotFound: boolean,

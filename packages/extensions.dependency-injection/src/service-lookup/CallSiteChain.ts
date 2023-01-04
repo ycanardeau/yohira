@@ -1,10 +1,7 @@
 import { Ctor, Type } from '@yohira/base/Type';
 
 class ChainItemInfo {
-	constructor(
-		readonly order: number,
-		readonly implCtor: Ctor<unknown> | undefined,
-	) {}
+	constructor(readonly order: number, readonly implCtor: Ctor | undefined) {}
 }
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteChain.cs,ae1fab1640004f66,references
@@ -38,7 +35,7 @@ export class CallSiteChain {
 		this.callSiteChain.delete(serviceType.value);
 	};
 
-	add = (serviceType: Type, implCtor: Ctor<unknown> | undefined): void => {
+	add = (serviceType: Type, implCtor: Ctor | undefined): void => {
 		this.callSiteChain.set(
 			serviceType.value,
 			new ChainItemInfo(this.callSiteChain.size, implCtor),
