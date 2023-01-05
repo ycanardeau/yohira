@@ -1,5 +1,6 @@
 import { IDisposable } from '@yohira/base/IDisposable';
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { Type } from '@yohira/base/Type';
 import { getServices } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
 import { IHostedService } from '@yohira/extensions.hosting.abstractions/IHostedService';
@@ -29,7 +30,7 @@ export class Host implements IHost, IDisposable {
 		// TODO
 		this.hostedServices = getServices<IHostedService>(
 			this.services,
-			'IHostedService',
+			Type.from('IHostedService'),
 		);
 
 		for (const hostedService of this.hostedServices) {

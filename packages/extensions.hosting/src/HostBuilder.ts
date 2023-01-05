@@ -1,4 +1,5 @@
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { addSingletonFactory } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
@@ -14,11 +15,14 @@ export const populateServiceCollection = (
 ): void => {
 	// TODO
 
-	addSingletonFactory(services, 'IHost', () => {
+	addSingletonFactory(services, Type.from('IHost'), () => {
 		const appServices = serviceProviderGetter();
 		return new Host(
 			appServices,
-			getRequiredService<ILoggerT<Host>>(appServices, 'ILogger<Host>'),
+			getRequiredService<ILoggerT<Host>>(
+				appServices,
+				Type.from('ILogger<Host>'),
+			),
 		);
 	});
 	// TODO
@@ -31,7 +35,7 @@ export const resolveHost = (
 ): IHost => {
 	// TODO
 
-	const host = getRequiredService<IHost>(serviceProvider, 'IHost');
+	const host = getRequiredService<IHost>(serviceProvider, Type.from('IHost'));
 
 	// TODO
 

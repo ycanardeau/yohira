@@ -1,4 +1,4 @@
-import { Ctor } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
@@ -14,7 +14,7 @@ export const addHostedService = <THostedService extends IHostedService>(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'IHostedService',
+			Type.from('IHostedService'),
 			hostedServiceType,
 		),
 	);

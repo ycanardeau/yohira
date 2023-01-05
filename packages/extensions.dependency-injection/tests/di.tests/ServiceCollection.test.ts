@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
@@ -12,7 +13,7 @@ test('makeReadonly', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		'IFakeService',
+		Type.from('IFakeService'),
 		new FakeService(),
 	);
 	serviceCollection.add(descriptor);
@@ -21,7 +22,7 @@ test('makeReadonly', () => {
 
 	const descriptor2 = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		'IFakeEveryService',
+		Type.from('IFakeEveryService'),
 		new FakeService(),
 	);
 

@@ -32,12 +32,12 @@ test('AddWithTypeAddsServiceWithRightLifecycle', () => {
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
-		expect(descriptor.serviceType).toBe(expectedServiceType);
+		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor);
 		expect(descriptor.lifetime).toBe(lifeCycle);
 	};
 
-	const serviceType = 'IFakeService';
+	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
 
 	AddWithTypeAddsServiceWithRightLifecycle(
@@ -80,7 +80,7 @@ test('AddSingleton_AddsWithSingletonLifecycle', () => {
 	};
 
 	AddSingleton_AddsWithSingletonLifecycle((collection) =>
-		addSingletonInstance(collection, 'IFakeService', instance),
+		addSingletonInstance(collection, Type.from('IFakeService'), instance),
 	);
 });
 
@@ -93,7 +93,7 @@ test('TryAddNoOpFailsIfExists', () => {
 		addAction(collection);
 		const d = ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
-			'IFakeService',
+			Type.from('IFakeService'),
 			FakeService,
 		);
 
@@ -101,13 +101,15 @@ test('TryAddNoOpFailsIfExists', () => {
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
-		expect(descriptor.serviceType).toBe('IFakeService');
+		expect(descriptor.serviceType.equals(Type.from('IFakeService'))).toBe(
+			true,
+		);
 		expect(descriptor.implInstance).toBe(instance);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Singleton);
 	};
 
 	TryAddNoOpFailsIfExists((collection) =>
-		addSingletonInstance(collection, 'IFakeService', instance),
+		addSingletonInstance(collection, Type.from('IFakeService'), instance),
 	);
 });
 
@@ -125,12 +127,12 @@ test('TryAdd_WithType_AddsService', () => {
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
-		expect(descriptor.serviceType).toBe(expectedServiceType);
+		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor);
 		expect(descriptor.lifetime).toBe(expectedLifetime);
 	};
 
-	const serviceType = 'IFakeService';
+	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
 
 	TryAdd_WithType_AddsService(
@@ -199,12 +201,12 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
-		expect(descriptor.serviceType).toBe(expectedServiceType);
+		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor /* REVIEW */);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Transient);
 	};
 
-	const serviceType = 'IFakeService';
+	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
 
 	TryAdd_WithType_DoesNotAddDuplicate(
@@ -255,7 +257,7 @@ test('TryAddIfMissingActuallyAdds', () => {
 	const collection = new ServiceCollection();
 	const d = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		'IFakeService',
+		Type.from('IFakeService'),
 		FakeService,
 	);
 
@@ -263,7 +265,7 @@ test('TryAddIfMissingActuallyAdds', () => {
 
 	expect(collection.count).toBe(1);
 	const descriptor = Array.from(collection)[0];
-	expect(descriptor.serviceType).toBe('IFakeService');
+	expect(descriptor.serviceType.equals(Type.from('IFakeService'))).toBe(true);
 	expect(descriptor.implInstance).toBeUndefined();
 	expect(descriptor.lifetime).toBe(ServiceLifetime.Transient);
 });
@@ -284,12 +286,12 @@ test('TryAddEnumerable_AddsService', () => {
 
 		expect(collection.count).toBe(1);
 		const d = Array.from(collection)[0];
-		expect(d.serviceType).toBe(expectedServiceType);
+		expect(d.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(d.implCtor).toBe(expectedImplCtor);
 		expect(d.lifetime).toBe(expectedLifetime);
 	};
 
-	const serviceType = 'IFakeService';
+	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
 
 	TryAddEnumerable_AddsService(
@@ -341,12 +343,12 @@ test('TryAddEnumerable_DoesNotAddDuplicate', () => {
 
 		expect(collection.count).toBe(1);
 		const d = Array.from(collection)[0];
-		expect(d.serviceType).toBe(expectedServiceType);
+		expect(d.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(d.implCtor).toBe(expectedImplCtor);
 		expect(d.lifetime).toBe(expectedLifetime);
 	};
 
-	const serviceType = 'IFakeService';
+	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
 
 	TryAddEnumerable_DoesNotAddDuplicate(

@@ -1,4 +1,4 @@
-import { Ctor } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { addSingletonInstance } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
@@ -19,7 +19,7 @@ export const addOptions = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'IOptions<>',
+			Type.from('IOptions<>'),
 			UnnamedOptionsManager,
 		),
 	);
@@ -28,7 +28,7 @@ export const addOptions = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'IOptionsMonitor<>',
+			Type.from('IOptionsMonitor<>'),
 			OptionsMonitor,
 		),
 	);
@@ -36,7 +36,7 @@ export const addOptions = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
-			'IOptionsFactory<>',
+			Type.from('IOptionsFactory<>'),
 			OptionsFactory,
 		),
 	);
@@ -44,7 +44,7 @@ export const addOptions = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'IOptionsMonitorCache<>',
+			Type.from('IOptionsMonitorCache<>'),
 			OptionsCache,
 		),
 	);
@@ -61,7 +61,7 @@ export const configureNamedOptionsServices = <TOptions>(
 	addOptions(services);
 	addSingletonInstance(
 		services,
-		`IConfigureOptions<${optionsCtor.name}>`,
+		Type.from(`IConfigureOptions<${optionsCtor.name}>`),
 		new ConfigureNamedOptions(name, configureOptions),
 	);
 	return services;

@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
@@ -10,7 +11,7 @@ test('Add_AddsDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		'IFakeService',
+		Type.from('IFakeService'),
 		FakeService,
 	);
 
@@ -26,12 +27,12 @@ test('Add_AddsMultipleDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		'IFakeService',
+		Type.from('IFakeService'),
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		'IFactoryService',
+		Type.from('IFactoryService'),
 		TransientFactoryService,
 	);
 
@@ -47,12 +48,12 @@ test('ServiceDescriptors_AllowsRemovingPreviousRegisteredServices', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		'IFakeService',
+		Type.from('IFakeService'),
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		'IFactoryService',
+		Type.from('IFactoryService'),
 		TransientFactoryService,
 	);
 

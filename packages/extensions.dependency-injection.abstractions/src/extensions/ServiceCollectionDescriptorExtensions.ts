@@ -8,7 +8,7 @@ export const tryAdd = (
 ): void => {
 	const count = collection.count;
 	for (let i = 0; i < count; i++) {
-		if (collection.get(i).serviceType === descriptor.serviceType) {
+		if (collection.get(i).serviceType.equals(descriptor.serviceType)) {
 			// Already added
 			return;
 		}

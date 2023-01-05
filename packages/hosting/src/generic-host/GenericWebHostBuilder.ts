@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
@@ -27,7 +28,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					'IHttpContextFactory',
+					Type.from('IHttpContextFactory'),
 					HttpContextFactory,
 				),
 			);
@@ -36,7 +37,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					'IAppBuilderFactory',
+					Type.from('IAppBuilderFactory'),
 					AppBuilderFactory,
 				),
 			);

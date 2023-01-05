@@ -17,7 +17,10 @@ export class CallSiteValidator extends CallSiteVisitor<
 	CallSiteValidatorState,
 	Type | undefined
 > {
-	private readonly scopedServices = new Map<Type, Type>();
+	private readonly scopedServices = new Map<
+		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+		Type
+	>();
 
 	validateCallSite = (callSite: ServiceCallSite): void => {
 		const scoped = this.visitCallSite(
@@ -25,7 +28,7 @@ export class CallSiteValidator extends CallSiteVisitor<
 			new CallSiteValidatorState(),
 		);
 		if (scoped !== undefined) {
-			this.scopedServices.set(callSite.serviceType, scoped);
+			this.scopedServices.set(callSite.serviceType.value, scoped);
 		}
 	};
 
@@ -37,11 +40,11 @@ export class CallSiteValidator extends CallSiteVisitor<
 		if (scope === rootScope) {
 			const tryGetValueResult = tryGetValue(
 				this.scopedServices,
-				serviceType,
+				serviceType.value,
 			);
 			if (tryGetValueResult.ok) {
 				const { val: scopedService } = tryGetValueResult;
-				if (serviceType === scopedService) {
+				if (serviceType.equals(scopedService)) {
 					throw new Error(
 						`Cannot resolve ${[
 							ServiceLifetime[

@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { HostFilteringStartupFilter } from '@yohira/core/default-builder/HostFilteringStartupFilter';
 import {
 	addSingletonFactory,
@@ -17,7 +18,7 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 			/* TODO */ (/* TODO */ services) => {
 				addSingletonFactory(
 					services,
-					'IServer',
+					Type.from('IServer'),
 					(serviceProvider): IServer => {
 						return {
 							start: async (app): Promise<void> => {
@@ -69,7 +70,7 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 
 			addTransientCtor(
 				services,
-				'IStartupFilter',
+				Type.from('IStartupFilter'),
 				HostFilteringStartupFilter,
 			);
 			// TODO

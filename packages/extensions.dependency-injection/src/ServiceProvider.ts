@@ -22,7 +22,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	/** @internal */ engine: ServiceProviderEngine;
 
 	private readonly _createServiceAccessor: (
-		serviceType: Type,
+		serviceType: string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
 	) => (
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined;
@@ -30,7 +30,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	private disposed = false;
 
 	private realizedServices: Map<
-		Type,
+		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
 		(
 			serviceProviderEngineScope: ServiceProviderEngineScope,
 		) => object | undefined
@@ -49,12 +49,12 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	};
 
 	private createServiceAccessor = (
-		serviceType: Type,
+		serviceType: string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
 	): ((
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined) => {
 		const callSite = this.callSiteFactory.getCallSite(
-			serviceType,
+			Type.from(serviceType),
 			new CallSiteChain(),
 		);
 		if (callSite !== undefined) {
@@ -77,7 +77,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		this.engine = this.getEngine();
 		this._createServiceAccessor = this.createServiceAccessor;
 		this.realizedServices = new Map<
-			string,
+			string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
 			(
 				serviceProviderEngineScope: ServiceProviderEngineScope,
 			) => object | undefined
@@ -113,7 +113,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 		const realizedService = getOrAdd(
 			this.realizedServices,
-			serviceType,
+			serviceType.value,
 			this._createServiceAccessor,
 		);
 		this.onResolve(serviceType, serviceProviderEngineScope);

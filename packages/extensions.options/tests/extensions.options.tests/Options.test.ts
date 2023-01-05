@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
@@ -14,7 +15,11 @@ import { FakeOptionsFactory } from './FakeOptionsFactory';
 test('UsesFactory', () => {
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
-	$ = addSingletonCtor($, 'IOptionsFactory<FakeOptions>', FakeOptionsFactory);
+	$ = addSingletonCtor(
+		$,
+		Type.from('IOptionsFactory<FakeOptions>'),
+		FakeOptionsFactory,
+	);
 	$ = configureOptionsServices($, FakeOptions, (o) => {
 		o.message = 'Ignored';
 	});
@@ -22,7 +27,7 @@ test('UsesFactory', () => {
 
 	const snap = getRequiredService<IOptions<FakeOptions>>(
 		services,
-		'IOptions<FakeOptions>',
+		Type.from('IOptions<FakeOptions>'),
 	);
 	expect(snap.getValue(FakeOptions)).toBe(FakeOptionsFactory.options);
 });

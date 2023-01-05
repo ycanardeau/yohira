@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
@@ -20,7 +21,7 @@ test('CreateSupportsNames', () => {
 	const sp = buildServiceProvider(services);
 	const factory = getRequiredService<IOptionsFactory<FakeOptions>>(
 		sp,
-		'IOptionsFactory<FakeOptions>',
+		Type.from('IOptionsFactory<FakeOptions>'),
 	);
 	expect(factory.create(FakeOptions, '1').message).toBe('one');
 	expect(factory.create(FakeOptions, '2').message).toBe('two');
@@ -39,7 +40,7 @@ test('NamesAreCaseSensitive', () => {
 	const sp = buildServiceProvider(services);
 	const factory = getRequiredService<IOptionsFactory<FakeOptions>>(
 		sp,
-		'IOptionsFactory<FakeOptions>',
+		Type.from('IOptionsFactory<FakeOptions>'),
 	);
 	expect(factory.create(FakeOptions, 'UP').message).toBe('UP');
 	expect(factory.create(FakeOptions, 'up').message).toBe('up');

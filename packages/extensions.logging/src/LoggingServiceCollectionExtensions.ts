@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
@@ -16,7 +17,7 @@ export const addLogging = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'ILoggerFactory',
+			Type.from('ILoggerFactory'),
 			LoggerFactory,
 		),
 	);
@@ -24,7 +25,7 @@ export const addLogging = (
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			'ILogger<>',
+			Type.from('ILogger<>'),
 			LoggerT,
 		),
 	);

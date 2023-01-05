@@ -15,7 +15,7 @@ export class IterableCallSite extends ServiceCallSite {
 		super(cache);
 	}
 
-	get serviceType(): string {
+	get serviceType(): Type {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

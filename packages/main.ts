@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
 import {
 	addSingletonCtor,
@@ -23,17 +24,21 @@ export const main = async (): Promise<void> => {
 	{
 		const hostingEnv = new HostingEnv();
 		initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
-		addSingletonInstance(builder.services, 'IWebHostEnv', hostingEnv);
+		addSingletonInstance(
+			builder.services,
+			Type.from('IWebHostEnv'),
+			hostingEnv,
+		);
 
 		addSingletonCtor(
 			builder.services,
-			'StaticFileMiddleware',
+			Type.from('StaticFileMiddleware'),
 			StaticFileMiddleware,
 		);
 
 		addSingletonCtor(
 			builder.services,
-			'HttpLoggingMiddleware',
+			Type.from('HttpLoggingMiddleware'),
 			HttpLoggingMiddleware,
 		);
 	}

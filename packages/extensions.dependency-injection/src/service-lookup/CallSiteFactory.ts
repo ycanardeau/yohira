@@ -21,17 +21,17 @@ import { Result } from 'ts-results-es';
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 
 const isConstructedGenericType = (type: Type): boolean => {
-	return genericTypeRegExp.test(type);
+	return genericTypeRegExp.test(type.value);
 };
 
 const getGenericTypeDefinition = (type: Type): Type => {
-	const match = genericTypeRegExp.exec(type);
+	const match = genericTypeRegExp.exec(type.value);
 	if (!match) {
 		throw new Error(
 			'This operation is only valid on generic types.' /* LOC */,
 		);
 	}
-	return `${match[1]}<>`;
+	return Type.from(`${match[1]}<>`);
 };
 
 class ServiceDescriptorCacheItem {
@@ -117,7 +117,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	private readonly descriptors: ServiceDescriptor[];
 	private readonly callSiteCache = new Map<number, ServiceCallSite>();
 	private readonly descriptorLookup = new Map<
-		Type,
+		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
 		ServiceDescriptorCacheItem
 	>();
 	// REVIEW: callSiteLocks
@@ -130,10 +130,10 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			const cacheKey = serviceType;
 			const tryGetValueResult = tryGetValue(
 				this.descriptorLookup,
-				cacheKey,
+				cacheKey.value,
 			);
 			this.descriptorLookup.set(
-				cacheKey,
+				cacheKey.value,
 				(tryGetValueResult.val ?? new ServiceDescriptorCacheItem()).add(
 					descriptor,
 				),
@@ -154,7 +154,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		callSiteChain: CallSiteChain,
 		slot: number,
 	): ServiceCallSite | undefined => {
-		if (serviceType === descriptor.serviceType) {
+		if (serviceType.equals(descriptor.serviceType)) {
 			const callSiteKey = new ServiceCacheKey(serviceType, slot);
 			const callSiteKeyHashCode = callSiteKey.getHashCode();
 			const tryGetValueResult = tryGetValue(
@@ -206,7 +206,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	): ServiceCallSite | undefined => {
 		const tryGetValueResult = tryGetValue(
 			this.descriptorLookup,
-			serviceType,
+			serviceType.value,
 		);
 		if (tryGetValueResult.ok) {
 			return this.tryCreateExactCore(
@@ -261,15 +261,17 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			const metadataReader = new MetadataReader();
 			const metadata = metadataReader.getConstructorMetadata(implCtor);
 			const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
-			const match = genericTypeRegExp.exec(serviceType);
+			const match = genericTypeRegExp.exec(serviceType.value);
 			const parameterTypes = Object.values(ctorArgsMetadata).map(
 				(metadata) => {
 					const parameterType = metadata.find(
 						({ key }) => key === METADATA_KEY.INJECT_TAG,
 					)?.value as string;
 					return match
-						? parameterType.replace('<>', `<${match[2]}>`)
-						: parameterType;
+						? Type.from(
+								parameterType.replace('<>', `<${match[2]}>`),
+						  )
+						: Type.from(parameterType);
 				},
 			);
 			// TODO: Remove.
@@ -306,8 +308,11 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		slot: number,
 		throwOnConstraintViolation: boolean,
 	): ServiceCallSite | undefined => {
-		const match = genericTypeRegExp.exec(serviceType);
-		if (match && `${match[1]}<>` === descriptor.serviceType) {
+		const match = genericTypeRegExp.exec(serviceType.value);
+		if (
+			match &&
+			Type.from(`${match[1]}<>`).equals(descriptor.serviceType)
+		) {
 			const callSiteKey = new ServiceCacheKey(serviceType, slot);
 			const callSiteKeyHashCode = callSiteKey.getHashCode();
 			const tryGetValueResult = tryGetValue(
@@ -348,7 +353,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		if (isConstructedGenericType(serviceType)) {
 			const tryGetValueResult = tryGetValue(
 				this.descriptorLookup,
-				getGenericTypeDefinition(serviceType),
+				getGenericTypeDefinition(serviceType).value,
 			);
 			if (tryGetValueResult.ok) {
 				return this.tryCreateOpenGenericCore(
@@ -391,9 +396,9 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		try {
 			callSiteChain.add(serviceType, undefined);
 
-			const match = genericTypeRegExp.exec(serviceType);
+			const match = genericTypeRegExp.exec(serviceType.value);
 			if (match && `${match[1]}<>` === 'Iterable<>') {
-				const itemType = match[2];
+				const itemType = Type.from(match[2]);
 				let cacheLocation = CallSiteResultCacheLocation.Root;
 
 				const callSites: ServiceCallSite[] = [];
@@ -407,7 +412,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 					!isConstructedGenericType(itemType) &&
 					(tryGetValueResult = tryGetValue(
 						this.descriptorLookup,
-						itemType,
+						itemType.value,
 					)) &&
 					tryGetValueResult.ok
 				) {

@@ -1,4 +1,5 @@
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { Type } from '@yohira/base/Type';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import {
 	addSingletonInstance,
@@ -29,19 +30,19 @@ const createTestServiceProvider = (count: number): IServiceProvider => {
 	const serviceCollection = new ServiceCollection();
 
 	if (count > 0) {
-		addTransientCtor(serviceCollection, 'IFoo', Foo1);
+		addTransientCtor(serviceCollection, Type.from('IFoo'), Foo1);
 	}
 
 	if (count > 1) {
-		addTransientCtor(serviceCollection, 'IFoo', Foo2);
+		addTransientCtor(serviceCollection, Type.from('IFoo'), Foo2);
 	}
 
 	if (count > 2) {
-		addTransientCtor(serviceCollection, 'IBar', Bar1);
+		addTransientCtor(serviceCollection, Type.from('IBar'), Bar1);
 	}
 
 	if (count > 3) {
-		addTransientCtor(serviceCollection, 'IBar', Bar2);
+		addTransientCtor(serviceCollection, Type.from('IBar'), Bar2);
 	}
 
 	return buildServiceProvider(serviceCollection);
@@ -51,7 +52,7 @@ const createTestServiceProvider = (count: number): IServiceProvider => {
 test('GetService_Returns_CorrectService', () => {
 	const serviceProvider = createTestServiceProvider(1);
 
-	const service = serviceProvider.getService<IFoo>('IFoo');
+	const service = serviceProvider.getService<IFoo>(Type.from('IFoo'));
 
 	expect(service).toBeInstanceOf(Foo1);
 });
@@ -62,9 +63,9 @@ test('GetService_Returns_CorrectService', () => {
 test('GetRequiredService_Throws_WhenNoServiceRegistered', () => {
 	const serviceProvider = createTestServiceProvider(0);
 
-	expect(() => getRequiredService(serviceProvider, 'IFoo')).toThrowError(
-		"No service for type 'IFoo' has been registered.",
-	);
+	expect(() =>
+		getRequiredService(serviceProvider, Type.from('IFoo')),
+	).toThrowError("No service for type 'IFoo' has been registered.");
 });
 
 // TODO
@@ -73,7 +74,7 @@ test('GetRequiredService_Throws_WhenNoServiceRegistered', () => {
 test('GetServices_Returns_AllServices', () => {
 	const serviceProvider = createTestServiceProvider(2);
 
-	const services = getServices<IFoo>(serviceProvider, 'IFoo');
+	const services = getServices<IFoo>(serviceProvider, Type.from('IFoo'));
 
 	expect(services.find((item) => item instanceof Foo1)).not.toBeUndefined();
 	expect(services.find((item) => item instanceof Foo2)).not.toBeUndefined();
@@ -85,10 +86,10 @@ test('GetServices_Returns_AllServices', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L186
 test('GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvailable', () => {
 	const serviceCollection = new ServiceCollection();
-	addSingletonInstance(serviceCollection, 'Iterable<IFoo>', []);
+	addSingletonInstance(serviceCollection, Type.from('Iterable<IFoo>'), []);
 	const serviceProvider = buildServiceProvider(serviceCollection);
 
-	const services = getServices<IFoo>(serviceProvider, 'IFoo');
+	const services = getServices<IFoo>(serviceProvider, Type.from('IFoo'));
 
 	expect(services.length).toBe(0);
 	expect(services).instanceof(Array);

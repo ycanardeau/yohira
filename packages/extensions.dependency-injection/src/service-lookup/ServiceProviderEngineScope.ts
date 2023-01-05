@@ -1,5 +1,6 @@
 import { IDisposable } from '@yohira/base/IDisposable';
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
+import { Type } from '@yohira/base/Type';
 import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
 import { ServiceProvider } from '@yohira/extensions.dependency-injection/ServiceProvider';
 
@@ -14,7 +15,7 @@ export class ServiceProviderEngineScope
 		readonly isRootScope: boolean,
 	) {}
 
-	getService = <T>(serviceType: string): T | undefined => {
+	getService = <T>(serviceType: Type): T | undefined => {
 		if (this.disposed) {
 			throw new Error('Cannot access a disposed object.' /* LOC */);
 		}

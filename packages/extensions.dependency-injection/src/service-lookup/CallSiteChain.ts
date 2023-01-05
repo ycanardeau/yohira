@@ -9,10 +9,16 @@ class ChainItemInfo {
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteChain.cs,ae1fab1640004f66,references
 export class CallSiteChain {
-	private readonly callSiteChain: Map<Type, ChainItemInfo>;
+	private readonly callSiteChain: Map<
+		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+		ChainItemInfo
+	>;
 
 	constructor() {
-		this.callSiteChain = new Map<Type, ChainItemInfo>();
+		this.callSiteChain = new Map<
+			string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+			ChainItemInfo
+		>();
 	}
 
 	private createCircularDependencyErrorMessage = (type: Type): string => {
@@ -21,7 +27,7 @@ export class CallSiteChain {
 	};
 
 	checkCircularDependency = (serviceType: Type): void => {
-		if (this.callSiteChain.has(serviceType)) {
+		if (this.callSiteChain.has(serviceType.value)) {
 			throw new Error(
 				this.createCircularDependencyErrorMessage(serviceType),
 			);
@@ -29,12 +35,12 @@ export class CallSiteChain {
 	};
 
 	remove = (serviceType: Type): void => {
-		this.callSiteChain.delete(serviceType);
+		this.callSiteChain.delete(serviceType.value);
 	};
 
 	add = (serviceType: Type, implCtor: Ctor<unknown> | undefined): void => {
 		this.callSiteChain.set(
-			serviceType,
+			serviceType.value,
 			new ChainItemInfo(this.callSiteChain.size, implCtor),
 		);
 	};

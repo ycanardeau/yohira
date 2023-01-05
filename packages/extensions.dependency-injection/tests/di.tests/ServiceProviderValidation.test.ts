@@ -1,3 +1,4 @@
+import { Type } from '@yohira/base/Type';
 import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
 import {
 	addScopedCtor,
@@ -44,13 +45,15 @@ class Bar2 implements IBar {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderValidationTests.cs#L13
 test('GetService_Throws_WhenScopedIsInjectedIntoSingleton', () => {
 	const serviceCollection = new ServiceCollection();
-	addSingletonCtor(serviceCollection, 'IFoo', Foo);
-	addScopedCtor(serviceCollection, 'IBar', Bar);
+	addSingletonCtor(serviceCollection, Type.from('IFoo'), Foo);
+	addScopedCtor(serviceCollection, Type.from('IBar'), Bar);
 	const options = new ServiceProviderOptions();
 	options.validateScopes = true;
 	const serviceProvider = buildServiceProvider(serviceCollection, options);
 
-	expect(() => serviceProvider.getService<IFoo>('IFoo')).toThrowError(
+	expect(() =>
+		serviceProvider.getService<IFoo>(Type.from('IFoo')),
+	).toThrowError(
 		"Cannot consume scoped service 'IBar' from singleton 'IFoo'." /* TODO */,
 	);
 });
@@ -58,14 +61,16 @@ test('GetService_Throws_WhenScopedIsInjectedIntoSingleton', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderValidationTests.cs#L27
 test('GetService_Throws_WhenScopedIsInjectedIntoSingletonThroughTransient', () => {
 	const serviceCollection = new ServiceCollection();
-	addSingletonCtor(serviceCollection, 'IFoo', Foo);
-	addTransientCtor(serviceCollection, 'IBar', Bar2);
-	addScopedCtor(serviceCollection, 'IBaz', Baz);
+	addSingletonCtor(serviceCollection, Type.from('IFoo'), Foo);
+	addTransientCtor(serviceCollection, Type.from('IBar'), Bar2);
+	addScopedCtor(serviceCollection, Type.from('IBaz'), Baz);
 	const options = new ServiceProviderOptions();
 	options.validateScopes = true;
 	const serviceProvider = buildServiceProvider(serviceCollection, options);
 
-	expect(() => serviceProvider.getService<IFoo>('IFoo')).toThrowError(
+	expect(() =>
+		serviceProvider.getService<IFoo>(Type.from('IFoo')),
+	).toThrowError(
 		"Cannot consume scoped service 'IBaz' from singleton 'IFoo'." /* TODO */,
 	);
 });
@@ -73,14 +78,16 @@ test('GetService_Throws_WhenScopedIsInjectedIntoSingletonThroughTransient', () =
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderValidationTests.cs#L42
 test('GetService_Throws_WhenScopedIsInjectedIntoSingletonThroughSingleton', () => {
 	const serviceCollection = new ServiceCollection();
-	addSingletonCtor(serviceCollection, 'IFoo', Foo);
-	addSingletonCtor(serviceCollection, 'IBar', Bar2);
-	addScopedCtor(serviceCollection, 'IBaz', Baz);
+	addSingletonCtor(serviceCollection, Type.from('IFoo'), Foo);
+	addSingletonCtor(serviceCollection, Type.from('IBar'), Bar2);
+	addScopedCtor(serviceCollection, Type.from('IBaz'), Baz);
 	const options = new ServiceProviderOptions();
 	options.validateScopes = true;
 	const serviceProvider = buildServiceProvider(serviceCollection, options);
 
-	expect(() => serviceProvider.getService<IFoo>('IFoo')).toThrowError(
+	expect(() =>
+		serviceProvider.getService<IFoo>(Type.from('IFoo')),
+	).toThrowError(
 		"Cannot consume scoped service 'IBaz' from singleton 'IBar'." /* TODO */,
 	);
 });
@@ -91,12 +98,14 @@ test('GetService_Throws_WhenScopedIsInjectedIntoSingletonThroughSingleton', () =
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderValidationTests.cs#L74
 test('GetService_Throws_WhenGetServiceForScopedServiceIsCalledOnRoot', () => {
 	const serviceCollection = new ServiceCollection();
-	addScopedCtor(serviceCollection, 'IBar', Bar);
+	addScopedCtor(serviceCollection, Type.from('IBar'), Bar);
 	const options = new ServiceProviderOptions();
 	options.validateScopes = true;
 	const serviceProvider = buildServiceProvider(serviceCollection, options);
 
-	expect(() => serviceProvider.getService<IBar>('IBar')).toThrowError(
+	expect(() =>
+		serviceProvider.getService<IBar>(Type.from('IBar')),
+	).toThrowError(
 		"Cannot resolve scoped service 'IBar' from root provider." /* TODO */,
 	);
 });
@@ -104,13 +113,15 @@ test('GetService_Throws_WhenGetServiceForScopedServiceIsCalledOnRoot', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderValidationTests.cs#L87
 test('GetService_Throws_WhenGetServiceForScopedServiceIsCalledOnRootViaTransient', () => {
 	const serviceCollection = new ServiceCollection();
-	addTransientCtor(serviceCollection, 'IFoo', Foo);
-	addScopedCtor(serviceCollection, 'IBar', Bar);
+	addTransientCtor(serviceCollection, Type.from('IFoo'), Foo);
+	addScopedCtor(serviceCollection, Type.from('IBar'), Bar);
 	const options = new ServiceProviderOptions();
 	options.validateScopes = true;
 	const serviceProvider = buildServiceProvider(serviceCollection, options);
 
-	expect(() => serviceProvider.getService<IFoo>('IFoo')).toThrowError(
+	expect(() =>
+		serviceProvider.getService<IFoo>(Type.from('IFoo')),
+	).toThrowError(
 		`Cannot resolve 'IFoo' from root provider because it requires scoped service 'IBar'.`,
 	);
 });
