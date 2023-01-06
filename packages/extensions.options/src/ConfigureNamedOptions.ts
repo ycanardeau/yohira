@@ -1,11 +1,9 @@
 import { IConfigureNamedOptions } from '@yohira/extensions.options/IConfigureNamedOptions';
 import { Options } from '@yohira/extensions.options/Options';
-import { injectable } from 'inversify';
 // TODO: Remove.
 import 'reflect-metadata';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/ConfigureNamedOptions.cs,ea88416116840787,references
-@injectable()
 export class ConfigureNamedOptions<TOptions>
 	implements IConfigureNamedOptions<TOptions>
 {

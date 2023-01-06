@@ -7,10 +7,9 @@ import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/Gener
 import { HostingApp } from '@yohira/hosting/internal/HostingApp';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { inject, injectable } from 'inversify';
+import { inject } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostService.cs,fd20321226ab7078,references
-@injectable()
 export class GenericWebHostService implements IHostedService {
 	private readonly options: GenericWebHostServiceOptions;
 

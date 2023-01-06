@@ -10,10 +10,9 @@ import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
 import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
 import { useMiddleware } from '@yohira/http.abstractions/extensions/UseMiddlewareExtensions';
-import { inject, injectable } from 'inversify';
+import { inject } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references
-@injectable()
 export class HttpLoggingMiddleware implements IMiddleware {
 	constructor(
 		@inject('IOptionsMonitor<HttpLoggingOptions>')

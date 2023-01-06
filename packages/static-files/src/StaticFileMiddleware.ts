@@ -26,11 +26,10 @@ import {
 } from '@yohira/static-files/LoggerExtensions';
 import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
 import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
-import { inject, injectable } from 'inversify';
+import { inject } from 'inversify';
 import { Err, Ok, Result } from 'ts-results-es';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
-@injectable()
 export class StaticFileMiddleware implements IMiddleware {
 	private readonly options: StaticFileOptions;
 	private readonly matchUrl: PathString;

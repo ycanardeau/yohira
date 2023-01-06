@@ -1,9 +1,7 @@
 import { IStartupFilter } from '@yohira/hosting.abstractions/IStartupFilter';
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
-import { injectable } from 'inversify';
 
 // https://source.dot.net/#Microsoft.AspNetCore/HostFilteringStartupFilter.cs,2e65c6fa6e26c8e9,references
-@injectable()
 export class HostFilteringStartupFilter implements IStartupFilter {
 	configure = (
 		next: (app: IAppBuilder) => void,
