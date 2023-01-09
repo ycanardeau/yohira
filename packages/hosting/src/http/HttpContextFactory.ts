@@ -1,17 +1,18 @@
-import { ServiceProvider } from '@yohira/extensions.dependency-injection/ServiceProvider';
+import { Type } from '@yohira/base/Type';
 import { IFeatureCollection } from '@yohira/extensions.features/IFeatureCollection';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
 import { HttpContext } from '@yohira/http/HttpContext';
-import { IncomingMessage, ServerResponse } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Http/DefaultHttpContextFactory.cs,a66c2cafba21597c,references
 export class HttpContextFactory implements IHttpContextFactory {
 	create = (featureCollection: IFeatureCollection): IHttpContext => {
 		const httpContext = new HttpContext(
-			featureCollection.get(IncomingMessage)!,
-			featureCollection.get(ServerResponse<IncomingMessage>)!,
-			featureCollection.get(ServiceProvider)!,
+			featureCollection.get(Type.from('IncomingMessage'))!,
+			featureCollection.get(
+				Type.from('ServerResponse<IncomingMessage>'),
+			)!,
+			featureCollection.get(Type.from('ServiceProvider'))!,
 		);
 		// TODO
 		return httpContext;

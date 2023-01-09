@@ -5,9 +5,9 @@ import {
 	addSingletonCtor,
 	addTransientCtor,
 } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
 import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
-import { inject } from 'inversify';
 import { expect, test } from 'vitest';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -19,7 +19,7 @@ class Bar implements IBar {}
 interface IFoo {}
 
 class Foo implements IFoo {
-	constructor(@inject('IBar') readonly bar: IBar) {}
+	constructor(@inject(Type.from('IBar')) readonly bar: IBar) {}
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,16 +28,16 @@ interface IBaz {}
 class Baz implements IBaz {}
 
 class Bar2 implements IBar {
-	constructor(@inject('IBaz') readonly baz: IBaz) {}
+	constructor(@inject(Type.from('IBaz')) readonly baz: IBaz) {}
 }
 
 /* TODO: class BazRecursive implements IBaz {
-	constructor(@inject('IBaz') readonly baz: IBaz) {}
+	constructor(@inject(Type.from('IBaz')) readonly baz: IBaz) {}
 }*/
 
 /* TODO: class Boo implements IBoo {
 	constructor(
-		@inject('IServiceScopeFactory')
+		@inject(Type.from('IServiceScopeFactory'))
 		readonly scopeFactory: IServiceScopeFactory,
 	) {}
 }*/

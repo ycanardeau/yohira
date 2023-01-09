@@ -1,7 +1,7 @@
-import { interfaces } from 'inversify';
+import { Type } from '@yohira/base/Type';
 
 // https://source.dot.net/#Microsoft.Extensions.Features/IFeatureCollection.cs,a1176f964a1c46f8,references
 export interface IFeatureCollection {
-	get<T>(key: interfaces.ServiceIdentifier<T>): T | undefined;
-	set<T>(key: interfaces.ServiceIdentifier<T>, instance: T | undefined): void;
+	get<T>(key: Type): T | undefined;
+	set<T>(key: Type, instance: T | undefined): void;
 }

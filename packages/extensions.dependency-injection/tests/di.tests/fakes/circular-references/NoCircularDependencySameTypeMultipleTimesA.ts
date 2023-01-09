@@ -1,4 +1,5 @@
-import { inject } from 'inversify';
+import { Type } from '@yohira/base/Type';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
 
 import { NoCircularDependencySameTypeMultipleTimesB } from './NoCircularDependencySameTypeMultipleTimesB';
 import { NoCircularDependencySameTypeMultipleTimesC } from './NoCircularDependencySameTypeMultipleTimesC';
@@ -11,11 +12,11 @@ import { NoCircularDependencySameTypeMultipleTimesC } from './NoCircularDependen
 // C
 export class NoCircularDependencySameTypeMultipleTimesA {
 	constructor(
-		@inject('NoCircularDependencySameTypeMultipleTimesB')
+		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesB'))
 		readonly b: NoCircularDependencySameTypeMultipleTimesB,
-		@inject('NoCircularDependencySameTypeMultipleTimesC')
+		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesC'))
 		readonly c1: NoCircularDependencySameTypeMultipleTimesC,
-		@inject('NoCircularDependencySameTypeMultipleTimesC')
+		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesC'))
 		readonly c2: NoCircularDependencySameTypeMultipleTimesC,
 	) {}
 }

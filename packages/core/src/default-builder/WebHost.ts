@@ -4,7 +4,6 @@ import {
 	addSingletonFactory,
 	addTransientCtor,
 } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { ServiceProvider } from '@yohira/extensions.dependency-injection/ServiceProvider';
 import { FeatureCollection } from '@yohira/extensions.features/FeatureCollection';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { IServer } from '@yohira/hosting.server.abstractions/IServer';
@@ -31,15 +30,17 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 										const featureCollection =
 											new FeatureCollection();
 										featureCollection.set(
-											IncomingMessage,
+											Type.from('IncomingMessage'),
 											request,
 										);
 										featureCollection.set(
-											ServerResponse<IncomingMessage>,
+											Type.from(
+												'ServerResponse<IncomingMessage>',
+											),
 											response,
 										);
 										featureCollection.set(
-											ServiceProvider,
+											Type.from('ServiceProvider'),
 											serviceProvider,
 										);
 										const context =
