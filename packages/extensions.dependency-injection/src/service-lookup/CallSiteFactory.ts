@@ -15,7 +15,7 @@ import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
 import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
 import { MetadataReader } from '@yohira/third-party.inversify/planning/metadata_reader';
-import { Result } from 'ts-results-es';
+import { Result } from '@yohira/third-party.ts-results/result';
 
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 

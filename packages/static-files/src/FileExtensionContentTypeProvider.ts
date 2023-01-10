@@ -1,5 +1,5 @@
 import { IContentTypeProvider } from '@yohira/static-files/IContentTypeProvider';
-import { Err, Ok, Result } from 'ts-results-es';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
 
 // TODO: Move.
 const isNullOrWhiteSpace = (value: string | undefined): boolean => {

@@ -1303,6 +1303,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"conditional-type-checks@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "conditional-type-checks@npm:1.0.6"
+  checksum: b851bf25999433c4566ea66e431727e78ff5447b53ea6553e46a2c54f485e3a3542e8afd1b195f277f17d7774be629817e8f82167951f64e1fdfd0dbe04c3f00
+  languageName: node
+  linkType: hard
+
 "console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -3697,13 +3704,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-results-es@npm:^3.5.0":
-  version: 3.5.0
-  resolution: "ts-results-es@npm:3.5.0"
-  checksum: 35d371781a04c43dbb941ab5f34b800c53a2a28c54784f9e600cd87cb63c4ee4c3fec0ebb2b0d0771fe44e3d81f7bb6d25ccebfc04adcb72e00349d435d9a89f
-  languageName: node
-  linkType: hard
-
 "tsc-alias@npm:^1.7.1":
   version: 1.8.2
   resolution: "tsc-alias@npm:1.8.2"
@@ -4073,6 +4073,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.43.0
     "@typescript-eslint/parser": ^5.43.0
     concurrently: ^7.6.0
+    conditional-type-checks: ^1.0.6
     eslint: ^8.27.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-import: ^2.26.0
@@ -4080,7 +4081,6 @@ __metadata:
     prettier: ^2.7.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    ts-results-es: ^3.5.0
     tsc-alias: ^1.7.1
     typescript: ^4.9.3
     vitest: ^0.26.2

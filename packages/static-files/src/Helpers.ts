@@ -3,7 +3,7 @@ import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
 import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
 import { PathString } from '@yohira/http.abstractions/PathString';
-import { Err, Ok, Result } from 'ts-results-es';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
 
 export const resolveFileProvider = (hostingEnv: IWebHostEnv): IFileProvider => {
 	return hostingEnv.webRootFileProvider;

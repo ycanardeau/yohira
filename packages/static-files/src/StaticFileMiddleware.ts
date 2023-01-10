@@ -28,7 +28,7 @@ import {
 } from '@yohira/static-files/LoggerExtensions';
 import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
 import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
-import { Err, Ok, Result } from 'ts-results-es';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 export class StaticFileMiddleware implements IMiddleware {

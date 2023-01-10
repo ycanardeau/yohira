@@ -61,6 +61,9 @@
 			"@yohira/static-files/*": ["packages/static-files/src/*"],
 			"@yohira/third-party.inversify/*": [
 				"packages/third-party.inversify/src/*"
+			],
+			"@yohira/third-party.ts-results/*": [
+				"packages/third-party.ts-results/src/*"
 			]
 		}
 	},
