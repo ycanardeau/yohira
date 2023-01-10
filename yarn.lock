@@ -2328,13 +2328,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inversify@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "inversify@npm:6.0.1"
-  checksum: b6c9b56ef7817a71534b06101c2b0a0130b67c47a769f58794d9c0643591a83ac02be30a48c00cb729c0c83ece96dde369c419d48c32d0201c6cc7407629fbc5
-  languageName: node
-  linkType: hard
-
 "ip@npm:^2.0.0":
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
@@ -4084,7 +4077,6 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-import: ^2.26.0
     eslint-plugin-prettier: ^4.2.1
-    inversify: ^6.0.1
     prettier: ^2.7.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2

@@ -13,9 +13,8 @@ import { IterableCallSite } from '@yohira/extensions.dependency-injection/servic
 import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
 import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
 import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
-import { METADATA_KEY, MetadataReader } from 'inversify';
-// TODO: Move.
-import 'reflect-metadata';
+import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
+import { MetadataReader } from '@yohira/third-party.inversify/planning/metadata_reader';
 import { Result } from 'ts-results-es';
 
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;

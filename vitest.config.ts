@@ -22,6 +22,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.options/src',
 			),
+			'@yohira/third-party.inversify': resolve(
+				__dirname,
+				'./packages/third-party.inversify/src',
+			),
 		},
 	},
 });

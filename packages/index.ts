@@ -1,6 +1,3 @@
-// TODO: Move.
-import 'reflect-metadata';
-
 import { main } from './main';
 
 main();

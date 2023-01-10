@@ -1,6 +1,7 @@
 import { Type } from '@yohira/base/Type';
-import { inject as inversifyInject } from 'inversify';
-import { DecoratorTarget } from 'inversify/lib/annotation/decorator_utils';
+import { DecoratorTarget } from '@yohira/third-party.inversify/annotation/decorator_utils';
+import { injectBase } from '@yohira/third-party.inversify/annotation/inject_base';
+import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
 
 export const inject = (
 	serviceType: Type,
@@ -9,5 +10,5 @@ export const inject = (
 	targetKey?: string | symbol,
 	indexOrPropertyDescriptor?: number | TypedPropertyDescriptor<any>,
 ) => void) => {
-	return inversifyInject(serviceType.value);
+	return injectBase(METADATA_KEY.INJECT_TAG)(serviceType.value);
 };

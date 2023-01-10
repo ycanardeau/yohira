@@ -58,7 +58,10 @@
 			"@yohira/http-logging/*": ["packages/http-logging/src/*"],
 			"@yohira/http.abstractions/*": ["packages/http.abstractions/src/*"],
 			"@yohira/http.extensions/*": ["packages/http.extensions/src/*"],
-			"@yohira/static-files/*": ["packages/static-files/src/*"]
+			"@yohira/static-files/*": ["packages/static-files/src/*"],
+			"@yohira/third-party.inversify/*": [
+				"packages/third-party.inversify/src/*"
+			]
 		}
 	},
 	"include": ["packages/**/*"]
