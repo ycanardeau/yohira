@@ -1,7 +1,71 @@
 import { Ctor } from '@yohira/base/Type';
 import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
+import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
 import { BinderOptions } from '@yohira/extensions.config.binder/BinderOptions';
 import { BindingPoint } from '@yohira/extensions.config.binder/BindingPoint';
+import {
+	PropertyInfo,
+	getProperties,
+} from '@yohira/extensions.config.binder/type';
+import { Ok, Result } from '@yohira/third-party.ts-results/result';
+
+// https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,fc155b7d06f7f55f,references
+const tryConvertValue = (
+	ctor: Ctor,
+	value: string,
+	path: string | undefined,
+): Result<string | number | boolean | undefined, Error> => {
+	if (ctor === String) {
+		return new Ok(String(value));
+	} else if (ctor === Number) {
+		return new Ok(Number(value));
+	} else if (ctor === Boolean) {
+		switch (value.toLowerCase()) {
+			case 'true':
+				return new Ok(true);
+			case 'false':
+				return new Ok(false);
+			default:
+				return new Ok(false);
+		}
+	} else {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+};
+
+// https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,a18305cb82093d18,references
+const getPropertyName = (property: PropertyInfo): string => {
+	// TODO
+	return property.name;
+};
+
+// https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,fd12934fd6da12d8,references
+const bindProperty = (
+	property: PropertyInfo,
+	instance: Record<string, any>,
+	config: IConfig,
+	options: BinderOptions,
+): void => {
+	// TODO
+
+	const propertyBindingPoint = new BindingPoint(
+		undefined,
+		() => instance[property.name],
+		false /* TODO */,
+	);
+
+	bindInstance(
+		property.ctorFunc(),
+		propertyBindingPoint,
+		config.getSection(getPropertyName(property)),
+		options,
+	);
+
+	if (propertyBindingPoint.hasNewValue) {
+		instance[property.name] = propertyBindingPoint.value;
+	}
+};
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,9b06a6c17e1aa689,references
 const bindProperties = (
@@ -9,32 +73,52 @@ const bindProperties = (
 	config: IConfig,
 	options: BinderOptions,
 ): void => {
-	// TODO
+	const modelProperties = getProperties(instance.constructor as Ctor);
 
 	if (options.errorOnUnknownConfig) {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
 
-	// TODO
-	throw new Error('Method not implemented.');
+	for (const property of modelProperties) {
+		bindProperty(property, instance, config, options);
+	}
 };
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,f87b0f53a2b9251a,references
 const bindInstance = (
 	ctor: Ctor,
 	bindingPoint: BindingPoint,
-	config: IConfig,
+	config: IConfig | IConfigSection,
 	options: BinderOptions,
 ): void => {
 	// TODO
 
-	if (bindingPoint.value === undefined) {
-		throw new Error('Assertion failed.');
+	if ('key' in config && 'path' in config && 'value' in config) {
+		const section = config;
+		const configValue = section.value;
+		if (configValue !== undefined) {
+			const tryConvertValueResult = tryConvertValue(
+				ctor,
+				configValue,
+				section.path,
+			);
+			const convertedValue = tryConvertValueResult.unwrap();
+			bindingPoint.trySetValue(convertedValue as any /* TODO */);
+			return;
+		}
 	}
 
-	// TODO
-	bindProperties(bindingPoint.value, config, options);
+	if (config.getChildren().length > 0) {
+		// TODO
+
+		if (bindingPoint.value === undefined) {
+			throw new Error('Assertion failed.');
+		}
+
+		// TODO
+		bindProperties(bindingPoint.value, config, options);
+	}
 };
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,a9de1082cf7e70ca,references
@@ -46,7 +130,7 @@ export const bind = (
 	if (instance !== undefined) {
 		const options = new BinderOptions();
 		configureOptions?.(options);
-		const bindingPoint = new BindingPoint(instance, true);
+		const bindingPoint = new BindingPoint(instance, undefined, true);
 		bindInstance(
 			instance.constructor as Ctor,
 			bindingPoint,

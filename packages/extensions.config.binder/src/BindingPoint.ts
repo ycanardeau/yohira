@@ -1,13 +1,25 @@
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/BindingPoint.cs,54b2cc589b0b3c04,references
 export class BindingPoint {
-	private readonly initialValueProvider?: () => object | undefined;
 	private _setValue?: object;
 	private valueSet = false;
 
 	constructor(
 		private initialValue: object | undefined = undefined,
+		private readonly initialValueProvider?: () => object | undefined,
 		readonly isReadonly = false,
 	) {}
+
+	get hasNewValue(): boolean {
+		if (this.isReadonly) {
+			return false;
+		}
+
+		if (this.valueSet) {
+			return true;
+		}
+
+		return false /* TODO */;
+	}
 
 	get value(): object | undefined {
 		return this.valueSet

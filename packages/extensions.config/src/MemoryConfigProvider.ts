@@ -6,6 +6,10 @@ export class MemoryConfigProvider extends ConfigProvider {
 	constructor(private readonly source: MemoryConfigSource) {
 		super();
 
-		// TODO
+		if (source.initialData !== undefined) {
+			for (const [key, value] of Object.entries(source.initialData)) {
+				this.data.set(key, value);
+			}
+		}
 	}
 }

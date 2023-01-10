@@ -8,7 +8,11 @@ import { getChildrenImpl } from '@yohira/extensions.config/InternalConfigRootExt
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationRoot.cs,0a5ad779923b882b,references
 export class ConfigRoot implements IConfigRoot, IDisposable {
-	constructor(private readonly providers: IList<IConfigProvider>) {}
+	constructor(private readonly _providers: IList<IConfigProvider>) {}
+
+	get providers(): Iterable<IConfigProvider> {
+		return this._providers;
+	}
 
 	static getConfig = (
 		providers: IList<IConfigProvider>,
@@ -43,11 +47,11 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 	};
 
 	get = (key: string): string | undefined => {
-		return ConfigRoot.getConfig(this.providers, key);
+		return ConfigRoot.getConfig(this._providers, key);
 	};
 
 	set = (key: string, value: string | undefined): void => {
-		ConfigRoot.setConfig(this.providers, key, value);
+		ConfigRoot.setConfig(this._providers, key, value);
 	};
 
 	getChildren = (): IConfigSection[] => {

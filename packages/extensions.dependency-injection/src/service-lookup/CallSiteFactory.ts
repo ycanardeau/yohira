@@ -275,7 +275,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			);
 			// TODO: Remove.
 			if (parameterTypes.length !== implCtor.length) {
-				throw new Error(/* TODO */);
+				throw new Error(/* TODO: message */);
 			}
 			if (parameterTypes.length === 0) {
 				return new CtorCallSite(lifetime, serviceType, implCtor);

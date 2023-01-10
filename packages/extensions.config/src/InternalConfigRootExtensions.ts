@@ -1,3 +1,4 @@
+import { combineConfigPath } from '@yohira/extensions.config.abstractions/ConfigPath';
 import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
 import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
 
@@ -7,5 +8,20 @@ export const getChildrenImpl = (
 	path: string | undefined,
 ): IConfigSection[] => {
 	// TODO
-	throw new Error('Method not implemented.');
+	const providers = /* TODO */ root.providers;
+
+	const children = Array.from(providers)
+		.reduce(
+			(seed, source) => source.getChildKeys(seed, path),
+			[] as string[],
+		)
+		// TODO: distinct
+		.map((key) =>
+			root.getSection(
+				path === undefined ? key : combineConfigPath(path, key),
+			),
+		);
+
+	// TODO
+	return children;
 };

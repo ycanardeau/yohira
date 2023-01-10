@@ -4,4 +4,8 @@ import { Result } from '@yohira/third-party.ts-results/result';
 export interface IConfigProvider {
 	tryGet(key: string): Result<string | undefined, undefined>;
 	set(key: string, value: string | undefined): void;
+	getChildKeys(
+		earlierKeys: string[],
+		parentPath: string | undefined,
+	): string[];
 }

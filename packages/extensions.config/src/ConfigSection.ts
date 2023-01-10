@@ -1,6 +1,10 @@
-import { combineConfigPath } from '@yohira/extensions.config.abstractions/ConfigPath';
+import {
+	combineConfigPath,
+	getSectionKey,
+} from '@yohira/extensions.config.abstractions/ConfigPath';
 import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
 import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
+import { getChildrenImpl } from '@yohira/extensions.config/InternalConfigRootExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationSection.cs,b07a8fc9758fd876,references
 export class ConfigSection implements IConfigSection {
@@ -9,8 +13,8 @@ export class ConfigSection implements IConfigSection {
 	constructor(private readonly root: IConfigRoot, readonly path: string) {}
 
 	get key(): string {
-		// TODO
-		throw new Error('Method not implemented.');
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return (this._key ??= getSectionKey(this.path)!);
 	}
 
 	get value(): string | undefined {
@@ -33,7 +37,6 @@ export class ConfigSection implements IConfigSection {
 	};
 
 	getChildren = (): IConfigSection[] => {
-		// TODO
-		throw new Error('Method not implemented.');
+		return getChildrenImpl(this.root, this.path);
 	};
 }

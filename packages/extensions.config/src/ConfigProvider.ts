@@ -1,4 +1,5 @@
 import { tryGetValue } from '@yohira/base/MapExtensions';
+import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath';
 import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
 import { Result } from '@yohira/third-party.ts-results/result';
 
@@ -14,5 +15,47 @@ export abstract class ConfigProvider implements IConfigProvider {
 
 	set = (key: string, value: string | undefined): void => {
 		this.data.set(key, value);
+	};
+
+	private static segment = (key: string, prefixLength: number): string => {
+		const indexOf = key.indexOf(keyDelimiter, prefixLength);
+		return indexOf < 0
+			? key.substring(prefixLength)
+			: key.substring(prefixLength, indexOf - prefixLength);
+	};
+
+	getChildKeys = (
+		earlierKeys: string[],
+		parentPath: string | undefined,
+	): string[] => {
+		const results: string[] = [];
+
+		if (parentPath === undefined) {
+			for (const [key] of this.data) {
+				results.push(ConfigProvider.segment(key, 0));
+			}
+		} else {
+			if (keyDelimiter !== ':') {
+				throw new Error('Assertion failed.');
+			}
+
+			for (const [key] of this.data) {
+				if (
+					key.length > parentPath.length &&
+					key.startsWith(parentPath) &&
+					key[parentPath.length] === ':'
+				) {
+					results.push(
+						ConfigProvider.segment(key, parentPath.length + 1),
+					);
+				}
+			}
+		}
+
+		results.push(...earlierKeys);
+
+		// TODO: sort
+
+		return results;
 	};
 }
