@@ -92,7 +92,7 @@ test('GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvail
 	const services = getServices<IFoo>(serviceProvider, Type.from('IFoo'));
 
 	expect(services.length).toBe(0);
-	expect(services).instanceof(Array);
+	expect(services).toBeInstanceOf(Array);
 });
 
 // TODO
