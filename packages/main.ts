@@ -17,7 +17,7 @@ import {
 	useStaticFiles,
 } from '@yohira/static-files/StaticFileMiddleware';
 
-export const main = async (): Promise<void> => {
+export async function main(): Promise<void> {
 	const builder = createWebAppBuilder(/* TODO */);
 
 	// TODO: Remove.
@@ -68,4 +68,4 @@ export const main = async (): Promise<void> => {
 	});
 
 	await app.run();
-};
+}

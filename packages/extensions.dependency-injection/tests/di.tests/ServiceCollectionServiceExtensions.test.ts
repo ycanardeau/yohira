@@ -20,12 +20,12 @@ const instance = new FakeService();
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L43
 test('AddWithTypeAddsServiceWithRightLifecycle', () => {
-	const AddWithTypeAddsServiceWithRightLifecycle = (
+	function AddWithTypeAddsServiceWithRightLifecycle(
 		addTypeAction: (collection: IServiceCollection) => void,
 		expectedServiceType: Type,
 		expectedImplCtor: Ctor<object>,
 		lifeCycle: ServiceLifetime,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 
 		addTypeAction(collection);
@@ -35,7 +35,7 @@ test('AddWithTypeAddsServiceWithRightLifecycle', () => {
 		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor);
 		expect(descriptor.lifetime).toBe(lifeCycle);
-	};
+	}
 
 	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
@@ -66,9 +66,9 @@ test('AddWithTypeAddsServiceWithRightLifecycle', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L121
 test('AddSingleton_AddsWithSingletonLifecycle', () => {
-	const AddSingleton_AddsWithSingletonLifecycle = (
+	function AddSingleton_AddsWithSingletonLifecycle(
 		addAction: (collection: IServiceCollection) => void,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 
 		addAction(collection);
@@ -77,7 +77,7 @@ test('AddSingleton_AddsWithSingletonLifecycle', () => {
 		const descriptor = Array.from(collection)[0];
 		expect(descriptor.implInstance).toBe(instance);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Singleton);
-	};
+	}
 
 	AddSingleton_AddsWithSingletonLifecycle((collection) =>
 		addSingletonInstance(collection, Type.from('IFakeService'), instance),
@@ -86,9 +86,9 @@ test('AddSingleton_AddsWithSingletonLifecycle', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L138
 test('TryAddNoOpFailsIfExists', () => {
-	const TryAddNoOpFailsIfExists = (
+	function TryAddNoOpFailsIfExists(
 		addAction: (collection: IServiceCollection) => void,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 		addAction(collection);
 		const d = ServiceDescriptor.fromCtor(
@@ -106,7 +106,7 @@ test('TryAddNoOpFailsIfExists', () => {
 		);
 		expect(descriptor.implInstance).toBe(instance);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Singleton);
-	};
+	}
 
 	TryAddNoOpFailsIfExists((collection) =>
 		addSingletonInstance(collection, Type.from('IFakeService'), instance),
@@ -115,12 +115,12 @@ test('TryAddNoOpFailsIfExists', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L183
 test('TryAdd_WithType_AddsService', () => {
-	const TryAdd_WithType_AddsService = (
+	function TryAdd_WithType_AddsService(
 		addAction: (collection: IServiceCollection) => void,
 		expectedServiceType: Type,
 		expectedImplCtor: Ctor<object>,
 		expectedLifetime: ServiceLifetime,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 
 		addAction(collection);
@@ -130,7 +130,7 @@ test('TryAdd_WithType_AddsService', () => {
 		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor);
 		expect(descriptor.lifetime).toBe(expectedLifetime);
-	};
+	}
 
 	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
@@ -183,11 +183,11 @@ test('TryAdd_WithType_AddsService', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L204
 test('TryAdd_WithType_DoesNotAddDuplicate', () => {
-	const TryAdd_WithType_DoesNotAddDuplicate = (
+	function TryAdd_WithType_DoesNotAddDuplicate(
 		addAction: (collection: IServiceCollection) => void,
 		expectedServiceType: Type,
 		expectedImplCtor: Ctor<object>,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 		collection.add(
 			ServiceDescriptor.fromCtor(
@@ -204,7 +204,7 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 		expect(descriptor.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(descriptor.implCtor).toBe(expectedImplCtor /* REVIEW */);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Transient);
-	};
+	}
 
 	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
@@ -274,12 +274,12 @@ test('TryAddIfMissingActuallyAdds', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L271
 test('TryAddEnumerable_AddsService', () => {
-	const TryAddEnumerable_AddsService = (
+	function TryAddEnumerable_AddsService(
 		descriptor: ServiceDescriptor,
 		expectedServiceType: Type,
 		expectedImplCtor: Ctor<object>,
 		expectedLifetime: ServiceLifetime,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 
 		tryAddIterable(collection, descriptor);
@@ -289,7 +289,7 @@ test('TryAddEnumerable_AddsService', () => {
 		expect(d.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(d.implCtor).toBe(expectedImplCtor);
 		expect(d.lifetime).toBe(expectedLifetime);
-	};
+	}
 
 	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;
@@ -330,12 +330,12 @@ test('TryAddEnumerable_AddsService', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionServiceExtensionsTest.cs#L293
 test('TryAddEnumerable_DoesNotAddDuplicate', () => {
-	const TryAddEnumerable_DoesNotAddDuplicate = (
+	function TryAddEnumerable_DoesNotAddDuplicate(
 		descriptor: ServiceDescriptor,
 		expectedServiceType: Type,
 		expectedImplCtor: Ctor<object>,
 		expectedLifetime: ServiceLifetime,
-	): void => {
+	): void {
 		const collection = new ServiceCollection();
 		tryAddIterable(collection, descriptor);
 
@@ -346,7 +346,7 @@ test('TryAddEnumerable_DoesNotAddDuplicate', () => {
 		expect(d.serviceType.equals(expectedServiceType)).toBe(true);
 		expect(d.implCtor).toBe(expectedImplCtor);
 		expect(d.lifetime).toBe(expectedLifetime);
-	};
+	}
 
 	const serviceType = Type.from('IFakeService');
 	const implCtor = FakeService;

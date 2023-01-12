@@ -3,9 +3,9 @@ import { ServiceProvider } from '@yohira/extensions.dependency-injection/Service
 import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceCollectionContainerBuilderExtensions.cs,346262d4cea1139c,references
-export const buildServiceProvider = (
+export function buildServiceProvider(
 	services: IServiceCollection,
 	options = ServiceProviderOptions.default,
-): ServiceProvider => {
+): ServiceProvider {
 	return new ServiceProvider(services, options);
-};
+}

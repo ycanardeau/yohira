@@ -7,11 +7,11 @@ import { Options } from '@yohira/extensions.options/Options';
 import { addOptions } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Options.ConfigurationExtensions/OptionsConfigurationServiceCollectionExtensions.cs,2aa74bb06c82c8f7,references
-export const configureOptionsConfigServices = <TOptions extends object>(
+export function configureOptionsConfigServices<TOptions extends object>(
 	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
 	config: IConfig,
-): IServiceCollection => {
+): IServiceCollection {
 	addOptions(services);
 	// TODO
 	return addSingletonInstance(
@@ -23,4 +23,4 @@ export const configureOptionsConfigServices = <TOptions extends object>(
 			() => {},
 		),
 	);
-};
+}

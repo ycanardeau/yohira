@@ -1,12 +1,12 @@
 import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
 import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
 
-export const getConnectionString = (
+export function getConnectionString(
 	config: IConfig,
 	name: string,
-): string | undefined => {
+): string | undefined {
 	return config?.getSection('ConnectionStrings').get(name);
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationExtensions.cs,c921372a618475b0,references
 export function* asIterable(

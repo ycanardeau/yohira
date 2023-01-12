@@ -19,11 +19,11 @@ import { Result } from '@yohira/third-party.ts-results/result';
 
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 
-const isConstructedGenericType = (type: Type): boolean => {
+function isConstructedGenericType(type: Type): boolean {
 	return genericTypeRegExp.test(type.value);
-};
+}
 
-const getGenericTypeDefinition = (type: Type): Type => {
+function getGenericTypeDefinition(type: Type): Type {
 	const match = genericTypeRegExp.exec(type.value);
 	if (!match) {
 		throw new Error(
@@ -31,7 +31,7 @@ const getGenericTypeDefinition = (type: Type): Type => {
 		);
 	}
 	return Type.from(`${match[1]}<>`);
-};
+}
 
 class ServiceDescriptorCacheItem {
 	private item?: ServiceDescriptor;

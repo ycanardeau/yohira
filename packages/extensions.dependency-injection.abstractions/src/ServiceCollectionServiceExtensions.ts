@@ -5,11 +5,11 @@ import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstr
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollectionServiceExtensions.cs,865c289313a49193,references
-export const addSingletonCtor = (
+export function addSingletonCtor(
 	services: IServiceCollection,
 	serviceType: Type,
 	implCtor: Ctor<object>,
-): IServiceCollection => {
+): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
 		serviceType,
@@ -17,13 +17,13 @@ export const addSingletonCtor = (
 	);
 	services.add(descriptor);
 	return services;
-};
+}
 
-export const addSingletonInstance = (
+export function addSingletonInstance(
 	services: IServiceCollection,
 	serviceType: Type,
 	implInstance: object,
-): IServiceCollection => {
+): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
 		serviceType,
@@ -31,13 +31,13 @@ export const addSingletonInstance = (
 	);
 	services.add(descriptor);
 	return services;
-};
+}
 
-export const addSingletonFactory = (
+export function addSingletonFactory(
 	services: IServiceCollection,
 	serviceType: Type,
 	implFactory: (serviceProvider: IServiceProvider) => object,
-): IServiceCollection => {
+): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Singleton,
 		serviceType,
@@ -45,13 +45,13 @@ export const addSingletonFactory = (
 	);
 	services.add(descriptor);
 	return services;
-};
+}
 
-export const addScopedCtor = (
+export function addScopedCtor(
 	services: IServiceCollection,
 	serviceType: Type,
 	implCtor: Ctor<object>,
-): IServiceCollection => {
+): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Scoped,
 		serviceType,
@@ -59,13 +59,13 @@ export const addScopedCtor = (
 	);
 	services.add(descriptor);
 	return services;
-};
+}
 
-export const addTransientCtor = (
+export function addTransientCtor(
 	services: IServiceCollection,
 	serviceType: Type,
 	implCtor: Ctor<object>,
-): IServiceCollection => {
+): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
 		serviceType,
@@ -73,4 +73,4 @@ export const addTransientCtor = (
 	);
 	services.add(descriptor);
 	return services;
-};
+}

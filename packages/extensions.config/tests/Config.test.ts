@@ -80,9 +80,9 @@ test('CanChainConfiguration', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L108
 test('ChainedAsEnumerateFlattensIntoDictionaryTest', () => {
-	const ChainedAsEnumerateFlattensIntoDictionaryTest = (
+	function ChainedAsEnumerateFlattensIntoDictionaryTest(
 		removePath: boolean,
-	): void => {
+	): void {
 		const dic1 = {
 			Mem1: 'Value1',
 			'Mem1:': 'NoKeyValue1',
@@ -125,7 +125,7 @@ test('ChainedAsEnumerateFlattensIntoDictionaryTest', () => {
 		expect(dict['Mem3:'.toLowerCase()]).toBe('NoKeyValue3');
 		expect(dict['Mem3:KeyInMem3'.toLowerCase()]).toBe('ValueInMem3');
 		expect(dict['Mem3:KeyInMem3:Deep3'.toLowerCase()]).toBe('ValueDeep3');
-	};
+	}
 
 	ChainedAsEnumerateFlattensIntoDictionaryTest(true);
 	ChainedAsEnumerateFlattensIntoDictionaryTest(false);
@@ -133,9 +133,7 @@ test('ChainedAsEnumerateFlattensIntoDictionaryTest', () => {
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L164
 test('AsEnumerateFlattensIntoDictionaryTest', () => {
-	const AsEnumerateFlattensIntoDictionaryTest = (
-		removePath: boolean,
-	): void => {
+	function AsEnumerateFlattensIntoDictionaryTest(removePath: boolean): void {
 		const dic1 = {
 			Mem1: 'Value1',
 			'Mem1:': 'NoKeyValue1',
@@ -177,7 +175,7 @@ test('AsEnumerateFlattensIntoDictionaryTest', () => {
 		expect(dict['Mem3:'.toLowerCase()]).toBe('NoKeyValue3');
 		expect(dict['Mem3:KeyInMem3'.toLowerCase()]).toBe('ValueInMem3');
 		expect(dict['Mem3:KeyInMem3:Deep3'.toLowerCase()]).toBe('ValueDeep3');
-	};
+	}
 
 	AsEnumerateFlattensIntoDictionaryTest(true);
 	AsEnumerateFlattensIntoDictionaryTest(false);

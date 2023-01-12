@@ -10,30 +10,30 @@ export interface PropertyInfo {
 type PropertyInfoMap = Map<string, PropertyInfo>;
 const propertyInfoMaps = new Map<Ctor, PropertyInfoMap>();
 
-const addPropertyInfo = (propertyInfo: PropertyInfo): void => {
+function addPropertyInfo(propertyInfo: PropertyInfo): void {
 	const propertyInfoMap = getOrAdd(
 		propertyInfoMaps,
 		propertyInfo.target.constructor,
 		() => new Map<string, PropertyInfo>(),
 	);
 	propertyInfoMap.set(propertyInfo.name, propertyInfo);
-};
+}
 
-export const getProperties = (target: Ctor): PropertyInfo[] => {
+export function getProperties(target: Ctor): PropertyInfo[] {
 	const propertyInfoMap = propertyInfoMaps.get(target);
 	if (propertyInfoMap === undefined) {
 		throw new Error(/* TODO: message */);
 	}
 	return Array.from(propertyInfoMap.values());
-};
+}
 
-export const type = (
+export function type(
 	ctorFunc: () => Ctor,
-): ((
+): (
 	target: any,
 	propertyKey: string,
 	descriptor?: TypedPropertyDescriptor<any>,
-) => void) => {
+) => void {
 	return (target, propertyKey) => {
 		const propertyInfo = {
 			target: target,
@@ -42,4 +42,4 @@ export const type = (
 		};
 		addPropertyInfo(propertyInfo);
 	};
-};
+}

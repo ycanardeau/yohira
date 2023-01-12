@@ -3,12 +3,12 @@ import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartu
 import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/WebHostBuilderExtensions.cs,660aae01ddc11d31,references
-export const configure = (
+export function configure(
 	hostBuilder: IWebHostBuilder | ISupportsStartup,
 	configureApp: (
 		/* TODO: context: WebHostBuilderContext, */ app: IAppBuilder,
 	) => void,
-): IWebHostBuilder => {
+): IWebHostBuilder {
 	// TODO
 
 	if ('configure' in /* TODO */ hostBuilder) {
@@ -21,4 +21,4 @@ export const configure = (
 		// TODO
 		throw new Error('Method not implemented.');
 	});
-};
+}

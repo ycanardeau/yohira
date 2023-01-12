@@ -12,9 +12,7 @@ import { OptionsMonitor } from '@yohira/extensions.options/OptionsMonitor';
 import { UnnamedOptionsManager } from '@yohira/extensions.options/UnnamedOptionsManager';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,4909ed65f60d1c84,references
-export const addOptions = (
-	services: IServiceCollection,
-): IServiceCollection => {
+export function addOptions(services: IServiceCollection): IServiceCollection {
 	tryAdd(
 		services,
 		ServiceDescriptor.fromCtor(
@@ -49,15 +47,15 @@ export const addOptions = (
 		),
 	);
 	return services;
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
-export const configureNamedOptionsServices = <TOptions>(
+export function configureNamedOptionsServices<TOptions>(
 	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
-): IServiceCollection => {
+): IServiceCollection {
 	addOptions(services);
 	addSingletonInstance(
 		services,
@@ -65,18 +63,18 @@ export const configureNamedOptionsServices = <TOptions>(
 		new ConfigureNamedOptions(name, configureOptions),
 	);
 	return services;
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
-export const configureOptionsServices = <TOptions>(
+export function configureOptionsServices<TOptions>(
 	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
 	configureOptions: (options: TOptions) => void,
-): IServiceCollection => {
+): IServiceCollection {
 	return configureNamedOptionsServices(
 		services,
 		optionsCtor,
 		Options.defaultName,
 		configureOptions,
 	);
-};
+}

@@ -4,14 +4,14 @@ export enum HttpMethods {
 	Head = 'HEAD',
 }
 
-const equals = (left: string, right: string): boolean => {
+function equals(left: string, right: string): boolean {
 	return left.toLowerCase() === right.toLowerCase();
-};
+}
 
-export const isGet = (method: string): boolean => {
+export function isGet(method: string): boolean {
 	return equals(HttpMethods.Get, method);
-};
+}
 
-export const isHead = (method: string): boolean => {
+export function isHead(method: string): boolean {
 	return equals(HttpMethods.Head, method);
-};
+}

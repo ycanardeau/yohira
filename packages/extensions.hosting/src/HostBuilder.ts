@@ -9,10 +9,10 @@ import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
 import { addLogging } from '@yohira/extensions.logging/LoggingServiceCollectionExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,a8c4578a1465d84d,references
-export const populateServiceCollection = (
+export function populateServiceCollection(
 	services: IServiceCollection,
 	serviceProviderGetter: () => IServiceProvider,
-): void => {
+): void {
 	// TODO
 
 	addSingletonFactory(services, Type.from('IHost'), () => {
@@ -27,12 +27,12 @@ export const populateServiceCollection = (
 	});
 	// TODO
 	addLogging(services);
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,328ee38355596558,references
-export const resolveHost = (
+export function resolveHost(
 	serviceProvider: IServiceProvider /* TODO */,
-): IHost => {
+): IHost {
 	// TODO
 
 	const host = getRequiredService<IHost>(serviceProvider, Type.from('IHost'));
@@ -40,4 +40,4 @@ export const resolveHost = (
 	// TODO
 
 	return host;
-};
+}

@@ -4,11 +4,11 @@ import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
 import { configureWebHost } from '@yohira/hosting/GenericHostWebHostBuilderExtensions';
 
 // https://source.dot.net/#Microsoft.AspNetCore/GenericHostBuilderExtensions.cs,1f4983d882f1bdcb,references
-export const configureWebHostDefaults = (
+export function configureWebHostDefaults(
 	builder: IHostBuilder,
 	configure: (webHostBuilder: IWebHostBuilder) => void,
 	// TODO: configureOptions
-): IHostBuilder => {
+): IHostBuilder {
 	return configureWebHost(
 		builder,
 		(webHostBuilder) => {
@@ -17,4 +17,4 @@ export const configureWebHostDefaults = (
 			configure(webHostBuilder);
 		} /* TODO: configureOptions */,
 	);
-};
+}

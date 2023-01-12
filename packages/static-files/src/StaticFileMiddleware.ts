@@ -153,6 +153,6 @@ export class StaticFileMiddleware implements IMiddleware {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileExtensions.cs,d2a2db085a036bf0,references
-export const useStaticFiles = (app: IAppBuilder): IAppBuilder => {
+export function useStaticFiles(app: IAppBuilder): IAppBuilder {
 	return useMiddleware(app, StaticFileMiddleware);
-};
+}

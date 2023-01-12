@@ -6,11 +6,11 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironmentExtensions.cs,cfa8d9a4a73c54e3
-export const initialize = (
+export function initialize(
 	hostingEnv: IWebHostEnv,
 	contentRootPath: string,
 	options: WebHostOptions,
-): void => {
+): void {
 	// TODO
 
 	// TODO: hostingEnv.appName =
@@ -40,4 +40,4 @@ export const initialize = (
 	}
 
 	// TODO
-};
+}

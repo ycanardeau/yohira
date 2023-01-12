@@ -6,21 +6,21 @@ const invalidFileNameCharsRegExp = new RegExp(
 );
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,25bea12c519603bd,references
-export const hasInvalidPathChars = (path: string): boolean => {
+export function hasInvalidPathChars(path: string): boolean {
 	return invalidFileNameCharsRegExp.test(path);
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,9461c81a68263e40,references
-export const ensureTrailingSlash = (path: string): string => {
+export function ensureTrailingSlash(path: string): string {
 	if (path && path[path.length - 1] !== sep) {
 		return `${path}${sep}`;
 	}
 
 	return path;
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,80f5c7da653cf058,references
-export const pathNavigatesAboveRoot = (path: string): boolean => {
+export function pathNavigatesAboveRoot(path: string): boolean {
 	let depth = 0;
 
 	const segments = path.split(/[\\/]/ /* TODO: pathSeparators */);
@@ -39,4 +39,4 @@ export const pathNavigatesAboveRoot = (path: string): boolean => {
 	}
 
 	return false;
-};
+}

@@ -3,10 +3,10 @@ import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot'
 import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/InternalConfigurationRootExtensions.cs,84496613351a073c,references
-export const getChildrenImpl = (
+export function getChildrenImpl(
 	root: IConfigRoot,
 	path: string | undefined,
-): IConfigSection[] => {
+): IConfigSection[] {
 	// TODO
 	const providers = /* TODO */ root.providers;
 
@@ -24,4 +24,4 @@ export const getChildrenImpl = (
 
 	// TODO
 	return children;
-};
+}

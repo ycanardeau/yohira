@@ -1,7 +1,7 @@
 import { Type } from '@yohira/base/Type';
 
 // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript/7616484#7616484
-const getHashCode = (value: string): number => {
+function getHashCode(value: string): number {
 	let hashCode = 0;
 	if (value.length === 0) {
 		return hashCode;
@@ -12,7 +12,7 @@ const getHashCode = (value: string): number => {
 		hashCode = hashCode | 0;
 	}
 	return hashCode;
-};
+}
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ServiceCacheKey.cs,5f18c3f8ffa0308b,references
 export class ServiceCacheKey {

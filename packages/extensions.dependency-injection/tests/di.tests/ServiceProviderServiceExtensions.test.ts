@@ -26,7 +26,7 @@ class Bar1 implements IBar {}
 
 class Bar2 implements IBar {}
 
-const createTestServiceProvider = (count: number): IServiceProvider => {
+function createTestServiceProvider(count: number): IServiceProvider {
 	const serviceCollection = new ServiceCollection();
 
 	if (count > 0) {
@@ -46,7 +46,7 @@ const createTestServiceProvider = (count: number): IServiceProvider => {
 	}
 
 	return buildServiceProvider(serviceCollection);
-};
+}
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L15
 test('GetService_Returns_CorrectService', () => {

@@ -42,6 +42,6 @@ export class WebApp implements IHost, IAppBuilder {
 	}
 }
 
-export const createWebAppBuilder = (): WebAppBuilder => {
+export function createWebAppBuilder(): WebAppBuilder {
 	return new WebAppBuilder(); /* TODO */
-};
+}

@@ -3,12 +3,12 @@ import { DecoratorTarget } from '@yohira/third-party.inversify/annotation/decora
 import { injectBase } from '@yohira/third-party.inversify/annotation/inject_base';
 import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
 
-export const inject = (
+export function inject(
 	serviceType: Type,
-): ((
+): (
 	target: DecoratorTarget<unknown>,
 	targetKey?: string | symbol,
 	indexOrPropertyDescriptor?: number | TypedPropertyDescriptor<any>,
-) => void) => {
+) => void {
 	return injectBase(METADATA_KEY.INJECT_TAG)(serviceType.value);
-};
+}

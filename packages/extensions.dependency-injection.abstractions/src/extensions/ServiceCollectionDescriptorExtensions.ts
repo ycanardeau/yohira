@@ -2,10 +2,10 @@ import { IServiceCollection } from '@yohira/extensions.dependency-injection.abst
 import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/Extensions/ServiceCollectionDescriptorExtensions.cs,74efb8e4739fdc19,references
-export const tryAdd = (
+export function tryAdd(
 	collection: IServiceCollection,
 	descriptor: ServiceDescriptor,
-): void => {
+): void {
 	const count = collection.count;
 	for (let i = 0; i < count; i++) {
 		if (collection.get(i).serviceType.equals(descriptor.serviceType)) {
@@ -15,12 +15,12 @@ export const tryAdd = (
 	}
 
 	collection.add(descriptor);
-};
+}
 
-export const tryAddIterable = (
+export function tryAddIterable(
 	collection: IServiceCollection,
 	descriptor: ServiceDescriptor,
-): void => {
+): void {
 	// TODO
 	tryAdd(collection, descriptor);
-};
+}

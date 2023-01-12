@@ -8,9 +8,7 @@ import { LoggerFactory } from '@yohira/extensions.logging/LoggerFactory';
 import { addOptions } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/LoggingServiceCollectionExtensions.cs,3bb7fda06894cc18,references
-export const addLogging = (
-	services: IServiceCollection,
-): IServiceCollection => {
+export function addLogging(services: IServiceCollection): IServiceCollection {
 	addOptions(services);
 
 	tryAdd(
@@ -34,4 +32,4 @@ export const addLogging = (
 
 	// TODO
 	return services;
-};
+}

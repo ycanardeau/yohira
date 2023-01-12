@@ -10,7 +10,7 @@ import { IServer } from '@yohira/hosting.server.abstractions/IServer';
 import { IncomingMessage, ServerResponse, createServer } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebHost.cs,ca2002fa0bfdb774,references
-export const configureWebDefaults = (builder: IWebHostBuilder): void => {
+export function configureWebDefaults(builder: IWebHostBuilder): void {
 	// TODO
 	builder
 		.configureServices(
@@ -78,4 +78,4 @@ export const configureWebDefaults = (builder: IWebHostBuilder): void => {
 
 			// TODO
 		});
-};
+}

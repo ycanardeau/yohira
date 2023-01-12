@@ -2,10 +2,10 @@ import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { Type } from '@yohira/base/Type';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,60d5205872e18356,references
-export const getRequiredService = <T>(
+export function getRequiredService<T>(
 	provider: IServiceProvider,
 	serviceType: Type,
-): T => {
+): T {
 	// TODO
 
 	const service = provider.getService<T>(serviceType);
@@ -16,14 +16,14 @@ export const getRequiredService = <T>(
 	}
 
 	return service;
-};
+}
 
-export const getServices = <T>(
+export function getServices<T>(
 	provider: IServiceProvider,
 	serviceType: Type,
-): T[] => {
+): T[] {
 	return getRequiredService<T[]>(
 		provider,
 		Type.from(`Iterable<${serviceType}>`),
 	);
-};
+}

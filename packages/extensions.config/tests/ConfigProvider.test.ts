@@ -8,13 +8,13 @@ import { MemoryConfigSource } from '@yohira/extensions.config/MemoryConfigSource
 import { expect, test } from 'vitest';
 
 // TODO: Move.
-const toList = <T>(items: T[]): IList<T> => {
+function toList<T>(items: T[]): IList<T> {
 	const list = new List<T>();
 	for (const item of items) {
 		list.add(item);
 	}
 	return list;
-};
+}
 
 class TestKeyValue {
 	private constructor(readonly value: string | string[]) {}
@@ -70,15 +70,15 @@ const testConfig: TestSection = {
 	},
 };
 
-const ConfigurationProviderTestBase = (
+function ConfigurationProviderTestBase(
 	loadThroughProvider: (testConfig: TestSection) => {
 		provider: IConfigProvider;
 		initializer: () => void;
 	},
-): void => {
-	const buildConfigRoot = (
+): void {
+	function buildConfigRoot(
 		...providers: { provider: IConfigProvider; initializer: () => void }[]
-	): IConfigRoot => {
+	): IConfigRoot {
 		const root = new ConfigRoot(toList(providers.map((e) => e.provider)));
 
 		for (const initializer of providers.map((e) => e.initializer)) {
@@ -86,13 +86,13 @@ const ConfigurationProviderTestBase = (
 		}
 
 		return root;
-	};
+	}
 
-	const assertConfig = (
+	function assertConfig(
 		config: IConfigRoot,
 		expectNulls = false,
 		nullValue?: string,
-	): void => {
+	): void {
 		const value1 = expectNulls ? nullValue : 'Value1';
 		const value12 = expectNulls ? nullValue : 'Value12';
 		const value123 = expectNulls ? nullValue : 'Value123';
@@ -162,7 +162,7 @@ const ConfigurationProviderTestBase = (
 		expect(section4.value).toBeUndefined();
 
 		// TODO
-	};
+	}
 
 	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L15
 	test('Load_from_single_provider', () => {
@@ -172,13 +172,13 @@ const ConfigurationProviderTestBase = (
 	});
 
 	// TODO
-};
+}
 
-const sectionToValues = (
+function sectionToValues(
 	config: TestSection,
 	sectionName: string,
 	values: IList<[string, string]>,
-): void => {
+): void {
 	for (const [key, value] of Object.entries(config.values).flatMap(
 		([key, value]) => Array.from(value.expand(key)),
 	)) {
@@ -188,11 +188,12 @@ const sectionToValues = (
 	for (const [key, section] of Object.entries(config.sections)) {
 		sectionToValues(section, sectionName + key + ':', values);
 	}
-};
+}
 
-const loadUsingMemoryProvider = (
-	testConfig: TestSection,
-): { provider: IConfigProvider; initializer: () => void } => {
+function loadUsingMemoryProvider(testConfig: TestSection): {
+	provider: IConfigProvider;
+	initializer: () => void;
+} {
 	const values = new List<[string, string]>();
 	sectionToValues(testConfig, '', values);
 
@@ -202,7 +203,7 @@ const loadUsingMemoryProvider = (
 		),
 		initializer: (): void => {},
 	};
-};
+}
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderMemoryTest.cs#L15
 ConfigurationProviderTestBase((testConfig) =>

@@ -5,11 +5,11 @@ import { GenericWebHostBuilder } from '@yohira/hosting/generic-host/GenericWebHo
 import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHostWebHostBuilderExtensions.cs,f00a712c64f2d28e,references
-export const configureWebHost = (
+export function configureWebHost(
 	builder: IHostBuilder,
 	configure: (webHostBuilder: IWebHostBuilder) => void,
 	// TODO: configureWebHostBuilder
-): IHostBuilder => {
+): IHostBuilder {
 	// TODO
 	const webHostBuilder = new GenericWebHostBuilder(builder);
 	configure(webHostBuilder);
@@ -17,4 +17,4 @@ export const configureWebHost = (
 		addHostedService(services, GenericWebHostService),
 	);
 	return builder;
-};
+}

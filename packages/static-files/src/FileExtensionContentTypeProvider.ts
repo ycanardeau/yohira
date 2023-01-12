@@ -2,9 +2,9 @@ import { IContentTypeProvider } from '@yohira/static-files/IContentTypeProvider'
 import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
 
 // TODO: Move.
-const isNullOrWhiteSpace = (value: string | undefined): boolean => {
+function isNullOrWhiteSpace(value: string | undefined): boolean {
 	return !value || !value.trim();
-};
+}
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/FileExtensionContentTypeProvider.cs,318e05af289b0b3e,references
 export class FileExtensionContentTypeProvider implements IContentTypeProvider {

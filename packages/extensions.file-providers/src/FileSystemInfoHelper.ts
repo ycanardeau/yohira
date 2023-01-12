@@ -2,10 +2,10 @@ import { FileSystemInfo } from '@yohira/base/FileSystemInfo';
 import { ExclusionFilters } from '@yohira/extensions.file-providers/ExclusionFilters';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/FileSystemInfoHelper.cs,020c80373ae5f76c,references
-export const isExcluded = (
+export function isExcluded(
 	fileSystemInfo: FileSystemInfo,
 	filters: ExclusionFilters,
-): boolean => {
+): boolean {
 	if (filters === ExclusionFilters.None) {
 		return false;
 	} else if (
@@ -24,4 +24,4 @@ export const isExcluded = (
 	}*/
 
 	return false;
-};
+}

@@ -3,11 +3,11 @@ import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBu
 import { ChainedConfigSource } from '@yohira/extensions.config/ChainedConfigSource';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ChainedBuilderExtensions.cs,c1cdfd515e420ab1,references
-export const addConfig = (
+export function addConfig(
 	configBuilder: IConfigBuilder,
 	config: IConfig,
 	shouldDisposeConfig = false,
-): IConfigBuilder => {
+): IConfigBuilder {
 	configBuilder.add(new ChainedConfigSource(config, shouldDisposeConfig));
 	return configBuilder;
-};
+}

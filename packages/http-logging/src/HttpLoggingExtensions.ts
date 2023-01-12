@@ -3,9 +3,9 @@ import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
 import { HttpRequestLog } from '@yohira/http-logging/HttpRequestLog';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingExtensions.cs,5183288c97b153d3,references
-export const logRequestLog = (
+export function logRequestLog(
 	logger: ILogger,
 	requestLog: HttpRequestLog,
-): void => {
+): void {
 	logger.log(LogLevel.Information, requestLog.toString());
-};
+}
