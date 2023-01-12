@@ -10,17 +10,18 @@ export function getChildrenImpl(
 	// TODO
 	const providers = /* TODO */ root.providers;
 
-	const children = Array.from(providers)
-		.reduce(
-			(seed, source) => source.getChildKeys(seed, path),
-			[] as string[],
-		)
-		// TODO: distinct
-		.map((key) =>
-			root.getSection(
-				path === undefined ? key : combineConfigPath(path, key),
+	const children = [
+		...new Set(
+			Array.from(providers).reduce(
+				(seed, source) => source.getChildKeys(seed, path),
+				[] as string[],
 			),
-		);
+		),
+	].map((key) =>
+		root.getSection(
+			path === undefined ? key : combineConfigPath(path, key),
+		),
+	);
 
 	// TODO
 	return children;

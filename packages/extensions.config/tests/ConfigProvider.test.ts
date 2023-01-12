@@ -151,17 +151,113 @@ function ConfigurationProviderTestBase(
 		expect(section3.path).toBe('Section3');
 		expect(section3.value).toBeUndefined();
 
+		// TODO: ignore case
 		let section4 = config.getSection('Section3:Section4');
 		expect(section4.get('Key4')).toBe(value344);
 		expect(section4.path).toBe('Section3:Section4');
 		expect(section4.value).toBeUndefined();
 
+		// TODO: ignore case
 		section4 = config.getSection('Section3').getSection('Section4');
 		expect(section4.get('Key4')).toBe(value344);
 		expect(section4.path).toBe('Section3:Section4');
 		expect(section4.value).toBeUndefined();
 
-		// TODO
+		let sections = config.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(3);
+
+		// TODO: ignore case
+		expect(sections[0].key.toLowerCase()).toBe('Key1'.toLowerCase());
+		expect(sections[0].path.toLowerCase()).toBe('Key1'.toLowerCase());
+		expect(sections[0].value).toBe(value1);
+
+		// TODO: ignore case
+		expect(sections[1].key.toLowerCase()).toBe('Section1'.toLowerCase());
+		expect(sections[1].path.toLowerCase()).toBe('Section1'.toLowerCase());
+		expect(sections[1].value).toBeUndefined();
+
+		// TODO: ignore case
+		expect(sections[2].key.toLowerCase()).toBe('Section3'.toLowerCase());
+		expect(sections[2].path.toLowerCase()).toBe('Section3'.toLowerCase());
+		expect(sections[2].value).toBeUndefined();
+
+		sections = section1.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(2);
+
+		// TODO: ignore case
+		expect(sections[0].key.toLowerCase()).toBe('Key2'.toLowerCase());
+		expect(sections[0].path.toLowerCase()).toBe(
+			'Section1:Key2'.toLowerCase(),
+		);
+		expect(sections[0].value).toBe(value12);
+
+		// TODO: ignore case
+		expect(sections[1].key.toLowerCase()).toBe('Section2'.toLowerCase());
+		expect(sections[1].path.toLowerCase()).toBe(
+			'Section1:Section2'.toLowerCase(),
+		);
+		expect(sections[1].value).toBeUndefined();
+
+		sections = section2.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(2);
+
+		// TODO: ignore case
+		expect(sections[0].key.toLowerCase()).toBe('Key3'.toLowerCase());
+		expect(sections[0].path.toLowerCase()).toBe(
+			'Section1:Section2:Key3'.toLowerCase(),
+		);
+		expect(sections[0].value).toBe(value123);
+
+		// TODO: ignore case
+		expect(sections[1].key.toLowerCase()).toBe('Key3a'.toLowerCase());
+		expect(sections[1].path.toLowerCase()).toBe(
+			'Section1:Section2:Key3a'.toLowerCase(),
+		);
+		expect(sections[1].value).toBeUndefined();
+
+		sections = section3a.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(3);
+
+		// TODO: ignore case
+		expect(sections[0].key).toBe('0');
+		expect(sections[0].path).toBe('Section1:Section2:Key3a:0');
+		expect(sections[0].value).toBe(arrayvalue0);
+
+		// TODO: ignore case
+		expect(sections[1].key).toBe('1');
+		expect(sections[1].path).toBe('Section1:Section2:Key3a:1');
+		expect(sections[1].value).toBe(arrayvalue1);
+
+		// TODO: ignore case
+		expect(sections[2].key).toBe('2');
+		expect(sections[2].path).toBe('Section1:Section2:Key3a:2');
+		expect(sections[2].value).toBe(arrayvalue2);
+
+		sections = section3.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(1);
+
+		// TODO: ignore case
+		expect(sections[0].key.toLowerCase()).toBe('Section4'.toLowerCase());
+		expect(sections[0].path.toLowerCase()).toBe(
+			'Section3:Section4'.toLowerCase(),
+		);
+		expect(sections[0].value).toBeUndefined();
+
+		sections = section4.getChildren(); /* TODO: toList */
+
+		expect(sections.length).toBe(1);
+
+		// TODO: ignore case
+		expect(sections[0].key.toLowerCase()).toBe('Key4'.toLowerCase());
+		expect(sections[0].path.toLowerCase()).toBe(
+			'Section3:Section4:Key4'.toLowerCase(),
+		);
+		expect(sections[0].value).toBe(value344);
 	}
 
 	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L15
