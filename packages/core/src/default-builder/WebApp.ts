@@ -13,33 +13,33 @@ export class WebApp implements IHost, IAppBuilder {
 		this.appBuilder = new AppBuilder(/* TODO */);
 	}
 
-	start = (): Promise<void> => {
+	start(): Promise<void> {
 		return this.host.start();
-	};
+	}
 
-	stop = (): Promise<void> => {
+	stop(): Promise<void> {
 		return this.host.stop();
-	};
+	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		return this.host.dispose();
-	};
+	}
 
-	use = (middleware: (next: RequestDelegate) => RequestDelegate): this => {
+	use(middleware: (next: RequestDelegate) => RequestDelegate): this {
 		this.appBuilder.use(middleware);
 		return this;
-	};
+	}
 
-	build = (): RequestDelegate => {
+	build(): RequestDelegate {
 		return this.appBuilder.build();
-	};
+	}
 
-	listen = (): void => {};
+	listen(): void {}
 
-	run = (): Promise<void> => {
+	run(): Promise<void> {
 		this.listen();
 		return run(this);
-	};
+	}
 }
 
 export const createWebAppBuilder = (): WebAppBuilder => {

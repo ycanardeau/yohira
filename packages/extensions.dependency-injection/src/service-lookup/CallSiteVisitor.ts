@@ -33,10 +33,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		argument: TArgument,
 	): TResult;
 
-	protected visitCallSiteMain = (
+	protected visitCallSiteMain(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		switch (callSite.kind) {
 			case CallSiteKind.Factory:
 				return this.visitFactory(callSite as FactoryCallSite, argument);
@@ -55,40 +55,40 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 			case CallSiteKind.ServiceProvider:
 				throw new Error('Method not implemented.');
 		}
-	};
+	}
 
-	protected visitRootCache = (
+	protected visitRootCache(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		return this.visitCallSiteMain(callSite, argument);
-	};
+	}
 
-	protected visitScopeCache = (
+	protected visitScopeCache(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		return this.visitCallSiteMain(callSite, argument);
-	};
+	}
 
-	protected visitDisposeCache = (
+	protected visitDisposeCache(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		return this.visitCallSiteMain(callSite, argument);
-	};
+	}
 
-	protected visitNoCache = (
+	protected visitNoCache(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		return this.visitCallSiteMain(callSite, argument);
-	};
+	}
 
-	protected visitCallSite = (
+	protected visitCallSite(
 		callSite: ServiceCallSite,
 		argument: TArgument,
-	): TResult => {
+	): TResult {
 		// REVIEW: tryEnterOnCurrentStack
 
 		switch (callSite.cache.location) {
@@ -101,5 +101,5 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 			case CallSiteResultCacheLocation.None:
 				return this.visitNoCache(callSite, argument);
 		}
-	};
+	}
 }

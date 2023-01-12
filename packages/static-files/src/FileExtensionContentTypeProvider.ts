@@ -401,7 +401,7 @@ export class FileExtensionContentTypeProvider implements IContentTypeProvider {
 		'.zip': 'application/x-zip-compressed',
 	};
 
-	private static getExtension = (path: string): string | undefined => {
+	private static getExtension(path: string): string | undefined {
 		if (isNullOrWhiteSpace(path)) {
 			return undefined;
 		}
@@ -412,9 +412,9 @@ export class FileExtensionContentTypeProvider implements IContentTypeProvider {
 		}
 
 		return path.substring(index);
-	};
+	}
 
-	tryGetContentType = (subpath: string): Result<string, undefined> => {
+	tryGetContentType(subpath: string): Result<string, undefined> {
 		const extension =
 			FileExtensionContentTypeProvider.getExtension(subpath);
 		if (!extension) {
@@ -422,5 +422,5 @@ export class FileExtensionContentTypeProvider implements IContentTypeProvider {
 		}
 		const mapping = this.mappings[extension];
 		return mapping !== undefined ? new Ok(mapping) : new Err(undefined);
-	};
+	}
 }

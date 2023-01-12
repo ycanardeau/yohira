@@ -31,15 +31,15 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		// TODO
 	}
 
-	dispose = async (): Promise<void> => {
+	async dispose(): Promise<void> {
 		// TODO
-	};
+	}
 
-	private isUnderneathRoot = (fullPath: string): boolean => {
+	private isUnderneathRoot(fullPath: string): boolean {
 		return fullPath.toLowerCase().startsWith(this.root.toLowerCase());
-	};
+	}
 
-	private getFullPath = (path: string): string | undefined => {
+	private getFullPath(path: string): string | undefined {
 		if (pathNavigatesAboveRoot(path)) {
 			return undefined;
 		}
@@ -51,9 +51,9 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		}
 
 		return fullPath;
-	};
+	}
 
-	getFileInfo = (subpath: string): IFileInfo => {
+	getFileInfo(subpath: string): IFileInfo {
 		if (!subpath || hasInvalidPathChars(subpath)) {
 			return new NotFoundFileInfo(subpath);
 		}
@@ -80,5 +80,5 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		}
 
 		return new PhysicalFileInfo(fileInfo);
-	};
+	}
 }

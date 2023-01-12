@@ -4,21 +4,21 @@ import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigP
 import { Result } from '@yohira/third-party.ts-results/result';
 
 class CaseInsensitiveMap<V> extends Map<string, V> {
-	delete = (key: string): boolean => {
+	delete(key: string): boolean {
 		return super.delete(key.toLowerCase());
-	};
+	}
 
-	get = (key: string): V | undefined => {
+	get(key: string): V | undefined {
 		return super.get(key.toLowerCase());
-	};
+	}
 
-	has = (key: string): boolean => {
+	has(key: string): boolean {
 		return super.has(key.toLowerCase());
-	};
+	}
 
-	set = (key: string, value: V): this => {
+	set(key: string, value: V): this {
 		return super.set(key.toLowerCase(), value);
-	};
+	}
 }
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationProvider.cs,5c6e786dde478171,references
@@ -27,25 +27,25 @@ export abstract class ConfigProvider implements IConfigProvider {
 
 	protected constructor() {}
 
-	tryGet = (key: string): Result<string | undefined, undefined> => {
+	tryGet(key: string): Result<string | undefined, undefined> {
 		return tryGetValue(this.data, key);
-	};
+	}
 
-	set = (key: string, value: string | undefined): void => {
+	set(key: string, value: string | undefined): void {
 		this.data.set(key, value);
-	};
+	}
 
-	private static segment = (key: string, prefixLength: number): string => {
+	private static segment(key: string, prefixLength: number): string {
 		const indexOf = key.indexOf(keyDelimiter, prefixLength);
 		return indexOf < 0
 			? key.substring(prefixLength)
 			: key.substring(prefixLength, indexOf - prefixLength);
-	};
+	}
 
-	getChildKeys = (
+	getChildKeys(
 		earlierKeys: string[],
 		parentPath: string | undefined,
-	): string[] => {
+	): string[] {
 		const results: string[] = [];
 
 		if (parentPath === undefined) {
@@ -75,5 +75,5 @@ export abstract class ConfigProvider implements IConfigProvider {
 		// TODO: sort
 
 		return results;
-	};
+	}
 }

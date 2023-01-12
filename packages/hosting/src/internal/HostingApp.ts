@@ -16,27 +16,22 @@ export class HostingApp implements IHttpApp<HostingAppContext> {
 	) {}
 
 	// TODO
-	createContext = (
-		contextFeatures: IFeatureCollection,
-	): HostingAppContext => {
+	createContext(contextFeatures: IFeatureCollection): HostingAppContext {
 		const hostContext = new HostingAppContext();
 		const httpContext = this.httpContextFactory.create(contextFeatures);
 		hostContext.httpContext = httpContext;
 
 		// TODO: this.diagnostics.beginRequest(httpContext, hostContext);
 		return hostContext;
-	};
+	}
 
-	processRequest = (context: HostingAppContext): Promise<void> => {
+	processRequest(context: HostingAppContext): Promise<void> {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.app(context.httpContext!);
-	};
+	}
 
-	disposeContext = (
-		context: HostingAppContext,
-		error: Error | undefined,
-	): void => {
+	disposeContext(context: HostingAppContext, error: Error | undefined): void {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

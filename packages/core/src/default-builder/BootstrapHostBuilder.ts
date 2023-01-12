@@ -10,14 +10,14 @@ export class BootstrapHostBuilder implements IHostBuilder {
 
 	constructor(private readonly builder: HostAppBuilder) {}
 
-	configureServices = (
+	configureServices(
 		configureDelegate: (/* TODO */ services: IServiceCollection) => void,
-	): this => {
+	): this {
 		this.configureServicesActions.push(configureDelegate);
 		return this;
-	};
+	}
 
-	runDefaultCallbacks = (): void /* TODO: ServiceDescriptor */ => {
+	runDefaultCallbacks(): void /* TODO: ServiceDescriptor */ {
 		// TODO
 
 		for (const configureServicesAction of this.configureServicesActions) {
@@ -25,5 +25,5 @@ export class BootstrapHostBuilder implements IHostBuilder {
 		}
 
 		// TODO
-	};
+	}
 }

@@ -6,7 +6,7 @@ import { MemoryConfigProvider } from '@yohira/extensions.config/MemoryConfigProv
 export class MemoryConfigSource implements IConfigSource {
 	constructor(readonly initialData?: Record<string, string | undefined>) {}
 
-	build = (): IConfigProvider => {
+	build(): IConfigProvider {
 		return new MemoryConfigProvider(this);
-	};
+	}
 }

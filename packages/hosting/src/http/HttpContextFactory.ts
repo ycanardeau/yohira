@@ -6,7 +6,7 @@ import { HttpContext } from '@yohira/http/HttpContext';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Http/DefaultHttpContextFactory.cs,a66c2cafba21597c,references
 export class HttpContextFactory implements IHttpContextFactory {
-	create = (featureCollection: IFeatureCollection): IHttpContext => {
+	create(featureCollection: IFeatureCollection): IHttpContext {
 		const httpContext = new HttpContext(
 			featureCollection.get(Type.from('IncomingMessage'))!,
 			featureCollection.get(
@@ -16,10 +16,10 @@ export class HttpContextFactory implements IHttpContextFactory {
 		);
 		// TODO
 		return httpContext;
-	};
+	}
 
-	dispose = (httpContext: IHttpContext): void => {
+	dispose(httpContext: IHttpContext): void {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

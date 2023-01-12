@@ -22,7 +22,7 @@ export class CallSiteValidator extends CallSiteVisitor<
 		Type
 	>();
 
-	validateCallSite = (callSite: ServiceCallSite): void => {
+	validateCallSite(callSite: ServiceCallSite): void {
 		const scoped = this.visitCallSite(
 			callSite,
 			new CallSiteValidatorState(),
@@ -30,13 +30,13 @@ export class CallSiteValidator extends CallSiteVisitor<
 		if (scoped !== undefined) {
 			this.scopedServices.set(callSite.serviceType.value, scoped);
 		}
-	};
+	}
 
-	validateResolution = (
+	validateResolution(
 		serviceType: Type,
 		scope: IServiceScope,
 		rootScope: IServiceScope,
-	): void => {
+	): void {
 		if (scope === rootScope) {
 			const tryGetValueResult = tryGetValue(
 				this.scopedServices,
@@ -61,52 +61,52 @@ export class CallSiteValidator extends CallSiteVisitor<
 				);
 			}
 		}
-	};
+	}
 
-	protected visitCtor = (
+	protected visitCtor(
 		ctorCallSite: CtorCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined => {
+	): Type | undefined {
 		let result: Type | undefined = undefined;
 		for (const parameterCallSite of ctorCallSite.parameterCallSites) {
 			const scoped = this.visitCallSite(parameterCallSite, state);
 			result ??= scoped;
 		}
 		return result;
-	};
+	}
 
-	protected visitConstant = (): Type | undefined => {
+	protected visitConstant(): Type | undefined {
 		return undefined;
-	};
+	}
 
-	protected visitIterable = (
+	protected visitIterable(
 		iterableCallSite: IterableCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined => {
+	): Type | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	protected visitFactory = (
+	protected visitFactory(
 		factoryCallSite: FactoryCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined => {
+	): Type | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	protected visitRootCache = (
+	protected visitRootCache(
 		singletonCallSite: ServiceCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined => {
+	): Type | undefined {
 		state.singleton = singletonCallSite;
 		return this.visitCallSiteMain(singletonCallSite, state);
-	};
+	}
 
-	protected visitScopeCache = (
+	protected visitScopeCache(
 		scopedCallSite: ServiceCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined => {
+	): Type | undefined {
 		// TODO: IServiceScopeFactory
 		if (state.singleton !== undefined) {
 			throw new Error(
@@ -122,5 +122,5 @@ export class CallSiteValidator extends CallSiteVisitor<
 
 		this.visitCallSiteMain(scopedCallSite, state);
 		return scopedCallSite.serviceType;
-	};
+	}
 }

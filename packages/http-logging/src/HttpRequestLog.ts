@@ -4,7 +4,7 @@ export class HttpRequestLog {
 
 	constructor(private readonly keyValues: [string, string | undefined][]) {}
 
-	toString = (): string => {
+	toString(): string {
 		if (this.cachedString === undefined) {
 			const lines: string[] = [];
 			lines.push('Request:');
@@ -17,5 +17,5 @@ export class HttpRequestLog {
 		}
 
 		return this.cachedString;
-	};
+	}
 }

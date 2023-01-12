@@ -15,63 +15,63 @@ export class ServiceCollection implements IServiceCollection {
 		return this._isReadonly;
 	}
 
-	private checkReadonly = (): void => {
+	private checkReadonly(): void {
 		if (this._isReadonly) {
 			throw new Error(
 				'The service collection cannot be modified because it is read-only.' /* LOC */,
 			);
 		}
-	};
+	}
 
-	makeReadonly = (): void => {
+	makeReadonly(): void {
 		this._isReadonly = true;
-	};
+	}
 
-	get = (index: number): ServiceDescriptor => {
+	get(index: number): ServiceDescriptor {
 		return this.descriptors.get(index);
-	};
+	}
 
-	set = (index: number, item: ServiceDescriptor): void => {
+	set(index: number, item: ServiceDescriptor): void {
 		this.checkReadonly();
 		this.descriptors.set(index, item);
-	};
+	}
 
-	clear = (): void => {
+	clear(): void {
 		this.checkReadonly();
 		this.descriptors.clear();
-	};
+	}
 
-	contains = (item: ServiceDescriptor): boolean => {
+	contains(item: ServiceDescriptor): boolean {
 		return this.descriptors.contains(item);
-	};
+	}
 
 	// TODO: copyTo
 
-	remove = (item: ServiceDescriptor): boolean => {
+	remove(item: ServiceDescriptor): boolean {
 		this.checkReadonly();
 		return this.descriptors.remove(item);
-	};
+	}
 
 	[Symbol.iterator](): Iterator<ServiceDescriptor> {
 		return this.descriptors[Symbol.iterator]();
 	}
 
-	add = (item: ServiceDescriptor): void => {
+	add(item: ServiceDescriptor): void {
 		this.checkReadonly();
 		this.descriptors.add(item);
-	};
+	}
 
-	indexOf = (item: ServiceDescriptor): number => {
+	indexOf(item: ServiceDescriptor): number {
 		return this.descriptors.indexOf(item);
-	};
+	}
 
-	insert = (index: number, item: ServiceDescriptor): void => {
+	insert(index: number, item: ServiceDescriptor): void {
 		this.checkReadonly();
 		this.descriptors.insert(index, item);
-	};
+	}
 
-	removeAt = (index: number): void => {
+	removeAt(index: number): void {
 		this.checkReadonly();
 		this.descriptors.removeAt(index);
-	};
+	}
 }

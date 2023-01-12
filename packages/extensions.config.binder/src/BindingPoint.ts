@@ -27,7 +27,7 @@ export class BindingPoint {
 			: (this.initialValue ??= this.initialValueProvider?.());
 	}
 
-	setValue = (newValue: object | undefined): void => {
+	setValue(newValue: object | undefined): void {
 		if (this.isReadonly) {
 			throw new Error('Assertion failed.');
 		}
@@ -36,11 +36,11 @@ export class BindingPoint {
 		}
 		this._setValue = newValue;
 		this.valueSet = true;
-	};
+	}
 
-	trySetValue = (newValue: object | undefined): void => {
+	trySetValue(newValue: object | undefined): void {
 		if (!this.isReadonly) {
 			this.setValue(newValue);
 		}
-	};
+	}
 }

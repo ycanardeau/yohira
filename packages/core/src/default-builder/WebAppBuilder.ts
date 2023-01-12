@@ -56,9 +56,9 @@ export class WebAppBuilder {
 		return this.hostAppBuilder.services;
 	}
 
-	build = (): WebApp => {
+	build(): WebApp {
 		// TODO
 		this.builtApp = new WebApp(this.hostAppBuilder.build());
 		return this.builtApp;
-	};
+	}
 }

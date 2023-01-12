@@ -6,5 +6,7 @@ import { FakeOptions } from './FakeOptions';
 export class FakeOptionsFactory implements IOptionsFactory<FakeOptions> {
 	static options = new FakeOptions();
 
-	create = (): FakeOptions => FakeOptionsFactory.options;
+	create(): FakeOptions {
+		return FakeOptionsFactory.options;
+	}
 }

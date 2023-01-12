@@ -59,7 +59,7 @@ class ServiceDescriptorCacheItem {
 		return 1 + (this.items?.count ?? 0);
 	}
 
-	get = (index: number): ServiceDescriptor => {
+	get(index: number): ServiceDescriptor {
 		if (index >= this.count) {
 			throw new Error(
 				'Specified argument was out of the range of valid values.' /* LOC */,
@@ -73,9 +73,9 @@ class ServiceDescriptorCacheItem {
 
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.items!.get(index - 1);
-	};
+	}
 
-	getSlot = (descriptor: ServiceDescriptor): number => {
+	getSlot(descriptor: ServiceDescriptor): number {
 		if (descriptor === this.item) {
 			return this.count - 1;
 		}
@@ -90,9 +90,9 @@ class ServiceDescriptorCacheItem {
 		throw new Error(
 			"Requested service descriptor doesn't exist." /* LOC */,
 		);
-	};
+	}
 
-	add = (descriptor: ServiceDescriptor): ServiceDescriptorCacheItem => {
+	add(descriptor: ServiceDescriptor): ServiceDescriptorCacheItem {
 		const newCacheItem = new ServiceDescriptorCacheItem();
 		if (this.item === undefined) {
 			if (this.items !== undefined) {
@@ -107,7 +107,7 @@ class ServiceDescriptorCacheItem {
 			newCacheItem.items.add(descriptor);
 		}
 		return newCacheItem;
-	};
+	}
 }
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteFactory.cs,b3200cd3834458b8,references
@@ -121,7 +121,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	>();
 	// REVIEW: callSiteLocks
 
-	private populate = (): void => {
+	private populate(): void {
 		for (const descriptor of this.descriptors) {
 			const serviceType = descriptor.serviceType;
 			// TODO
@@ -138,7 +138,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 				),
 			);
 		}
-	};
+	}
 
 	constructor(descriptors: ICollection<ServiceDescriptor>) {
 		// TODO
@@ -147,12 +147,12 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		this.populate();
 	}
 
-	private tryCreateExactCore = (
+	private tryCreateExactCore(
 		descriptor: ServiceDescriptor,
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
 		slot: number,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		if (serviceType.equals(descriptor.serviceType)) {
 			const callSiteKey = new ServiceCacheKey(serviceType, slot);
 			const callSiteKeyHashCode = callSiteKey.getHashCode();
@@ -197,12 +197,12 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		}
 
 		return undefined;
-	};
+	}
 
-	private tryCreateExact = (
+	private tryCreateExact(
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		const tryGetValueResult = tryGetValue(
 			this.descriptorLookup,
 			serviceType.value,
@@ -217,14 +217,14 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		}
 
 		return undefined;
-	};
+	}
 
-	private createArgumentCallSites = (
+	private createArgumentCallSites(
 		implCtor: Ctor,
 		callSiteChain: CallSiteChain,
 		parameterTypes: Type[],
 		throwIfCallSiteNotFound: boolean,
-	): ServiceCallSite[] | undefined => {
+	): ServiceCallSite[] | undefined {
 		const parameterCallSites: ServiceCallSite[] = [];
 		for (const parameterType of parameterTypes) {
 			const callSite = this.getCallSite(parameterType, callSiteChain);
@@ -247,14 +247,14 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		}
 
 		return parameterCallSites;
-	};
+	}
 
-	private createCtorCallSite = (
+	private createCtorCallSite(
 		lifetime: ResultCache,
 		serviceType: Type,
 		implCtor: Ctor<object>,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite => {
+	): ServiceCallSite {
 		try {
 			callSiteChain.add(serviceType, implCtor);
 			const metadataReader = new MetadataReader();
@@ -298,15 +298,15 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		} finally {
 			callSiteChain.remove(serviceType);
 		}
-	};
+	}
 
-	private tryCreateOpenGenericCore = (
+	private tryCreateOpenGenericCore(
 		descriptor: ServiceDescriptor,
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
 		slot: number,
 		throwOnConstraintViolation: boolean,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		const match = genericTypeRegExp.exec(serviceType.value);
 		if (
 			match &&
@@ -343,12 +343,12 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		}
 
 		return undefined;
-	};
+	}
 
-	private tryCreateOpenGeneric = (
+	private tryCreateOpenGeneric(
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		if (isConstructedGenericType(serviceType)) {
 			const tryGetValueResult = tryGetValue(
 				this.descriptorLookup,
@@ -366,19 +366,19 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		}
 
 		return undefined;
-	};
+	}
 
-	private static getCommonCacheLocation = (
+	private static getCommonCacheLocation(
 		locationA: CallSiteResultCacheLocation,
 		locationB: CallSiteResultCacheLocation,
-	): CallSiteResultCacheLocation => {
+	): CallSiteResultCacheLocation {
 		return Math.max(locationA, locationB);
-	};
+	}
 
-	private tryCreateIterable = (
+	private tryCreateIterable(
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		const callSiteKey = new ServiceCacheKey(
 			serviceType,
 			CallSiteFactory.defaultSlot,
@@ -494,12 +494,12 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		} finally {
 			callSiteChain.remove(serviceType);
 		}
-	};
+	}
 
-	private createCallSite = (
+	private createCallSite(
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		// REVIEW
 
 		// REVIEW: Lock.
@@ -511,12 +511,12 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			this.tryCreateIterable(serviceType, callSiteChain);
 
 		return callSite;
-	};
+	}
 
-	getCallSite = (
+	getCallSite(
 		serviceType: Type,
 		callSiteChain: CallSiteChain,
-	): ServiceCallSite | undefined => {
+	): ServiceCallSite | undefined {
 		const tryGetValueResult = tryGetValue(
 			this.callSiteCache,
 			new ServiceCacheKey(
@@ -527,10 +527,10 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return tryGetValueResult.ok
 			? tryGetValueResult.val
 			: this.createCallSite(serviceType, callSiteChain);
-	};
+	}
 
-	isService = (serviceType: Type): boolean => {
+	isService(serviceType: Type): boolean {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

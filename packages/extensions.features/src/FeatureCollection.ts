@@ -8,11 +8,11 @@ export class FeatureCollection implements IFeatureCollection {
 		any
 	>();
 
-	get = <T>(key: Type): T | undefined => {
+	get<T>(key: Type): T | undefined {
 		return this.features.get(key.value);
-	};
+	}
 
-	set = <T>(key: Type, instance: T | undefined): void => {
+	set<T>(key: Type, instance: T | undefined): void {
 		this.features.set(key.value, instance);
-	};
+	}
 }

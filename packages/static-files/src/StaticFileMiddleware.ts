@@ -56,28 +56,26 @@ export class StaticFileMiddleware implements IMiddleware {
 		// TODO
 	}
 
-	private static validateNoEndpointDelegate = (
-		context: IHttpContext,
-	): boolean => {
+	private static validateNoEndpointDelegate(context: IHttpContext): boolean {
 		return getEndpoint(context)?.requestDelegate === undefined;
-	};
+	}
 
-	private static validateMethod = (context: IHttpContext): boolean => {
+	private static validateMethod(context: IHttpContext): boolean {
 		return isGetOrHeadMethod(context.request.method);
-	};
+	}
 
-	private static validatePath = (
+	private static validatePath(
 		context: IHttpContext,
 		matchUrl: PathString,
-	): Result<PathString, PathString> => {
+	): Result<PathString, PathString> {
 		return tryMatchPath(context, matchUrl, false);
-	};
+	}
 
-	private static lookupContentType = (
+	private static lookupContentType(
 		contentTypeProvider: IContentTypeProvider,
 		options: StaticFileOptions,
 		subPath: PathString,
-	): Result<string | undefined, undefined> => {
+	): Result<string | undefined, undefined> {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const result = contentTypeProvider.tryGetContentType(subPath.value!);
 		if (result.ok) {
@@ -89,14 +87,14 @@ export class StaticFileMiddleware implements IMiddleware {
 		}
 
 		return new Err(undefined);
-	};
+	}
 
-	private tryServeStaticFile = (
+	private tryServeStaticFile(
 		context: IHttpContext,
 		next: RequestDelegate,
 		contentType: string | undefined,
 		subPath: PathString,
-	): Promise<void> => {
+	): Promise<void> {
 		const fileContext = new StaticFileContext(
 			context,
 			this.options,
@@ -113,9 +111,9 @@ export class StaticFileMiddleware implements IMiddleware {
 		}
 
 		return next(context);
-	};
+	}
 
-	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
+	invoke(context: IHttpContext, next: RequestDelegate): Promise<void> {
 		if (!StaticFileMiddleware.validateNoEndpointDelegate(context)) {
 			logEndpointMatched(this.logger);
 		} else if (!StaticFileMiddleware.validateMethod(context)) {
@@ -151,7 +149,7 @@ export class StaticFileMiddleware implements IMiddleware {
 		}
 
 		return next(context);
-	};
+	}
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileExtensions.cs,d2a2db085a036bf0,references

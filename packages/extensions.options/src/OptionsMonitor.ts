@@ -15,7 +15,7 @@ export class OptionsMonitor<TOptions> implements IOptionsMonitor<TOptions> {
 		private readonly cache: IOptionsMonitorCache<TOptions>,
 	) {}
 
-	get = (optionsCtor: Ctor<TOptions>, name: string | undefined): TOptions => {
+	get(optionsCtor: Ctor<TOptions>, name: string | undefined): TOptions {
 		if (!(this.cache instanceof OptionsCache)) {
 			// TODO
 			throw new Error('Method not implemented.');
@@ -26,9 +26,9 @@ export class OptionsMonitor<TOptions> implements IOptionsMonitor<TOptions> {
 			(name) => this.factory.create(optionsCtor, name),
 			this.factory,
 		);
-	};
+	}
 
-	getCurrentValue = (optionsCtor: Ctor<TOptions>): TOptions => {
+	getCurrentValue(optionsCtor: Ctor<TOptions>): TOptions {
 		return this.get(optionsCtor, Options.defaultName);
-	};
+	}
 }

@@ -20,13 +20,13 @@ export class ServiceCacheKey {
 
 	static readonly empty = new ServiceCacheKey(undefined, 0);
 
-	equals = (other: ServiceCacheKey): boolean => {
+	equals(other: ServiceCacheKey): boolean {
 		return Type.equals(this.type, other.type) && this.slot === other.slot;
-	};
+	}
 
-	getHashCode = (): number => {
+	getHashCode(): number {
 		return (
 			((this.type ? getHashCode(this.type.value) : 23) * 397) ^ this.slot
 		);
-	};
+	}
 }

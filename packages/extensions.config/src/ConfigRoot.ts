@@ -14,10 +14,10 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		return this._providers;
 	}
 
-	static getConfig = (
+	static getConfig(
 		providers: IList<IConfigProvider>,
 		key: string,
-	): string | undefined => {
+	): string | undefined {
 		for (let i = providers.count - 1; i >= 0; i--) {
 			const provider = providers.get(i);
 
@@ -28,13 +28,13 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		}
 
 		return undefined;
-	};
+	}
 
-	static setConfig = (
+	static setConfig(
 		providers: IList<IConfigProvider>,
 		key: string,
 		value: string | undefined,
-	): void => {
+	): void {
 		if (providers.count === 0) {
 			throw new Error(
 				'A configuration source is not registered. Please register one before setting a value.' /* LOC */,
@@ -44,26 +44,26 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		for (const provider of providers) {
 			provider.set(key, value);
 		}
-	};
+	}
 
-	get = (key: string): string | undefined => {
+	get(key: string): string | undefined {
 		return ConfigRoot.getConfig(this._providers, key);
-	};
+	}
 
-	set = (key: string, value: string | undefined): void => {
+	set(key: string, value: string | undefined): void {
 		ConfigRoot.setConfig(this._providers, key, value);
-	};
+	}
 
-	getChildren = (): IConfigSection[] => {
+	getChildren(): IConfigSection[] {
 		return getChildrenImpl(this, undefined);
-	};
+	}
 
-	getSection = (key: string): IConfigSection => {
+	getSection(key: string): IConfigSection {
 		return new ConfigSection(this, key);
-	};
+	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

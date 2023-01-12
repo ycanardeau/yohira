@@ -3,11 +3,7 @@ import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/Logger.cs,fdb90470ff3a62bd,references
 export class Logger implements ILogger {
-	log = (
-		logLevel: LogLevel,
-		message?: any,
-		...optionalParams: any[]
-	): void => {
+	log(logLevel: LogLevel, message?: any, ...optionalParams: any[]): void {
 		switch (logLevel) {
 			case LogLevel.Trace:
 				console.trace(message, ...optionalParams);
@@ -31,9 +27,9 @@ export class Logger implements ILogger {
 				console.log(message, ...optionalParams);
 				break;
 		}
-	};
+	}
 
-	isEnabled = (logLevel: LogLevel): boolean => {
+	isEnabled(logLevel: LogLevel): boolean {
 		return true /* TODO */;
-	};
+	}
 }

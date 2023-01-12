@@ -13,15 +13,11 @@ export class LoggerT<T> implements ILoggerT<T> {
 		this.logger = factory.createLogger('' /* TODO */);
 	}
 
-	log = (
-		logLevel: LogLevel,
-		message?: any,
-		...optionalParams: any[]
-	): void => {
+	log(logLevel: LogLevel, message?: any, ...optionalParams: any[]): void {
 		this.logger.log(logLevel, message, ...optionalParams);
-	};
+	}
 
-	isEnabled = (logLevel: LogLevel): boolean => {
+	isEnabled(logLevel: LogLevel): boolean {
 		return this.logger.isEnabled(logLevel);
-	};
+	}
 }

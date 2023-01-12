@@ -10,13 +10,13 @@ export class ConfigureNamedOptions<TOptions>
 		readonly action: ((options: TOptions) => void) | undefined,
 	) {}
 
-	configureNamed = (name: string | undefined, options: TOptions): void => {
+	configureNamed(name: string | undefined, options: TOptions): void {
 		if (this.name === undefined || name === this.name) {
 			this.action?.(options);
 		}
-	};
+	}
 
-	configure = (options: TOptions): void => {
+	configure(options: TOptions): void {
 		return this.configureNamed(Options.defaultName, options);
-	};
+	}
 }

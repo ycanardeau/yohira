@@ -4,7 +4,7 @@ import { AppBuilder } from '@yohira/http/builder/AppBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Builder/ApplicationBuilderFactory.cs,21990cbf6d36c613,references
 export class AppBuilderFactory implements IAppBuilderFactory {
-	createBuilder = (): IAppBuilder => {
+	createBuilder(): IAppBuilder {
 		return new AppBuilder(/* TODO */);
-	};
+	}
 }

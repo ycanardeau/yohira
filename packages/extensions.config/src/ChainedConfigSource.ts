@@ -11,7 +11,7 @@ export class ChainedConfigSource implements IConfigSource {
 		public shouldDisposeConfig: boolean,
 	) {}
 
-	build = (builder: IConfigBuilder): IConfigProvider => {
+	build(builder: IConfigBuilder): IConfigProvider {
 		return new ChainedConfigProvider(this);
-	};
+	}
 }

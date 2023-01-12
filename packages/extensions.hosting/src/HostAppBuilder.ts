@@ -38,7 +38,7 @@ export class HostAppBuilder {
 		return this.serviceCollection;
 	}
 
-	build = (): IHost => {
+	build(): IHost {
 		if (this.hostBuilt) {
 			throw new Error('Build can only be called once.' /* LOC */);
 		}
@@ -51,5 +51,5 @@ export class HostAppBuilder {
 		this.serviceCollection.makeReadonly();
 
 		return resolveHost(this.appServices /* TODO */);
-	};
+	}
 }

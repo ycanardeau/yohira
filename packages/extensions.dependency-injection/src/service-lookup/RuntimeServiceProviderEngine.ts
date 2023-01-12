@@ -7,13 +7,13 @@ import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-inject
 export class RuntimeServiceProviderEngine extends ServiceProviderEngine {
 	static readonly instance = new RuntimeServiceProviderEngine();
 
-	realizeService = (
+	realizeService(
 		callSite: ServiceCallSite,
-	): ((
+	): (
 		serviceProviderEngineScope: ServiceProviderEngineScope,
-	) => object | undefined) => {
+	) => object | undefined {
 		return (scope) => {
 			return CallSiteRuntimeResolver.instance.resolve(callSite, scope);
 		};
-	};
+	}
 }

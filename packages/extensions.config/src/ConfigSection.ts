@@ -24,19 +24,19 @@ export class ConfigSection implements IConfigSection {
 		this.root.set(this.path, value);
 	}
 
-	get = (key: string): string | undefined => {
+	get(key: string): string | undefined {
 		return this.root.get(combineConfigPath(this.path, key));
-	};
+	}
 
-	set = (key: string, value: string | undefined): void => {
+	set(key: string, value: string | undefined): void {
 		this.root.set(combineConfigPath(this.path, key), value);
-	};
+	}
 
-	getSection = (key: string): IConfigSection => {
+	getSection(key: string): IConfigSection {
 		return this.root.getSection(combineConfigPath(this.path, key));
-	};
+	}
 
-	getChildren = (): IConfigSection[] => {
+	getChildren(): IConfigSection[] {
 		return getChildrenImpl(this.root, this.path);
-	};
+	}
 }

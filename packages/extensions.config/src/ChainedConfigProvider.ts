@@ -17,23 +17,23 @@ export class ChainedConfigProvider implements IConfigProvider, IDisposable {
 		this.config = source.config;
 	}
 
-	tryGet = (key: string): Result<string | undefined, undefined> => {
+	tryGet(key: string): Result<string | undefined, undefined> {
 		const value = this.config.get(key);
 		if (value) {
 			return new Ok(value);
 		} else {
 			return new Err(undefined);
 		}
-	};
+	}
 
-	set = (key: string, value: string | undefined): void => {
+	set(key: string, value: string | undefined): void {
 		this.config.set(key, value);
-	};
+	}
 
-	getChildKeys = (
+	getChildKeys(
 		earlierKeys: string[],
 		parentPath: string | undefined,
-	): string[] => {
+	): string[] {
 		const section =
 			parentPath === undefined
 				? this.config
@@ -45,10 +45,10 @@ export class ChainedConfigProvider implements IConfigProvider, IDisposable {
 		keys.push(...earlierKeys);
 		// TODO: sort
 		return keys;
-	};
+	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

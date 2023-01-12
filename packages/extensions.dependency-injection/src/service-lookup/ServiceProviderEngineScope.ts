@@ -15,20 +15,20 @@ export class ServiceProviderEngineScope
 		readonly isRootScope: boolean,
 	) {}
 
-	getService = <T>(serviceType: Type): T | undefined => {
+	getService<T>(serviceType: Type): T | undefined {
 		if (this.disposed) {
 			throw new Error('Cannot access a disposed object.' /* LOC */);
 		}
 
 		return this.rootProvider.getService(serviceType, this);
-	};
+	}
 
 	get serviceProvider(): IServiceProvider {
 		return this;
 	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

@@ -18,27 +18,27 @@ export class CallSiteChain {
 		>();
 	}
 
-	private createCircularDependencyErrorMessage = (type: Type): string => {
+	private createCircularDependencyErrorMessage(type: Type): string {
 		// TODO
 		return `A circular dependency was detected for the service of type '${type}'.`; /* LOC */
-	};
+	}
 
-	checkCircularDependency = (serviceType: Type): void => {
+	checkCircularDependency(serviceType: Type): void {
 		if (this.callSiteChain.has(serviceType.value)) {
 			throw new Error(
 				this.createCircularDependencyErrorMessage(serviceType),
 			);
 		}
-	};
+	}
 
-	remove = (serviceType: Type): void => {
+	remove(serviceType: Type): void {
 		this.callSiteChain.delete(serviceType.value);
-	};
+	}
 
-	add = (serviceType: Type, implCtor: Ctor | undefined): void => {
+	add(serviceType: Type, implCtor: Ctor | undefined): void {
 		this.callSiteChain.set(
 			serviceType.value,
 			new ChainItemInfo(this.callSiteChain.size, implCtor),
 		);
-	};
+	}
 }

@@ -19,9 +19,9 @@ const toList = <T>(items: T[]): IList<T> => {
 class TestKeyValue {
 	private constructor(readonly value: string | string[]) {}
 
-	static from = (value: TestKeyValue['value']): TestKeyValue => {
+	static from(value: TestKeyValue['value']): TestKeyValue {
 		return new TestKeyValue(value);
-	};
+	}
 
 	*expand(key: string): Generator<[string, string]> {
 		if (typeof this.value === 'string') {

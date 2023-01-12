@@ -46,22 +46,22 @@ export class GenericWebHostBuilder
 		});
 	}
 
-	configureServices = (
+	configureServices(
 		configureServices: (
 			/* TODO: context: WebHostBuilderContext */ services: IServiceCollection,
 		) => void,
-	): this => {
+	): this {
 		this.builder.configureServices((/* TODO */ builder) => {
 			// TODO: webHostBuilderContext
 			configureServices(/* TODO */ builder);
 		});
 
 		return this;
-	};
+	}
 
-	configure = (
+	configure(
 		configure: (/* TODO */ app: IAppBuilder) => void,
-	): IWebHostBuilder => {
+	): IWebHostBuilder {
 		// TODO
 
 		this.startupObject = configure;
@@ -79,5 +79,5 @@ export class GenericWebHostBuilder
 		});
 
 		return this;
-	};
+	}
 }

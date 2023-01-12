@@ -13,7 +13,7 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 		private readonly factory: IOptionsFactory<TOptions>,
 	) {}
 
-	getValue = (optionsCtor: Ctor<TOptions>): TOptions => {
+	getValue(optionsCtor: Ctor<TOptions>): TOptions {
 		if (this._value !== undefined) {
 			return this._value;
 		}
@@ -22,5 +22,5 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 			optionsCtor,
 			Options.defaultName,
 		));
-	};
+	}
 }

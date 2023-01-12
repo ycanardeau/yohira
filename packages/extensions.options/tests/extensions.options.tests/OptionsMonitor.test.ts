@@ -50,13 +50,14 @@ test('MonitorUsesFactory', () => {
 let setupInvokeCount = 0;
 
 class CountIncrement implements IConfigureNamedOptions<FakeOptions> {
-	configureNamed = (name: string | undefined, options: FakeOptions): void => {
+	configureNamed(name: string | undefined, options: FakeOptions): void {
 		setupInvokeCount++;
 		options.message += setupInvokeCount;
-	};
+	}
 
-	configure = (options: FakeOptions): void =>
-		this.configureNamed(Options.defaultName, options);
+	configure(options: FakeOptions): void {
+		return this.configureNamed(Options.defaultName, options);
+	}
 }
 
 // TODO: class FakeSource

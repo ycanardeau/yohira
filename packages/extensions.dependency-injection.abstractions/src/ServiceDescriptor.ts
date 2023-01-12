@@ -14,11 +14,11 @@ export class ServiceDescriptor {
 			| undefined,
 	) {}
 
-	static fromCtor = (
+	static fromCtor(
 		lifetime: ServiceLifetime,
 		serviceType: Type,
 		ctor: Ctor<object>,
-	): ServiceDescriptor => {
+	): ServiceDescriptor {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -26,13 +26,13 @@ export class ServiceDescriptor {
 			undefined,
 			undefined,
 		);
-	};
+	}
 
-	static fromInstance = (
+	static fromInstance(
 		lifetime: ServiceLifetime,
 		serviceType: Type,
 		instance: object,
-	): ServiceDescriptor => {
+	): ServiceDescriptor {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -40,13 +40,13 @@ export class ServiceDescriptor {
 			instance,
 			undefined,
 		);
-	};
+	}
 
-	static fromFactory = <T>(
+	static fromFactory<T>(
 		lifetime: ServiceLifetime,
 		serviceType: Type,
 		factory: (serviceProvider: IServiceProvider) => object,
-	): ServiceDescriptor => {
+	): ServiceDescriptor {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -54,9 +54,9 @@ export class ServiceDescriptor {
 			undefined,
 			factory,
 		);
-	};
+	}
 
-	toString = (): string => {
+	toString(): string {
 		const lifetime = `serviceType: ${this.serviceType} lifetime: ${
 			ServiceLifetime[this.lifetime]
 		} `;
@@ -70,5 +70,5 @@ export class ServiceDescriptor {
 		}
 
 		return `${lifetime}implInstance: ${this.implInstance}`;
-	};
+	}
 }

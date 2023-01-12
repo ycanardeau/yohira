@@ -96,7 +96,7 @@ export class StaticFileContext {
 		return this.fileInfo.physicalPath ?? '';
 	}
 
-	lookupFileInfo = (): boolean => {
+	lookupFileInfo(): boolean {
 		this.fileInfo = this.fileProvider.getFileInfo(this.subPath);
 		if (this.fileInfo.exists) {
 			this.length = this.fileInfo.length;
@@ -104,34 +104,34 @@ export class StaticFileContext {
 			// TODO
 		}
 		return this.fileInfo.exists;
-	};
+	}
 
-	private computeIfMatch = (): void => {
+	private computeIfMatch(): void {
 		// 14.24 If-Match
 		// TODO
 		// 14.26 If-None-Match
 		// TODO
-	};
+	}
 
-	private computeIfModifiedSince = (): void => {
+	private computeIfModifiedSince(): void {
 		// 14.25 If-Modified-Since
 		// TODO
 		// 14.28 If-Unmodified-Since
 		// TODO
-	};
+	}
 
-	private computeRange = (): void => {
+	private computeRange(): void {
 		// 14.35 Range
 		// http://tools.ietf.org/html/draft-ietf-httpbis-p5-range-24
 		// TODO
-	};
+	}
 
-	private computeIfRange = (): void => {
+	private computeIfRange(): void {
 		// 14.27 If-Range
 		// TODO
-	};
+	}
 
-	private comprehendRequestHeaders = (): void => {
+	private comprehendRequestHeaders(): void {
 		this.computeIfMatch();
 
 		this.computeIfModifiedSince();
@@ -139,13 +139,13 @@ export class StaticFileContext {
 		this.computeRange();
 
 		this.computeIfRange();
-	};
+	}
 
-	private getPreconditionState = (): PreconditionState => {
+	private getPreconditionState(): PreconditionState {
 		return PreconditionState.Unspecified; /* TODO */
-	};
+	}
 
-	applyResponseHeaders = (statusCode: StatusCodes): Promise<void> => {
+	applyResponseHeaders(statusCode: StatusCodes): Promise<void> {
 		this.response.statusCode = statusCode;
 		if (statusCode < StatusCodes.Status400BadRequest) {
 			if (this.contentType) {
@@ -163,19 +163,19 @@ export class StaticFileContext {
 
 		// TODO
 		return Promise.resolve();
-	};
+	}
 
-	private sendStatus = (statusCode: StatusCodes): Promise<void> => {
+	private sendStatus(statusCode: StatusCodes): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	private sendRange = async (): Promise<void> => {
+	private async sendRange(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	private send = async (): Promise<void> => {
+	private async send(): Promise<void> {
 		// TODO
 		await this.applyResponseHeaders(StatusCodes.Status200OK);
 		try {
@@ -190,12 +190,12 @@ export class StaticFileContext {
 			// TODO
 			throw error;
 		}
-	};
+	}
 
-	serveStaticFile = async (
+	async serveStaticFile(
 		context: IHttpContext,
 		next: RequestDelegate,
-	): Promise<void> => {
+	): Promise<void> {
 		this.comprehendRequestHeaders();
 		switch (this.getPreconditionState()) {
 			case PreconditionState.Unspecified:
@@ -229,5 +229,5 @@ export class StaticFileContext {
 			default:
 				throw new Error('Method not implemented.');
 		}
-	};
+	}
 }

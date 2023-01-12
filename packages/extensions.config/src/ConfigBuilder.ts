@@ -10,17 +10,17 @@ import { ConfigRoot } from '@yohira/extensions.config/ConfigRoot';
 export class ConfigBuilder implements IConfigBuilder {
 	readonly sources: IList<IConfigSource> = new List<IConfigSource>();
 
-	add = (source: IConfigSource): this => {
+	add(source: IConfigSource): this {
 		this.sources.add(source);
 		return this;
-	};
+	}
 
-	build = (): IConfigRoot => {
+	build(): IConfigRoot {
 		const providers = new List<IConfigProvider>();
 		for (const source of this.sources) {
 			const provider = source.build(this);
 			providers.add(provider);
 		}
 		return new ConfigRoot(providers);
-	};
+	}
 }

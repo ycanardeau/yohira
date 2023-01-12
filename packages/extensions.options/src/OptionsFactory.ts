@@ -15,15 +15,15 @@ export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 		)[],
 	) {}
 
-	protected createInstance = (
+	protected createInstance(
 		optionsCtor: Ctor<TOptions>,
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_name: string,
-	): TOptions => {
+	): TOptions {
 		return new optionsCtor();
-	};
+	}
 
-	create = (optionsCtor: Ctor<TOptions>, name: string): TOptions => {
+	create(optionsCtor: Ctor<TOptions>, name: string): TOptions {
 		const options = this.createInstance(optionsCtor, name);
 		for (const setup of this.setups) {
 			if ('configureNamed' in setup) {
@@ -34,5 +34,5 @@ export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 		}
 		// TODO
 		return options;
-	};
+	}
 }

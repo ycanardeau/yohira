@@ -40,13 +40,13 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 	root: ServiceProviderEngineScope;
 
-	private getEngine = (): ServiceProviderEngine => {
+	private getEngine(): ServiceProviderEngine {
 		return RuntimeServiceProviderEngine.instance; /* TODO */
-	};
+	}
 
-	private onCreate = (callSite: ServiceCallSite): void => {
+	private onCreate(callSite: ServiceCallSite): void {
 		this.callSiteValidator?.validateCallSite(callSite);
-	};
+	}
 
 	private createServiceAccessor = (
 		serviceType: string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
@@ -95,18 +95,18 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		// TODO: Log.
 	}
 
-	private onResolve = (serviceType: Type, scope: IServiceScope): void => {
+	private onResolve(serviceType: Type, scope: IServiceScope): void {
 		this.callSiteValidator?.validateResolution(
 			serviceType,
 			scope,
 			this.root,
 		);
-	};
+	}
 
-	getService = <T>(
+	getService<T>(
 		serviceType: Type,
 		serviceProviderEngineScope = this.root,
-	): T | undefined => {
+	): T | undefined {
 		if (this.disposed) {
 			throw new Error('Cannot access a disposed object.' /* LOC */);
 		}
@@ -121,10 +121,10 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		const result = realizedService(serviceProviderEngineScope);
 		// TODO: Assert.
 		return result as T | undefined;
-	};
+	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

@@ -22,18 +22,18 @@ export class HttpLoggingMiddleware implements IMiddleware {
 		private readonly logger: ILoggerT<HttpLoggingMiddleware>,
 	) {}
 
-	private static addToList = (
+	private static addToList(
 		list: [string, string | undefined][],
 		key: string,
 		value: string | undefined,
-	): void => {
+	): void {
 		list.push([key, value]);
-	};
+	}
 
-	private invokeInternal = async (
+	private async invokeInternal(
 		context: IHttpContext,
 		next: RequestDelegate,
-	): Promise<void> => {
+	): Promise<void> {
 		const options = this.options.getCurrentValue(HttpLoggingOptions);
 		// TODO
 
@@ -71,16 +71,16 @@ export class HttpLoggingMiddleware implements IMiddleware {
 		} finally {
 			// TODO
 		}
-	};
+	}
 
-	invoke = (context: IHttpContext, next: RequestDelegate): Promise<void> => {
+	invoke(context: IHttpContext, next: RequestDelegate): Promise<void> {
 		if (!this.logger.isEnabled(LogLevel.Information)) {
 			// Logger isn't enabled.
 			return next(context);
 		}
 
 		return this.invokeInternal(context, next);
-	};
+	}
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingBuilderExtensions.cs,14542a362047cc35

@@ -17,43 +17,43 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 > {
 	static readonly instance = new CallSiteRuntimeResolver();
 
-	protected visitCtor = (
+	protected visitCtor(
 		ctorCallSite: CtorCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		const parameterValues = ctorCallSite.parameterCallSites.map(
 			(parameterCallSite) =>
 				this.visitCallSite(parameterCallSite, context),
 		);
 		return new ctorCallSite.implCtor(...parameterValues);
-	};
+	}
 
-	protected visitConstant = (
+	protected visitConstant(
 		constantCallSite: ConstantCallSite,
-	): object | undefined => {
+	): object | undefined {
 		return constantCallSite.defaultValue;
-	};
+	}
 
-	protected visitIterable = (
+	protected visitIterable(
 		iterableCallSite: IterableCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		return iterableCallSite.serviceCallSites.map((serviceCallSite) =>
 			this.visitCallSite(serviceCallSite, context),
 		);
-	};
+	}
 
-	protected visitFactory = (
+	protected visitFactory(
 		factoryCallSite: FactoryCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		return factoryCallSite.factory(context.scope);
-	};
+	}
 
-	visitRootCache = (
+	visitRootCache(
 		callSite: ServiceCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		if (callSite.value !== undefined) {
 			// Value already calculated, return it directly
 			return callSite.value;
@@ -74,22 +74,22 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		// TODO: serviceProviderEngine.captureDisposable(resolved);
 		callSite.value = resolved;
 		return resolved;
-	};
+	}
 
-	private visitCache = (
+	private visitCache(
 		callSite: ServiceCallSite,
 		context: RuntimeResolverContext,
 		serviceProviderEngine: ServiceProviderEngineScope,
 		// TODO
-	): object | undefined => {
+	): object | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	visitScopeCache = (
+	visitScopeCache(
 		callSite: ServiceCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		return context.scope.isRootScope
 			? this.visitRootCache(callSite, context)
 			: this.visitCache(
@@ -98,26 +98,26 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 					context.scope,
 					// TODO: RuntimeResolverLock.Scope,
 			  );
-	};
+	}
 
-	visitDisposeCache = (
+	visitDisposeCache(
 		transientCallSite: ServiceCallSite,
 		context: RuntimeResolverContext,
-	): object | undefined => {
+	): object | undefined {
 		/* TODO: return context.scope.captureDisposable(
 			this.visitCallSiteMain(transientCallSite, context),
 		); */
 		return this.visitCallSiteMain(transientCallSite, context);
-	};
+	}
 
-	resolve = (
+	resolve(
 		callSite: ServiceCallSite,
 		scope: ServiceProviderEngineScope,
-	): object | undefined => {
+	): object | undefined {
 		if (scope.isRootScope && callSite.value !== undefined) {
 			return callSite.value;
 		}
 
 		return this.visitCallSite(callSite, new RuntimeResolverContext(scope));
-	};
+	}
 }

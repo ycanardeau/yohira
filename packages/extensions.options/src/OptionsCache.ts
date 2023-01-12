@@ -6,38 +6,38 @@ import { Options } from '@yohira/extensions.options/Options';
 export class OptionsCache<TOptions> implements IOptionsMonitorCache<TOptions> {
 	private readonly cache = new Map<string, TOptions>();
 
-	clear = (): void => {
+	clear(): void {
 		this.cache.clear();
-	};
+	}
 
-	getOrAdd = (
+	getOrAdd(
 		name: string | undefined,
 		createOptions: () => TOptions,
-	): TOptions => {
+	): TOptions {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	getOrAddWithArgument = <TArg>(
+	getOrAddWithArgument<TArg>(
 		name: string | undefined,
 		createOptions: (name: string, factory: TArg) => TOptions,
 		factoryArgument: TArg,
-	): TOptions => {
+	): TOptions {
 		return getOrAddWithArgument(
 			this.cache,
 			name ?? Options.defaultName,
 			(name, arg) => arg.createOptions(name, arg.factoryArgument),
 			{ createOptions, factoryArgument },
 		);
-	};
+	}
 
-	tryAdd = (name: string | undefined, options: TOptions): boolean => {
+	tryAdd(name: string | undefined, options: TOptions): boolean {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 
-	tryRemove = (name: string | undefined): boolean => {
+	tryRemove(name: string | undefined): boolean {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }

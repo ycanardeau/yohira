@@ -8,13 +8,13 @@ export class AppBuilder implements IAppBuilder {
 	) => RequestDelegate)[] = [];
 
 	// https://source.dot.net/#Microsoft.AspNetCore.Http/Builder/ApplicationBuilder.cs,51e168cb3e82bac8,references
-	use = (middleware: (next: RequestDelegate) => RequestDelegate): this => {
+	use(middleware: (next: RequestDelegate) => RequestDelegate): this {
 		this.components.push(middleware);
 		return this;
-	};
+	}
 
 	// https://source.dot.net/#Microsoft.AspNetCore.Http/Builder/ApplicationBuilder.cs,4bdd7f36d734b764,references
-	build = (): RequestDelegate => {
+	build(): RequestDelegate {
 		let app: RequestDelegate = () => {
 			return Promise.resolve();
 		};
@@ -24,5 +24,5 @@ export class AppBuilder implements IAppBuilder {
 		}
 
 		return app;
-	};
+	}
 }

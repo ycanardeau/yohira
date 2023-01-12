@@ -22,7 +22,7 @@ export class Host implements IHost, IDisposable {
 		private readonly logger: ILoggerT<Host>,
 	) {}
 
-	start = async (): Promise<void> => {
+	async start(): Promise<void> {
 		logStarting(this.logger);
 
 		// TODO
@@ -42,9 +42,9 @@ export class Host implements IHost, IDisposable {
 		// TODO
 
 		logStarted(this.logger);
-	};
+	}
 
-	stop = async (): Promise<void> => {
+	async stop(): Promise<void> {
 		this.stopCalled = true;
 		logStopping(this.logger);
 
@@ -52,10 +52,10 @@ export class Host implements IHost, IDisposable {
 		//throw new Error('Method not implemented.');
 
 		logStopped(this.logger);
-	};
+	}
 
-	dispose = async (): Promise<void> => {
+	async dispose(): Promise<void> {
 		// TODO
 		//throw new Error('Method not implemented.');
-	};
+	}
 }

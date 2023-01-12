@@ -12,25 +12,25 @@ export class List<T> implements IList<T> {
 		return false;
 	}
 
-	get = (index: number): T => {
+	get(index: number): T {
 		return this.items[index];
-	};
+	}
 
-	set = (index: number, item: T): void => {
+	set(index: number, item: T): void {
 		this.items[index] = item;
-	};
+	}
 
-	add = (item: T): void => {
+	add(item: T): void {
 		this.items.push(item);
-	};
+	}
 
-	clear = (): void => {
+	clear(): void {
 		this.items.splice(0, this.count);
-	};
+	}
 
-	contains = (item: T): boolean => {
+	contains(item: T): boolean {
 		return this.items.includes(item);
-	};
+	}
 
 	// TODO: copyTo
 
@@ -38,19 +38,19 @@ export class List<T> implements IList<T> {
 		return this.items[Symbol.iterator]();
 	}
 
-	indexOf = (item: T): number => {
+	indexOf(item: T): number {
 		return this.items.indexOf(item);
-	};
+	}
 
-	insert = (index: number, item: T): void => {
+	insert(index: number, item: T): void {
 		this.items.splice(index, 0, item);
-	};
+	}
 
-	removeAt = (index: number): void => {
+	removeAt(index: number): void {
 		this.items.splice(index, 1);
-	};
+	}
 
-	remove = (item: T): boolean => {
+	remove(item: T): boolean {
 		const index = this.indexOf(item);
 		if (index >= 0) {
 			this.removeAt(index);
@@ -58,5 +58,5 @@ export class List<T> implements IList<T> {
 		}
 
 		return false;
-	};
+	}
 }

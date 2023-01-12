@@ -29,7 +29,7 @@ export class GenericWebHostService implements IHostedService {
 		this.options = options.getValue(GenericWebHostServiceOptions);
 	}
 
-	start = async (): Promise<void> => {
+	async start(): Promise<void> {
 		// TODO: Log.
 
 		// TODO
@@ -67,9 +67,9 @@ export class GenericWebHostService implements IHostedService {
 		// TODO: Log.
 
 		// TODO
-	};
+	}
 
-	stop = (): Promise<void> => {
+	stop(): Promise<void> {
 		throw new Error('Method not implemented.');
-	};
+	}
 }

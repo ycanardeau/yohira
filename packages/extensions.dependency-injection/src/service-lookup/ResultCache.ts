@@ -15,11 +15,11 @@ export class ResultCache {
 		ServiceCacheKey.empty,
 	);
 
-	static create = (
+	static create(
 		lifetime: ServiceLifetime,
 		type: Type | undefined,
 		slot: number,
-	): ResultCache => {
+	): ResultCache {
 		if (lifetime !== ServiceLifetime.Transient && type === undefined) {
 			throw new Error('Assertion failed.');
 		}
@@ -38,5 +38,5 @@ export class ResultCache {
 			default:
 				return new ResultCache(CallSiteResultCacheLocation.None, key);
 		}
-	};
+	}
 }

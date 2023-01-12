@@ -7,7 +7,7 @@ import { Logger } from '@yohira/extensions.logging/Logger';
 export class LoggerFactory implements ILoggerFactory {
 	private readonly loggers = new Map<string, Logger>();
 
-	createLogger = (categoryName: string): ILogger => {
+	createLogger(categoryName: string): ILogger {
 		// TODO
 
 		// REVIEW: Lock.
@@ -19,10 +19,10 @@ export class LoggerFactory implements ILoggerFactory {
 		// TODO
 		this.loggers.set(categoryName, logger);
 		return logger;
-	};
+	}
 
-	dispose = (): Promise<void> => {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
-	};
+	}
 }
