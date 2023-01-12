@@ -1,3 +1,5 @@
+import { lastIndexOfIgnoreCase } from '@yohira/base/StringExtensions';
+
 export const keyDelimiter = ':';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationPath.cs,e615ae2c8cbb7b82,references
@@ -11,7 +13,7 @@ export function getSectionKey(path: string | undefined): string | undefined {
 		return path;
 	}
 
-	const lastDelimiterIndex = path.lastIndexOf(keyDelimiter);
+	const lastDelimiterIndex = lastIndexOfIgnoreCase(path, keyDelimiter);
 	return lastDelimiterIndex === -1
 		? path
 		: path.substring(lastDelimiterIndex + 1);
@@ -23,7 +25,7 @@ export function getParentPath(path: string | undefined): string | undefined {
 		return undefined;
 	}
 
-	const lastDelimiterIndex = path.lastIndexOf(keyDelimiter);
+	const lastDelimiterIndex = lastIndexOfIgnoreCase(path, keyDelimiter);
 	return lastDelimiterIndex === -1
 		? undefined
 		: path.substring(0, lastDelimiterIndex);

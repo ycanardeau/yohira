@@ -182,7 +182,7 @@ test('AsEnumerateFlattensIntoDictionaryTest', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L216
-/* TODO: test('AsEnumerateStripsKeyFromChildren', () => {
+test('AsEnumerateStripsKeyFromChildren', () => {
 	const dic1 = {
 		Mem1: 'Value1',
 		'Mem1:': 'NoKeyValue1',
@@ -240,7 +240,7 @@ test('AsEnumerateFlattensIntoDictionaryTest', () => {
 	expect(dict3['KeyInMem4'.toLowerCase()]).toBe('ValueInMem4');
 	expect(dict3['KeyInMem3:Deep3'.toLowerCase()]).toBe('ValueDeep3');
 	expect(dict3['KeyInMem3:Deep4'.toLowerCase()]).toBe('ValueDeep4');
-}); */
+});
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L278
 test('NewConfigurationProviderOverridesOldOneWhenKeyIsDuplicated', () => {

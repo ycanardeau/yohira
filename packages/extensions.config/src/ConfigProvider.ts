@@ -1,4 +1,8 @@
 import { tryGetValue } from '@yohira/base/MapExtensions';
+import {
+	indexOfIgnoreCase,
+	startsWithIgnoreCase,
+} from '@yohira/base/StringExtensions';
 import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath';
 import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
 import { Result } from '@yohira/third-party.ts-results/result';
@@ -36,10 +40,10 @@ export abstract class ConfigProvider implements IConfigProvider {
 	}
 
 	private static segment(key: string, prefixLength: number): string {
-		const indexOf = key.indexOf(keyDelimiter, prefixLength);
+		const indexOf = indexOfIgnoreCase(key, keyDelimiter, prefixLength);
 		return indexOf < 0
 			? key.substring(prefixLength)
-			: key.substring(prefixLength, indexOf - prefixLength);
+			: key.substring(prefixLength, indexOf);
 	}
 
 	getChildKeys(
@@ -60,7 +64,7 @@ export abstract class ConfigProvider implements IConfigProvider {
 			for (const [key] of this.data) {
 				if (
 					key.length > parentPath.length &&
-					key.startsWith(parentPath) &&
+					startsWithIgnoreCase(key, parentPath) &&
 					key[parentPath.length] === ':'
 				) {
 					results.push(
