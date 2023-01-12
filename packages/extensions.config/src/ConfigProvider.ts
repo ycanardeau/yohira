@@ -76,7 +76,7 @@ export abstract class ConfigProvider implements IConfigProvider {
 
 		results.push(...earlierKeys);
 
-		// TODO: sort
+		results.sort();
 
 		return results;
 	}
