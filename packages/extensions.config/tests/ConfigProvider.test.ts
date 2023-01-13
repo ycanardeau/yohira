@@ -1,5 +1,6 @@
 import { IList } from '@yohira/base/IList';
 import { List } from '@yohira/base/List';
+import { getDebugView } from '@yohira/extensions.config.abstractions/ConfigRootExtensions';
 import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
 import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
 import { ConfigRoot } from '@yohira/extensions.config/ConfigRoot';
@@ -432,7 +433,37 @@ function ConfigurationProviderTestBase(
 		assertConfig(configRoot);
 	});
 
-	// TODO
+	function assertDebugView(config: IConfigRoot, expected: string): void {
+		function removeLineEnds(source: string): string {
+			return source.replace('\n', '').replace('\r', '');
+		}
+
+		const actual = getDebugView(config);
+
+		expect(removeLineEnds(actual)).toBe(removeLineEnds(expected));
+	}
+
+	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L23
+	test('Has_debug_view', () => {
+		const configRoot = buildConfigRoot(loadThroughProvider(testConfig));
+		const providerTag = Array.from(configRoot.providers)[0].toString();
+
+		const expected = `key1=Value1 (${providerTag})
+section1:
+  key2=Value12 (${providerTag})
+  section2:
+    key3=Value123 (${providerTag})
+    key3a:
+      0=ArrayValue0 (${providerTag})
+      1=ArrayValue1 (${providerTag})
+      2=ArrayValue2 (${providerTag})
+section3:
+  section4:
+    key4=Value344 (${providerTag})
+`;
+
+		assertDebugView(configRoot, expected);
+	});
 
 	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L47
 	/* TODO: test('Null_values_are_included_in_the_config', () => {

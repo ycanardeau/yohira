@@ -8,4 +8,5 @@ export interface IConfigProvider {
 		earlierKeys: string[],
 		parentPath: string | undefined,
 	): string[];
+	toString(): string;
 }

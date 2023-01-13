@@ -80,4 +80,8 @@ export abstract class ConfigProvider implements IConfigProvider {
 
 		return results;
 	}
+
+	toString(): string {
+		return this.constructor.name;
+	}
 }
