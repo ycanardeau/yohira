@@ -40,7 +40,7 @@ class TestKeyValue {
 	}
 }
 
-interface TestSection {
+export interface TestSection {
 	values: Record<string, TestKeyValue>;
 	sections: Record<string, TestSection>;
 }
@@ -190,7 +190,7 @@ const differentCasedTestConfig: TestSection = {
 	},
 };
 
-const nullsTestConfig: TestSection = {
+export const nullsTestConfig: TestSection = {
 	values: { Key1: TestKeyValue.from(undefined) },
 	sections: {
 		Section1: {
@@ -221,28 +221,45 @@ const nullsTestConfig: TestSection = {
 	},
 };
 
-function loadUsingMemoryProvider(testConfig: TestSection): {
-	provider: IConfigProvider;
-	initializer: () => void;
-} {
-	const values = new List<[string, string]>();
-	sectionToValues(testConfig, '', values);
+function sectionToValues(
+	config: TestSection,
+	sectionName: string,
+	values: IList<[string, string | undefined]>,
+): void {
+	for (const [key, value] of Object.entries(config.values).flatMap(
+		([key, value]) => Array.from(value.expand(key)),
+	)) {
+		values.add([sectionName + key, value]);
+	}
 
-	return {
-		provider: new MemoryConfigProvider(
-			new MemoryConfigSource(Object.fromEntries(values)),
-		),
-		initializer: (): void => {},
-	};
+	for (const [key, section] of Object.entries(config.sections)) {
+		sectionToValues(section, sectionName + key + ':', values);
+	}
 }
 
-function ConfigurationProviderTestBase(
-	loadThroughProvider: (testConfig: TestSection) => {
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L12
+export abstract class ConfigProviderTestBase {
+	protected loadUsingMemoryProvider(testConfig: TestSection): {
 		provider: IConfigProvider;
 		initializer: () => void;
-	},
-): void {
-	function buildConfigRoot(
+	} {
+		const values = new List<[string, string]>();
+		sectionToValues(testConfig, '', values);
+
+		return {
+			provider: new MemoryConfigProvider(
+				new MemoryConfigSource(Object.fromEntries(values)),
+			),
+			initializer: (): void => {},
+		};
+	}
+
+	protected abstract loadThroughProvider(testConfig: TestSection): {
+		provider: IConfigProvider;
+		initializer: () => void;
+	};
+
+	protected buildConfigRoot(
 		...providers: { provider: IConfigProvider; initializer: () => void }[]
 	): IConfigRoot {
 		const root = new ConfigRoot(toList(providers.map((e) => e.provider)));
@@ -254,7 +271,17 @@ function ConfigurationProviderTestBase(
 		return root;
 	}
 
-	function assertConfig(
+	protected assertDebugView(config: IConfigRoot, expected: string): void {
+		function removeLineEnds(source: string): string {
+			return source.replace('\n', '').replace('\r', '');
+		}
+
+		const actual = getDebugView(config);
+
+		expect(removeLineEnds(actual)).toBe(removeLineEnds(expected));
+	}
+
+	protected assertConfig(
 		config: IConfigRoot,
 		expectNulls = false,
 		nullValue?: string,
@@ -426,26 +453,18 @@ function ConfigurationProviderTestBase(
 		expect(sections[0].value).toBe(value344);
 	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L15
-	test('Load_from_single_provider', () => {
-		const configRoot = buildConfigRoot(loadThroughProvider(testConfig));
+	Load_from_single_provider(): void {
+		const configRoot = this.buildConfigRoot(
+			this.loadThroughProvider(testConfig),
+		);
 
-		assertConfig(configRoot);
-	});
-
-	function assertDebugView(config: IConfigRoot, expected: string): void {
-		function removeLineEnds(source: string): string {
-			return source.replace('\n', '').replace('\r', '');
-		}
-
-		const actual = getDebugView(config);
-
-		expect(removeLineEnds(actual)).toBe(removeLineEnds(expected));
+		this.assertConfig(configRoot);
 	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L23
-	test('Has_debug_view', () => {
-		const configRoot = buildConfigRoot(loadThroughProvider(testConfig));
+	Has_debug_view(): void {
+		const configRoot = this.buildConfigRoot(
+			this.loadThroughProvider(testConfig),
+		);
 		const providerTag = Array.from(configRoot.providers)[0].toString();
 
 		const expected = `key1=Value1 (${providerTag})
@@ -462,92 +481,100 @@ section3:
     key4=Value344 (${providerTag})
 `;
 
-		assertDebugView(configRoot, expected);
-	});
+		this.assertDebugView(configRoot, expected);
+	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L47
-	/* TODO: test('Null_values_are_included_in_the_config', () => {
-		assertConfig(
-			buildConfigRoot(loadThroughProvider(nullsTestConfig)),
+	Null_values_are_included_in_the_config(): void {
+		this.assertConfig(
+			this.buildConfigRoot(this.loadThroughProvider(nullsTestConfig)),
 			true,
 			'',
 		);
-	}); */
+	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L53
-	test('Combine_after_other_provider', () => {
-		assertConfig(
-			buildConfigRoot(
-				loadUsingMemoryProvider(missingSection2ValuesConfig),
-				loadThroughProvider(missingSection4Config),
+	Combine_after_other_provider(): void {
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadUsingMemoryProvider(missingSection2ValuesConfig),
+				this.loadThroughProvider(missingSection4Config),
 			),
 		);
 
-		assertConfig(
-			buildConfigRoot(
-				loadUsingMemoryProvider(missingSection4Config),
-				loadThroughProvider(missingSection2ValuesConfig),
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadUsingMemoryProvider(missingSection4Config),
+				this.loadThroughProvider(missingSection2ValuesConfig),
 			),
 		);
-	});
+	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L67
-	test('Combine_before_other_provider', () => {
-		assertConfig(
-			buildConfigRoot(
-				loadThroughProvider(missingSection2ValuesConfig),
-				loadUsingMemoryProvider(missingSection4Config),
+	Combine_before_other_provider(): void {
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadThroughProvider(missingSection2ValuesConfig),
+				this.loadUsingMemoryProvider(missingSection4Config),
 			),
 		);
 
-		assertConfig(
-			buildConfigRoot(
-				loadThroughProvider(missingSection4Config),
-				loadUsingMemoryProvider(missingSection2ValuesConfig),
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadThroughProvider(missingSection4Config),
+				this.loadUsingMemoryProvider(missingSection2ValuesConfig),
 			),
 		);
-	});
+	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L81
-	test('Second_provider_overrides_values_from_first', () => {
-		assertConfig(
-			buildConfigRoot(
-				loadUsingMemoryProvider(noValuesTestConfig),
-				loadThroughProvider(testConfig),
+	Second_provider_overrides_values_from_first(): void {
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadUsingMemoryProvider(noValuesTestConfig),
+				this.loadThroughProvider(testConfig),
 			),
 		);
-	});
+	}
 
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L90
-	test('Combining_from_multiple_providers_is_case_insensitive', () => {
-		assertConfig(
-			buildConfigRoot(
-				loadUsingMemoryProvider(differentCasedTestConfig),
-				loadThroughProvider(testConfig),
+	Combining_from_multiple_providers_is_case_insensitive(): void {
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadUsingMemoryProvider(differentCasedTestConfig),
+				this.loadThroughProvider(testConfig),
 			),
 		);
-	});
+	}
 
 	// TODO
 }
 
-function sectionToValues(
-	config: TestSection,
-	sectionName: string,
-	values: IList<[string, string | undefined]>,
+export function testConfigProvider(
+	configProviderTest: ConfigProviderTestBase,
 ): void {
-	for (const [key, value] of Object.entries(config.values).flatMap(
-		([key, value]) => Array.from(value.expand(key)),
-	)) {
-		values.add([sectionName + key, value]);
-	}
+	test('Load_from_single_provider', () => {
+		configProviderTest.Load_from_single_provider();
+	});
 
-	for (const [key, section] of Object.entries(config.sections)) {
-		sectionToValues(section, sectionName + key + ':', values);
-	}
+	test('Has_debug_view', () => {
+		configProviderTest.Has_debug_view();
+	});
+
+	test('Null_values_are_included_in_the_config', () => {
+		configProviderTest.Null_values_are_included_in_the_config();
+	});
+
+	test('Combine_after_other_provider', () => {
+		configProviderTest.Combine_after_other_provider();
+	});
+
+	test('Combine_before_other_provider', () => {
+		configProviderTest.Combine_before_other_provider();
+	});
+
+	test('Second_provider_overrides_values_from_first', () => {
+		configProviderTest.Second_provider_overrides_values_from_first();
+	});
+
+	test('Combining_from_multiple_providers_is_case_insensitive', () => {
+		configProviderTest.Combining_from_multiple_providers_is_case_insensitive();
+	});
+
+	// TODO
 }
-
-// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderMemoryTest.cs#L15
-ConfigurationProviderTestBase((testConfig) =>
-	loadUsingMemoryProvider(testConfig),
-);
