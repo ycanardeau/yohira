@@ -5,7 +5,7 @@ import {
 	addSingletonInstance,
 } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
 import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
-import { initialize } from '@yohira/hosting/internal/HostingEnvironmentExtensions';
+import { initialize } from '@yohira/hosting/internal/HostingEnvExtensions';
 import {
 	HttpLoggingMiddleware,
 	useHttpLogging,
