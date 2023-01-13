@@ -125,7 +125,7 @@ function bindInstance(
 export function bind(
 	config: IConfig,
 	instance: object | undefined,
-	configureOptions: ((options: BinderOptions) => void) | undefined,
+	configureOptions: (options: BinderOptions) => void = (): void => {},
 ): void {
 	if (instance !== undefined) {
 		const options = new BinderOptions();

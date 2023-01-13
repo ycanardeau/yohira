@@ -23,6 +23,9 @@
 			"@yohira/extensions.config.binder/*": [
 				"packages/extensions.config.binder/src/*"
 			],
+			"@yohira/extensions.config.env-variables/*": [
+				"packages/extensions.config.env-variables/src/*"
+			],
 			"@yohira/extensions.dependency-injection/*": [
 				"packages/extensions.dependency-injection/src/*"
 			],

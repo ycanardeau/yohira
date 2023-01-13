@@ -8,7 +8,13 @@ import { getChildrenImpl } from '@yohira/extensions.config/InternalConfigRootExt
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationRoot.cs,0a5ad779923b882b,references
 export class ConfigRoot implements IConfigRoot, IDisposable {
-	constructor(private readonly _providers: IList<IConfigProvider>) {}
+	constructor(private readonly _providers: IList<IConfigProvider>) {
+		// TODO
+		for (const provider of _providers) {
+			provider.load();
+			// TODO
+		}
+	}
 
 	get providers(): Iterable<IConfigProvider> {
 		return this._providers;

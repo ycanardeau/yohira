@@ -221,30 +221,34 @@ export const nullsTestConfig: TestSection = {
 	},
 };
 
-function sectionToValues(
-	config: TestSection,
-	sectionName: string,
-	values: IList<[string, string | undefined]>,
-): void {
-	for (const [key, value] of Object.entries(config.values).flatMap(
-		([key, value]) => Array.from(value.expand(key)),
-	)) {
-		values.add([sectionName + key, value]);
-	}
-
-	for (const [key, section] of Object.entries(config.sections)) {
-		sectionToValues(section, sectionName + key + ':', values);
-	}
-}
-
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L12
 export abstract class ConfigProviderTestBase {
+	protected static sectionToValues(
+		config: TestSection,
+		sectionName: string,
+		values: IList<[string, string | undefined]>,
+	): void {
+		for (const [key, value] of Object.entries(config.values).flatMap(
+			([key, value]) => Array.from(value.expand(key)),
+		)) {
+			values.add([sectionName + key, value]);
+		}
+
+		for (const [key, section] of Object.entries(config.sections)) {
+			ConfigProviderTestBase.sectionToValues(
+				section,
+				sectionName + key + ':',
+				values,
+			);
+		}
+	}
+
 	protected loadUsingMemoryProvider(testConfig: TestSection): {
 		provider: IConfigProvider;
 		initializer: () => void;
 	} {
 		const values = new List<[string, string]>();
-		sectionToValues(testConfig, '', values);
+		ConfigProviderTestBase.sectionToValues(testConfig, '', values);
 
 		return {
 			provider: new MemoryConfigProvider(

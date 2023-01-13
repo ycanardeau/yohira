@@ -17,6 +17,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.config.binder/src',
 			),
+			'@yohira/extensions.config.env-variables': resolve(
+				__dirname,
+				'./packages/extensions.config.env-variables/src',
+			),
 			'@yohira/extensions.dependency-injection': resolve(
 				__dirname,
 				'./packages/extensions.dependency-injection/src',

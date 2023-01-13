@@ -16,6 +16,14 @@ export function lastIndexOfIgnoreCase(
 		.lastIndexOf(searchString.toLowerCase(), position);
 }
 
+export function replaceAll(
+	value: string,
+	searchValue: string | RegExp,
+	replaceValue: string,
+): string {
+	return value.replace(new RegExp(searchValue, 'g'), () => replaceValue);
+}
+
 export function startsWithIgnoreCase(
 	value: string,
 	searchString: string,

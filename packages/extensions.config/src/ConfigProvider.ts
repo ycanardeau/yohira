@@ -7,7 +7,7 @@ import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath'
 import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
 import { Result } from '@yohira/third-party.ts-results/result';
 
-class CaseInsensitiveMap<V> extends Map<string, V> {
+export class CaseInsensitiveMap<V> extends Map<string, V> {
 	delete(key: string): boolean {
 		return super.delete(key.toLowerCase());
 	}
@@ -38,6 +38,8 @@ export abstract class ConfigProvider implements IConfigProvider {
 	set(key: string, value: string | undefined): void {
 		this.data.set(key, value);
 	}
+
+	load(): void {}
 
 	private static segment(key: string, prefixLength: number): string {
 		const indexOf = indexOfIgnoreCase(key, keyDelimiter, prefixLength);
