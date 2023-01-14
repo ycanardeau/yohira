@@ -26,6 +26,12 @@
 			"@yohira/extensions.config.env-variables/*": [
 				"packages/extensions.config.env-variables/src/*"
 			],
+			"@yohira/extensions.config.file-extensions/*": [
+				"packages/extensions.config.file-extensions/src/*"
+			],
+			"@yohira/extensions.config.json/*": [
+				"packages/extensions.config.json/src/*"
+			],
 			"@yohira/extensions.dependency-injection/*": [
 				"packages/extensions.dependency-injection/src/*"
 			],

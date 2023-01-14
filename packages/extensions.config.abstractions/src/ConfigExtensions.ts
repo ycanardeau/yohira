@@ -1,5 +1,19 @@
+import { Ctor } from '@yohira/base/Type';
 import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
+import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
 import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
+import { IConfigSource } from '@yohira/extensions.config.abstractions/IConfigSource';
+
+// https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationExtensions.cs,94ff96edc2d43dbd,references
+export function addConfigSource<TSource extends IConfigSource>(
+	sourceCtor: Ctor<TSource>,
+	builder: IConfigBuilder,
+	configureSource: ((source: TSource) => void) | undefined,
+): IConfigBuilder {
+	const source = new sourceCtor();
+	configureSource?.(source);
+	return builder.add(source);
+}
 
 export function getConnectionString(
 	config: IConfig,
