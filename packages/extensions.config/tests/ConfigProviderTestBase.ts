@@ -224,19 +224,19 @@ export const nullsTestConfig: TestSection = {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationProviderTestBase.cs#L12
 export abstract class ConfigProviderTestBase {
 	protected static sectionToValues(
-		config: TestSection,
+		section: TestSection,
 		sectionName: string,
 		values: IList<[string, string | undefined]>,
 	): void {
-		for (const [key, value] of Object.entries(config.values).flatMap(
+		for (const [key, value] of Object.entries(section.values).flatMap(
 			([key, value]) => Array.from(value.expand(key)),
 		)) {
 			values.add([sectionName + key, value]);
 		}
 
-		for (const [key, section] of Object.entries(config.sections)) {
+		for (const [key, subsection] of Object.entries(section.sections)) {
 			ConfigProviderTestBase.sectionToValues(
-				section,
+				subsection,
 				sectionName + key + ':',
 				values,
 			);

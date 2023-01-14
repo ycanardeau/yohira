@@ -1,5 +1,6 @@
 import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath';
 import { CaseInsensitiveMap } from '@yohira/extensions.config/ConfigProvider';
+import JSON5 from 'json5';
 import { Readable, Stream } from 'node:stream';
 
 // https://source.dot.net/#System.Text.Json/System/Text/Json/Document/JsonValueKind.cs,1ae5746019726119,references
@@ -117,7 +118,7 @@ export class JsonConfigFileParser {
 						`A duplicate key '${key}' was found.` /* LOC */,
 					);
 				}
-				this.data.set(key, `${value}`);
+				this.data.set(key, `${value ?? ''}`);
 				break;
 
 			default:
@@ -147,7 +148,7 @@ export class JsonConfigFileParser {
 	}
 
 	private parseStream(input: Stream): CaseInsensitiveMap<string | undefined> {
-		const doc = JSON.parse((input as Readable).read());
+		const doc = JSON5.parse((input as Readable).read());
 		const valueKind = getJsonValueKind(doc);
 		if (valueKind !== JsonValueKind.Object) {
 			throw new Error(

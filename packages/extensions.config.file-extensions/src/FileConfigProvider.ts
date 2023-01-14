@@ -1,6 +1,9 @@
 import { IDisposable } from '@yohira/base/IDisposable';
 import { FileConfigSource } from '@yohira/extensions.config.file-extensions/FileConfigSource';
-import { ConfigProvider } from '@yohira/extensions.config/ConfigProvider';
+import {
+	CaseInsensitiveMap,
+	ConfigProvider,
+} from '@yohira/extensions.config/ConfigProvider';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.FileExtensions/FileConfigurationProvider.cs,56fc0e8e704cec9a,references
@@ -23,8 +26,20 @@ export abstract class FileConfigProvider
 	abstract loadStream(stream: Stream): void;
 
 	private loadCore(reload: boolean): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		const file = this.source.fileProvider?.getFileInfo(
+			this.source.path ?? '',
+		);
+		if (file === undefined || !file.exists) {
+			if (this.source.optional || reload) {
+				this.data = new CaseInsensitiveMap<string | undefined>();
+			} else {
+				// TODO
+				throw new Error('Method not implemented.');
+			}
+		} else {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
 	}
 
 	load(): void {

@@ -28,6 +28,7 @@
 		"coverage": "vitest run --coverage"
 	},
 	"dependencies": {
+		"json5": "^2.2.3",
 		"reflect-metadata": "^0.1.13"
 	},
 	"packageManager": "yarn@3.3.0"

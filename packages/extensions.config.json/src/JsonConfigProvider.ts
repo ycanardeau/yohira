@@ -10,8 +10,10 @@ export class JsonConfigProvider extends FileConfigProvider {
 	}
 
 	loadStream(stream: Stream): void {
-		// TODO: Try.
-		this.data = JsonConfigFileParser.parse(stream);
-		// TODO: Catch.
+		try {
+			this.data = JsonConfigFileParser.parse(stream);
+		} catch {
+			throw new Error('Could not parse the JSON file.' /* LOC */);
+		}
 	}
 }

@@ -1,4 +1,7 @@
-import { addJsonStream } from '@yohira/extensions.config.json/JsonConfigExtensions';
+import {
+	addJsonFile,
+	addJsonStream,
+} from '@yohira/extensions.config.json/JsonConfigExtensions';
 import { JsonConfigProvider } from '@yohira/extensions.config.json/JsonConfigProvider';
 import { JsonConfigSource } from '@yohira/extensions.config.json/JsonConfigSource';
 import { ConfigBuilder } from '@yohira/extensions.config/ConfigBuilder';
@@ -91,4 +94,106 @@ test('NonObjectRootIsInvalid', () => {
 	expect(() => loadProvider(json)).toThrowError();
 });
 
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L118
+test('SupportAndIgnoreComments', () => {
+	const json = `/* Comments */
+	{/* Comments */
+	"name": /* Comments */ "test",
+	"address": {
+		"street": "Something street", /* Comments */
+		"zipcode": "12345"
+	}
+}`;
+	const jsonConfigSrc = loadProvider(json);
+	expect(get(jsonConfigSrc, 'name')).toBe('test');
+	expect(get(jsonConfigSrc, 'address:street')).toBe('Something street');
+	expect(get(jsonConfigSrc, 'address:zipcode')).toBe('12345');
+});
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L135
+test('SupportAndIgnoreTrailingCommas', () => {
+	const json = `
+{
+    "firstname": "test",
+    "test.last.name": "last.name",
+        "residential.address": {
+            "street.name": "Something street",
+            "zipcode": "12345",
+        },
+}`;
+	const jsonConfigSrc = loadProvider(json);
+
+	expect(get(jsonConfigSrc, 'firstname')).toBe('test');
+	expect(get(jsonConfigSrc, 'test.last.name')).toBe('last.name');
+	expect(get(jsonConfigSrc, 'residential.address:STREET.name')).toBe(
+		'Something street',
+	);
+	expect(get(jsonConfigSrc, 'residential.address:zipcode')).toBe('12345');
+});
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L155
+test('ThrowExceptionWhenUnexpectedEndFoundBeforeFinishParsing', () => {
+	const json = `{
+	""name"": ""test"",
+	""address"": {
+		""street"": ""Something street"",
+		""zipcode"": ""12345""
+	}
+/* Missing a right brace here*/`;
+	expect(() => loadProvider(json)).toThrowError(
+		'Could not parse the JSON file.',
+	);
+});
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L169
+test('ThrowExceptionWhenMissingCurlyBeforeFinishParsing', () => {
+	const json = `
+{
+	"Data": {`;
+
+	expect(() => loadProvider(json)).toThrowError(
+		'Could not parse the JSON file.',
+	);
+});
+
 // TODO
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L191
+test('ThrowExceptionWhenPassingEmptyStringAsFilePath', () => {
+	expect(() =>
+		addJsonFile(new ConfigBuilder(), undefined, '', false, false),
+	).toThrowError('File path must be a non-empty string.');
+});
+
+/* TODO: // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L201
+test('JsonConfiguration_Throws_On_Missing_Configuration_File', () => {
+	const config = addJsonFile(
+		new ConfigBuilder(),
+		undefined,
+		'NotExistingConfig.json',
+		false,
+		false,
+	);
+
+	expect(() => config.build()).toThrowError(
+		`The configuration file 'NotExistingConfig.json' was not found and is not optional. The expected physical path was '`,
+	);
+});
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L211
+test('JsonConfiguration_Does_Not_Throw_On_Optional_Configuration', () => {
+	const config = addJsonFile(
+		new ConfigBuilder(),
+		undefined,
+		'NotExistingConfig.json',
+		true,
+		false,
+	).build();
+}); */
+
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L217
+test('ThrowFormatExceptionWhenFileIsEmpty', () => {
+	expect(() => loadProvider(``)).toThrowError(
+		'Could not parse the JSON file.',
+	);
+});
