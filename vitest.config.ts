@@ -42,6 +42,10 @@ export default defineConfig({
 					__dirname,
 					'./packages/extensions.dependency-injection.specification.tests/src',
 				),
+			'@yohira/extensions.file-providers': resolve(
+				__dirname,
+				'./packages/extensions.file-providers/src',
+			),
 			'@yohira/extensions.options': resolve(
 				__dirname,
 				'./packages/extensions.options/src',

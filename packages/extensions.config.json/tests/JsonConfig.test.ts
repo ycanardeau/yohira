@@ -165,7 +165,7 @@ test('ThrowExceptionWhenPassingEmptyStringAsFilePath', () => {
 	).toThrowError('File path must be a non-empty string.');
 });
 
-/* TODO: // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L201
+// https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L201
 test('JsonConfiguration_Throws_On_Missing_Configuration_File', () => {
 	const config = addJsonFile(
 		new ConfigBuilder(),
@@ -189,7 +189,7 @@ test('JsonConfiguration_Does_Not_Throw_On_Optional_Configuration', () => {
 		true,
 		false,
 	).build();
-}); */
+});
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L217
 test('ThrowFormatExceptionWhenFileIsEmpty', () => {

@@ -33,8 +33,15 @@ export abstract class FileConfigProvider
 			if (this.source.optional || reload) {
 				this.data = new CaseInsensitiveMap<string | undefined>();
 			} else {
-				// TODO
-				throw new Error('Method not implemented.');
+				const error = [
+					`The configuration file '${this.source.path}' was not found and is not optional.` /* LOC */,
+				];
+				if (!!file?.physicalPath) {
+					error.push(
+						` The expected physical path was '${file.physicalPath}'.` /* LOC */,
+					);
+				}
+				throw new Error(error.join('')) /* TODO: handleException */;
 			}
 		} else {
 			// TODO

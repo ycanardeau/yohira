@@ -4,7 +4,8 @@ import { IConfigSource } from '@yohira/extensions.config.abstractions/IConfigSou
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/IConfigurationBuilder.cs,f813011dcffaa972,references
 export interface IConfigBuilder {
-	get sources(): IList<IConfigSource>;
+	readonly properties: Map<string, unknown>;
+	readonly sources: IList<IConfigSource>;
 	add(source: IConfigSource): this;
 	build(): IConfigRoot;
 }

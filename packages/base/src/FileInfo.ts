@@ -1,4 +1,5 @@
 import { FileSystemInfo } from '@yohira/base/FileSystemInfo';
+import { existsSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/FileInfo.cs,4ee673c1a4ecad41,references
@@ -31,6 +32,7 @@ export class FileInfo extends FileSystemInfo {
 	}
 
 	get exists(): boolean {
-		return true; /* TODO */
+		// REVIEW: Should we replace `existsSync` with `access`?
+		return existsSync(this.fullPath);
 	}
 }
