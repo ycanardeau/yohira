@@ -68,6 +68,18 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		return new ConfigSection(this, key);
 	}
 
+	private raiseChanged(): void {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	reload(): void {
+		for (const provider of this._providers) {
+			provider.load();
+		}
+		this.raiseChanged();
+	}
+
 	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');

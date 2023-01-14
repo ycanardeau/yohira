@@ -21,6 +21,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.config.env-variables/src',
 			),
+			'@yohira/extensions.config.file-extensions': resolve(
+				__dirname,
+				'./packages/extensions.config.file-extensions/src',
+			),
 			'@yohira/extensions.config.json': resolve(
 				__dirname,
 				'./packages/extensions.config.json/src',
