@@ -1,5 +1,6 @@
 import { FileInfo } from '@yohira/base/FileInfo';
 import { IDisposable } from '@yohira/base/IDisposable';
+import { combinePaths, getFullPath, isPathRooted } from '@yohira/base/Path';
 import { ExclusionFilters } from '@yohira/extensions.file-providers/ExclusionFilters';
 import { isExcluded } from '@yohira/extensions.file-providers/FileSystemInfoHelper';
 import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
@@ -11,7 +12,6 @@ import {
 	pathNavigatesAboveRoot,
 } from '@yohira/extensions.file-providers/PathUtils';
 import { PhysicalFileInfo } from '@yohira/extensions.file-providers/PhysicalFileInfo';
-import { isAbsolute, resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references
 export class PhysicalFileProvider implements IFileProvider, IDisposable {
@@ -21,11 +21,11 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		root: string,
 		private readonly filters = ExclusionFilters.Sensitive,
 	) {
-		if (!isAbsolute(root)) {
+		if (!isPathRooted(root)) {
 			throw new Error('The path must be absolute.');
 		}
 
-		const fullRoot = resolve(root);
+		const fullRoot = getFullPath(root);
 		this.root = ensureTrailingSlash(fullRoot);
 
 		// TODO
@@ -45,7 +45,7 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 			return undefined;
 		}
 
-		const fullPath = resolve(this.root, path); /* TODO */
+		const fullPath = getFullPath(combinePaths(this.root, path));
 
 		if (!this.isUnderneathRoot(fullPath)) {
 			return undefined;
@@ -66,7 +66,7 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		) /* TODO */;
 
 		// Absolute paths not permitted.
-		if (isAbsolute(subpath)) {
+		if (isPathRooted(subpath)) {
 			return new NotFoundFileInfo(subpath);
 		}
 

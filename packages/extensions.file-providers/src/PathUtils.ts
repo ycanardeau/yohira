@@ -1,4 +1,4 @@
-import { sep } from 'node:path';
+import { directorySeparatorChar } from '@yohira/base/Path';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,01973375afd0c585,references
 const invalidFileNameCharsRegExp = new RegExp(
@@ -12,8 +12,8 @@ export function hasInvalidPathChars(path: string): boolean {
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,9461c81a68263e40,references
 export function ensureTrailingSlash(path: string): string {
-	if (path && path[path.length - 1] !== sep) {
-		return `${path}${sep}`;
+	if (path && path[path.length - 1] !== directorySeparatorChar) {
+		return `${path}${directorySeparatorChar}`;
 	}
 
 	return path;

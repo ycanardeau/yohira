@@ -1,9 +1,9 @@
+import { combinePaths } from '@yohira/base/Path';
 import { NullFileProvider } from '@yohira/extensions.file-providers/NullFileProvider';
 import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
 import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
 import { WebHostOptions } from '@yohira/hosting/internal/WebHostOptions';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironmentExtensions.cs,cfa8d9a4a73c54e3
 export function initialize(
@@ -19,12 +19,15 @@ export function initialize(
 
 	const webRoot = options.webRoot;
 	if (webRoot === undefined) {
-		const wwwroot = resolve(hostingEnv.contentRootPath, 'wwwroot');
+		const wwwroot = combinePaths(hostingEnv.contentRootPath, 'wwwroot');
 		if (existsSync(wwwroot)) {
 			hostingEnv.webRootPath = wwwroot;
 		}
 	} else {
-		hostingEnv.webRootPath = resolve(hostingEnv.contentRootPath, webRoot);
+		hostingEnv.webRootPath = combinePaths(
+			hostingEnv.contentRootPath,
+			webRoot,
+		);
 	}
 
 	if (hostingEnv.webRootPath) {
