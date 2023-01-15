@@ -1,6 +1,11 @@
 import { FileInfo } from '@yohira/base/FileInfo';
 import { IDisposable } from '@yohira/base/IDisposable';
-import { combinePaths, getFullPath, isPathRooted } from '@yohira/base/Path';
+import {
+	combinePaths,
+	getFullPath,
+	getRelativePath,
+	isPathRooted,
+} from '@yohira/base/Path';
 import { ExclusionFilters } from '@yohira/extensions.file-providers/ExclusionFilters';
 import { isExcluded } from '@yohira/extensions.file-providers/FileSystemInfoHelper';
 import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
@@ -33,11 +38,13 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 
 	dispose(): void {
 		// TODO
-		throw new Error('Method not implemented.');
+		//throw new Error('Method not implemented.');
 	}
 
 	private isUnderneathRoot(fullPath: string): boolean {
-		return fullPath.toLowerCase().startsWith(this.root.toLowerCase());
+		return !getRelativePath(this.root, fullPath).startsWith(
+			'..',
+		) /* REVIEW */;
 	}
 
 	private getFullPath(path: string): string | undefined {
