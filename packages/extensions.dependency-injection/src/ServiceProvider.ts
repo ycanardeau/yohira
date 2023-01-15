@@ -1,5 +1,5 @@
 import { ICollection } from '@yohira/base/ICollection';
-import { IDisposable } from '@yohira/base/IDisposable';
+import { IAsyncDisposable, IDisposable } from '@yohira/base/IDisposable';
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { getOrAdd } from '@yohira/base/MapExtensions';
 import { Type } from '@yohira/base/Type';
@@ -15,7 +15,9 @@ import { ServiceProviderEngine } from '@yohira/extensions.dependency-injection/s
 import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceProvider.cs,7b97f84895159f6d,references
-export class ServiceProvider implements IServiceProvider, IDisposable {
+export class ServiceProvider
+	implements IServiceProvider, IDisposable, IAsyncDisposable
+{
 	private readonly callSiteValidator?: CallSiteValidator;
 
 	// Internal for testing
@@ -123,7 +125,12 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		return result as T | undefined;
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	disposeAsync(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

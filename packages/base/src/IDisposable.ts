@@ -1,3 +1,7 @@
 export interface IDisposable {
-	dispose(): Promise<void>;
+	dispose(): void;
+}
+
+export interface IAsyncDisposable {
+	disposeAsync(): Promise<void>;
 }

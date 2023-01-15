@@ -3,7 +3,7 @@ import { IFakeEveryService } from '@yohira/extensions.dependency-injection.speci
 
 // https://github.com/dotnet/runtime/blob/279fb0436f475fbc35ffeff68330f970ee77831a/src/libraries/Microsoft.Extensions.DependencyInjection.Specification.Tests/src/Fakes/FakeService.cs#L8
 export class FakeService implements IFakeEveryService, IDisposable {
-	async dispose(): Promise<void> {
+	dispose(): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

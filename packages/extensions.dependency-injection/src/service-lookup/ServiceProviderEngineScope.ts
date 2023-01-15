@@ -1,4 +1,4 @@
-import { IDisposable } from '@yohira/base/IDisposable';
+import { IAsyncDisposable } from '@yohira/base/IDisposable';
 import { IServiceProvider } from '@yohira/base/IServiceProvider';
 import { Type } from '@yohira/base/Type';
 import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
@@ -6,7 +6,7 @@ import { ServiceProvider } from '@yohira/extensions.dependency-injection/Service
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ServiceProviderEngineScope.cs,da6e7172da9cbbcf,references
 export class ServiceProviderEngineScope
-	implements IServiceScope, IServiceProvider, IDisposable
+	implements IServiceScope, IServiceProvider, IAsyncDisposable
 {
 	private disposed = false;
 
@@ -27,7 +27,12 @@ export class ServiceProviderEngineScope
 		return this;
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	disposeAsync(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

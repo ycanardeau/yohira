@@ -21,7 +21,7 @@ export class WebApp implements IHost, IAppBuilder {
 		return this.host.stop();
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		return this.host.dispose();
 	}
 
