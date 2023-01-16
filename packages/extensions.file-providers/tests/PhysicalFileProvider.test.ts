@@ -4,7 +4,6 @@ import { NotFoundFileInfo } from '@yohira/extensions.file-providers/NotFoundFile
 import { PhysicalFileInfo } from '@yohira/extensions.file-providers/PhysicalFileInfo';
 import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
 import { randomUUID } from 'node:crypto';
-import { resolve } from 'node:path';
 import { cwd } from 'node:process';
 import { expect, test } from 'vitest';
 
@@ -101,7 +100,9 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', () => {
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L179
 test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {
-		const info = provider.getFileInfo(resolve(getTempPath(), randomUUID()));
+		const info = provider.getFileInfo(
+			combinePaths(getTempPath(), randomUUID()),
+		);
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 });
@@ -109,7 +110,7 @@ test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L189
 test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {
-		const info = provider.getFileInfo(resolve('..', randomUUID()));
+		const info = provider.getFileInfo(combinePaths('..', randomUUID()));
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 });
