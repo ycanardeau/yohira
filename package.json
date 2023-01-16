@@ -13,6 +13,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-prettier": "^4.2.1",
+		"lerna": "^6.4.1",
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
 		"tsc-alias": "^1.7.1",
