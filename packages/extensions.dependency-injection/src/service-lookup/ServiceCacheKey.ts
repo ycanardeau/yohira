@@ -1,4 +1,4 @@
-import { Type } from '@yohira/base/Type';
+import { Type } from '@yohira/base';
 
 // https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript/7616484#7616484
 function getHashCode(value: string): number {

@@ -1,4 +1,4 @@
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
+import { IConfig } from '@/IConfig';
 
 export interface IConfigSection extends IConfig {
 	readonly key: string;

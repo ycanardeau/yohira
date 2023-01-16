@@ -1,22 +1,22 @@
-import { FileInfo } from '@yohira/base/FileInfo';
-import { IDisposable } from '@yohira/base/IDisposable';
-import {
-	combinePaths,
-	getFullPath,
-	getRelativePath,
-	isPathRooted,
-} from '@yohira/base/Path';
-import { ExclusionFilters } from '@yohira/extensions.file-providers/ExclusionFilters';
-import { isExcluded } from '@yohira/extensions.file-providers/FileSystemInfoHelper';
-import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { NotFoundFileInfo } from '@yohira/extensions.file-providers/NotFoundFileInfo';
+import { ExclusionFilters } from '@/ExclusionFilters';
+import { isExcluded } from '@/FileSystemInfoHelper';
+import { IFileInfo } from '@/IFileInfo';
+import { IFileProvider } from '@/IFileProvider';
+import { NotFoundFileInfo } from '@/NotFoundFileInfo';
 import {
 	ensureTrailingSlash,
 	hasInvalidPathChars,
 	pathNavigatesAboveRoot,
-} from '@yohira/extensions.file-providers/PathUtils';
-import { PhysicalFileInfo } from '@yohira/extensions.file-providers/PhysicalFileInfo';
+} from '@/PathUtils';
+import { PhysicalFileInfo } from '@/PhysicalFileInfo';
+import {
+	FileInfo,
+	IDisposable,
+	combinePaths,
+	getFullPath,
+	getRelativePath,
+	isPathRooted,
+} from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references
 export class PhysicalFileProvider implements IFileProvider, IDisposable {

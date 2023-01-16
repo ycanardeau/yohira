@@ -1,8 +1,8 @@
-import { Ctor } from '@yohira/base/Type';
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
-import { IConfigSource } from '@yohira/extensions.config.abstractions/IConfigSource';
+import { IConfig } from '@/IConfig';
+import { IConfigBuilder } from '@/IConfigBuilder';
+import { IConfigSection } from '@/IConfigSection';
+import { IConfigSource } from '@/IConfigSource';
+import { Ctor } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationExtensions.cs,94ff96edc2d43dbd,references
 export function addConfigSource<TSource extends IConfigSource>(

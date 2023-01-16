@@ -1,10 +1,10 @@
-import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteKind';
-import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
-import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
-import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
-import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
-import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
+import { CallSiteKind } from '@/service-lookup/CallSiteKind';
+import { CallSiteResultCacheLocation } from '@/service-lookup/CallSiteResultCacheLocation';
+import { ConstantCallSite } from '@/service-lookup/ConstantCallSite';
+import { CtorCallSite } from '@/service-lookup/CtorCallSite';
+import { FactoryCallSite } from '@/service-lookup/FactoryCallSite';
+import { IterableCallSite } from '@/service-lookup/IterableCallSite';
+import { ServiceCallSite } from '@/service-lookup/ServiceCallSite';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteVisitor.cs,830d006141417efa,references
 export abstract class CallSiteVisitor<TArgument, TResult> {

@@ -1,6 +1,6 @@
-import { List } from '@yohira/base/List';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
+import { IServiceCollection } from '@/IServiceCollection';
+import { ServiceDescriptor } from '@/ServiceDescriptor';
+import { List } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollection.cs,beaaadffb389924e,references
 export class ServiceCollection implements IServiceCollection {

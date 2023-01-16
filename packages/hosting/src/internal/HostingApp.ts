@@ -1,8 +1,10 @@
-import { IFeatureCollection } from '@yohira/extensions.features/IFeatureCollection';
-import { IHttpApp } from '@yohira/hosting.server.abstractions/IHttpApp';
-import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
-import { IHttpContextFactory } from '@yohira/http.abstractions/IHttpContextFactory';
-import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
+import { IFeatureCollection } from '@yohira/extensions.features';
+import { IHttpApp } from '@yohira/hosting.server.abstractions';
+import {
+	IHttpContext,
+	IHttpContextFactory,
+	RequestDelegate,
+} from '@yohira/http.abstractions';
 
 class HostingAppContext {
 	httpContext?: IHttpContext;

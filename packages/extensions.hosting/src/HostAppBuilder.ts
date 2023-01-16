@@ -1,12 +1,11 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
-import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
+import { populateServiceCollection, resolveHost } from '@/HostBuilder';
+import { IServiceProvider } from '@yohira/base';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
-	populateServiceCollection,
-	resolveHost,
-} from '@yohira/extensions.hosting/HostBuilder';
+	IServiceCollection,
+	ServiceCollection,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { IHost } from '@yohira/extensions.hosting.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostApplicationBuilder.cs,c659330adb7f1ad0,references
 export class HostAppBuilder {

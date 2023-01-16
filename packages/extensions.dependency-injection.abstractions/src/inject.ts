@@ -1,7 +1,9 @@
-import { Type } from '@yohira/base/Type';
-import { DecoratorTarget } from '@yohira/third-party.inversify/annotation/decorator_utils';
-import { injectBase } from '@yohira/third-party.inversify/annotation/inject_base';
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
+import { Type } from '@yohira/base';
+import {
+	DecoratorTarget,
+	METADATA_KEY,
+	injectBase,
+} from '@yohira/third-party.inversify';
 
 export function inject(
 	serviceType: Type,

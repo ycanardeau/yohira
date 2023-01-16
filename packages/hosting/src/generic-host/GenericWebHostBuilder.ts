@@ -1,16 +1,18 @@
-import { Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
-import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
-import { configureOptionsServices } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { AppBuilderFactory } from '@yohira/hosting/builder/AppBuilderFactory';
-import { GenericWebHostServiceOptions } from '@yohira/hosting/generic-host/GenericWebHostServiceOptions';
-import { HttpContextFactory } from '@yohira/hosting/http/HttpContextFactory';
-import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartup';
-import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { AppBuilderFactory } from '@/builder/AppBuilderFactory';
+import { GenericWebHostServiceOptions } from '@/generic-host/GenericWebHostServiceOptions';
+import { HttpContextFactory } from '@/http/HttpContextFactory';
+import { ISupportsStartup } from '@/infrastructure/ISupportsStartup';
+import { Type } from '@yohira/base';
+import {
+	IServiceCollection,
+	ServiceDescriptor,
+	ServiceLifetime,
+	tryAdd,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
+import { configureOptionsServices } from '@yohira/extensions.options';
+import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IAppBuilder } from '@yohira/http.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references
 export class GenericWebHostBuilder

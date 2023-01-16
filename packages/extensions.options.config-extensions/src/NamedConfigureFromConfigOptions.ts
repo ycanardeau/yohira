@@ -1,7 +1,6 @@
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
-import { BinderOptions } from '@yohira/extensions.config.binder/BinderOptions';
-import { bind } from '@yohira/extensions.config.binder/ConfigBinder';
-import { ConfigureNamedOptions } from '@yohira/extensions.options/ConfigureNamedOptions';
+import { IConfig } from '@yohira/extensions.config.abstractions';
+import { BinderOptions, bind } from '@yohira/extensions.config.binder';
+import { ConfigureNamedOptions } from '@yohira/extensions.options';
 
 // https://source.dot.net/#Microsoft.Extensions.Options.ConfigurationExtensions/NamedConfigureFromConfigurationOptions.cs,e21b145e221284a9,references
 export class NamedConfigureFromConfigOptions<

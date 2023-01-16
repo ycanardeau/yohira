@@ -1,13 +1,7 @@
-import {
-	None,
-	Option,
-	OptionSomeType,
-	Some,
-} from '@yohira/third-party.ts-results/option';
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+import { None, Option, OptionSomeType, Some } from '@/option';
+import { Err, Ok, Result } from '@/result';
+import { eq } from 'test/util';
 import { expect, test } from 'vitest';
-
-import { eq } from './util';
 
 const someString = new Some('foo');
 const someNum = new Some(10);

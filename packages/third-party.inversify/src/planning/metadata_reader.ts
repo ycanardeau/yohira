@@ -1,5 +1,5 @@
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
-import { interfaces } from '@yohira/third-party.inversify/interfaces/interfaces';
+import * as METADATA_KEY from '@/constants/metadata_keys';
+import { interfaces } from '@/interfaces/interfaces';
 import 'reflect-metadata';
 
 class MetadataReader implements interfaces.MetadataReader {

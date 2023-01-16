@@ -1,5 +1,5 @@
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
+import { IServiceCollection } from '@/IServiceCollection';
+import { ServiceDescriptor } from '@/ServiceDescriptor';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/Extensions/ServiceCollectionDescriptorExtensions.cs,74efb8e4739fdc19,references
 export function tryAdd(

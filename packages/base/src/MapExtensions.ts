@@ -1,4 +1,4 @@
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
 export function tryGetValue<K, V>(
 	map: Map<K, V>,

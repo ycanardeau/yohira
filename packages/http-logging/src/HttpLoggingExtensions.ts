@@ -1,6 +1,5 @@
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
-import { HttpRequestLog } from '@yohira/http-logging/HttpRequestLog';
+import { HttpRequestLog } from '@/HttpRequestLog';
+import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingExtensions.cs,5183288c97b153d3,references
 export function logRequestLog(

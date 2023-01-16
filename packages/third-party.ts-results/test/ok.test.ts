@@ -1,8 +1,7 @@
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+import { Err, Ok, Result } from '@/result';
 import { assert } from 'conditional-type-checks';
+import { eq, expect_never, expect_string } from 'test/util';
 import { expect, test } from 'vitest';
-
-import { eq, expect_never, expect_string } from './util';
 
 test('Constructable & Callable', () => {
 	const a = new Ok(3);

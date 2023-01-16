@@ -1,34 +1,38 @@
-import { Type } from '@yohira/base/Type';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
-import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
-import { IOptions } from '@yohira/extensions.options/IOptions';
-import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
-import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
-import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
-import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
-import { PathString } from '@yohira/http.abstractions/PathString';
-import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { useMiddleware } from '@yohira/http.abstractions/extensions/UseMiddlewareExtensions';
-import { getEndpoint } from '@yohira/http.abstractions/routing/EndpointHttpContextExtensions';
-import { FileExtensionContentTypeProvider } from '@yohira/static-files/FileExtensionContentTypeProvider';
+import { FileExtensionContentTypeProvider } from '@/FileExtensionContentTypeProvider';
 import {
 	isGetOrHeadMethod,
 	resolveFileProvider,
 	tryMatchPath,
-} from '@yohira/static-files/Helpers';
-import { IContentTypeProvider } from '@yohira/static-files/IContentTypeProvider';
+} from '@/Helpers';
+import { IContentTypeProvider } from '@/IContentTypeProvider';
 import {
 	logEndpointMatched,
 	logFileNotFound,
 	logFileTypeNotSupported,
 	logPathMismatch,
 	logRequestMethodNotSupported,
-} from '@yohira/static-files/LoggerExtensions';
-import { StaticFileContext } from '@yohira/static-files/StaticFileContext';
-import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+} from '@/LoggerExtensions';
+import { StaticFileContext } from '@/StaticFileContext';
+import { StaticFileOptions } from '@/StaticFileOptions';
+import { Type } from '@yohira/base';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
+import { IFileProvider } from '@yohira/extensions.file-providers';
+import {
+	ILoggerFactory,
+	ILoggerT,
+} from '@yohira/extensions.logging.abstractions';
+import { IOptions } from '@yohira/extensions.options';
+import { IWebHostEnv } from '@yohira/hosting.abstractions';
+import {
+	IAppBuilder,
+	IHttpContext,
+	IMiddleware,
+	PathString,
+	RequestDelegate,
+	getEndpoint,
+	useMiddleware,
+} from '@yohira/http.abstractions';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileMiddleware.cs,ae588cf9ea8c8a24,references
 export class StaticFileMiddleware implements IMiddleware {

@@ -1,8 +1,10 @@
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { IConfigSource } from '@yohira/extensions.config.abstractions/IConfigSource';
-import { getFileProvider } from '@yohira/extensions.config.file-extensions/FileConfigExtensions';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
+import { getFileProvider } from '@/FileConfigExtensions';
+import {
+	IConfigBuilder,
+	IConfigProvider,
+	IConfigSource,
+} from '@yohira/extensions.config.abstractions';
+import { IFileProvider } from '@yohira/extensions.file-providers';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.FileExtensions/FileConfigurationSource.cs,dbf92158ddc162f0,references
 export abstract class FileConfigSource implements IConfigSource {

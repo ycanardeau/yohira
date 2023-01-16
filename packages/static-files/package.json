@@ -1,0 +1,31 @@
+{
+	"name": "@yohira/static-files",
+	"version": "0.0.0",
+	"author": "Aigamo",
+	"homepage": "https://github.com/ycanardeau/yohira#readme",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ycanardeau/yohira.git"
+	},
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "yarn clean && tsc && tsc-alias"
+	},
+	"bugs": {
+		"url": "https://github.com/ycanardeau/yohira/issues"
+	},
+	"dependencies": {
+		"@yohira/base": "workspace:^",
+		"@yohira/extensions.dependency-injection.abstractions": "workspace:^",
+		"@yohira/extensions.file-providers": "workspace:^",
+		"@yohira/hosting.abstractions": "workspace:^",
+		"@yohira/http.abstractions": "workspace:^",
+		"@yohira/http.extensions": "workspace:^",
+		"@yohira/third-party.ts-results": "workspace:^"
+	}
+}

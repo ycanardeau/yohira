@@ -1,6 +1,5 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Ctor, Type } from '@yohira/base/Type';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
+import { ServiceLifetime } from '@/ServiceLifetime';
+import { Ctor, IServiceProvider, Type } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceDescriptor.cs,b593fd2837338f2a,references
 export class ServiceDescriptor {

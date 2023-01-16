@@ -1,7 +1,9 @@
-import { Host } from '@yohira/extensions.hosting/internal/Host';
-import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
-import { logDebug } from '@yohira/extensions.logging.abstractions/LoggerExtensions';
+import { Host } from '@/internal/Host';
+import {
+	ILoggerT,
+	LogLevel,
+	logDebug,
+} from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/HostingLoggerExtensions.cs,540da2ba575f0fbd,references
 export function logStarting(logger: ILoggerT<Host>): void {

@@ -1,6 +1,5 @@
-import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
-import { StaticFileMiddleware } from '@yohira/static-files/StaticFileMiddleware';
+import { StaticFileMiddleware } from '@/StaticFileMiddleware';
+import { ILoggerT, LogLevel } from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/LoggerExtensions.cs,e84a4b406304d9b0,references
 function logFileServedCore(

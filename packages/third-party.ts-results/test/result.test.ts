@@ -1,4 +1,4 @@
-import { None, Option, Some } from '@yohira/third-party.ts-results/option';
+import { None, Option, Some } from '@/option';
 import {
 	Err,
 	Ok,
@@ -7,10 +7,9 @@ import {
 	ResultErrTypes,
 	ResultOkType,
 	ResultOkTypes,
-} from '@yohira/third-party.ts-results/result';
+} from '@/result';
+import { eq } from 'test/util';
 import { expect, test } from 'vitest';
-
-import { eq } from './util';
 
 test('Err<E> | Ok<T> should be Result<T, E>', () => {
 	const r1 = new Err(0);

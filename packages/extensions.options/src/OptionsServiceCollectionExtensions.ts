@@ -1,15 +1,17 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { addSingletonInstance } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import { tryAdd } from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
-import { ConfigureNamedOptions } from '@yohira/extensions.options/ConfigureNamedOptions';
-import { Options } from '@yohira/extensions.options/Options';
-import { OptionsCache } from '@yohira/extensions.options/OptionsCache';
-import { OptionsFactory } from '@yohira/extensions.options/OptionsFactory';
-import { OptionsMonitor } from '@yohira/extensions.options/OptionsMonitor';
-import { UnnamedOptionsManager } from '@yohira/extensions.options/UnnamedOptionsManager';
+import { ConfigureNamedOptions } from '@/ConfigureNamedOptions';
+import { Options } from '@/Options';
+import { OptionsCache } from '@/OptionsCache';
+import { OptionsFactory } from '@/OptionsFactory';
+import { OptionsMonitor } from '@/OptionsMonitor';
+import { UnnamedOptionsManager } from '@/UnnamedOptionsManager';
+import { Ctor, Type } from '@yohira/base';
+import {
+	IServiceCollection,
+	ServiceDescriptor,
+	ServiceLifetime,
+	addSingletonInstance,
+	tryAdd,
+} from '@yohira/extensions.dependency-injection.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,4909ed65f60d1c84,references
 export function addOptions(services: IServiceCollection): IServiceCollection {

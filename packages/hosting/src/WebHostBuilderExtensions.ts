@@ -1,6 +1,6 @@
-import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { ISupportsStartup } from '@yohira/hosting/infrastructure/ISupportsStartup';
-import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
+import { ISupportsStartup } from '@/infrastructure/ISupportsStartup';
+import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IAppBuilder } from '@yohira/http.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/WebHostBuilderExtensions.cs,660aae01ddc11d31,references
 export function configure(

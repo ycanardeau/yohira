@@ -1,7 +1,7 @@
-import * as ERROR_MSGS from '@yohira/third-party.inversify/constants/error_msgs';
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
-import { interfaces } from '@yohira/third-party.inversify/interfaces/interfaces';
-import { getFirstArrayDuplicate } from '@yohira/third-party.inversify/utils/js';
+import * as ERROR_MSGS from '@/constants/error_msgs';
+import * as METADATA_KEY from '@/constants/metadata_keys';
+import { interfaces } from '@/interfaces/interfaces';
+import { getFirstArrayDuplicate } from '@/utils/js';
 import 'reflect-metadata';
 
 function targetIsConstructorFunction<T = object>(

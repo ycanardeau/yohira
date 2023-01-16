@@ -1,4 +1,4 @@
-import { Type } from '@yohira/base/Type';
+import { Type } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.Features/IFeatureCollection.cs,a1176f964a1c46f8,references
 export interface IFeatureCollection {

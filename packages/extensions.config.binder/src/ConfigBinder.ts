@@ -1,13 +1,12 @@
-import { Ctor } from '@yohira/base/Type';
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
-import { BinderOptions } from '@yohira/extensions.config.binder/BinderOptions';
-import { BindingPoint } from '@yohira/extensions.config.binder/BindingPoint';
+import { BinderOptions } from '@/BinderOptions';
+import { BindingPoint } from '@/BindingPoint';
+import { PropertyInfo, getProperties } from '@/type';
+import { Ctor } from '@yohira/base';
 import {
-	PropertyInfo,
-	getProperties,
-} from '@yohira/extensions.config.binder/type';
-import { Ok, Result } from '@yohira/third-party.ts-results/result';
+	IConfig,
+	IConfigSection,
+} from '@yohira/extensions.config.abstractions';
+import { Ok, Result } from '@yohira/third-party.ts-results';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,fc155b7d06f7f55f,references
 function tryConvertValue(

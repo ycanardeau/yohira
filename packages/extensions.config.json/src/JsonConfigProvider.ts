@@ -1,6 +1,6 @@
-import { FileConfigProvider } from '@yohira/extensions.config.file-extensions/FileConfigProvider';
-import { JsonConfigFileParser } from '@yohira/extensions.config.json/JsonConfigFileParser';
-import { JsonConfigSource } from '@yohira/extensions.config.json/JsonConfigSource';
+import { JsonConfigFileParser } from '@/JsonConfigFileParser';
+import { JsonConfigSource } from '@/JsonConfigSource';
+import { FileConfigProvider } from '@yohira/extensions.config.file-extensions';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Json/JsonConfigurationProvider.cs,c9ab2919b7ca9b1d,references

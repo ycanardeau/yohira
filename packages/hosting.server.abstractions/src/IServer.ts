@@ -1,5 +1,5 @@
-import { IDisposable } from '@yohira/base/IDisposable';
-import { IHttpApp } from '@yohira/hosting.server.abstractions/IHttpApp';
+import { IHttpApp } from '@/IHttpApp';
+import { IDisposable } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Server.Abstractions/IServer.cs,5aa0425d70e5445f,references
 export interface IServer extends IDisposable {

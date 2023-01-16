@@ -21,12 +21,8 @@
 		"vitest": "^0.26.2"
 	},
 	"scripts": {
-		"clean": "rimraf ./dist",
-		"build": "yarn clean && tsc && tsc-alias",
-		"build:watch": "yarn clean && tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
-		"start": "node dist/index.js",
-		"test": "vitest",
-		"coverage": "vitest run --coverage"
+		"build": "yarn lerna run build",
+		"test": "yarn lerna run test"
 	},
 	"dependencies": {
 		"json5": "^2.2.3",

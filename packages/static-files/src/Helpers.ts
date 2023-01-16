@@ -1,9 +1,12 @@
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
-import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
-import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
-import { PathString } from '@yohira/http.abstractions/PathString';
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+import { IFileProvider } from '@yohira/extensions.file-providers';
+import { IWebHostEnv } from '@yohira/hosting.abstractions';
+import {
+	IHttpContext,
+	PathString,
+	isGet,
+	isHead,
+} from '@yohira/http.abstractions';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
 export function resolveFileProvider(hostingEnv: IWebHostEnv): IFileProvider {
 	return hostingEnv.webRootFileProvider;

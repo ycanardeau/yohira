@@ -1,4 +1,4 @@
-import { Result } from '@yohira/third-party.ts-results/result';
+import { Result } from '@/result';
 import { IsExact, IsNever } from 'conditional-type-checks';
 import { Observable } from 'rxjs';
 import { expect } from 'vitest';

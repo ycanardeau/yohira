@@ -1,6 +1,6 @@
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
-import { HostAppBuilder } from '@yohira/extensions.hosting/HostAppBuilder';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
+import { HostAppBuilder } from '@yohira/extensions.hosting';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore/BootstrapHostBuilder.cs,9f38532326a07c2d,references
 export class BootstrapHostBuilder implements IHostBuilder {

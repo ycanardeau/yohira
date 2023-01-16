@@ -1,0 +1,27 @@
+{
+	"name": "@yohira/extensions.file-providers",
+	"version": "0.0.0",
+	"author": "Aigamo",
+	"homepage": "https://github.com/ycanardeau/yohira#readme",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ycanardeau/yohira.git"
+	},
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "yarn clean && tsc && tsc-alias",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
+	},
+	"bugs": {
+		"url": "https://github.com/ycanardeau/yohira/issues"
+	},
+	"dependencies": {
+		"@yohira/base": "workspace:^"
+	}
+}

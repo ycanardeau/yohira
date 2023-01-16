@@ -1,10 +1,10 @@
+import { getChildrenImpl } from '@/InternalConfigRootExtensions';
 import {
+	IConfigRoot,
+	IConfigSection,
 	combineConfigPath,
 	getSectionKey,
-} from '@yohira/extensions.config.abstractions/ConfigPath';
-import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
-import { getChildrenImpl } from '@yohira/extensions.config/InternalConfigRootExtensions';
+} from '@yohira/extensions.config.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationSection.cs,b07a8fc9758fd876,references
 export class ConfigSection implements IConfigSection {

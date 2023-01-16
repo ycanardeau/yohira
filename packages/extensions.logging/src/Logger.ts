@@ -1,5 +1,4 @@
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
+import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/Logger.cs,fdb90470ff3a62bd,references
 export class Logger implements ILogger {

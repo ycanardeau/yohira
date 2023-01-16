@@ -1,6 +1,6 @@
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceProvider } from '@yohira/extensions.dependency-injection/ServiceProvider';
-import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
+import { ServiceProvider } from '@/ServiceProvider';
+import { ServiceProviderOptions } from '@/ServiceProviderOptions';
+import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceCollectionContainerBuilderExtensions.cs,346262d4cea1139c,references
 export function buildServiceProvider(

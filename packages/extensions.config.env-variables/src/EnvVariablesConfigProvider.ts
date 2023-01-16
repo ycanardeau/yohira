@@ -1,12 +1,6 @@
-import {
-	replaceAll,
-	startsWithIgnoreCase,
-} from '@yohira/base/StringExtensions';
-import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath';
-import {
-	CaseInsensitiveMap,
-	ConfigProvider,
-} from '@yohira/extensions.config/ConfigProvider';
+import { replaceAll, startsWithIgnoreCase } from '@yohira/base';
+import { CaseInsensitiveMap, ConfigProvider } from '@yohira/extensions.config';
+import { keyDelimiter } from '@yohira/extensions.config.abstractions';
 import { env } from 'node:process';
 
 const mySqlServerPrefix = 'MYSQLCONNSTR_';

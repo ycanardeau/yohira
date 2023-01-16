@@ -1,5 +1,5 @@
-import { IConfigureNamedOptions } from '@yohira/extensions.options/IConfigureNamedOptions';
-import { Options } from '@yohira/extensions.options/Options';
+import { IConfigureNamedOptions } from '@/IConfigureNamedOptions';
+import { Options } from '@/Options';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/ConfigureNamedOptions.cs,ea88416116840787,references
 export class ConfigureNamedOptions<TOptions>

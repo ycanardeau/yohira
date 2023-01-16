@@ -1,21 +1,19 @@
-import { ICollection } from '@yohira/base/ICollection';
-import { List } from '@yohira/base/List';
-import { tryGetValue } from '@yohira/base/MapExtensions';
-import { Ctor, Type } from '@yohira/base/Type';
-import { IServiceProviderIsService } from '@yohira/extensions.dependency-injection.abstractions/IServiceProviderIsService';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
-import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
-import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
-import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
-import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
-import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
-import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
-import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
-import { MetadataReader } from '@yohira/third-party.inversify/planning/metadata_reader';
-import { Result } from '@yohira/third-party.ts-results/result';
+import { CallSiteChain } from '@/service-lookup/CallSiteChain';
+import { CallSiteResultCacheLocation } from '@/service-lookup/CallSiteResultCacheLocation';
+import { ConstantCallSite } from '@/service-lookup/ConstantCallSite';
+import { CtorCallSite } from '@/service-lookup/CtorCallSite';
+import { FactoryCallSite } from '@/service-lookup/FactoryCallSite';
+import { IterableCallSite } from '@/service-lookup/IterableCallSite';
+import { ResultCache } from '@/service-lookup/ResultCache';
+import { ServiceCacheKey } from '@/service-lookup/ServiceCacheKey';
+import { ServiceCallSite } from '@/service-lookup/ServiceCallSite';
+import { Ctor, ICollection, List, Type, tryGetValue } from '@yohira/base';
+import {
+	IServiceProviderIsService,
+	ServiceDescriptor,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { METADATA_KEY, MetadataReader } from '@yohira/third-party.inversify';
+import { Result } from '@yohira/third-party.ts-results';
 
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 

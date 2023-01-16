@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base/Type';
+import { Ctor, Type } from '@yohira/base';
 
 class ChainItemInfo {
 	constructor(readonly order: number, readonly implCtor: Ctor | undefined) {}

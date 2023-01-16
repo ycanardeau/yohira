@@ -1,18 +1,22 @@
-import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { isGet, isHead } from '@yohira/http.abstractions/HttpMethods';
-import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
-import { IHttpRequest } from '@yohira/http.abstractions/IHttpRequest';
-import { IHttpResponse } from '@yohira/http.abstractions/IHttpResponse';
-import { PathString } from '@yohira/http.abstractions/PathString';
-import { RequestDelegate } from '@yohira/http.abstractions/RequestDelegate';
-import { StatusCodes } from '@yohira/http.abstractions/StatusCodes';
-import { getTypedHeaders } from '@yohira/http.extensions/HeaderDictionaryTypeExtensions';
-import { RequestHeaders } from '@yohira/http.extensions/RequestHeaders';
-import { sendFile } from '@yohira/http.extensions/SendFileResponseExtensions';
-import { logFileServed } from '@yohira/static-files/LoggerExtensions';
-import { StaticFileOptions } from '@yohira/static-files/StaticFileOptions';
+import { logFileServed } from '@/LoggerExtensions';
+import { StaticFileOptions } from '@/StaticFileOptions';
+import { IFileInfo, IFileProvider } from '@yohira/extensions.file-providers';
+import { ILogger } from '@yohira/extensions.logging.abstractions';
+import {
+	IHttpContext,
+	IHttpRequest,
+	IHttpResponse,
+	PathString,
+	RequestDelegate,
+	StatusCodes,
+	isGet,
+	isHead,
+} from '@yohira/http.abstractions';
+import {
+	RequestHeaders,
+	getTypedHeaders,
+	sendFile,
+} from '@yohira/http.extensions';
 
 enum PreconditionState {
 	Unspecified,

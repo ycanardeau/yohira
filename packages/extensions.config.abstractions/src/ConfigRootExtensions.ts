@@ -1,7 +1,7 @@
-import { ConfigDebugViewContext } from '@yohira/extensions.config.abstractions/ConfigDebugViewContext';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
+import { ConfigDebugViewContext } from '@/ConfigDebugViewContext';
+import { IConfigProvider } from '@/IConfigProvider';
+import { IConfigRoot } from '@/IConfigRoot';
+import { IConfigSection } from '@/IConfigSection';
 
 function getValueAndProvider(
 	root: IConfigRoot,

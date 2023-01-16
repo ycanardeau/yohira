@@ -1,8 +1,8 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
-import { IOptions } from '@yohira/extensions.options/IOptions';
-import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
-import { Options } from '@yohira/extensions.options/Options';
+import { IOptions } from '@/IOptions';
+import { IOptionsFactory } from '@/IOptionsFactory';
+import { Options } from '@/Options';
+import { Ctor, Type } from '@yohira/base';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/UnnamedOptionsManager.cs,6f6a7794aed32ecc,references
 export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {

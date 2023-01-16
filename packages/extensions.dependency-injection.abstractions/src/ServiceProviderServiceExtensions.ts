@@ -1,5 +1,4 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Type } from '@yohira/base/Type';
+import { IServiceProvider, Type } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,60d5205872e18356,references
 export function getRequiredService<T>(

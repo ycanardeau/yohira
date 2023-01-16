@@ -2057,6 +2057,283 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@yohira/base@workspace:^, @yohira/base@workspace:packages/base":
+  version: 0.0.0-use.local
+  resolution: "@yohira/base@workspace:packages/base"
+  dependencies:
+    "@yohira/third-party.ts-results": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@yohira/core@workspace:packages/core"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.features": "workspace:^"
+    "@yohira/extensions.hosting": "workspace:^"
+    "@yohira/hosting": "workspace:^"
+    "@yohira/hosting.abstractions": "workspace:^"
+    "@yohira/hosting.server.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config.abstractions@workspace:^, @yohira/extensions.config.abstractions@workspace:packages/extensions.config.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config.abstractions@workspace:packages/extensions.config.abstractions"
+  dependencies:
+    "@yohira/base": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config.binder@workspace:^, @yohira/extensions.config.binder@workspace:packages/extensions.config.binder":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config.binder@workspace:packages/extensions.config.binder"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+    "@yohira/third-party.ts-results": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config.env-variables@workspace:packages/extensions.config.env-variables":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config.env-variables@workspace:packages/extensions.config.env-variables"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.config": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config.file-extensions@workspace:^, @yohira/extensions.config.file-extensions@workspace:packages/extensions.config.file-extensions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config.file-extensions@workspace:packages/extensions.config.file-extensions"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.config": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+    "@yohira/extensions.file-providers": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config.json@workspace:packages/extensions.config.json":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config.json@workspace:packages/extensions.config.json"
+  dependencies:
+    "@yohira/extensions.config": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+    "@yohira/extensions.config.file-extensions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.config@workspace:^, @yohira/extensions.config@workspace:packages/extensions.config":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.config@workspace:packages/extensions.config"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+    "@yohira/third-party.ts-results": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.dependency-injection.abstractions@workspace:^, @yohira/extensions.dependency-injection.abstractions@workspace:packages/extensions.dependency-injection.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.dependency-injection.abstractions@workspace:packages/extensions.dependency-injection.abstractions"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/third-party.inversify": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.dependency-injection.specification.tests@workspace:packages/extensions.dependency-injection.specification.tests":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.dependency-injection.specification.tests@workspace:packages/extensions.dependency-injection.specification.tests"
+  dependencies:
+    "@yohira/base": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.dependency-injection@workspace:^, @yohira/extensions.dependency-injection@workspace:packages/extensions.dependency-injection":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.dependency-injection@workspace:packages/extensions.dependency-injection"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/third-party.ts-results": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.features@workspace:^, @yohira/extensions.features@workspace:packages/extensions.features":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.features@workspace:packages/extensions.features"
+  dependencies:
+    "@yohira/base": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.file-providers@workspace:^, @yohira/extensions.file-providers@workspace:packages/extensions.file-providers":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.file-providers@workspace:packages/extensions.file-providers"
+  dependencies:
+    "@yohira/base": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.hosting.abstractions@workspace:^, @yohira/extensions.hosting.abstractions@workspace:packages/extensions.hosting.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.hosting.abstractions@workspace:packages/extensions.hosting.abstractions"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.hosting@workspace:^, @yohira/extensions.hosting@workspace:packages/extensions.hosting":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.hosting@workspace:packages/extensions.hosting"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.hosting.abstractions": "workspace:^"
+    "@yohira/extensions.logging": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.logging.abstractions@workspace:^, @yohira/extensions.logging.abstractions@workspace:packages/extensions.logging.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.logging.abstractions@workspace:packages/extensions.logging.abstractions"
+  dependencies:
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.logging@workspace:^, @yohira/extensions.logging@workspace:packages/extensions.logging":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.logging@workspace:packages/extensions.logging"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.logging.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.options.config-extensions@workspace:packages/extensions.options.config-extensions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.options.config-extensions@workspace:packages/extensions.options.config-extensions"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.config.abstractions": "workspace:^"
+    "@yohira/extensions.config.binder": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/extensions.options@workspace:packages/extensions.options":
+  version: 0.0.0-use.local
+  resolution: "@yohira/extensions.options@workspace:packages/extensions.options"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/hosting.abstractions@workspace:^, @yohira/hosting.abstractions@workspace:packages/hosting.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/hosting.abstractions@workspace:packages/hosting.abstractions"
+  dependencies:
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.file-providers": "workspace:^"
+    "@yohira/extensions.hosting.abstractions": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/hosting.server.abstractions@workspace:^, @yohira/hosting.server.abstractions@workspace:packages/hosting.server.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/hosting.server.abstractions@workspace:packages/hosting.server.abstractions"
+  dependencies:
+    "@yohira/extensions.features": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/hosting@workspace:^, @yohira/hosting@workspace:packages/hosting":
+  version: 0.0.0-use.local
+  resolution: "@yohira/hosting@workspace:packages/hosting"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/http": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/http-logging@workspace:packages/http-logging":
+  version: 0.0.0-use.local
+  resolution: "@yohira/http-logging@workspace:packages/http-logging"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.logging.abstractions": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/http.abstractions@workspace:^, @yohira/http.abstractions@workspace:packages/http.abstractions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/http.abstractions@workspace:packages/http.abstractions"
+  dependencies:
+    "@yohira/extensions.features": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/http.extensions@workspace:^, @yohira/http.extensions@workspace:packages/http.extensions":
+  version: 0.0.0-use.local
+  resolution: "@yohira/http.extensions@workspace:packages/http.extensions"
+  dependencies:
+    "@yohira/extensions.file-providers": "workspace:^"
+    "@yohira/http": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/http@workspace:^, @yohira/http@workspace:packages/http":
+  version: 0.0.0-use.local
+  resolution: "@yohira/http@workspace:packages/http"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/static-files@workspace:packages/static-files":
+  version: 0.0.0-use.local
+  resolution: "@yohira/static-files@workspace:packages/static-files"
+  dependencies:
+    "@yohira/base": "workspace:^"
+    "@yohira/extensions.dependency-injection.abstractions": "workspace:^"
+    "@yohira/extensions.file-providers": "workspace:^"
+    "@yohira/hosting.abstractions": "workspace:^"
+    "@yohira/http.abstractions": "workspace:^"
+    "@yohira/http.extensions": "workspace:^"
+    "@yohira/third-party.ts-results": "workspace:^"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/third-party.inversify@workspace:^, @yohira/third-party.inversify@workspace:packages/third-party.inversify":
+  version: 0.0.0-use.local
+  resolution: "@yohira/third-party.inversify@workspace:packages/third-party.inversify"
+  languageName: unknown
+  linkType: soft
+
+"@yohira/third-party.ts-results@workspace:^, @yohira/third-party.ts-results@workspace:packages/third-party.ts-results":
+  version: 0.0.0-use.local
+  resolution: "@yohira/third-party.ts-results@workspace:packages/third-party.ts-results"
+  languageName: unknown
+  linkType: soft
+
 "@zkochan/js-yaml@npm:0.0.6":
   version: 0.0.6
   resolution: "@zkochan/js-yaml@npm:0.0.6"

@@ -1,8 +1,7 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Type } from '@yohira/base/Type';
-import { CallSiteKind } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteKind';
-import { ResultCache } from '@yohira/extensions.dependency-injection/service-lookup/ResultCache';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
+import { CallSiteKind } from '@/service-lookup/CallSiteKind';
+import { ResultCache } from '@/service-lookup/ResultCache';
+import { ServiceCallSite } from '@/service-lookup/ServiceCallSite';
+import { IServiceProvider, Type } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/FactoryCallSite.cs,07787b7d1aa520f0,references
 export class FactoryCallSite extends ServiceCallSite {

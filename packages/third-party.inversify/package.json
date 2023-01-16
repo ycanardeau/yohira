@@ -1,0 +1,22 @@
+{
+	"name": "@yohira/third-party.inversify",
+	"version": "0.0.0",
+	"author": "Remo H. Jansen",
+	"homepage": "https://github.com/ycanardeau/yohira#readme",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ycanardeau/yohira.git"
+	},
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "yarn clean && tsc && tsc-alias"
+	},
+	"bugs": {
+		"url": "https://github.com/ycanardeau/yohira/issues"
+	}
+}

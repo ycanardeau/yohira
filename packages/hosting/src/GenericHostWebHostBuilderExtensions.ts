@@ -1,8 +1,10 @@
-import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
-import { addHostedService } from '@yohira/extensions.hosting.abstractions/ServiceCollectionHostedServiceExtensions';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { GenericWebHostBuilder } from '@yohira/hosting/generic-host/GenericWebHostBuilder';
-import { GenericWebHostService } from '@yohira/hosting/generic-host/GenericWebHostService';
+import { GenericWebHostBuilder } from '@/generic-host/GenericWebHostBuilder';
+import { GenericWebHostService } from '@/generic-host/GenericWebHostService';
+import {
+	IHostBuilder,
+	addHostedService,
+} from '@yohira/extensions.hosting.abstractions';
+import { IWebHostBuilder } from '@yohira/hosting.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHostWebHostBuilderExtensions.cs,f00a712c64f2d28e,references
 export function configureWebHost(

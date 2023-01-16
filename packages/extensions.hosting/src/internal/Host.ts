@@ -1,16 +1,13 @@
-import { IAsyncDisposable } from '@yohira/base/IDisposable';
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Type } from '@yohira/base/Type';
-import { getServices } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
-import { IHostedService } from '@yohira/extensions.hosting.abstractions/IHostedService';
 import {
 	logStarted,
 	logStarting,
 	logStopped,
 	logStopping,
-} from '@yohira/extensions.hosting/internal/HostingLoggerExtensions';
-import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
+} from '@/internal/HostingLoggerExtensions';
+import { IAsyncDisposable, IServiceProvider, Type } from '@yohira/base';
+import { getServices } from '@yohira/extensions.dependency-injection.abstractions';
+import { IHost, IHostedService } from '@yohira/extensions.hosting.abstractions';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, IAsyncDisposable {

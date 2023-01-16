@@ -1,9 +1,11 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { IHttpContext } from '@yohira/http.abstractions/IHttpContext';
-import { IHttpRequest } from '@yohira/http.abstractions/IHttpRequest';
-import { IHttpResponse } from '@yohira/http.abstractions/IHttpResponse';
-import { HttpRequest } from '@yohira/http/internal/HttpRequest';
-import { HttpResponse } from '@yohira/http/internal/HttpResponse';
+import { HttpRequest } from '@/internal/HttpRequest';
+import { HttpResponse } from '@/internal/HttpResponse';
+import { IServiceProvider } from '@yohira/base';
+import {
+	IHttpContext,
+	IHttpRequest,
+	IHttpResponse,
+} from '@yohira/http.abstractions';
 import { IncomingMessage, ServerResponse } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references

@@ -1,6 +1,8 @@
-import { combineConfigPath } from '@yohira/extensions.config.abstractions/ConfigPath';
-import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
+import {
+	IConfigRoot,
+	IConfigSection,
+	combineConfigPath,
+} from '@yohira/extensions.config.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/InternalConfigurationRootExtensions.cs,84496613351a073c,references
 export function getChildrenImpl(
