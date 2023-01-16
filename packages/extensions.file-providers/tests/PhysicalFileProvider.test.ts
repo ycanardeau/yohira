@@ -1,5 +1,5 @@
 import { IDisposable } from '@yohira/base/IDisposable';
-import { combinePaths, getTempPath } from '@yohira/base/Path';
+import { combinePaths, getFullPath, getTempPath } from '@yohira/base/Path';
 import { NotFoundFileInfo } from '@yohira/extensions.file-providers/NotFoundFileInfo';
 import { PhysicalFileInfo } from '@yohira/extensions.file-providers/PhysicalFileInfo';
 import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
@@ -118,7 +118,7 @@ test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', () => {
 // TODO
 
 function InvalidPath_DoesNotThrowGeneric_GetFileInfo(path: string): void {
-	using(new PhysicalFileProvider(cwd()), (provider) => {
+	using(new PhysicalFileProvider(getFullPath(cwd())), (provider) => {
 		const info = provider.getFileInfo(path);
 		expect(info).not.toBeUndefined();
 		expect(info).toBeInstanceOf(NotFoundFileInfo);

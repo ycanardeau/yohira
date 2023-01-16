@@ -1,4 +1,5 @@
 import { tryGetValue } from '@yohira/base/MapExtensions';
+import { getFullPath } from '@yohira/base/Path';
 import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
 import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
 import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
@@ -13,5 +14,5 @@ export function getFileProvider(builder: IConfigBuilder): IFileProvider {
 		return tryGetValueResult.val as IFileProvider;
 	}
 
-	return new PhysicalFileProvider(cwd() /* REVIEW */ ?? '');
+	return new PhysicalFileProvider(getFullPath(cwd()) /* REVIEW */ ?? '');
 }
