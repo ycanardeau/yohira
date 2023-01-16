@@ -97,6 +97,7 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', () => {
 	}
 });
 
+// FIXME: Linux
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L179
 test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {
@@ -107,6 +108,7 @@ test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 	});
 });
 
+// FIXME: Linux
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L189
 test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {
