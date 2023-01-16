@@ -84,7 +84,9 @@
 			"@yohira/third-party.ts-results/*": [
 				"packages/third-party.ts-results/src/*"
 			]
-		}
+		},
+		"declaration": true,
+		"sourceMap": true
 	},
 	"include": ["packages/**/*"]
 }
