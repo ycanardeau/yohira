@@ -1,28 +1,15 @@
-import { Type } from '@yohira/base';
 import { createWebAppBuilder } from '@yohira/core';
-import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions';
 import { HttpContext } from '@yohira/http';
-import { HttpLoggingMiddleware, useHttpLogging } from '@yohira/http-logging';
+import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
 import { use } from '@yohira/http.abstractions';
-import { StaticFileMiddleware, useStaticFiles } from '@yohira/static-files';
+import { addStaticFiles, useStaticFiles } from '@yohira/static-files';
 
 export async function main(): Promise<void> {
 	const builder = createWebAppBuilder(/* TODO */);
 
-	// TODO: Remove.
-	{
-		addSingletonCtor(
-			builder.services,
-			Type.from('StaticFileMiddleware'),
-			StaticFileMiddleware,
-		);
+	addStaticFiles(builder.services);
 
-		addSingletonCtor(
-			builder.services,
-			Type.from('HttpLoggingMiddleware'),
-			HttpLoggingMiddleware,
-		);
-	}
+	addHttpLogging(builder.services);
 
 	// TODO
 

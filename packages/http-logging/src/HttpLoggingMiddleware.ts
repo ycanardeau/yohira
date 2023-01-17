@@ -3,11 +3,9 @@ import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { ILoggerT, LogLevel } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 import {
-	IAppBuilder,
 	IHttpContext,
 	IMiddleware,
 	RequestDelegate,
-	useMiddleware,
 } from '@yohira/http.abstractions';
 
 import { logRequestLog } from './HttpLoggingExtensions';
@@ -83,10 +81,4 @@ export class HttpLoggingMiddleware implements IMiddleware {
 
 		return this.invokeInternal(context, next);
 	}
-}
-
-// https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingBuilderExtensions.cs,14542a362047cc35
-export function useHttpLogging(app: IAppBuilder): IAppBuilder {
-	useMiddleware(app, HttpLoggingMiddleware);
-	return app;
 }

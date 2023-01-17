@@ -4,5 +4,7 @@ export * from './IContentTypeProvider';
 export * from './LoggerExtensions';
 export * from './SharedOptionsBase';
 export * from './StaticFileContext';
+export * from './StaticFileExtensions';
 export * from './StaticFileMiddleware';
 export * from './StaticFileOptions';
+export * from './StaticFileServicesExtensions';

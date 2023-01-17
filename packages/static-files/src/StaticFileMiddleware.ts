@@ -8,13 +8,11 @@ import {
 import { IOptions } from '@yohira/extensions.options';
 import { IWebHostEnv } from '@yohira/hosting.abstractions';
 import {
-	IAppBuilder,
 	IHttpContext,
 	IMiddleware,
 	PathString,
 	RequestDelegate,
 	getEndpoint,
-	useMiddleware,
 } from '@yohira/http.abstractions';
 import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
@@ -155,9 +153,4 @@ export class StaticFileMiddleware implements IMiddleware {
 
 		return next(context);
 	}
-}
-
-// https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileExtensions.cs,d2a2db085a036bf0,references
-export function useStaticFiles(app: IAppBuilder): IAppBuilder {
-	return useMiddleware(app, StaticFileMiddleware);
 }
