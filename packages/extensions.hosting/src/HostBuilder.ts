@@ -1,12 +1,14 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { addSingletonFactory } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { IHost } from '@yohira/extensions.hosting.abstractions/IHost';
-import { Host } from '@yohira/extensions.hosting/internal/Host';
-import { ILoggerT } from '@yohira/extensions.logging.abstractions/ILoggerT';
-import { addLogging } from '@yohira/extensions.logging/LoggingServiceCollectionExtensions';
+import { IServiceProvider, Type } from '@yohira/base';
+import {
+	IServiceCollection,
+	addSingletonFactory,
+	getRequiredService,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { IHost } from '@yohira/extensions.hosting.abstractions';
+import { addLogging } from '@yohira/extensions.logging';
+import { ILoggerT } from '@yohira/extensions.logging.abstractions';
+
+import { Host } from './internal/Host';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,a8c4578a1465d84d,references
 export function populateServiceCollection(

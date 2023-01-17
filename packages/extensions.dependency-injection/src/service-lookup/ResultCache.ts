@@ -1,7 +1,8 @@
-import { Type } from '@yohira/base/Type';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import { CallSiteResultCacheLocation } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteResultCacheLocation';
-import { ServiceCacheKey } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCacheKey';
+import { Type } from '@yohira/base';
+import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions';
+
+import { CallSiteResultCacheLocation } from '../service-lookup/CallSiteResultCacheLocation';
+import { ServiceCacheKey } from '../service-lookup/ServiceCacheKey';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ResultCache.cs,29fb1ee4290bb7fa,references
 export class ResultCache {

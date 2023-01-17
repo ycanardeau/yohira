@@ -1,6 +1,6 @@
-import { List } from '@yohira/base/List';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { EnvVariablesConfigProvider } from '@yohira/extensions.config.env-variables/EnvVariablesConfigProvider';
+import { List } from '@yohira/base';
+import { IConfigProvider } from '@yohira/extensions.config.abstractions';
+import { EnvVariablesConfigProvider } from '@yohira/extensions.config.env-variables';
 
 import {
 	ConfigProviderTestBase,

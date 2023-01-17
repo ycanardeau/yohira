@@ -1,19 +1,17 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
+import { Ctor, Type } from '@yohira/base';
 import {
+	IServiceCollection,
+	ServiceCollection,
+	ServiceDescriptor,
+	ServiceLifetime,
 	addScopedCtor,
 	addSingletonCtor,
 	addSingletonInstance,
 	addTransientCtor,
-} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import {
 	tryAdd,
 	tryAddIterable,
-} from '@yohira/extensions.dependency-injection.abstractions/extensions/ServiceCollectionDescriptorExtensions';
-import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests/fakes/FakeService';
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
 
 const instance = new FakeService();

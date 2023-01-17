@@ -1,5 +1,5 @@
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
-import { toString } from '@yohira/third-party.ts-results/utils';
+import { Err, Ok, Result } from './result';
+import { toString } from './utils';
 
 interface BaseOption<T>
 	extends Iterable<T extends Iterable<infer U> ? U : never> {

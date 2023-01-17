@@ -1,7 +1,7 @@
-import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
-import { IHttpResponse } from '@yohira/http.abstractions/IHttpResponse';
+import { IFileInfo } from '@yohira/extensions.file-providers';
 // TODO: Do not import @yohira/http.
-import { HttpContext } from '@yohira/http/HttpContext';
+import { HttpContext } from '@yohira/http';
+import { IHttpResponse } from '@yohira/http.abstractions';
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 

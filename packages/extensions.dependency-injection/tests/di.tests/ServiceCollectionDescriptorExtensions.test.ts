@@ -1,9 +1,13 @@
-import { Type } from '@yohira/base/Type';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests/fakes/FakeService';
-import { TransientFactoryService } from '@yohira/extensions.dependency-injection.specification.tests/fakes/TransientFactoryService';
+import { Type } from '@yohira/base';
+import {
+	ServiceCollection,
+	ServiceDescriptor,
+	ServiceLifetime,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import {
+	FakeService,
+	TransientFactoryService,
+} from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionDescriptorExtensionsTests.cs#L15

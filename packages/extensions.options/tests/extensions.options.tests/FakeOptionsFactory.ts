@@ -1,4 +1,4 @@
-import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
+import { IOptionsFactory } from '@yohira/extensions.options';
 
 import { FakeOptions } from './FakeOptions';
 

@@ -1,10 +1,11 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
-import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
-import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
-import { IOptionsMonitorCache } from '@yohira/extensions.options/IOptionsMonitorCache';
-import { Options } from '@yohira/extensions.options/Options';
-import { OptionsCache } from '@yohira/extensions.options/OptionsCache';
+import { Ctor, Type } from '@yohira/base';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
+
+import { IOptionsFactory } from './IOptionsFactory';
+import { IOptionsMonitor } from './IOptionsMonitor';
+import { IOptionsMonitorCache } from './IOptionsMonitorCache';
+import { Options } from './Options';
+import { OptionsCache } from './OptionsCache';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsMonitor.cs,0e2f503af67e26a9,references
 export class OptionsMonitor<TOptions> implements IOptionsMonitor<TOptions> {

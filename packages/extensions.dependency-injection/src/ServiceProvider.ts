@@ -1,18 +1,24 @@
-import { ICollection } from '@yohira/base/ICollection';
-import { IAsyncDisposable, IDisposable } from '@yohira/base/IDisposable';
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { getOrAdd } from '@yohira/base/MapExtensions';
-import { Type } from '@yohira/base/Type';
-import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
-import { CallSiteChain } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteChain';
-import { CallSiteFactory } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteFactory';
-import { CallSiteValidator } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteValidator';
-import { RuntimeServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/RuntimeServiceProviderEngine';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
-import { ServiceProviderEngine } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngine';
-import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
+import {
+	IAsyncDisposable,
+	ICollection,
+	IDisposable,
+	IServiceProvider,
+	Type,
+	getOrAdd,
+} from '@yohira/base';
+import {
+	IServiceScope,
+	ServiceDescriptor,
+} from '@yohira/extensions.dependency-injection.abstractions';
+
+import { ServiceProviderOptions } from './ServiceProviderOptions';
+import { CallSiteChain } from './service-lookup/CallSiteChain';
+import { CallSiteFactory } from './service-lookup/CallSiteFactory';
+import { CallSiteValidator } from './service-lookup/CallSiteValidator';
+import { RuntimeServiceProviderEngine } from './service-lookup/RuntimeServiceProviderEngine';
+import { ServiceCallSite } from './service-lookup/ServiceCallSite';
+import { ServiceProviderEngine } from './service-lookup/ServiceProviderEngine';
+import { ServiceProviderEngineScope } from './service-lookup/ServiceProviderEngineScope';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceProvider.cs,7b97f84895159f6d,references
 export class ServiceProvider

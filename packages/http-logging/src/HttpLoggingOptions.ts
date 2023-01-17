@@ -1,5 +1,6 @@
-import { HeaderNames } from '@yohira/base/HeaderNames';
-import { HttpLoggingFields } from '@yohira/http-logging/HttpLoggingFields';
+import { HeaderNames } from '@yohira/base';
+
+import { HttpLoggingFields } from './HttpLoggingFields';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingOptions.cs,66de408e1455606c,references
 export class HttpLoggingOptions {

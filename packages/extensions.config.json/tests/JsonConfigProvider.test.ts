@@ -1,6 +1,8 @@
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { JsonConfigProvider } from '@yohira/extensions.config.json/JsonConfigProvider';
-import { JsonConfigSource } from '@yohira/extensions.config.json/JsonConfigSource';
+import { IConfigProvider } from '@yohira/extensions.config.abstractions';
+import {
+	JsonConfigProvider,
+	JsonConfigSource,
+} from '@yohira/extensions.config.json';
 import JSON5 from 'json5';
 import { Readable } from 'node:stream';
 

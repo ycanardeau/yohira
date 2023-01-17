@@ -1,12 +1,14 @@
-import { tryGetValue } from '@yohira/base/MapExtensions';
-import { Type } from '@yohira/base/Type';
-import { IServiceScope } from '@yohira/extensions.dependency-injection.abstractions/IServiceScope';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
-import { CallSiteVisitor } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteVisitor';
-import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
-import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
-import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
+import { Type, tryGetValue } from '@yohira/base';
+import {
+	IServiceScope,
+	ServiceLifetime,
+} from '@yohira/extensions.dependency-injection.abstractions';
+
+import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
+import { CtorCallSite } from '../service-lookup/CtorCallSite';
+import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
+import { IterableCallSite } from '../service-lookup/IterableCallSite';
+import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
 
 class CallSiteValidatorState {
 	singleton?: ServiceCallSite;

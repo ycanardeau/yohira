@@ -1,5 +1,4 @@
-import { getOrAdd } from '@yohira/base/MapExtensions';
-import { Ctor } from '@yohira/base/Type';
+import { Ctor, getOrAdd } from '@yohira/base';
 
 export interface PropertyInfo {
 	target: any;

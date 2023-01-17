@@ -1,6 +1,7 @@
-import { ConfigProvider } from '@yohira/extensions.config/ConfigProvider';
-import { StreamConfigSource } from '@yohira/extensions.config/StreamConfigSource';
 import { Stream } from 'node:stream';
+
+import { ConfigProvider } from './ConfigProvider';
+import { StreamConfigSource } from './StreamConfigSource';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/StreamConfigurationProvider.cs,61fbe4f00f0fe7eb,references
 export abstract class StreamConfigProvider extends ConfigProvider {

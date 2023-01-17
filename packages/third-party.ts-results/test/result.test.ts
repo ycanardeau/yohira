@@ -1,13 +1,15 @@
-import { None, Option, Some } from '@yohira/third-party.ts-results/option';
 import {
 	Err,
+	None,
 	Ok,
+	Option,
 	Result,
 	ResultErrType,
 	ResultErrTypes,
 	ResultOkType,
 	ResultOkTypes,
-} from '@yohira/third-party.ts-results/result';
+	Some,
+} from '@yohira/third-party.ts-results';
 import { expect, test } from 'vitest';
 
 import { eq } from './util';

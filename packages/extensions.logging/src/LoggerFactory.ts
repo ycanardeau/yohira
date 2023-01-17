@@ -1,7 +1,10 @@
-import { tryGetValue } from '@yohira/base/MapExtensions';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { ILoggerFactory } from '@yohira/extensions.logging.abstractions/ILoggerFactory';
-import { Logger } from '@yohira/extensions.logging/Logger';
+import { tryGetValue } from '@yohira/base';
+import {
+	ILogger,
+	ILoggerFactory,
+} from '@yohira/extensions.logging.abstractions';
+
+import { Logger } from './Logger';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/LoggerFactory.cs,173b9b523cabe719,references
 export class LoggerFactory implements ILoggerFactory {

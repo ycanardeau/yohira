@@ -1,6 +1,7 @@
-import { getOrAddWithArgument } from '@yohira/base/MapExtensions';
-import { IOptionsMonitorCache } from '@yohira/extensions.options/IOptionsMonitorCache';
-import { Options } from '@yohira/extensions.options/Options';
+import { getOrAddWithArgument } from '@yohira/base';
+
+import { IOptionsMonitorCache } from './IOptionsMonitorCache';
+import { Options } from './Options';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsCache.cs,0c185050ec5646f7,references
 export class OptionsCache<TOptions> implements IOptionsMonitorCache<TOptions> {

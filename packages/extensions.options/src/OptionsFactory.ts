@@ -1,9 +1,10 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
-import { IConfigureNamedOptions } from '@yohira/extensions.options/IConfigureNamedOptions';
-import { IConfigureOptions } from '@yohira/extensions.options/IConfigureOptions';
-import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
-import { Options } from '@yohira/extensions.options/Options';
+import { Ctor, Type } from '@yohira/base';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
+
+import { IConfigureNamedOptions } from './IConfigureNamedOptions';
+import { IConfigureOptions } from './IConfigureOptions';
+import { IOptionsFactory } from './IOptionsFactory';
+import { Options } from './Options';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsFactory.cs,89202ae8d1498a3f,references
 export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {

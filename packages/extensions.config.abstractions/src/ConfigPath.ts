@@ -1,4 +1,4 @@
-import { lastIndexOfIgnoreCase } from '@yohira/base/StringExtensions';
+import { lastIndexOfIgnoreCase } from '@yohira/base';
 
 export const keyDelimiter = ':';
 

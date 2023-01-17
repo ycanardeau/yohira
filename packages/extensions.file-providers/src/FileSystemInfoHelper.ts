@@ -1,5 +1,6 @@
-import { FileSystemInfo } from '@yohira/base/FileSystemInfo';
-import { ExclusionFilters } from '@yohira/extensions.file-providers/ExclusionFilters';
+import { FileSystemInfo } from '@yohira/base';
+
+import { ExclusionFilters } from './ExclusionFilters';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/FileSystemInfoHelper.cs,020c80373ae5f76c,references
 export function isExcluded(

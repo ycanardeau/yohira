@@ -1,9 +1,12 @@
-import { combinePaths } from '@yohira/base/Path';
-import { NullFileProvider } from '@yohira/extensions.file-providers/NullFileProvider';
-import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
-import { IWebHostEnv } from '@yohira/hosting.abstractions/IWebHostEnv';
-import { WebHostOptions } from '@yohira/hosting/internal/WebHostOptions';
+import { combinePaths } from '@yohira/base';
+import {
+	NullFileProvider,
+	PhysicalFileProvider,
+} from '@yohira/extensions.file-providers';
+import { IWebHostEnv } from '@yohira/hosting.abstractions';
 import { existsSync } from 'node:fs';
+
+import { WebHostOptions } from '../internal/WebHostOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironmentExtensions.cs,cfa8d9a4a73c54e3
 export function initialize(

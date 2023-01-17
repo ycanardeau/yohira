@@ -1,5 +1,6 @@
-import { IDisposable } from '@yohira/base/IDisposable';
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
+import { IDisposable } from '@yohira/base';
+
+import { ILogger } from './ILogger';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging.Abstractions/ILoggerFactory.cs,58ac8454251a34b3
 export interface ILoggerFactory extends IDisposable {

@@ -1,4 +1,4 @@
-import { directorySeparatorChar } from '@yohira/base/Path';
+import { directorySeparatorChar } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/PathUtils.cs,01973375afd0c585,references
 const invalidFileNameCharsRegExp = new RegExp(

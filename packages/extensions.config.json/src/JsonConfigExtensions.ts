@@ -1,9 +1,12 @@
-import { addConfigSource } from '@yohira/extensions.config.abstractions/ConfigExtensions';
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { JsonConfigSource } from '@yohira/extensions.config.json/JsonConfigSource';
-import { JsonStreamConfigSource } from '@yohira/extensions.config.json/JsonStreamConfigSource';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
+import {
+	IConfigBuilder,
+	addConfigSource,
+} from '@yohira/extensions.config.abstractions';
+import { IFileProvider } from '@yohira/extensions.file-providers';
 import { Stream } from 'node:stream';
+
+import { JsonConfigSource } from './JsonConfigSource';
+import { JsonStreamConfigSource } from './JsonStreamConfigSource';
 
 function addJsonFileCore(
 	builder: IConfigBuilder,

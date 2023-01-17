@@ -1,5 +1,6 @@
-import { FileInfo } from '@yohira/base/FileInfo';
-import { IFileInfo } from '@yohira/extensions.file-providers/IFileInfo';
+import { FileInfo } from '@yohira/base';
+
+import { IFileInfo } from './IFileInfo';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileInfo.cs,0e5c144b50161ab9,references
 export class PhysicalFileInfo implements IFileInfo {

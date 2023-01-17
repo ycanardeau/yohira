@@ -1,20 +1,20 @@
-import { Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
+import { Type } from '@yohira/base';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
+	IServiceCollection,
+	ServiceCollection,
 	addSingletonCtor,
 	addSingletonInstance,
-} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
-import { IConfigureNamedOptions } from '@yohira/extensions.options/IConfigureNamedOptions';
-import { IOptionsMonitor } from '@yohira/extensions.options/IOptionsMonitor';
-import { IOptionsMonitorCache } from '@yohira/extensions.options/IOptionsMonitorCache';
-import { Options } from '@yohira/extensions.options/Options';
+	getRequiredService,
+} from '@yohira/extensions.dependency-injection.abstractions';
 import {
+	IConfigureNamedOptions,
+	IOptionsMonitor,
+	IOptionsMonitorCache,
+	Options,
 	addOptions,
 	configureOptionsServices,
-} from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
+} from '@yohira/extensions.options';
 import { expect, test } from 'vitest';
 
 import { FakeOptions } from './FakeOptions';

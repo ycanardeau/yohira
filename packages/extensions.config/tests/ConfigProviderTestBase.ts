@@ -1,11 +1,14 @@
-import { IList } from '@yohira/base/IList';
-import { List } from '@yohira/base/List';
-import { getDebugView } from '@yohira/extensions.config.abstractions/ConfigRootExtensions';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
-import { ConfigRoot } from '@yohira/extensions.config/ConfigRoot';
-import { MemoryConfigProvider } from '@yohira/extensions.config/MemoryConfigProvider';
-import { MemoryConfigSource } from '@yohira/extensions.config/MemoryConfigSource';
+import { IList, List } from '@yohira/base';
+import {
+	ConfigRoot,
+	MemoryConfigProvider,
+	MemoryConfigSource,
+} from '@yohira/extensions.config';
+import {
+	IConfigProvider,
+	IConfigRoot,
+	getDebugView,
+} from '@yohira/extensions.config.abstractions';
 import { expect, test } from 'vitest';
 
 // TODO: Move.

@@ -1,13 +1,13 @@
-import { Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
+import { Type } from '@yohira/base';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
+	IServiceCollection,
+	ServiceCollection,
 	addSingletonCtor,
 	addSingletonInstance,
 	addTransientCtor,
-} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
+	getRequiredService,
+} from '@yohira/extensions.dependency-injection.abstractions';
 import { expect, test } from 'vitest';
 
 import { DependencyOnCircularDependency } from './fakes/circular-references/DependencyOnCircularDependency';

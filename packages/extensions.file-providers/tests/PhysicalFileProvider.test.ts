@@ -1,8 +1,9 @@
-import { IDisposable } from '@yohira/base/IDisposable';
-import { combinePaths, getTempPath } from '@yohira/base/Path';
-import { NotFoundFileInfo } from '@yohira/extensions.file-providers/NotFoundFileInfo';
-import { PhysicalFileInfo } from '@yohira/extensions.file-providers/PhysicalFileInfo';
-import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
+import { IDisposable, combinePaths, getTempPath } from '@yohira/base';
+import {
+	NotFoundFileInfo,
+	PhysicalFileInfo,
+	PhysicalFileProvider,
+} from '@yohira/extensions.file-providers';
 import { randomUUID } from 'node:crypto';
 import { cwd } from 'node:process';
 import { expect, test } from 'vitest';
@@ -97,7 +98,6 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', () => {
 	}
 });
 
-// FIXME: Linux
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L179
 test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {
@@ -108,7 +108,6 @@ test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
 	});
 });
 
-// FIXME: Linux
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L189
 test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', () => {
 	using(new PhysicalFileProvider(getTempPath()), (provider) => {

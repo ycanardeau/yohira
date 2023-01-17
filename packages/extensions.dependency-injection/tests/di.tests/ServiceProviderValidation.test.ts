@@ -1,13 +1,15 @@
-import { Type } from '@yohira/base/Type';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
+import { Type } from '@yohira/base';
 import {
+	ServiceProviderOptions,
+	buildServiceProvider,
+} from '@yohira/extensions.dependency-injection';
+import {
+	ServiceCollection,
 	addScopedCtor,
 	addSingletonCtor,
 	addTransientCtor,
-} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
-import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection/ServiceProviderOptions';
+	inject,
+} from '@yohira/extensions.dependency-injection.abstractions';
 import { expect, test } from 'vitest';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

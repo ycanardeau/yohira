@@ -1,5 +1,5 @@
-import { ILogger } from '@yohira/extensions.logging.abstractions/ILogger';
-import { LogLevel } from '@yohira/extensions.logging.abstractions/LogLevel';
+import { ILogger } from './ILogger';
+import { LogLevel } from './LogLevel';
 
 export function logDebug(
 	logger: ILogger,

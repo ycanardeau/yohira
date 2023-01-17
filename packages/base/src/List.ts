@@ -1,4 +1,4 @@
-import { IList } from '@yohira/base/IList';
+import { IList } from './IList';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs,9e5352b2b304ceba
 export class List<T> implements IList<T> {

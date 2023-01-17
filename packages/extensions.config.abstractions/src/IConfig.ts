@@ -1,4 +1,4 @@
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
+import { IConfigSection } from './IConfigSection';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/IConfiguration.cs,168064d5c8bd0f8d,references
 export interface IConfig {

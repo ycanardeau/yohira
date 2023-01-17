@@ -1,7 +1,9 @@
-import { tryGetValue } from '@yohira/base/MapExtensions';
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { IFileProvider } from '@yohira/extensions.file-providers/IFileProvider';
-import { PhysicalFileProvider } from '@yohira/extensions.file-providers/PhysicalFileProvider';
+import { tryGetValue } from '@yohira/base';
+import { IConfigBuilder } from '@yohira/extensions.config.abstractions';
+import {
+	IFileProvider,
+	PhysicalFileProvider,
+} from '@yohira/extensions.file-providers';
 import { cwd } from 'node:process';
 
 const fileProviderKey = 'FileProvider';

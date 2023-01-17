@@ -1,11 +1,13 @@
-import { tryGetValue } from '@yohira/base/MapExtensions';
 import {
 	indexOfIgnoreCase,
 	startsWithIgnoreCase,
-} from '@yohira/base/StringExtensions';
-import { keyDelimiter } from '@yohira/extensions.config.abstractions/ConfigPath';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { Result } from '@yohira/third-party.ts-results/result';
+	tryGetValue,
+} from '@yohira/base';
+import {
+	IConfigProvider,
+	keyDelimiter,
+} from '@yohira/extensions.config.abstractions';
+import { Result } from '@yohira/third-party.ts-results';
 
 export class CaseInsensitiveMap<V> extends Map<string, V> {
 	delete(key: string): boolean {

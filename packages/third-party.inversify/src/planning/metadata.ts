@@ -1,5 +1,5 @@
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
-import { interfaces } from '@yohira/third-party.inversify/interfaces/interfaces';
+import * as METADATA_KEY from '../constants/metadata_keys';
+import { interfaces } from '../interfaces/interfaces';
 
 class Metadata implements interfaces.Metadata {
 	public key: string | number | symbol;

@@ -1,8 +1,11 @@
-import { IDisposable } from '@yohira/base/IDisposable';
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { ChainedConfigSource } from '@yohira/extensions.config/ChainedConfigSource';
-import { Err, Ok, Result } from '@yohira/third-party.ts-results/result';
+import { IDisposable } from '@yohira/base';
+import {
+	IConfig,
+	IConfigProvider,
+} from '@yohira/extensions.config.abstractions';
+import { Err, Ok, Result } from '@yohira/third-party.ts-results';
+
+import { ChainedConfigSource } from './ChainedConfigSource';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ChainedConfigurationProvider.cs,2bf7ba944b788eb3,references
 export class ChainedConfigProvider implements IConfigProvider, IDisposable {

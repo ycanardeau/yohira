@@ -1,6 +1,9 @@
-import { IConfig } from '@yohira/extensions.config.abstractions/IConfig';
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { ChainedConfigSource } from '@yohira/extensions.config/ChainedConfigSource';
+import {
+	IConfig,
+	IConfigBuilder,
+} from '@yohira/extensions.config.abstractions';
+
+import { ChainedConfigSource } from './ChainedConfigSource';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ChainedBuilderExtensions.cs,c1cdfd515e420ab1,references
 export function addConfig(

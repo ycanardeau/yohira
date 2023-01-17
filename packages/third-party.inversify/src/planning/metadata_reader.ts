@@ -1,6 +1,7 @@
-import * as METADATA_KEY from '@yohira/third-party.inversify/constants/metadata_keys';
-import { interfaces } from '@yohira/third-party.inversify/interfaces/interfaces';
 import 'reflect-metadata';
+
+import * as METADATA_KEY from '../constants/metadata_keys';
+import { interfaces } from '../interfaces/interfaces';
 
 class MetadataReader implements interfaces.MetadataReader {
 	public getConstructorMetadata(

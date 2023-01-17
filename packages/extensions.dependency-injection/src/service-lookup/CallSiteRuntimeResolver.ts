@@ -1,10 +1,10 @@
-import { CallSiteVisitor } from '@yohira/extensions.dependency-injection/service-lookup/CallSiteVisitor';
-import { ConstantCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ConstantCallSite';
-import { CtorCallSite } from '@yohira/extensions.dependency-injection/service-lookup/CtorCallSite';
-import { FactoryCallSite } from '@yohira/extensions.dependency-injection/service-lookup/FactoryCallSite';
-import { IterableCallSite } from '@yohira/extensions.dependency-injection/service-lookup/IterableCallSite';
-import { ServiceCallSite } from '@yohira/extensions.dependency-injection/service-lookup/ServiceCallSite';
-import { ServiceProviderEngineScope } from '@yohira/extensions.dependency-injection/service-lookup/ServiceProviderEngineScope';
+import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
+import { ConstantCallSite } from '../service-lookup/ConstantCallSite';
+import { CtorCallSite } from '../service-lookup/CtorCallSite';
+import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
+import { IterableCallSite } from '../service-lookup/IterableCallSite';
+import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
+import { ServiceProviderEngineScope } from '../service-lookup/ServiceProviderEngineScope';
 
 class RuntimeResolverContext {
 	constructor(readonly scope: ServiceProviderEngineScope) {}

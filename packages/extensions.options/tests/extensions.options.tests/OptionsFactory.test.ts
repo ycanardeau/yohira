@@ -1,9 +1,13 @@
-import { Type } from '@yohira/base/Type';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
-import { IOptionsFactory } from '@yohira/extensions.options/IOptionsFactory';
-import { configureNamedOptionsServices } from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
+import { Type } from '@yohira/base';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
+import {
+	ServiceCollection,
+	getRequiredService,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import {
+	IOptionsFactory,
+	configureNamedOptionsServices,
+} from '@yohira/extensions.options';
 import { expect, test } from 'vitest';
 
 import { FakeOptions } from './FakeOptions';

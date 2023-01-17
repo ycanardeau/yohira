@@ -1,10 +1,10 @@
+import { ConfigBuilder } from '@yohira/extensions.config';
 import {
+	JsonConfigProvider,
+	JsonConfigSource,
 	addJsonFile,
 	addJsonStream,
-} from '@yohira/extensions.config.json/JsonConfigExtensions';
-import { JsonConfigProvider } from '@yohira/extensions.config.json/JsonConfigProvider';
-import { JsonConfigSource } from '@yohira/extensions.config.json/JsonConfigSource';
-import { ConfigBuilder } from '@yohira/extensions.config/ConfigBuilder';
+} from '@yohira/extensions.config.json';
 import { Readable } from 'node:stream';
 import { expect, test } from 'vitest';
 

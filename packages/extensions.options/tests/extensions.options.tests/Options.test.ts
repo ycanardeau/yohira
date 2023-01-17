@@ -1,17 +1,21 @@
-import { Type } from '@yohira/base/Type';
-import { ConfigBuilder } from '@yohira/extensions.config/ConfigBuilder';
-import { addInMemoryCollection } from '@yohira/extensions.config/MemoryConfigBuilderExtensions';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollection';
-import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection/ServiceCollectionContainerBuilderExtensions';
-import { configureOptionsConfigServices } from '@yohira/extensions.options.config-extensions/OptionsConfigServiceCollectionExtensions';
-import { IOptions } from '@yohira/extensions.options/IOptions';
+import { Type } from '@yohira/base';
 import {
+	ConfigBuilder,
+	addInMemoryCollection,
+} from '@yohira/extensions.config';
+import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
+import {
+	IServiceCollection,
+	ServiceCollection,
+	addSingletonCtor,
+	getRequiredService,
+} from '@yohira/extensions.dependency-injection.abstractions';
+import {
+	IOptions,
 	addOptions,
 	configureOptionsServices,
-} from '@yohira/extensions.options/OptionsServiceCollectionExtensions';
+} from '@yohira/extensions.options';
+import { configureOptionsConfigServices } from '@yohira/extensions.options.config-extensions';
 import { expect, test } from 'vitest';
 
 import { ComplexOptions, DerivedOptions } from './ComplexOptions';

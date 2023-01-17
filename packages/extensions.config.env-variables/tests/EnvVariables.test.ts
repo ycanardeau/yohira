@@ -1,8 +1,9 @@
-import { bind } from '@yohira/extensions.config.binder/ConfigBinder';
-import { type } from '@yohira/extensions.config.binder/type';
-import { EnvVariablesConfigProvider } from '@yohira/extensions.config.env-variables/EnvVariablesConfigProvider';
-import { addEnvVariables } from '@yohira/extensions.config.env-variables/EnvVariablesExtensions';
-import { ConfigBuilder } from '@yohira/extensions.config/ConfigBuilder';
+import { ConfigBuilder } from '@yohira/extensions.config';
+import { bind, type } from '@yohira/extensions.config.binder';
+import {
+	EnvVariablesConfigProvider,
+	addEnvVariables,
+} from '@yohira/extensions.config.env-variables';
 import { env } from 'node:process';
 import { expect, test } from 'vitest';
 

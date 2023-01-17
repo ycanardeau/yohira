@@ -1,8 +1,9 @@
-import { Ctor, Type } from '@yohira/base/Type';
-import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions/ServiceProviderServiceExtensions';
-import { IAppBuilder } from '@yohira/http.abstractions/IAppBuilder';
-import { IMiddleware } from '@yohira/http.abstractions/IMiddleware';
-import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
+import { Ctor, Type } from '@yohira/base';
+import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
+
+import { IAppBuilder } from '../IAppBuilder';
+import { IMiddleware } from '../IMiddleware';
+import { use } from '../extensions/UseExtensions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseMiddlewareExtensions.cs,e940dbf3ad65ffe4,references
 export function useMiddleware<T extends IMiddleware>(

@@ -1,5 +1,5 @@
-import { None, Option, Some } from '@yohira/third-party.ts-results/option';
-import { toString } from '@yohira/third-party.ts-results/utils';
+import { None, Option, Some } from './option';
+import { toString } from './utils';
 
 /*
  * Missing Rust Result type methods:

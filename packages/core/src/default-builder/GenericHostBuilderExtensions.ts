@@ -1,7 +1,8 @@
-import { configureWebDefaults } from '@yohira/core/default-builder/WebHost';
-import { IHostBuilder } from '@yohira/extensions.hosting.abstractions/IHostBuilder';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions/IWebHostBuilder';
-import { configureWebHost } from '@yohira/hosting/GenericHostWebHostBuilderExtensions';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
+import { configureWebHost } from '@yohira/hosting';
+import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+
+import { configureWebDefaults } from './WebHost';
 
 // https://source.dot.net/#Microsoft.AspNetCore/GenericHostBuilderExtensions.cs,1f4983d882f1bdcb,references
 export function configureWebHostDefaults(

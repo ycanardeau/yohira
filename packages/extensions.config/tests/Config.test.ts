@@ -1,15 +1,17 @@
 import {
+	ConfigBuilder,
+	MemoryConfigProvider,
+	MemoryConfigSource,
+	addConfig,
+	addInMemoryCollection,
+} from '@yohira/extensions.config';
+import {
+	IConfigBuilder,
+	IConfigProvider,
+	IConfigSource,
 	asIterable,
 	getConnectionString,
-} from '@yohira/extensions.config.abstractions/ConfigExtensions';
-import { IConfigBuilder } from '@yohira/extensions.config.abstractions/IConfigBuilder';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { IConfigSource } from '@yohira/extensions.config.abstractions/IConfigSource';
-import { addConfig } from '@yohira/extensions.config/ChainedBuilderExtensions';
-import { ConfigBuilder } from '@yohira/extensions.config/ConfigBuilder';
-import { addInMemoryCollection } from '@yohira/extensions.config/MemoryConfigBuilderExtensions';
-import { MemoryConfigProvider } from '@yohira/extensions.config/MemoryConfigProvider';
-import { MemoryConfigSource } from '@yohira/extensions.config/MemoryConfigSource';
+} from '@yohira/extensions.config.abstractions';
 import { expect, test } from 'vitest';
 
 import { get } from './common/ConfigProviderExtensions';

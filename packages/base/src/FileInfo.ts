@@ -1,6 +1,7 @@
-import { FileSystemInfo } from '@yohira/base/FileSystemInfo';
-import { getFileName, getFullPath } from '@yohira/base/Path';
 import { existsSync } from 'node:fs';
+
+import { FileSystemInfo } from './FileSystemInfo';
+import { getFileName, getFullPath } from './Path';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/FileInfo.cs,4ee673c1a4ecad41,references
 export class FileInfo extends FileSystemInfo {

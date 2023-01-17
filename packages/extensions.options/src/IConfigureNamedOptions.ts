@@ -1,4 +1,4 @@
-import { IConfigureOptions } from '@yohira/extensions.options/IConfigureOptions';
+import { IConfigureOptions } from './IConfigureOptions';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/IConfigureNamedOptions.cs,dcbbe171f1935c24,references
 export interface IConfigureNamedOptions<TOptions>

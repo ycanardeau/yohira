@@ -1,5 +1,6 @@
-import { Type } from '@yohira/base/Type';
-import { IFeatureCollection } from '@yohira/extensions.features/IFeatureCollection';
+import { Type } from '@yohira/base';
+
+import { IFeatureCollection } from './IFeatureCollection';
 
 // https://source.dot.net/#Microsoft.Extensions.Features/FeatureCollection.cs,6445f4078512cfd6,references
 export class FeatureCollection implements IFeatureCollection {

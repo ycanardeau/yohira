@@ -1,4 +1,4 @@
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
+import { IConfigProvider } from '@yohira/extensions.config.abstractions';
 
 import {
 	ConfigProviderTestBase,

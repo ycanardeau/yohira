@@ -1,4 +1,4 @@
-import { FactoryType } from '@yohira/third-party.inversify/utils/factory_type';
+import { FactoryType } from '../utils/factory_type';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 namespace interfaces {

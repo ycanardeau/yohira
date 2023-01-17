@@ -1,4 +1,4 @@
-import { Type } from '@yohira/base/Type';
+import { Type } from './Type';
 
 // https://source.dot.net/#System.ComponentModel/System/IServiceProvider.cs,03aa8a3a87219ddd,references
 export interface IServiceProvider {

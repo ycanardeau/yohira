@@ -1,5 +1,5 @@
-import { Type } from '@yohira/base/Type';
-import { inject } from '@yohira/extensions.dependency-injection.abstractions/inject';
+import { Type } from '@yohira/base';
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { DirectCircularDependencyB } from './DirectCircularDependencyB';
 

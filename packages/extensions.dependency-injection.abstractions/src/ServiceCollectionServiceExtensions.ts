@@ -1,8 +1,8 @@
-import { IServiceProvider } from '@yohira/base/IServiceProvider';
-import { Ctor, Type } from '@yohira/base/Type';
-import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions/IServiceCollection';
-import { ServiceDescriptor } from '@yohira/extensions.dependency-injection.abstractions/ServiceDescriptor';
-import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions/ServiceLifetime';
+import { Ctor, IServiceProvider, Type } from '@yohira/base';
+
+import { IServiceCollection } from './IServiceCollection';
+import { ServiceDescriptor } from './ServiceDescriptor';
+import { ServiceLifetime } from './ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollectionServiceExtensions.cs,865c289313a49193,references
 export function addSingletonCtor(

@@ -1,21 +1,14 @@
-import { Type } from '@yohira/base/Type';
-import { createWebAppBuilder } from '@yohira/core/default-builder/WebApp';
+import { Type } from '@yohira/base';
+import { createWebAppBuilder } from '@yohira/core';
 import {
 	addSingletonCtor,
 	addSingletonInstance,
-} from '@yohira/extensions.dependency-injection.abstractions/ServiceCollectionServiceExtensions';
-import { HostingEnv } from '@yohira/hosting/internal/HostingEnv';
-import { initialize } from '@yohira/hosting/internal/HostingEnvExtensions';
-import {
-	HttpLoggingMiddleware,
-	useHttpLogging,
-} from '@yohira/http-logging/HttpLoggingMiddleware';
-import { use } from '@yohira/http.abstractions/extensions/UseExtensions';
-import { HttpContext } from '@yohira/http/HttpContext';
-import {
-	StaticFileMiddleware,
-	useStaticFiles,
-} from '@yohira/static-files/StaticFileMiddleware';
+} from '@yohira/extensions.dependency-injection.abstractions';
+import { HostingEnv, initialize } from '@yohira/hosting';
+import { HttpContext } from '@yohira/http';
+import { HttpLoggingMiddleware, useHttpLogging } from '@yohira/http-logging';
+import { use } from '@yohira/http.abstractions';
+import { StaticFileMiddleware, useStaticFiles } from '@yohira/static-files';
 
 export async function main(): Promise<void> {
 	const builder = createWebAppBuilder(/* TODO */);

@@ -2,7 +2,7 @@ import {
 	combineConfigPath,
 	getParentPath,
 	getSectionKey,
-} from '@yohira/extensions.config.abstractions/ConfigPath';
+} from '@yohira/extensions.config.abstractions';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationPathTest.cs#L12

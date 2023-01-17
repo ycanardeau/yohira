@@ -1,4 +1,4 @@
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
+import { IConfigProvider } from './IConfigProvider';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationDebugViewContext.cs,0a342508d33ff79e,references
 export class ConfigDebugViewContext {

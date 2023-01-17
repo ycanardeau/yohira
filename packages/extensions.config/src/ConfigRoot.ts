@@ -1,10 +1,12 @@
-import { IDisposable } from '@yohira/base/IDisposable';
-import { IList } from '@yohira/base/IList';
-import { IConfigProvider } from '@yohira/extensions.config.abstractions/IConfigProvider';
-import { IConfigRoot } from '@yohira/extensions.config.abstractions/IConfigRoot';
-import { IConfigSection } from '@yohira/extensions.config.abstractions/IConfigSection';
-import { ConfigSection } from '@yohira/extensions.config/ConfigSection';
-import { getChildrenImpl } from '@yohira/extensions.config/InternalConfigRootExtensions';
+import { IDisposable, IList } from '@yohira/base';
+import {
+	IConfigProvider,
+	IConfigRoot,
+	IConfigSection,
+} from '@yohira/extensions.config.abstractions';
+
+import { ConfigSection } from './ConfigSection';
+import { getChildrenImpl } from './InternalConfigRootExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationRoot.cs,0a5ad779923b882b,references
 export class ConfigRoot implements IConfigRoot, IDisposable {

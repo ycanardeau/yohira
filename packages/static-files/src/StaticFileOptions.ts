@@ -1,5 +1,5 @@
-import { IContentTypeProvider } from '@yohira/static-files/IContentTypeProvider';
-import { SharedOptionsBase } from '@yohira/static-files/SharedOptionsBase';
+import { IContentTypeProvider } from './IContentTypeProvider';
+import { SharedOptionsBase } from './SharedOptionsBase';
 
 // https://source.dot.net/#Microsoft.AspNetCore.StaticFiles/StaticFileOptions.cs,fecf371ff955674d,references
 export class StaticFileOptions extends SharedOptionsBase {
