@@ -5,5 +5,7 @@ export * from './generic-host/GenericWebHostService';
 export * from './generic-host/GenericWebHostServiceOptions';
 export * from './http/HttpContextFactory';
 export * from './infrastructure/ISupportsStartup';
+export * from './internal/HostingEnv';
 export * from './GenericHostWebHostBuilderExtensions';
+export * from './WebHostBuilderContext';
 export * from './WebHostBuilderExtensions';

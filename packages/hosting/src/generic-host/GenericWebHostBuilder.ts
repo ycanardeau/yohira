@@ -3,17 +3,25 @@ import {
 	IServiceCollection,
 	ServiceDescriptor,
 	ServiceLifetime,
+	addSingletonInstance,
 	tryAdd,
 } from '@yohira/extensions.dependency-injection.abstractions';
-import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
+import {
+	HostBuilderContext,
+	IHostBuilder,
+} from '@yohira/extensions.hosting.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions';
 import { IAppBuilder } from '@yohira/http.abstractions';
 
+import { WebHostBuilderContext } from '../WebHostBuilderContext';
 import { AppBuilderFactory } from '../builder/AppBuilderFactory';
 import { GenericWebHostServiceOptions } from '../generic-host/GenericWebHostServiceOptions';
 import { HttpContextFactory } from '../http/HttpContextFactory';
 import { ISupportsStartup } from '../infrastructure/ISupportsStartup';
+import { HostingEnv } from '../internal/HostingEnv';
+import { initialize } from '../internal/HostingEnvExtensions';
+import { WebHostOptions } from '../internal/WebHostOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references
 export class GenericWebHostBuilder
@@ -21,10 +29,35 @@ export class GenericWebHostBuilder
 {
 	private startupObject?: unknown;
 
+	private getWebHostBuilderContext(
+		context: HostBuilderContext,
+	): WebHostBuilderContext {
+		const options = new WebHostOptions();
+		const webHostBuilderContext = new WebHostBuilderContext(/* TODO */);
+		// TODO
+		webHostBuilderContext.hostingEnv = new HostingEnv();
+		initialize(
+			webHostBuilderContext.hostingEnv,
+			context.hostingEnv.contentRootPath,
+			options,
+			context.hostingEnv,
+		);
+		// TODO
+		return webHostBuilderContext;
+	}
+
 	constructor(private readonly builder: IHostBuilder /* TODO: options */) {
 		// TODO
 
-		builder.configureServices((/* TODO */ services) => {
+		builder.configureServices((context, services) => {
+			const webHostContext = this.getWebHostBuilderContext(context);
+
+			addSingletonInstance(
+				services,
+				Type.from('IWebHostEnv'),
+				webHostContext.hostingEnv,
+			);
+
 			// TODO
 
 			tryAdd(
@@ -54,7 +87,7 @@ export class GenericWebHostBuilder
 			/* TODO: context: WebHostBuilderContext */ services: IServiceCollection,
 		) => void,
 	): this {
-		this.builder.configureServices((/* TODO */ builder) => {
+		this.builder.configureServices((context, builder) => {
 			// TODO: webHostBuilderContext
 			configureServices(/* TODO */ builder);
 		});
@@ -69,7 +102,7 @@ export class GenericWebHostBuilder
 
 		this.startupObject = configure;
 
-		this.builder.configureServices((/* TODO */ services) => {
+		this.builder.configureServices((context, services) => {
 			if (this.startupObject === configure) {
 				configureOptionsServices(
 					services,

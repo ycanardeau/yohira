@@ -1,3 +1,4 @@
+export * from './HostBuilderContext';
 export * from './HostingAbstractionsHostExtensions';
 export * from './IHost';
 export * from './IHostBuilder';

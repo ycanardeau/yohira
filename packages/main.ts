@@ -1,10 +1,6 @@
 import { Type } from '@yohira/base';
 import { createWebAppBuilder } from '@yohira/core';
-import {
-	addSingletonCtor,
-	addSingletonInstance,
-} from '@yohira/extensions.dependency-injection.abstractions';
-import { HostingEnv, initialize } from '@yohira/hosting';
+import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions';
 import { HttpContext } from '@yohira/http';
 import { HttpLoggingMiddleware, useHttpLogging } from '@yohira/http-logging';
 import { use } from '@yohira/http.abstractions';
@@ -15,14 +11,6 @@ export async function main(): Promise<void> {
 
 	// TODO: Remove.
 	{
-		const hostingEnv = new HostingEnv();
-		initialize(hostingEnv, '' /* TODO */, {} /* TODO */);
-		addSingletonInstance(
-			builder.services,
-			Type.from('IWebHostEnv'),
-			hostingEnv,
-		);
-
 		addSingletonCtor(
 			builder.services,
 			Type.from('StaticFileMiddleware'),

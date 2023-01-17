@@ -3,6 +3,7 @@ import {
 	NullFileProvider,
 	PhysicalFileProvider,
 } from '@yohira/extensions.file-providers';
+import { IHostEnv } from '@yohira/extensions.hosting.abstractions';
 import { IWebHostEnv } from '@yohira/hosting.abstractions';
 import { existsSync } from 'node:fs';
 
@@ -13,6 +14,7 @@ export function initialize(
 	hostingEnv: IWebHostEnv,
 	contentRootPath: string,
 	options: WebHostOptions,
+	baseEnv?: IHostEnv,
 ): void {
 	// TODO
 
