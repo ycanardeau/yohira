@@ -46,6 +46,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.file-providers/src',
 			),
+			'@yohira/extensions.logging.abstractions': resolve(
+				__dirname,
+				'./packages/extensions.logging.abstractions/src',
+			),
 			'@yohira/extensions.options': resolve(
 				__dirname,
 				'./packages/extensions.options/src',
@@ -54,6 +58,11 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.options.config-extensions/src',
 			),
+			'@yohira/http.abstractions': resolve(
+				__dirname,
+				'./packages/http.abstractions/src',
+			),
+			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,
 				'./packages/third-party.inversify/src',

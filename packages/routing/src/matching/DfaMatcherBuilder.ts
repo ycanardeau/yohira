@@ -23,10 +23,10 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		// TODO
 
 		const stateCount = 1;
-		const maxSegmentCount = 0;
+		let maxSegmentCount = 0;
 		// TODO
 
-		// TODO
+		maxSegmentCount++;
 
 		const states: DfaState[] = []; /* TODO */
 		// TODO

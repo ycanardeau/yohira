@@ -8,6 +8,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
 import { Candidate } from './Candidate';
 import { DfaState } from './DfaState';
 import { EndpointSelector } from './EndpointSelector';
+import { tokenize } from './FastPathTokenizer';
 import { IEndpointSelectorPolicy } from './IEndpointSelectorPolicy';
 import { Matcher } from './Matcher';
 import { PathSegment } from './PathSegment';
@@ -59,7 +60,7 @@ export class DfaMatcher extends Matcher {
 	/** @internal */ findCandidateSet(
 		httpContext: IHttpContext,
 		path: string,
-		// TODO: segments: ReadonlySpan<PathSegment>,
+		segments: readonly PathSegment[] /* TODO: ReadonlySpan<PathSegment> */,
 	): {
 		candidates: Candidate[];
 		policies: IEndpointSelectorPolicy[];
@@ -81,12 +82,14 @@ export class DfaMatcher extends Matcher {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const path = httpContext.request.path.value!;
 
-		// TODO
+		const buffer: PathSegment[] = new Array(this.maxSegmentCount);
+		const count = tokenize(path, buffer);
+		const segments = buffer.slice(0, count);
 
 		const { candidates, policies } = this.findCandidateSet(
 			httpContext,
 			path,
-			// TODO: segments,
+			segments,
 		);
 		const candidateCount = candidates.length;
 		if (candidateCount === 0) {
