@@ -15,8 +15,13 @@ export class DataSourceDependentMatcher extends Matcher {
 		const builder = this.matcherBuilderFactory();
 		const seenEndpointNames = new Map<string, string | undefined>();
 		for (let i = 0; i < endpoints.count; i++) {
-			if (endpoints.get(i) instanceof RouteEndpoint) {
-				// TODO
+			const endpoint = endpoints.get(i);
+			if (endpoint instanceof RouteEndpoint) {
+				// TODO: Validate that endpoint names are unique.
+
+				if (true /* TODO */) {
+					builder.addEndpoint(endpoint);
+				}
 			}
 		}
 

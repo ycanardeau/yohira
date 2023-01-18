@@ -32,6 +32,10 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		super();
 	}
 
+	addEndpoint(endpoint: RouteEndpoint): void {
+		this.endpoints.add(endpoint);
+	}
+
 	private static getPrecedenceDigitAtDepth(
 		endpoint: RouteEndpoint,
 		depth: number,
