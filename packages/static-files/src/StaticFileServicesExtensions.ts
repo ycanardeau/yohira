@@ -8,6 +8,7 @@ import { configureOptionsServices } from '@yohira/extensions.options';
 import { StaticFileMiddleware } from './StaticFileMiddleware';
 import { StaticFileOptions } from './StaticFileOptions';
 
+// HACK
 export function addStaticFiles(
 	services: IServiceCollection,
 	configureOptions?: (options: StaticFileOptions) => void,
@@ -15,8 +16,10 @@ export function addStaticFiles(
 	if (configureOptions !== undefined) {
 		configureOptionsServices(services, StaticFileOptions, configureOptions);
 	}
+
+	// HACK
 	addSingletonCtor(
-		services,
+		/* REVIEW */ services,
 		Type.from('StaticFileMiddleware'),
 		StaticFileMiddleware,
 	);

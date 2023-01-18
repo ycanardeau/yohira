@@ -8,6 +8,7 @@ import { configureOptionsServices } from '@yohira/extensions.options';
 import { HttpLoggingMiddleware } from './HttpLoggingMiddleware';
 import { HttpLoggingOptions } from './HttpLoggingOptions';
 
+// HACK
 export function addHttpLogging(
 	services: IServiceCollection,
 	configureOptions?: (options: HttpLoggingOptions) => void,
@@ -19,8 +20,10 @@ export function addHttpLogging(
 			configureOptions,
 		);
 	}
+
+	// HACK
 	addSingletonCtor(
-		services,
+		/* REVIEW */ services,
 		Type.from('HttpLoggingMiddleware'),
 		HttpLoggingMiddleware,
 	);
