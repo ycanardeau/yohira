@@ -15,8 +15,8 @@ export function addHttpLogging(
 ): IServiceCollection {
 	if (configureOptions !== undefined) {
 		configureOptionsServices(
-			services,
 			HttpLoggingOptions,
+			services,
 			configureOptions,
 		);
 	}

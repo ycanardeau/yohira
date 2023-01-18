@@ -4,6 +4,6 @@ import { HttpLoggingMiddleware } from './HttpLoggingMiddleware';
 
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingBuilderExtensions.cs,14542a362047cc35
 export function useHttpLogging(app: IAppBuilder): IAppBuilder {
-	useMiddleware(app, HttpLoggingMiddleware);
+	useMiddleware(HttpLoggingMiddleware, app);
 	return app;
 }

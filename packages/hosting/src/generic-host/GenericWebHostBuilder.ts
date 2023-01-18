@@ -105,8 +105,8 @@ export class GenericWebHostBuilder
 		this.builder.configureServices((context, services) => {
 			if (this.startupObject === configure) {
 				configureOptionsServices(
-					services,
 					GenericWebHostServiceOptions,
+					services,
 					(options) => {
 						options.configureApp = (app): void => configure(app);
 					},

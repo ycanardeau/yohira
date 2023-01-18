@@ -29,7 +29,7 @@ test('MonitorUsesFactory', () => {
 		Type.from('IOptionsFactory<FakeOptions>'),
 		FakeOptionsFactory,
 	);
-	$ = configureOptionsServices($, FakeOptions, (o) => {
+	$ = configureOptionsServices(FakeOptions, $, (o) => {
 		o.message = 'Ignored';
 	});
 	const services = buildServiceProvider($);

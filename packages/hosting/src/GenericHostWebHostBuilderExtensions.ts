@@ -17,7 +17,7 @@ export function configureWebHost(
 	const webHostBuilder = new GenericWebHostBuilder(builder);
 	configure(webHostBuilder);
 	builder.configureServices((context, services) =>
-		addHostedService(services, GenericWebHostService),
+		addHostedService(GenericWebHostService, services),
 	);
 	return builder;
 }

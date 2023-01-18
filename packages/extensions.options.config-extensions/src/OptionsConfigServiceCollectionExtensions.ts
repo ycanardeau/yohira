@@ -10,8 +10,8 @@ import { NamedConfigureFromConfigOptions } from './NamedConfigureFromConfigOptio
 
 // https://source.dot.net/#Microsoft.Extensions.Options.ConfigurationExtensions/OptionsConfigurationServiceCollectionExtensions.cs,2aa74bb06c82c8f7,references
 export function configureOptionsConfigServices<TOptions extends object>(
-	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
+	services: IServiceCollection,
 	config: IConfig,
 ): IServiceCollection {
 	addOptions(services);

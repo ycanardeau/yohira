@@ -54,8 +54,8 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,a6eee6a022a93bdc,references
 export function configureNamedOptionsServices<TOptions>(
-	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
+	services: IServiceCollection,
 	name: string | undefined,
 	configureOptions: (options: TOptions) => void,
 ): IServiceCollection {
@@ -70,13 +70,13 @@ export function configureNamedOptionsServices<TOptions>(
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,b5db69a84107f087,references
 export function configureOptionsServices<TOptions>(
-	services: IServiceCollection,
 	optionsCtor: Ctor<TOptions>,
+	services: IServiceCollection,
 	configureOptions: (options: TOptions) => void,
 ): IServiceCollection {
 	return configureNamedOptionsServices(
-		services,
 		optionsCtor,
+		services,
 		Options.defaultName,
 		configureOptions,
 	);

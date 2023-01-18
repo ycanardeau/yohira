@@ -31,7 +31,7 @@ test('UsesFactory', () => {
 		Type.from('IOptionsFactory<FakeOptions>'),
 		FakeOptionsFactory,
 	);
-	$ = configureOptionsServices($, FakeOptions, (o) => {
+	$ = configureOptionsServices(FakeOptions, $, (o) => {
 		o.message = 'Ignored';
 	});
 	const services = buildServiceProvider($);
@@ -48,8 +48,8 @@ test('CanReadComplexProperties', () => {
 	const dic = { integer: '-2', boolean: 'TRUe', 'nested:integer': '11' };
 	const services = new ServiceCollection();
 	configureOptionsConfigServices(
-		services,
 		ComplexOptions,
+		services,
 		addInMemoryCollection(new ConfigBuilder(), dic).build(),
 	);
 	const sp = buildServiceProvider(services);

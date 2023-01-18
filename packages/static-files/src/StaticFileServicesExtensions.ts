@@ -14,7 +14,7 @@ export function addStaticFiles(
 	configureOptions?: (options: StaticFileOptions) => void,
 ): IServiceCollection {
 	if (configureOptions !== undefined) {
-		configureOptionsServices(services, StaticFileOptions, configureOptions);
+		configureOptionsServices(StaticFileOptions, services, configureOptions);
 	}
 
 	// HACK

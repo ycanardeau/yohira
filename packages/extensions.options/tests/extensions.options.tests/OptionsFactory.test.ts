@@ -15,10 +15,10 @@ import { FakeOptions } from './FakeOptions';
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsFactoryTests.cs#L13
 test('CreateSupportsNames', () => {
 	const services = new ServiceCollection();
-	configureNamedOptionsServices(services, FakeOptions, '1', (options) => {
+	configureNamedOptionsServices(FakeOptions, services, '1', (options) => {
 		options.message = 'one';
 	});
-	configureNamedOptionsServices(services, FakeOptions, '2', (options) => {
+	configureNamedOptionsServices(FakeOptions, services, '2', (options) => {
 		options.message = 'two';
 	});
 
@@ -34,10 +34,10 @@ test('CreateSupportsNames', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsFactoryTests.cs#L26
 test('NamesAreCaseSensitive', () => {
 	const services = new ServiceCollection();
-	configureNamedOptionsServices(services, FakeOptions, 'UP', (options) => {
+	configureNamedOptionsServices(FakeOptions, services, 'UP', (options) => {
 		options.message = 'UP';
 	});
-	configureNamedOptionsServices(services, FakeOptions, 'up', (options) => {
+	configureNamedOptionsServices(FakeOptions, services, 'up', (options) => {
 		options.message = 'up';
 	});
 
