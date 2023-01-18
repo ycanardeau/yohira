@@ -81,6 +81,10 @@ export class CallSiteValidator extends CallSiteVisitor<
 		return undefined;
 	}
 
+	protected visitServiceProvider(): Type | undefined {
+		return undefined;
+	}
+
 	protected visitIterable(
 		iterableCallSite: IterableCallSite,
 		state: CallSiteValidatorState,

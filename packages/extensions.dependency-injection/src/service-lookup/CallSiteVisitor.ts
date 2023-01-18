@@ -5,6 +5,7 @@ import { CtorCallSite } from '../service-lookup/CtorCallSite';
 import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
 import { IterableCallSite } from '../service-lookup/IterableCallSite';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
+import { ServiceProviderCallSite } from '../service-lookup/ServiceProviderCallSite';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteVisitor.cs,830d006141417efa,references
 export abstract class CallSiteVisitor<TArgument, TResult> {
@@ -18,10 +19,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 		argument: TArgument,
 	): TResult;
 
-	/* TODO: protected abstract visitServiceProvider(
+	protected abstract visitServiceProvider(
 		serviceProviderCallSite: ServiceProviderCallSite,
 		argument: TArgument,
-	): TResult;*/
+	): TResult;
 
 	protected abstract visitIterable(
 		iterableCallSite: IterableCallSite,
@@ -53,7 +54,10 @@ export abstract class CallSiteVisitor<TArgument, TResult> {
 					argument,
 				);
 			case CallSiteKind.ServiceProvider:
-				throw new Error('Method not implemented.');
+				return this.visitServiceProvider(
+					callSite as ServiceProviderCallSite,
+					argument,
+				);
 		}
 	}
 

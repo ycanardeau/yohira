@@ -4,6 +4,7 @@ import { CtorCallSite } from '../service-lookup/CtorCallSite';
 import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
 import { IterableCallSite } from '../service-lookup/IterableCallSite';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
+import { ServiceProviderCallSite } from '../service-lookup/ServiceProviderCallSite';
 import { ServiceProviderEngineScope } from '../service-lookup/ServiceProviderEngineScope';
 
 class RuntimeResolverContext {
@@ -32,6 +33,13 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		constantCallSite: ConstantCallSite,
 	): object | undefined {
 		return constantCallSite.defaultValue;
+	}
+
+	protected visitServiceProvider(
+		serviceProviderCallSite: ServiceProviderCallSite,
+		context: RuntimeResolverContext,
+	): object | undefined {
+		return context.scope;
 	}
 
 	protected visitIterable(

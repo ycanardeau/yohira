@@ -17,6 +17,7 @@ import { CallSiteFactory } from './service-lookup/CallSiteFactory';
 import { CallSiteValidator } from './service-lookup/CallSiteValidator';
 import { RuntimeServiceProviderEngine } from './service-lookup/RuntimeServiceProviderEngine';
 import { ServiceCallSite } from './service-lookup/ServiceCallSite';
+import { ServiceProviderCallSite } from './service-lookup/ServiceProviderCallSite';
 import { ServiceProviderEngine } from './service-lookup/ServiceProviderEngine';
 import { ServiceProviderEngineScope } from './service-lookup/ServiceProviderEngineScope';
 
@@ -92,6 +93,10 @@ export class ServiceProvider
 		>();
 
 		this.callSiteFactory = new CallSiteFactory(serviceDescriptors);
+		this.callSiteFactory.add(
+			Type.from('IServiceProvider'),
+			new ServiceProviderCallSite(),
+		);
 		// TODO
 
 		if (options.validateScopes) {

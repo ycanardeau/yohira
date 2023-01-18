@@ -146,6 +146,16 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		this.populate();
 	}
 
+	add(type: Type, serviceCallSite: ServiceCallSite): void {
+		this.callSiteCache.set(
+			new ServiceCacheKey(
+				type,
+				CallSiteFactory.defaultSlot,
+			).getHashCode(),
+			serviceCallSite,
+		);
+	}
+
 	private tryCreateExactCore(
 		descriptor: ServiceDescriptor,
 		serviceType: Type,

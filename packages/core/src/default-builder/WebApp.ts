@@ -1,3 +1,4 @@
+import { IServiceProvider } from '@yohira/base';
 import { IHost, run } from '@yohira/extensions.hosting.abstractions';
 import { AppBuilder } from '@yohira/http';
 import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
@@ -8,8 +9,23 @@ import { WebAppBuilder } from './WebAppBuilder';
 export class WebApp implements IHost, IAppBuilder {
 	readonly appBuilder: IAppBuilder;
 
+	get properties(): Map<string, unknown> {
+		return this.appBuilder.properties;
+	}
+
 	constructor(private readonly host: IHost) {
-		this.appBuilder = new AppBuilder(/* TODO */);
+		this.appBuilder = new AppBuilder(host.services /* TODO */);
+	}
+
+	get services(): IServiceProvider {
+		return this.host.services;
+	}
+
+	get appServices(): IServiceProvider {
+		return this.appBuilder.appServices;
+	}
+	set appServices(value: IServiceProvider) {
+		this.appBuilder.appServices = value;
 	}
 
 	start(): Promise<void> {
