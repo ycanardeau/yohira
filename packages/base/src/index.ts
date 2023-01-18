@@ -4,6 +4,7 @@ export * from './FileSystemInfo';
 export * from './HeaderNames';
 export * from './ICollection';
 export * from './IDisposable';
+export * from './IEquatable';
 export * from './IList';
 export * from './IReadonlyCollection';
 export * from './IReadonlyList';

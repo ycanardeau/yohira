@@ -1,4 +1,6 @@
-export class Type {
+import { IEquatable } from './IEquatable';
+
+export class Type implements IEquatable<Type> {
 	private constructor(readonly value: string) {}
 
 	static from(value: string): Type {
