@@ -1,3 +1,4 @@
+import { DfaMatcher } from './DfaMatcher';
 import { Matcher } from './Matcher';
 import { MatcherBuilder } from './MatcherBuilder';
 
@@ -5,6 +6,7 @@ import { MatcherBuilder } from './MatcherBuilder';
 export class DfaMatcherBuilder extends MatcherBuilder {
 	build(): Matcher {
 		// TODO
-		throw new Error('Method not implemented.');
+
+		return new DfaMatcher(/* TODO */);
 	}
 }

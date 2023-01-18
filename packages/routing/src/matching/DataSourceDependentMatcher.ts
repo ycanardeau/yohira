@@ -1,21 +1,51 @@
-import { IHttpContext } from '@yohira/http.abstractions';
+import { IReadonlyList } from '@yohira/base';
+import { Endpoint, IHttpContext } from '@yohira/http.abstractions';
 
+import { DataSourceDependentCache } from '../DataSourceDependentCache';
 import { EndpointDataSource } from '../EndpointDataSource';
+import { RouteEndpoint } from '../RouteEndpoint';
 import { Matcher } from './Matcher';
 import { MatcherBuilder } from './MatcherBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DataSourceDependentMatcher.cs,44802b720f2051eb,references
 export class DataSourceDependentMatcher extends Matcher {
+	private readonly cache: DataSourceDependentCache<Matcher>;
+
+	private createMatcher = (endpoints: IReadonlyList<Endpoint>): Matcher => {
+		const builder = this.matcherBuilderFactory();
+		const seenEndpointNames = new Map<string, string | undefined>();
+		for (let i = 0; i < endpoints.count; i++) {
+			if (endpoints.get(i) instanceof RouteEndpoint) {
+				// TODO
+			}
+		}
+
+		return builder.build();
+	};
+
 	constructor(
 		dataSource: EndpointDataSource,
 		// TODO: lifetime,
 		private readonly matcherBuilderFactory: () => MatcherBuilder,
 	) {
 		super();
+
+		this.cache = new DataSourceDependentCache<Matcher>(
+			dataSource,
+			this.createMatcher,
+		);
+		this.cache.ensureInitialized();
+
+		// TODO
+	}
+
+	// Used in tests
+	/** @internal */ get currentMatcher(): Matcher {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this.cache.value!;
 	}
 
 	match(context: IHttpContext): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this.currentMatcher.match(context);
 	}
 }

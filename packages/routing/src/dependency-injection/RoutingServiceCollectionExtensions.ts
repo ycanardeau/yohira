@@ -12,6 +12,7 @@ import { DefaultEndpointRouteBuilder } from '../DefaultEndpointRouteBuilder';
 import { EndpointRoutingMiddleware } from '../EndpointRoutingMiddleware';
 import { RouteOptions } from '../RouteOptions';
 import { RoutingMarkerService } from '../RoutingMarkerService';
+import { DfaMatcherBuilder } from '../matching/DfaMatcherBuilder';
 import { DfaMatcherFactory } from '../matching/DfaMatcherFactory';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/DependencyInjection/RoutingServiceCollectionExtensions.cs,25e3665e57533cd3,references
@@ -45,6 +46,17 @@ export function addRouting(
 			DefaultEndpointRouteBuilder,
 		),
 	);
+
+	// TODO
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Transient,
+			Type.from('DfaMatcherBuilder'),
+			DfaMatcherBuilder,
+		),
+	);
+	// TODO
 
 	// TODO
 	tryAdd(

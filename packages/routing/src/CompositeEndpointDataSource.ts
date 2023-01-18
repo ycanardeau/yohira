@@ -22,9 +22,29 @@ export class CompositeEndpointDataSource
 		}
 	}
 
+	private createEndpointsUnsynchronized(): void {
+		const endpoints = new List<Endpoint>();
+
+		for (const dataSource of this.dataSources) {
+			endpoints.addRange(dataSource.endpoints);
+		}
+
+		this._endpoints = endpoints;
+	}
+
 	private ensureEndpointsInitialized(): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (this._endpoints !== undefined) {
+			return;
+		}
+
+		// REVIEW: lock
+		if (this._endpoints !== undefined) {
+			return;
+		}
+
+		// TODO: this.ensureChangeTokenInitialized();
+
+		this.createEndpointsUnsynchronized();
 	}
 
 	get endpoints(): IReadonlyList<Endpoint> {
