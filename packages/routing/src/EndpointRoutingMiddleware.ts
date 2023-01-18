@@ -13,6 +13,11 @@ import {
 	getEndpoint,
 } from '@yohira/http.abstractions';
 
+import { CompositeEndpointDataSource } from './CompositeEndpointDataSource';
+import { EndpointDataSource } from './EndpointDataSource';
+import { IEndpointRouteBuilder } from './IEndpointRouteBuilder';
+import { MatcherFactory } from './matching/MatcherFactory';
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/EndpointRoutingMiddleware.cs,bfce4ff333c8a967,references
 function logMatchSuccessCore(
 	logger: ILogger,
@@ -49,10 +54,20 @@ function logMatchSkipped(logger: ILogger, endpoint: Endpoint): void {
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/EndpointRoutingMiddleware.cs,e91e5febd7b6da29,references
 export class EndpointRoutingMiddleware implements IMiddleware {
+	private readonly endpointDataSource: EndpointDataSource;
+
 	constructor(
+		@inject(Type.from('MatcherFactory'))
+		private readonly matcherFactory: MatcherFactory,
 		@inject(Type.from('ILogger<EndpointRoutingMiddleware>'))
 		private readonly logger: ILoggerT<EndpointRoutingMiddleware>,
-	) {}
+		@inject(Type.from('IEndpointRouteBuilder'))
+		endpointRouteBuilder: IEndpointRouteBuilder,
+	) {
+		this.endpointDataSource = new CompositeEndpointDataSource(
+			endpointRouteBuilder.dataSources,
+		);
+	}
 
 	private setRoutingAndContinue(
 		context: IHttpContext,
@@ -79,7 +94,11 @@ export class EndpointRoutingMiddleware implements IMiddleware {
 			return next(context);
 		}
 
-		// TODO
+		const matcher = this.matcherFactory.createMatcher(
+			this.endpointDataSource,
+		);
+
+		await matcher.match(context);
 
 		await this.setRoutingAndContinue(context, next);
 	}
