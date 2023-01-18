@@ -16,9 +16,34 @@ export class DfaNode {
 
 	literals?: Map<string, DfaNode>;
 
+	parameters?: DfaNode;
+
+	catchAll?: DfaNode;
+
+	policyEdges?: Map<number /* TODO */, DfaNode>;
+
 	visit(visitor: (node: DfaNode) => void): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (this.literals !== undefined) {
+			for (const [, value] of this.literals) {
+				value.visit(visitor);
+			}
+		}
+
+		if (this.parameters !== undefined && this !== this.parameters) {
+			this.parameters.visit(visitor);
+		}
+
+		if (this.catchAll !== undefined && this !== this.catchAll) {
+			this.catchAll.visit(visitor);
+		}
+
+		if (this.policyEdges !== undefined) {
+			for (const [, value] of this.policyEdges) {
+				value.visit(visitor);
+			}
+		}
+
+		visitor(this);
 	}
 
 	debuggerToString(): string {

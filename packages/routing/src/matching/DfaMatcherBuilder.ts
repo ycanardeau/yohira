@@ -41,6 +41,10 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	}
 
 	private applyPolicies = (node: DfaNode): void => {
+		if (node.matches === undefined || node.matches.count === 0) {
+			return;
+		}
+
 		// TODO
 		throw new Error('Method not implemented.');
 	};
