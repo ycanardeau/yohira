@@ -14,9 +14,7 @@ import { expect, test } from 'vitest';
 // TODO: Move.
 function toList<T>(items: T[]): IList<T> {
 	const list = new List<T>();
-	for (const item of items) {
-		list.add(item);
-	}
+	list.addRange(items);
 	return list;
 }
 

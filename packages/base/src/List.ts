@@ -25,6 +25,10 @@ export class List<T> implements IList<T>, IReadonlyList<T> {
 		this.items.push(item);
 	}
 
+	addRange(items: Iterable<T>): void {
+		this.items.push(...items);
+	}
+
 	clear(): void {
 		this.items.splice(0, this.count);
 	}
