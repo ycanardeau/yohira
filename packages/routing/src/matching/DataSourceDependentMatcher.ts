@@ -45,7 +45,7 @@ export class DataSourceDependentMatcher extends Matcher {
 		return this.cache.value!;
 	}
 
-	match(context: IHttpContext): Promise<void> {
-		return this.currentMatcher.match(context);
+	match(httpContext: IHttpContext): Promise<void> {
+		return this.currentMatcher.match(httpContext);
 	}
 }

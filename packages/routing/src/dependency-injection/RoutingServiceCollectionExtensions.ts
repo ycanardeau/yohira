@@ -12,6 +12,7 @@ import { DefaultEndpointRouteBuilder } from '../DefaultEndpointRouteBuilder';
 import { EndpointRoutingMiddleware } from '../EndpointRoutingMiddleware';
 import { RouteOptions } from '../RouteOptions';
 import { RoutingMarkerService } from '../RoutingMarkerService';
+import { DefaultEndpointSelector } from '../matching/DefaultEndpointSelector';
 import { DfaMatcherBuilder } from '../matching/DfaMatcherBuilder';
 import { DfaMatcherFactory } from '../matching/DfaMatcherFactory';
 
@@ -68,6 +69,17 @@ export function addRouting(
 		),
 	);
 	// TODO
+
+	// TODO
+
+	tryAdd(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			Type.from('EndpointSelector'),
+			DefaultEndpointSelector,
+		),
+	);
 
 	// TODO
 
