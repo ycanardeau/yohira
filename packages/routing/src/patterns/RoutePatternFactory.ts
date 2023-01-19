@@ -2,6 +2,7 @@ import { RoutePattern } from './RoutePattern';
 import { RoutePatternLiteralPart } from './RoutePatternLiteralPart';
 import { RoutePatternParameterKind } from './RoutePatternParameterKind';
 import { RoutePatternParameterPart } from './RoutePatternParameterPart';
+import { indexOfAny, invalidParameterNameChars } from './RoutePatternParser';
 import { RoutePatternPart } from './RoutePatternPart';
 import { RoutePatternPathSegment } from './RoutePatternPathSegment';
 import { RoutePatternSeparatorPart } from './RoutePatternSeparatorPart';
@@ -23,19 +24,29 @@ function createParameterPartCore(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternFactory.cs,ed08b7f801ef8558,references
 export function createParameterPart(
 	parameterName: string,
+	// TODO: default = undefined,
+	parameterKind = RoutePatternParameterKind.Standard,
+	// TODO: parameterPolicies = [],
 ): RoutePatternParameterPart {
 	if (!parameterName) {
 		throw new Error('Value cannot be undefined or empty.' /* LOC */);
 	}
 
-	// TODO: invalidParameterNameChars
+	if (indexOfAny(parameterName, invalidParameterNameChars) >= 0) {
+		throw new Error(
+			`The route parameter name '${parameterName}' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{', '}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character marks a parameter as catch-all, and can occur only at the start of the parameter.` /* LOC */,
+		);
+	}
+
+	// TODO
 
 	return createParameterPartCore(
 		parameterName,
 		// TODO: undefined,
-		RoutePatternParameterKind.Standard,
+		parameterKind,
 		// TODO: parameterPolicies
 	);
 }

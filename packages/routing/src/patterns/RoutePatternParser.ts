@@ -18,6 +18,8 @@ const closeBrace = '}';
 const questionMark = '?';
 const periodString = '.';
 
+export const invalidParameterNameChars = ['/', '{', '}', '?', '*'];
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,5b0c79dbe4256546,references
 function trimPrefix(routePattern: string): string {
 	if (routePattern.startsWith('~/')) {
@@ -32,10 +34,26 @@ function trimPrefix(routePattern: string): string {
 	return routePattern;
 }
 
+class CaseInsensitiveSet extends Set<string> {
+	add(value: string): this {
+		return super.add(value.toLowerCase());
+	}
+
+	delete(value: string): boolean {
+		return super.delete(value.toLowerCase());
+	}
+
+	has(value: string): boolean {
+		return super.has(value.toLowerCase());
+	}
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,7fb8faec81aa82ba,references
 class Context {
 	index: number;
 	private _mark?: number;
+
+	readonly parameterNames = new CaseInsensitiveSet();
 
 	error!: string;
 
@@ -166,20 +184,35 @@ function parseLiteral(context: Context, parts: RoutePatternPart[]): boolean {
 	}
 }
 
+export function indexOfAny(array: string, values: string[]): number {
+	for (const value of values) {
+		const indexOf = array.indexOf(value);
+		if (indexOf >= 0) {
+			return indexOf;
+		}
+	}
+
+	return -1;
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,ec4f220dc199081d,references
 function isValidParameterName(
 	context: Context,
 	parameterName: string,
 ): boolean {
-	if (parameterName.length === 0 /* TODO: invalidParameterNameChars */) {
-		context.error = `The route parameter name '${parameterName}' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{{', '}}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character mark ...` /* LOC */;
+	if (
+		parameterName.length === 0 ||
+		indexOfAny(parameterName, invalidParameterNameChars) >= 0
+	) {
+		context.error = `The route parameter name '${parameterName}' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{', '}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character marks a parameter as catch-all, and can occur only at the start of the parameter.` /* LOC */;
 		return false;
 	}
 
-	// TODO: if (!context.parameterNames.add(parameterName)) {
-	// TODO: 	context.error = `The route parameter name '${parameterName}' appears more than one time in the route template.`; /* LOC */
-	// TODO: 	return false;
-	// TODO: }
+	if (context.parameterNames.has(parameterName)) {
+		context.error = `The route parameter name '${parameterName}' appears more than one time in the route template.`; /* LOC */
+		return false;
+	}
+	context.parameterNames.add(parameterName);
 
 	return true;
 }
@@ -237,7 +270,7 @@ function parseParameter(context: Context, parts: RoutePatternPart[]): boolean {
 
 	const text = context.capture()!;
 	if (text === '{}') {
-		context.error = `The route parameter name '' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{{', '}}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character mark ...`; /* LOC */
+		context.error = `The route parameter name '' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{', '}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character marks a parameter as catch-all, and can occur only at the start of the parameter.`; /* LOC */
 		return false;
 	}
 
