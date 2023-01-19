@@ -79,7 +79,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 			);
 			maxDepth = Math.max(
 				maxDepth,
-				endpoint.routePattern.pathSegments.count,
+				endpoint.routePattern.pathSegments.length,
 			);
 		}
 
