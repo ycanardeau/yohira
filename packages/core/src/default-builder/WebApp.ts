@@ -1,12 +1,25 @@
-import { IServiceProvider } from '@yohira/base';
+import {
+	IAsyncDisposable,
+	ICollection,
+	IServiceProvider,
+	List,
+} from '@yohira/base';
 import { IHost, run } from '@yohira/extensions.hosting.abstractions';
 import { AppBuilder } from '@yohira/http';
 import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
+import { EndpointDataSource, IEndpointRouteBuilder } from '@yohira/routing';
 
 import { WebAppBuilder } from './WebAppBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
-export class WebApp implements IHost, IAppBuilder {
+export class WebApp
+	implements IHost, IAppBuilder, IEndpointRouteBuilder, IAsyncDisposable
+{
+	private readonly _dataSources = new List<EndpointDataSource>();
+	get dataSources(): ICollection<EndpointDataSource> {
+		return this._dataSources;
+	}
+
 	readonly appBuilder: IAppBuilder;
 
 	get properties(): Map<string, unknown> {
@@ -38,6 +51,11 @@ export class WebApp implements IHost, IAppBuilder {
 
 	dispose(): void {
 		return this.host.dispose();
+	}
+
+	disposeAsync(): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 
 	use(middleware: (next: RequestDelegate) => RequestDelegate): this {
