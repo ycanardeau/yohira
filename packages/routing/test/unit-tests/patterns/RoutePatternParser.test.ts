@@ -5,6 +5,7 @@ import {
 	RoutePatternPart,
 	RoutePatternSeparatorPart,
 	createLiteralPart,
+	createParameterPart,
 	createPattern,
 	createSegment,
 	parseRoutePattern,
@@ -135,6 +136,19 @@ test('Parse_SingleLiteral', () => {
 
 	const expected = createPattern(template, [
 		createSegment(createLiteralPart('cool')),
+	]);
+
+	const actual = parseRoutePattern(template);
+
+	expect(RoutePatternEquals(expected, actual)).toBe(true);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/e5238763bddd7100823751c4a4ae0220d78160aa/src/Http/Routing/test/UnitTests/Patterns/RoutePatternParserTest.cs#L30
+test('Parse_SingleParameter', () => {
+	const template = '{p}';
+
+	const expected = createPattern(template, [
+		createSegment(createParameterPart('p')),
 	]);
 
 	const actual = parseRoutePattern(template);

@@ -12,7 +12,7 @@ function createParameterPartCore(
 	// TODO: default,
 	parameterKind: RoutePatternParameterKind,
 	// TODO: parameterPolicies,
-	encodeSlashes: boolean,
+	encodeSlashes = true,
 ): RoutePatternParameterPart {
 	return new RoutePatternParameterPart(
 		parameterName,
@@ -20,6 +20,23 @@ function createParameterPartCore(
 		parameterKind,
 		// TODO: parameterPolicies,
 		encodeSlashes,
+	);
+}
+
+export function createParameterPart(
+	parameterName: string,
+): RoutePatternParameterPart {
+	if (!parameterName) {
+		throw new Error('Value cannot be undefined or empty.' /* LOC */);
+	}
+
+	// TODO: invalidParameterNameChars
+
+	return createParameterPartCore(
+		parameterName,
+		// TODO: undefined,
+		RoutePatternParameterKind.Standard,
+		// TODO: parameterPolicies
 	);
 }
 

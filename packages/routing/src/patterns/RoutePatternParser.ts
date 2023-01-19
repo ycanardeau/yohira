@@ -1,5 +1,6 @@
 import { List, replaceAll } from '@yohira/base';
 
+import { parseRouteParameter } from './RouteParameterParser';
 import { RoutePattern } from './RoutePattern';
 import {
 	createLiteralPart,
@@ -165,10 +166,103 @@ function parseLiteral(context: Context, parts: RoutePatternPart[]): boolean {
 	}
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,ec4f220dc199081d,references
+function isValidParameterName(
+	context: Context,
+	parameterName: string,
+): boolean {
+	if (parameterName.length === 0 /* TODO: invalidParameterNameChars */) {
+		context.error = `The route parameter name '${parameterName}' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{{', '}}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character mark ...` /* LOC */;
+		return false;
+	}
+
+	// TODO: if (!context.parameterNames.add(parameterName)) {
+	// TODO: 	context.error = `The route parameter name '${parameterName}' appears more than one time in the route template.`; /* LOC */
+	// TODO: 	return false;
+	// TODO: }
+
+	return true;
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,f688b4bb14a38ca1,references
 function parseParameter(context: Context, parts: RoutePatternPart[]): boolean {
+	if (context.current !== openBrace) {
+		throw new Error('Assertion failed.');
+	}
+	context.mark();
+
+	context.moveNext();
+
+	while (true) {
+		if (context.current === openBrace) {
+			// This is an open brace inside of a parameter, it has to be escaped
+			if (context.moveNext()) {
+				if (context.current != openBrace) {
+					// If we see something like "{p1:regex(^\d{3", we will come here.
+					context.error =
+						"In a route parameter, '{' and '}' must be escaped with '{{' and '}}'." /* LOC */;
+					return false;
+				}
+			} else {
+				// This is a dangling open-brace, which is not allowed
+				// Example: "{p1:regex(^\d{"
+				context.error =
+					"There is an incomplete parameter in the route template. Check that each '{' character has a matching '}' character." /* LOC */;
+				return false;
+			}
+		} else if (context.current === closeBrace) {
+			// When we encounter Closed brace here, it either means end of the parameter or it is a closed
+			// brace in the parameter, in that case it needs to be escaped.
+			// Example: {p1:regex(([}}])\w+}. First pair is escaped one and last marks end of the parameter
+			if (!context.moveNext()) {
+				// This is the end of the string -and we have a valid parameter
+				break;
+			}
+
+			if (context.current == closeBrace) {
+				// This is an 'escaped' brace in a parameter name
+			} else {
+				// This is the end of the parameter
+				break;
+			}
+		}
+
+		if (!context.moveNext()) {
+			// This is a dangling open-brace, which is not allowed
+			context.error =
+				"There is an incomplete parameter in the route template. Check that each '{' character has a matching '}' character."; /* LOC */
+			return false;
+		}
+	}
+
+	const text = context.capture()!;
+	if (text === '{}') {
+		context.error = `The route parameter name '' is invalid. Route parameter names must be non-empty and cannot contain these characters: '{{', '}}', '/'. The '?' character marks a parameter as optional, and can occur only at the end of the parameter. The '*' character mark ...`; /* LOC */
+		return false;
+	}
+
+	const inside = text?.substring(1, text.length - 1);
+	const decoded = replaceAll(replaceAll(inside, '}}', '}'), '{{', '{');
+
+	// At this point, we need to parse the raw name for inline constraint,
+	// default values and optional parameters.
+	const templatePart = parseRouteParameter(decoded);
+
+	if (decoded.startsWith('*') && decoded.endsWith('?')) {
+		context.error =
+			'A catch-all parameter cannot be marked optional.' /* LOC */;
+		return false;
+	}
+
 	// TODO
-	throw new Error('Method not implemented.');
+
+	const parameterName = templatePart.name;
+	if (isValidParameterName(context, parameterName)) {
+		parts.push(templatePart);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,3fca612f7c3e93f8,references
