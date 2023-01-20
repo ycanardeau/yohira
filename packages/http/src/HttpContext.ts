@@ -1,5 +1,8 @@
 import { IServiceProvider } from '@yohira/base';
-import { IFeatureCollection } from '@yohira/extensions.features';
+import {
+	FeatureReferences,
+	IFeatureCollection,
+} from '@yohira/extensions.features';
 import {
 	IHttpContext,
 	IHttpRequest,
@@ -10,12 +13,18 @@ import { IServiceProvidersFeature } from '@yohira/http.features';
 import { HttpRequest } from './internal/HttpRequest';
 import { HttpResponse } from './internal/HttpResponse';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,6cd3f52cf0ced363,references
+class FeatureInterfaces {}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references
 export class HttpContext implements IHttpContext {
+	private _features = new FeatureReferences<FeatureInterfaces>();
+
 	readonly request: IHttpRequest;
 	readonly response: IHttpResponse;
 
 	constructor(features: IFeatureCollection) {
+		this._features.initialize(features);
 		this.request = new HttpRequest(this);
 		this.response = new HttpResponse(this);
 	}
