@@ -15,6 +15,7 @@ import { ServiceProviderOptions } from './ServiceProviderOptions';
 import { CallSiteChain } from './service-lookup/CallSiteChain';
 import { CallSiteFactory } from './service-lookup/CallSiteFactory';
 import { CallSiteValidator } from './service-lookup/CallSiteValidator';
+import { ConstantCallSite } from './service-lookup/ConstantCallSite';
 import { RuntimeServiceProviderEngine } from './service-lookup/RuntimeServiceProviderEngine';
 import { ServiceCallSite } from './service-lookup/ServiceCallSite';
 import { ServiceProviderCallSite } from './service-lookup/ServiceProviderCallSite';
@@ -97,6 +98,10 @@ export class ServiceProvider
 			Type.from('IServiceProvider'),
 			new ServiceProviderCallSite(),
 		);
+		this.callSiteFactory.add(
+			Type.from('IServiceScopeFactory'),
+			new ConstantCallSite(Type.from('IServiceScopeFactory'), this.root),
+		);
 		// TODO
 
 		if (options.validateScopes) {
@@ -144,5 +149,13 @@ export class ServiceProvider
 	disposeAsync(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	/** @internal */ createScope(): IServiceScope {
+		if (this.disposed) {
+			throw new Error('Cannot access a disposed object.' /* LOC */);
+		}
+
+		return new ServiceProviderEngineScope(this, false);
 	}
 }

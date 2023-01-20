@@ -3,6 +3,7 @@ export * from './inject';
 export * from './IServiceCollection';
 export * from './IServiceProviderIsService';
 export * from './IServiceScope';
+export * from './IServiceScopeFactory';
 export * from './ServiceCollection';
 export * from './ServiceCollectionServiceExtensions';
 export * from './ServiceDescriptor';
