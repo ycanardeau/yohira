@@ -84,12 +84,14 @@ export class GenericWebHostBuilder
 
 	configureServices(
 		configureServices: (
-			/* TODO: context: WebHostBuilderContext */ services: IServiceCollection,
+			context: WebHostBuilderContext,
+			services: IServiceCollection,
 		) => void,
 	): this {
 		this.builder.configureServices((context, builder) => {
-			// TODO: webHostBuilderContext
-			configureServices(/* TODO */ builder);
+			const webHostBuilderContext =
+				this.getWebHostBuilderContext(context);
+			configureServices(webHostBuilderContext, builder);
 		});
 
 		return this;

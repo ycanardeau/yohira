@@ -71,6 +71,8 @@
 			"@yohira/http.extensions": ["packages/http.extensions/src"],
 			"@yohira/http.features": ["packages/http.features/src"],
 			"@yohira/routing": ["packages/routing/src"],
+			"@yohira/server.node": ["packages/server.node/src"],
+			"@yohira/server.node.core": ["packages/server.node.core/src"],
 			"@yohira/static-files": ["packages/static-files/src"],
 			"@yohira/third-party.inversify": [
 				"packages/third-party.inversify/src"
