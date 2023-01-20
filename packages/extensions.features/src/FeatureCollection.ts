@@ -6,7 +6,7 @@ import { IFeatureCollection } from './IFeatureCollection';
 export class FeatureCollection implements IFeatureCollection {
 	private readonly features = new Map<
 		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
-		any
+		any /* TODO: DO not use any. */
 	>();
 
 	get<T>(key: Type): T | undefined {

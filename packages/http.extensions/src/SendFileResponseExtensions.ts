@@ -1,9 +1,8 @@
+import { Type } from '@yohira/base';
+import { getRequiredFeature } from '@yohira/extensions.features';
 import { IFileInfo } from '@yohira/extensions.file-providers';
-// TODO: Do not import @yohira/http.
-import { HttpContext } from '@yohira/http';
 import { IHttpResponse } from '@yohira/http.abstractions';
-import { createReadStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
+import { IHttpResponseBodyFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Extensions/SendFileResponseExtensions.cs,46a23828b29f9242,references
 async function sendFileCore(
@@ -14,14 +13,14 @@ async function sendFileCore(
 	// TODO: cancellationToken
 ): Promise<void> {
 	// TODO
-	const { nativeResponse } = response.httpContext as HttpContext;
-	const stats = await stat(fileName);
-	nativeResponse.writeHead(response.statusCode, {
-		'Content-Length': stats.size,
-		'Content-Type': response.contentType,
-	});
-	const readStream = createReadStream(fileName);
-	readStream.pipe(nativeResponse);
+	const sendFile = getRequiredFeature<IHttpResponseBodyFeature>(
+		response.httpContext.features,
+		Type.from('IHttpResponseBodyFeature'),
+	);
+
+	// TODO: try
+	await sendFile.sendFile(fileName, offset, count /* TODO: , localCancel */);
+	// TODO: catch
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Extensions/SendFileResponseExtensions.cs,7f1df561b7c6874a,references
