@@ -6,6 +6,7 @@ import {
 import { IHttpContext } from '@yohira/http.abstractions';
 
 import { Candidate } from './Candidate';
+import { DefaultEndpointSelector } from './DefaultEndpointSelector';
 import { DfaState } from './DfaState';
 import { EndpointSelector } from './EndpointSelector';
 import { tokenize } from './FastPathTokenizer';
@@ -45,6 +46,7 @@ function logCandidatesFound(
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DfaMatcher.cs,0b08e610bec2cfbc,references
 export class DfaMatcher extends Matcher {
 	private readonly logger: ILogger;
+	private readonly isDefaultEndpointSelector: boolean;
 
 	constructor(
 		logger: ILoggerT<DfaMatcher>,
@@ -55,6 +57,8 @@ export class DfaMatcher extends Matcher {
 		super();
 
 		this.logger = logger;
+		this.isDefaultEndpointSelector =
+			selector instanceof DefaultEndpointSelector;
 	}
 
 	/** @internal */ findCandidateSet(
@@ -65,7 +69,28 @@ export class DfaMatcher extends Matcher {
 		candidates: Candidate[];
 		policies: IEndpointSelectorPolicy[];
 	} {
-		return { candidates: [] /* TODO */, policies: [] /* TODO */ };
+		const { states } = this;
+
+		// Process each path segment
+		let destination = 0;
+		for (const segment of segments) {
+			destination = states[destination].pathTransitions.getDestination(
+				path,
+				segment,
+			);
+		}
+
+		// Process an arbitrary number of policy-based decisions
+		let policyTransitions = states[destination].policyTransitions;
+		while (policyTransitions !== undefined) {
+			destination = policyTransitions.getDestination(httpContext);
+			policyTransitions = states[destination].policyTransitions;
+		}
+
+		return {
+			candidates: states[destination].candidates,
+			policies: states[destination].policies,
+		};
 	}
 
 	private async selectEndpointWithPolicies(
@@ -74,6 +99,7 @@ export class DfaMatcher extends Matcher {
 		// TODO: candidateSet: CandidateSet,
 	): Promise<void> {
 		// TODO
+		throw new Error('Method not implemented.');
 	}
 
 	match(httpContext: IHttpContext): Promise<void> {
@@ -102,6 +128,18 @@ export class DfaMatcher extends Matcher {
 
 		if (log) {
 			logCandidatesFound(this.logger, path, candidates);
+		}
+
+		const policyCount = policies.length;
+
+		// This is a fast path for single candidate, 0 policies and default selector
+		if (
+			candidateCount === 1 &&
+			policyCount === 0 &&
+			this.isDefaultEndpointSelector
+		) {
+			// TODO
+			throw new Error('Method not implemented.');
 		}
 
 		// TODO

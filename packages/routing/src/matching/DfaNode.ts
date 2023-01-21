@@ -1,5 +1,7 @@
-import { List } from '@yohira/base';
+import { CaseInsensitiveMap, List } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
+
+import { INodeBuilderPolicy } from './INodeBuilderPolicy';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DfaNode.cs,5c5c602ca1bcd885,references
 export class DfaNode {
@@ -14,13 +16,31 @@ export class DfaNode {
 
 	matches?: List<Endpoint>;
 
-	literals?: Map<string, DfaNode>;
+	literals?: CaseInsensitiveMap<DfaNode>;
 
 	parameters?: DfaNode;
 
 	catchAll?: DfaNode;
 
+	nodeBuilder!: INodeBuilderPolicy;
+
 	policyEdges?: Map<number /* TODO */, DfaNode>;
+
+	addLiteral(literal: string, node: DfaNode): void {
+		if (this.literals === undefined) {
+			this.literals = new CaseInsensitiveMap();
+		}
+
+		this.literals.set(literal, node);
+	}
+
+	addMatch(endpoint: Endpoint): void {
+		if (this.matches === undefined) {
+			this.matches = new List<Endpoint>();
+		}
+
+		this.matches.add(endpoint);
+	}
 
 	visit(visitor: (node: DfaNode) => void): void {
 		if (this.literals !== undefined) {

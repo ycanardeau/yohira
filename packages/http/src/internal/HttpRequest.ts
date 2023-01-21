@@ -52,4 +52,7 @@ export class HttpRequest implements IHttpRequest {
 	get path(): PathString {
 		return new PathString(this.httpRequestFeature.path);
 	}
+	set path(value: PathString) {
+		this.httpRequestFeature.path = value.value ?? '';
+	}
 }

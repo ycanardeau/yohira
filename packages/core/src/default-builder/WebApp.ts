@@ -11,6 +11,8 @@ import { EndpointDataSource, IEndpointRouteBuilder } from '@yohira/routing';
 
 import { WebAppBuilder } from './WebAppBuilder';
 
+const globalEndpointRouteBuilderKey = '__GlobalEndpointRouteBuilder';
+
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
 export class WebApp
 	implements IHost, IAppBuilder, IEndpointRouteBuilder, IAsyncDisposable
@@ -28,6 +30,9 @@ export class WebApp
 
 	constructor(private readonly host: IHost) {
 		this.appBuilder = new AppBuilder(host.services /* TODO */);
+		// TODO: logger
+
+		this.properties.set(globalEndpointRouteBuilderKey, this);
 	}
 
 	get services(): IServiceProvider {

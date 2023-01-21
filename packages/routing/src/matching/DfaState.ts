@@ -7,14 +7,14 @@ import { PolicyJumpTable } from './PolicyJumpTable';
 export class DfaState {
 	constructor(
 		readonly candidates: Candidate[],
-		readonly policies: IEndpointSelectorPolicy,
+		readonly policies: IEndpointSelectorPolicy[],
 		readonly pathTransitions: JumpTable,
-		readonly policyTransitions: PolicyJumpTable,
+		readonly policyTransitions: PolicyJumpTable | undefined,
 	) {}
 
 	debuggerToString(): string {
 		return `matches: ${
 			this.candidates.length
-		}, path: (${this.pathTransitions.debuggerToString()}), policy: (${this.policyTransitions.debuggerToString()})`;
+		}, path: (${this.pathTransitions.debuggerToString()}), policy: (${this.policyTransitions?.debuggerToString()})`;
 	}
 }

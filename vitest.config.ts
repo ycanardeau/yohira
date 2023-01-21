@@ -42,9 +42,17 @@ export default defineConfig({
 					__dirname,
 					'./packages/extensions.dependency-injection.specification.tests/src',
 				),
+			'@yohira/extensions.features': resolve(
+				__dirname,
+				'./packages/extensions.features/src',
+			),
 			'@yohira/extensions.file-providers': resolve(
 				__dirname,
 				'./packages/extensions.file-providers/src',
+			),
+			'@yohira/extensions.logging': resolve(
+				__dirname,
+				'./packages/extensions.logging/src',
 			),
 			'@yohira/extensions.logging.abstractions': resolve(
 				__dirname,
@@ -58,6 +66,7 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.options.config-extensions/src',
 			),
+			'@yohira/http': resolve(__dirname, './packages/http/src'),
 			'@yohira/http.abstractions': resolve(
 				__dirname,
 				'./packages/http.abstractions/src',

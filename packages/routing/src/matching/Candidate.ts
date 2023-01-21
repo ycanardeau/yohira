@@ -1,3 +1,5 @@
+import { Endpoint } from '@yohira/http.abstractions';
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/Candidate.cs,f68cdef97cda198e,references
 export enum CandidateFlags {
 	None = 0,
@@ -10,4 +12,14 @@ export enum CandidateFlags {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/Candidate.cs,ac474f030c0ed515,references
-export class Candidate {}
+export class Candidate {
+	constructor(
+		readonly endpoint: Endpoint,
+		score: number,
+		// TODO: slots,
+		// TODO: captures,
+		// TODO: catchAll,
+		// TODO: complexSegments,
+		// TODO: constraints
+	) {}
+}
