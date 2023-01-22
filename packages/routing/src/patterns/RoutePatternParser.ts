@@ -1,4 +1,4 @@
-import { List, replaceAll } from '@yohira/base';
+import { CaseInsensitiveSet, List, replaceAll } from '@yohira/base';
 
 import { parseRouteParameter } from './RouteParameterParser';
 import { RoutePattern } from './RoutePattern';
@@ -32,20 +32,6 @@ function trimPrefix(routePattern: string): string {
 		);
 	}
 	return routePattern;
-}
-
-class CaseInsensitiveSet extends Set<string> {
-	add(value: string): this {
-		return super.add(value.toLowerCase());
-	}
-
-	delete(value: string): boolean {
-		return super.delete(value.toLowerCase());
-	}
-
-	has(value: string): boolean {
-		return super.has(value.toLowerCase());
-	}
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,7fb8faec81aa82ba,references

@@ -1,4 +1,5 @@
 import {
+	CaseInsensitiveMap,
 	indexOfIgnoreCase,
 	startsWithIgnoreCase,
 	tryGetValue,
@@ -8,24 +9,6 @@ import {
 	keyDelimiter,
 } from '@yohira/extensions.config.abstractions';
 import { Result } from '@yohira/third-party.ts-results';
-
-export class CaseInsensitiveMap<V> extends Map<string, V> {
-	delete(key: string): boolean {
-		return super.delete(key.toLowerCase());
-	}
-
-	get(key: string): V | undefined {
-		return super.get(key.toLowerCase());
-	}
-
-	has(key: string): boolean {
-		return super.has(key.toLowerCase());
-	}
-
-	set(key: string, value: V): this {
-		return super.set(key.toLowerCase(), value);
-	}
-}
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationProvider.cs,5c6e786dde478171,references
 export abstract class ConfigProvider implements IConfigProvider {

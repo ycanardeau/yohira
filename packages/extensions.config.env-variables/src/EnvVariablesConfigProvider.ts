@@ -1,5 +1,9 @@
-import { replaceAll, startsWithIgnoreCase } from '@yohira/base';
-import { CaseInsensitiveMap, ConfigProvider } from '@yohira/extensions.config';
+import {
+	CaseInsensitiveMap,
+	replaceAll,
+	startsWithIgnoreCase,
+} from '@yohira/base';
+import { ConfigProvider } from '@yohira/extensions.config';
 import { keyDelimiter } from '@yohira/extensions.config.abstractions';
 import { env } from 'node:process';
 

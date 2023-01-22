@@ -1,3 +1,5 @@
+export * from './CaseInsensitiveMap';
+export * from './CaseInsensitiveSet';
 export * from './FileAttributes';
 export * from './FileInfo';
 export * from './FileSystemInfo';

@@ -1,5 +1,5 @@
-import { IDisposable } from '@yohira/base';
-import { CaseInsensitiveMap, ConfigProvider } from '@yohira/extensions.config';
+import { CaseInsensitiveMap, IDisposable } from '@yohira/base';
+import { ConfigProvider } from '@yohira/extensions.config';
 import { Stream } from 'node:stream';
 
 import { FileConfigSource } from './FileConfigSource';

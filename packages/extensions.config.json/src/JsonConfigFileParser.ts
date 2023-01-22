@@ -1,4 +1,4 @@
-import { CaseInsensitiveMap } from '@yohira/extensions.config';
+import { CaseInsensitiveMap } from '@yohira/base';
 import { keyDelimiter } from '@yohira/extensions.config.abstractions';
 import JSON5 from 'json5';
 import { Readable, Stream } from 'node:stream';
