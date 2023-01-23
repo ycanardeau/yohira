@@ -1,4 +1,4 @@
-import { IReadonlyList, List, Type, tryGetValue } from '@yohira/base';
+import { List, Type, tryGetValue } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { Endpoint } from '@yohira/http.abstractions';
@@ -299,7 +299,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	}
 
 	private applyPolicies = (node: DfaNode): void => {
-		if (node.matches === undefined || node.matches.count === 0) {
+		if (node.matches === undefined || node.matches.length === 0) {
 			return;
 		}
 
@@ -426,20 +426,20 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	// Builds an array of candidates for a node, assigns a 'score' for each
 	// endpoint.
 	/** @internal */ createCandidates(
-		endpoints: IReadonlyList<Endpoint> | undefined,
+		endpoints: readonly Endpoint[] | undefined,
 	): Candidate[] {
-		if (endpoints === undefined || endpoints.count === 0) {
+		if (endpoints === undefined || endpoints.length === 0) {
 			return [];
 		}
 
-		const candidates: Candidate[] = new Array(endpoints.count);
+		const candidates: Candidate[] = new Array(endpoints.length);
 
 		let score = 0;
-		let exemplar = endpoints.get(0);
+		let exemplar = endpoints[0];
 		candidates[0] = this.createCandidate(exemplar, score);
 
-		for (let i = 1; i < endpoints.count; i++) {
-			const endpoint = endpoints.get(i);
+		for (let i = 1; i < endpoints.length; i++) {
+			const endpoint = endpoints[i];
 			if (false /* TODO: !this.comparer.equals(exemplar, endpoint) */) {
 				// This endpoint doesn't have the same priority.
 				exemplar = endpoint;
@@ -542,7 +542,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 		let endpointSelectorPolicies: IEndpointSelectorPolicy[] | undefined =
 			undefined;
-		if (node.matches && node.matches.count > 0) {
+		if (node.matches && node.matches.length > 0) {
 			for (const endpointSelectorPolicy of this
 				.endpointSelectorPolicies) {
 				if (endpointSelectorPolicies === undefined) {

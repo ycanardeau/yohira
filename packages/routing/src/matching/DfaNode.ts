@@ -1,4 +1,4 @@
-import { CaseInsensitiveMap, List } from '@yohira/base';
+import { CaseInsensitiveMap } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { INodeBuilderPolicy } from './INodeBuilderPolicy';
@@ -14,7 +14,7 @@ export class DfaNode {
 	// Just for diagnostics and debugging
 	label?: string;
 
-	matches?: List<Endpoint>;
+	matches?: Endpoint[];
 
 	literals?: CaseInsensitiveMap<DfaNode>;
 
@@ -36,10 +36,10 @@ export class DfaNode {
 
 	addMatch(endpoint: Endpoint): void {
 		if (this.matches === undefined) {
-			this.matches = new List<Endpoint>();
+			this.matches = [];
 		}
 
-		this.matches.add(endpoint);
+		this.matches.push(endpoint);
 	}
 
 	visit(visitor: (node: DfaNode) => void): void {
@@ -77,7 +77,7 @@ export class DfaNode {
 			' d:',
 			this.pathDepth.toString(),
 			' m:',
-			(this.matches?.count ?? 0).toString(),
+			(this.matches?.length ?? 0).toString(),
 			' c: ',
 			this.literals !== undefined
 				? Array.from(this.literals.entries())
