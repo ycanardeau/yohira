@@ -102,7 +102,7 @@ export class StaticFileContext {
 	}
 
 	async lookupFileInfo(): Promise<boolean> {
-		this.fileInfo = this.fileProvider.getFileInfo(this.subPath);
+		this.fileInfo = await this.fileProvider.getFileInfo(this.subPath);
 		if (await this.fileInfo.exists()) {
 			this.length = this.fileInfo.length;
 

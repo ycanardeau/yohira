@@ -24,7 +24,7 @@ export abstract class FileConfigProvider
 	abstract loadStream(stream: Stream): Promise<void>;
 
 	private async loadCore(reload: boolean): Promise<void> {
-		const file = this.source.fileProvider?.getFileInfo(
+		const file = await this.source.fileProvider?.getFileInfo(
 			this.source.path ?? '',
 		);
 		if (file === undefined || !(await file.exists())) {

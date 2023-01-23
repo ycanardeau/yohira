@@ -63,7 +63,7 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		return fullPath;
 	}
 
-	getFileInfo(subpath: string): IFileInfo {
+	async getFileInfo(subpath: string): Promise<IFileInfo> {
 		if (!subpath || hasInvalidPathChars(subpath)) {
 			return new NotFoundFileInfo(subpath);
 		}
@@ -85,7 +85,7 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		}
 
 		const fileInfo = new FileInfo(fullPath);
-		if (isExcluded(fileInfo, this.filters)) {
+		if (await isExcluded(fileInfo, this.filters)) {
 			return new NotFoundFileInfo(subpath);
 		}
 
