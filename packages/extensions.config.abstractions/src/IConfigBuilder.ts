@@ -8,5 +8,5 @@ export interface IConfigBuilder {
 	readonly properties: Map<string, unknown>;
 	readonly sources: IList<IConfigSource>;
 	add(source: IConfigSource): this;
-	build(): IConfigRoot;
+	build(): Promise<IConfigRoot>;
 }

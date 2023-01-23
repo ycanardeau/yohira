@@ -44,13 +44,13 @@ test('UsesFactory', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsTest.cs#L30
-test('CanReadComplexProperties', () => {
+test('CanReadComplexProperties', async () => {
 	const dic = { integer: '-2', boolean: 'TRUe', 'nested:integer': '11' };
 	const services = new ServiceCollection();
 	configureOptionsConfigServices(
 		ComplexOptions,
 		services,
-		addInMemoryCollection(new ConfigBuilder(), dic).build(),
+		await addInMemoryCollection(new ConfigBuilder(), dic).build(),
 	);
 	const sp = buildServiceProvider(services);
 	const options = getRequiredService<IOptions<ComplexOptions>>(
@@ -63,7 +63,7 @@ test('CanReadComplexProperties', () => {
 });
 
 /* TODO: // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsTest.cs#L48
-test('CanReadInheritedProperties', () => {
+test('CanReadInheritedProperties', async () => {
 	const dic = {
 		integer: '-2',
 		boolean: 'TRUe',
@@ -74,7 +74,7 @@ test('CanReadInheritedProperties', () => {
 	configureOptionsConfigServices(
 		services,
 		DerivedOptions,
-		addInMemoryCollection(new ConfigBuilder(), dic).build(),
+		await addInMemoryCollection(new ConfigBuilder(), dic).build(),
 	);
 	const sp = buildServiceProvider(services);
 	const options = getRequiredService<IOptions<DerivedOptions>>(
@@ -88,7 +88,7 @@ test('CanReadInheritedProperties', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsTest.cs#L68
-test('CanReadStaticProperty', () => {
+test('CanReadStaticProperty', async () => {
 	const dic = {
 		staticProperty: 'stuff',
 	};
@@ -96,7 +96,7 @@ test('CanReadStaticProperty', () => {
 	configureOptionsConfigServices(
 		services,
 		ComplexOptions,
-		addInMemoryCollection(new ConfigBuilder(), dic).build(),
+		await addInMemoryCollection(new ConfigBuilder(), dic).build(),
 	);
 	const sp = buildServiceProvider(services);
 	getRequiredService<IOptions<ComplexOptions>>(
@@ -109,13 +109,13 @@ test('CanReadStaticProperty', () => {
 // TODO
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Options/tests/Microsoft.Extensions.Options.Tests/OptionsTest.cs#L134
-test('SetupCallsInOrder', () => {
+test('SetupCallsInOrder', async () => {
 	const services = addOptions(new ServiceCollection());
 	const dic = {
 		message: '!',
 	};
 	const builder = addInMemoryCollection(new ConfigBuilder(), dic);
-	const config = builder.build();
+	const config = await builder.build();
 	configureOptionsServices(services, FakeOptions, (o) => {
 		o.message += 'igetstomped';
 	});

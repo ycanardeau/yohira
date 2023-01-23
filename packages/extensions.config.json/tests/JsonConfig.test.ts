@@ -10,16 +10,16 @@ import { expect, test } from 'vitest';
 
 import { get } from '../../extensions.config/tests/common/ConfigProviderExtensions';
 
-function loadProvider(json: string): JsonConfigProvider {
+async function loadProvider(json: string): Promise<JsonConfigProvider> {
 	const source = new JsonConfigSource();
 	source.optional = true;
 	const provider = new JsonConfigProvider(source);
-	provider.loadStream(Readable.from(json));
+	await provider.loadStream(Readable.from(json));
 	return provider;
 }
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L23
-test('CanLoadValidJsonFromStreamProvider', () => {
+test('CanLoadValidJsonFromStreamProvider', async () => {
 	const json = `
 {
     "firstname": "test",
@@ -29,7 +29,7 @@ test('CanLoadValidJsonFromStreamProvider', () => {
             "zipcode": "12345"
         }
 }`;
-	const config = addJsonStream(
+	const config = await addJsonStream(
 		new ConfigBuilder(),
 		Readable.from(json),
 	).build();
@@ -42,20 +42,20 @@ test('CanLoadValidJsonFromStreamProvider', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L42
-test('ReloadThrowsFromStreamProvider', () => {
+test('ReloadThrowsFromStreamProvider', async () => {
 	const json = `
 {
     "firstname": "test"
 }`;
-	const config = addJsonStream(
+	const config = await addJsonStream(
 		new ConfigBuilder(),
 		Readable.from(json),
 	).build();
-	expect(() => config.reload()).toThrowError();
+	await expect(() => config.reload()).rejects.toThrowError();
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L54
-test('LoadKeyValuePairsFromValidJson', () => {
+test('LoadKeyValuePairsFromValidJson', async () => {
 	const json = `
 {
     "firstname": "test",
@@ -65,7 +65,7 @@ test('LoadKeyValuePairsFromValidJson', () => {
             "zipcode": "12345"
         }
 }`;
-	const jsonConfigSrc = loadProvider(json);
+	const jsonConfigSrc = await loadProvider(json);
 
 	expect(get(jsonConfigSrc, 'firstname')).toBe('test');
 	expect(get(jsonConfigSrc, 'test.last.name')).toBe('last.name');
@@ -76,26 +76,26 @@ test('LoadKeyValuePairsFromValidJson', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L74
-test('LoadMethodCanHandleEmptyValue', () => {
+test('LoadMethodCanHandleEmptyValue', async () => {
 	const json = `
 {
     "name": ""
 }`;
-	const jsonConfigSrc = loadProvider(json);
+	const jsonConfigSrc = await loadProvider(json);
 	expect(get(jsonConfigSrc, 'name')).toBe('');
 });
 
 // TODO
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L107
-test('NonObjectRootIsInvalid', () => {
+test('NonObjectRootIsInvalid', async () => {
 	const json = `"test"`;
 
-	expect(() => loadProvider(json)).toThrowError();
+	await expect(() => loadProvider(json)).rejects.toThrowError();
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L118
-test('SupportAndIgnoreComments', () => {
+test('SupportAndIgnoreComments', async () => {
 	const json = `/* Comments */
 	{/* Comments */
 	"name": /* Comments */ "test",
@@ -104,14 +104,14 @@ test('SupportAndIgnoreComments', () => {
 		"zipcode": "12345"
 	}
 }`;
-	const jsonConfigSrc = loadProvider(json);
+	const jsonConfigSrc = await loadProvider(json);
 	expect(get(jsonConfigSrc, 'name')).toBe('test');
 	expect(get(jsonConfigSrc, 'address:street')).toBe('Something street');
 	expect(get(jsonConfigSrc, 'address:zipcode')).toBe('12345');
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L135
-test('SupportAndIgnoreTrailingCommas', () => {
+test('SupportAndIgnoreTrailingCommas', async () => {
 	const json = `
 {
     "firstname": "test",
@@ -121,7 +121,7 @@ test('SupportAndIgnoreTrailingCommas', () => {
             "zipcode": "12345",
         },
 }`;
-	const jsonConfigSrc = loadProvider(json);
+	const jsonConfigSrc = await loadProvider(json);
 
 	expect(get(jsonConfigSrc, 'firstname')).toBe('test');
 	expect(get(jsonConfigSrc, 'test.last.name')).toBe('last.name');
@@ -132,7 +132,7 @@ test('SupportAndIgnoreTrailingCommas', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L155
-test('ThrowExceptionWhenUnexpectedEndFoundBeforeFinishParsing', () => {
+test('ThrowExceptionWhenUnexpectedEndFoundBeforeFinishParsing', async () => {
 	const json = `{
 	""name"": ""test"",
 	""address"": {
@@ -140,18 +140,18 @@ test('ThrowExceptionWhenUnexpectedEndFoundBeforeFinishParsing', () => {
 		""zipcode"": ""12345""
 	}
 /* Missing a right brace here*/`;
-	expect(() => loadProvider(json)).toThrowError(
+	await expect(() => loadProvider(json)).rejects.toThrowError(
 		'Could not parse the JSON file.',
 	);
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L169
-test('ThrowExceptionWhenMissingCurlyBeforeFinishParsing', () => {
+test('ThrowExceptionWhenMissingCurlyBeforeFinishParsing', async () => {
 	const json = `
 {
 	"Data": {`;
 
-	expect(() => loadProvider(json)).toThrowError(
+	await expect(() => loadProvider(json)).rejects.toThrowError(
 		'Could not parse the JSON file.',
 	);
 });
@@ -166,7 +166,7 @@ test('ThrowExceptionWhenPassingEmptyStringAsFilePath', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L201
-test('JsonConfiguration_Throws_On_Missing_Configuration_File', () => {
+test('JsonConfiguration_Throws_On_Missing_Configuration_File', async () => {
 	const config = addJsonFile(
 		new ConfigBuilder(),
 		undefined,
@@ -175,14 +175,14 @@ test('JsonConfiguration_Throws_On_Missing_Configuration_File', () => {
 		false,
 	);
 
-	expect(() => config.build()).toThrowError(
+	await expect(() => config.build()).rejects.toThrowError(
 		`The configuration file 'NotExistingConfig.json' was not found and is not optional. The expected physical path was '`,
 	);
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L211
-test('JsonConfiguration_Does_Not_Throw_On_Optional_Configuration', () => {
-	const config = addJsonFile(
+test('JsonConfiguration_Does_Not_Throw_On_Optional_Configuration', async () => {
+	const config = await addJsonFile(
 		new ConfigBuilder(),
 		undefined,
 		'NotExistingConfig.json',
@@ -192,8 +192,8 @@ test('JsonConfiguration_Does_Not_Throw_On_Optional_Configuration', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/JsonConfigurationTest.cs#L217
-test('ThrowFormatExceptionWhenFileIsEmpty', () => {
-	expect(() => loadProvider(``)).toThrowError(
+test('ThrowFormatExceptionWhenFileIsEmpty', async () => {
+	await expect(() => loadProvider(``)).rejects.toThrowError(
 		'Could not parse the JSON file.',
 	);
 });

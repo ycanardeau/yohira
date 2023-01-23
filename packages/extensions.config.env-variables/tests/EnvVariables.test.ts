@@ -10,7 +10,7 @@ import { expect, test } from 'vitest';
 import { get } from '../../extensions.config/tests/common/ConfigProviderExtensions';
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L17
-test('LoadKeyValuePairsFromEnvironmentDictionary', () => {
+test('LoadKeyValuePairsFromEnvironmentDictionary', async () => {
 	const dict = {
 		'DefaultConnection:ConnectionString': 'TestConnectionString',
 		'DefaultConnection:Provider': 'SqlClient',
@@ -19,7 +19,7 @@ test('LoadKeyValuePairsFromEnvironmentDictionary', () => {
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider(undefined);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'defaultconnection:ConnectionString')).toBe(
 		'TestConnectionString',
@@ -35,7 +35,7 @@ test('LoadKeyValuePairsFromEnvironmentDictionary', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L38
-test('LoadKeyValuePairsFromEnvironmentDictionaryWithPrefix', () => {
+test('LoadKeyValuePairsFromEnvironmentDictionaryWithPrefix', async () => {
 	const dict = {
 		'DefaultConnection:ConnectionString': 'TestConnectionString',
 		'DefaultConnection:Provider': 'SqlClient',
@@ -44,7 +44,7 @@ test('LoadKeyValuePairsFromEnvironmentDictionaryWithPrefix', () => {
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('DefaultConnection:');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'ConnectionString')).toBe('TestConnectionString');
 	expect(get(envConfigSrc, 'Provider')).toBe('SqlClient');
@@ -54,7 +54,7 @@ test('LoadKeyValuePairsFromEnvironmentDictionaryWithPrefix', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L57
-test('LoadKeyValuePairsFromAzureEnvironment', () => {
+test('LoadKeyValuePairsFromAzureEnvironment', async () => {
 	const dict = {
 		APPSETTING_AppName: 'TestAppName',
 		CUSTOMCONNSTR_db1: 'CustomConnStr',
@@ -65,7 +65,7 @@ test('LoadKeyValuePairsFromAzureEnvironment', () => {
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider(undefined);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'APPSETTING_AppName')).toBe('TestAppName');
 	const tryGetResult = envConfigSrc.tryGet('AppName');
@@ -87,7 +87,7 @@ test('LoadKeyValuePairsFromAzureEnvironment', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L86
-test('LoadKeyValuePairsFromAzureEnvironmentWithPrefix', () => {
+test('LoadKeyValuePairsFromAzureEnvironmentWithPrefix', async () => {
 	const dict = {
 		CUSTOMCONNSTR_db1: 'CustomConnStr',
 		SQLCONNSTR_db2: 'SQLConnStr',
@@ -97,7 +97,7 @@ test('LoadKeyValuePairsFromAzureEnvironmentWithPrefix', () => {
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('ConnectionStrings:');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'db1')).toBe('CustomConnStr');
 	expect(get(envConfigSrc, 'db2')).toBe('SQLConnStr');
@@ -111,14 +111,14 @@ test('LoadKeyValuePairsFromAzureEnvironmentWithPrefix', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L110
-test('LastVariableAddedWhenKeyIsDuplicatedInAzureEnvironment', () => {
+test('LastVariableAddedWhenKeyIsDuplicatedInAzureEnvironment', async () => {
 	const dict = {
 		'ConnectionStrings:db2': 'CommonEnvValue',
 		SQLCONNSTR_db2: 'SQLConnStr',
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider(undefined);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(!!get(envConfigSrc, 'ConnectionStrings:db2')).toBe(true);
 	expect(get(envConfigSrc, 'ConnectionStrings:db2_ProviderName')).toBe(
@@ -127,7 +127,7 @@ test('LastVariableAddedWhenKeyIsDuplicatedInAzureEnvironment', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L126
-test('LastVariableAddedWhenMultipleEnvironmentVariablesWithSameNameButDifferentCaseExist', () => {
+test('LastVariableAddedWhenMultipleEnvironmentVariablesWithSameNameButDifferentCaseExist', async () => {
 	const dict = {
 		CommonEnv: 'CommonEnvValue1',
 		commonenv: 'commonenvValue2',
@@ -135,21 +135,21 @@ test('LastVariableAddedWhenMultipleEnvironmentVariablesWithSameNameButDifferentC
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider(undefined);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(!!get(envConfigSrc, 'cOMMonEnv')).toBe(true);
 	expect(!!get(envConfigSrc, 'CommonEnv')).toBe(true);
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L143
-test('ReplaceDoubleUnderscoreInEnvironmentVariables', () => {
+test('ReplaceDoubleUnderscoreInEnvironmentVariables', async () => {
 	const dict = {
 		data__ConnectionString: 'connection',
 		SQLCONNSTR_db1: 'connStr',
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider(undefined);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'data:ConnectionString')).toBe('connection');
 	expect(get(envConfigSrc, 'ConnectionStrings:db1_ProviderName')).toBe(
@@ -158,7 +158,7 @@ test('ReplaceDoubleUnderscoreInEnvironmentVariables', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L159
-test('ReplaceDoubleUnderscoreInEnvironmentVariablesDoubleUnderscorePrefixStillMatches', () => {
+test('ReplaceDoubleUnderscoreInEnvironmentVariablesDoubleUnderscorePrefixStillMatches', async () => {
 	const dict = {
 		test__prefix__with__double__underscores__data__ConnectionString:
 			'connection',
@@ -167,37 +167,37 @@ test('ReplaceDoubleUnderscoreInEnvironmentVariablesDoubleUnderscorePrefixStillMa
 		'test__prefix__with__double__underscores__',
 	);
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'data:ConnectionString')).toBe('connection');
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L173
-test('MixingPathSeparatorsInPrefixStillMatchesEnvironmentVariable', () => {
+test('MixingPathSeparatorsInPrefixStillMatchesEnvironmentVariable', async () => {
 	const dict = {
 		_____EXPERIMENTAL__data__ConnectionString: 'connection',
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('::_EXPERIMENTAL:');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'data:ConnectionString')).toBe('connection');
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L187
-test('OnlyASinglePrefixIsRemovedFromMatchingKey', () => {
+test('OnlyASinglePrefixIsRemovedFromMatchingKey', async () => {
 	const dict = {
 		test__test__ConnectionString: 'connection',
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('test__');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'test:ConnectionString')).toBe('connection');
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L201
-test('OnlyEnvironmentVariablesMatchingTheGivenPrefixAreIncluded', () => {
+test('OnlyEnvironmentVariablesMatchingTheGivenPrefixAreIncluded', async () => {
 	const dict = {
 		projectA__section1__project: 'A',
 		projectA__section1__projectA: 'true',
@@ -208,7 +208,7 @@ test('OnlyEnvironmentVariablesMatchingTheGivenPrefixAreIncluded', () => {
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('projectB__');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'section1:project')).toBe('B');
 	expect(get(envConfigSrc, 'section1:projectB')).toBe('true');
@@ -217,14 +217,14 @@ test('OnlyEnvironmentVariablesMatchingTheGivenPrefixAreIncluded', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L223
-test('PrefixPreventsLoadingSqlConnectionStrings', () => {
+test('PrefixPreventsLoadingSqlConnectionStrings', async () => {
 	const dict = {
 		test__test__ConnectionString: 'connection',
 		SQLCONNSTR_db1: 'connStr',
 	};
 	const envConfigSrc = new EnvVariablesConfigProvider('test:');
 
-	envConfigSrc.loadCore(dict);
+	await envConfigSrc.loadCore(dict);
 
 	expect(get(envConfigSrc, 'test:ConnectionString')).toBe('connection');
 	expect(() =>
@@ -239,10 +239,10 @@ class SettingsWithFoo {
 }
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L245
-test('AddEnvironmentVariablesUsingNormalizedPrefix_Bind_PrefixMatches', () => {
+test('AddEnvironmentVariablesUsingNormalizedPrefix_Bind_PrefixMatches', async () => {
 	try {
 		env[envVariable] = 'myFooValue';
-		const config = addEnvVariables(
+		const config = await addEnvVariables(
 			new ConfigBuilder(),
 			'Microsoft:Extensions:Configuration:EnvironmentVariables:Test:',
 		).build();
@@ -257,10 +257,10 @@ test('AddEnvironmentVariablesUsingNormalizedPrefix_Bind_PrefixMatches', () => {
 });
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L266
-test('AddEnvironmentVariablesUsingPrefixWithDoubleUnderscores_Bind_PrefixMatches', () => {
+test('AddEnvironmentVariablesUsingPrefixWithDoubleUnderscores_Bind_PrefixMatches', async () => {
 	try {
 		env[envVariable] = 'myFooValue';
-		const config = addEnvVariables(
+		const config = await addEnvVariables(
 			new ConfigBuilder(),
 			'Microsoft__Extensions__Configuration__EnvironmentVariables__Test__',
 		).build();

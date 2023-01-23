@@ -22,3 +22,5 @@ Yohira is an experimental project to port ASP.NET Core to TypeScript.
 -   [Strongly Typed Configuration Settings in ASP.NET Core - Rick Strahl's Web Log](https://weblog.west-wind.com/posts/2016/may/23/strongly-typed-configuration-settings-in-aspnet-core)
 -   [Easy Configuration Binding in ASP.NET Core - revisited - Rick Strahl's Web Log](https://weblog.west-wind.com/posts/2017/dec/12/easy-configuration-binding-in-aspnet-core-revisited)
 -   [Routing in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing)
+-   [Why doesn&#39;t IConfigurationProvider have an async Load method? · Issue #36018 · dotnet/runtime](https://github.com/dotnet/runtime/issues/36018)
+-   [[API Proposal]: AsyncConfigurationProvider · Issue #79193 · dotnet/runtime](https://github.com/dotnet/runtime/issues/79193)

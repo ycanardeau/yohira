@@ -49,7 +49,7 @@ class ConfigProviderJsonTest extends ConfigProviderTestBase {
 
 	protected loadThroughProvider(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => void;
+		initializer: () => Promise<void>;
 	} {
 		const jsonBuilder: string[] = [];
 		this.sectionToJson(jsonBuilder, testConfig, false);

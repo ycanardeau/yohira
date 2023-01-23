@@ -12,7 +12,7 @@ import {
 class ConfigProviderEnvVariablesTest extends ConfigProviderTestBase {
 	protected loadThroughProvider(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => void;
+		initializer: () => Promise<void>;
 	} {
 		const values = new List<[string, string]>();
 		ConfigProviderTestBase.sectionToValues(testConfig, '', values);
@@ -27,9 +27,11 @@ class ConfigProviderEnvVariablesTest extends ConfigProviderTestBase {
 
 	// TODO: Load_from_single_provider_with_differing_case_duplicates_throws(): void {}
 
-	Null_values_are_included_in_the_config(): void {
+	async Null_values_are_included_in_the_config(): Promise<void> {
 		this.assertConfig(
-			this.buildConfigRoot(this.loadThroughProvider(nullsTestConfig)),
+			await this.buildConfigRoot(
+				this.loadThroughProvider(nullsTestConfig),
+			),
 			true,
 		);
 	}

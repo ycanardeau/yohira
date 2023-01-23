@@ -10,7 +10,8 @@ export class JsonStreamConfigProvider extends StreamConfigProvider {
 		super(source);
 	}
 
-	loadStream(stream: Stream): void {
+	loadStream(stream: Stream): Promise<void> {
 		this.data = JsonConfigFileParser.parse(stream);
+		return Promise.resolve();
 	}
 }

@@ -69,7 +69,7 @@ export class EnvVariablesConfigProvider extends ConfigProvider {
 		}
 	}
 
-	loadCore(envVariables: NodeJS.ProcessEnv): void {
+	loadCore(envVariables: NodeJS.ProcessEnv): Promise<void> {
 		const data = new CaseInsensitiveMap<string | undefined>();
 
 		for (const [key, value] of Object.entries(envVariables)) {
@@ -117,10 +117,11 @@ export class EnvVariablesConfigProvider extends ConfigProvider {
 		}
 
 		this.data = data;
+		return Promise.resolve();
 	}
 
-	load(): void {
-		this.loadCore(env);
+	load(): Promise<void> {
+		return this.loadCore(env);
 	}
 
 	toString(): string {

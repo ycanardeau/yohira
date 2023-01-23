@@ -21,9 +21,9 @@ export abstract class FileConfigProvider
 		})`;
 	}
 
-	abstract loadStream(stream: Stream): void;
+	abstract loadStream(stream: Stream): Promise<void>;
 
-	private loadCore(reload: boolean): void {
+	private loadCore(reload: boolean): Promise<void> {
 		const file = this.source.fileProvider?.getFileInfo(
 			this.source.path ?? '',
 		);
@@ -45,10 +45,11 @@ export abstract class FileConfigProvider
 			// TODO
 			throw new Error('Method not implemented.');
 		}
+		return Promise.resolve();
 	}
 
-	load(): void {
-		this.loadCore(false);
+	load(): Promise<void> {
+		return this.loadCore(false);
 	}
 
 	dispose(): Promise<void> {
