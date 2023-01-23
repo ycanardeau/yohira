@@ -1,3 +1,4 @@
+export * from './extensions/EndpointBuilder';
 export * from './extensions/IEndpointConventionBuilder';
 export * from './extensions/RunExtensions';
 export * from './extensions/UseExtensions';

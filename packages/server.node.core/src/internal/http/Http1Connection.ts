@@ -88,6 +88,9 @@ export class Http1Connection
 	get endpoint(): Endpoint | undefined {
 		return this._endpoint;
 	}
+	set endpoint(value: Endpoint | undefined) {
+		this._endpoint = value;
+	}
 
 	private featureRevision = 0;
 	get revision(): number {

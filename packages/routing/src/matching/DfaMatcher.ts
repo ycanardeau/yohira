@@ -3,9 +3,9 @@ import {
 	ILoggerT,
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
-import { IHttpContext } from '@yohira/http.abstractions';
+import { IHttpContext, setEndpoint } from '@yohira/http.abstractions';
 
-import { Candidate } from './Candidate';
+import { Candidate, CandidateFlags } from './Candidate';
 import { DefaultEndpointSelector } from './DefaultEndpointSelector';
 import { DfaState } from './DfaState';
 import { EndpointSelector } from './EndpointSelector';
@@ -138,8 +138,15 @@ export class DfaMatcher extends Matcher {
 			policyCount === 0 &&
 			this.isDefaultEndpointSelector
 		) {
-			// TODO
-			throw new Error('Method not implemented.');
+			const candidate = candidates[0];
+
+			// Just strict path matching (no route values)
+			if (true /* TODO: candidate.flags === CandidateFlags.None */) {
+				setEndpoint(httpContext, candidate.endpoint);
+
+				// We're done
+				return Promise.resolve();
+			}
 		}
 
 		// TODO

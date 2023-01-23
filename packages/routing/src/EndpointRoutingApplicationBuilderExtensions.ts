@@ -2,7 +2,10 @@ import { Type, tryGetValue } from '@yohira/base';
 import { IAppBuilder, useMiddleware } from '@yohira/http.abstractions';
 
 import { DefaultEndpointRouteBuilder } from './DefaultEndpointRouteBuilder';
-import { EndpointRoutingMiddleware } from './EndpointRoutingMiddleware';
+import {
+	EndpointRoutingMiddleware,
+	endpointRouteBuilderRef,
+} from './EndpointRoutingMiddleware';
 import { IEndpointRouteBuilder } from './IEndpointRouteBuilder';
 
 const endpointRouteBuilderKey = '__EndpointRouteBuilder';
@@ -40,6 +43,9 @@ export function useRouting(builder: IAppBuilder): IAppBuilder {
 	}
 
 	// TODO
+
+	// HACK
+	endpointRouteBuilderRef.set(endpointRouteBuilder);
 
 	return useMiddleware(EndpointRoutingMiddleware, builder /* TODO */);
 }

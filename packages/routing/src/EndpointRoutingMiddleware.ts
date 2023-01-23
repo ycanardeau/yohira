@@ -52,6 +52,21 @@ function logMatchSkipped(logger: ILogger, endpoint: Endpoint): void {
 	return logMatchingSkipped(logger, endpoint.displayName);
 }
 
+// HACK
+let endpointRouteBuilder: IEndpointRouteBuilder;
+export const endpointRouteBuilderRef = {
+	get(): IEndpointRouteBuilder {
+		return endpointRouteBuilder;
+	},
+	set(value: IEndpointRouteBuilder): void {
+		if (endpointRouteBuilder !== undefined) {
+			throw new Error('Assertion failed.');
+		}
+
+		endpointRouteBuilder = value;
+	},
+};
+
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/EndpointRoutingMiddleware.cs,e91e5febd7b6da29,references
 export class EndpointRoutingMiddleware implements IMiddleware {
 	private readonly endpointDataSource: EndpointDataSource;
@@ -61,9 +76,10 @@ export class EndpointRoutingMiddleware implements IMiddleware {
 		private readonly matcherFactory: MatcherFactory,
 		@inject(Type.from('ILogger<EndpointRoutingMiddleware>'))
 		private readonly logger: ILoggerT<EndpointRoutingMiddleware>,
-		@inject(Type.from('IEndpointRouteBuilder'))
-		endpointRouteBuilder: IEndpointRouteBuilder,
 	) {
+		// HACK
+		const endpointRouteBuilder = endpointRouteBuilderRef.get();
+
 		this.endpointDataSource = new CompositeEndpointDataSource(
 			endpointRouteBuilder.dataSources,
 		);

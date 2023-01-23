@@ -194,3 +194,16 @@ export function createSeparatorPart(
 
 	return createSeparatorPartCore(content);
 }
+
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternFactory.cs,9b318498caad0054,references
+export function combineRoutePattern(
+	left: RoutePattern | undefined,
+	right: RoutePattern,
+): RoutePattern {
+	if (left === undefined) {
+		return right;
+	}
+
+	// TODO
+	throw new Error('Method not implemented.');
+}
