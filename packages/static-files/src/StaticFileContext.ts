@@ -101,14 +101,14 @@ export class StaticFileContext {
 		return this.fileInfo.physicalPath ?? '';
 	}
 
-	lookupFileInfo(): boolean {
+	async lookupFileInfo(): Promise<boolean> {
 		this.fileInfo = this.fileProvider.getFileInfo(this.subPath);
-		if (this.fileInfo.exists) {
+		if (await this.fileInfo.exists()) {
 			this.length = this.fileInfo.length;
 
 			// TODO
 		}
-		return this.fileInfo.exists;
+		return await this.fileInfo.exists();
 	}
 
 	private computeIfMatch(): void {

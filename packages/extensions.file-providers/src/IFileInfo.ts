@@ -6,7 +6,7 @@ export interface IFileInfo {
 	/**
 	 * True if resource exists in the underlying storage system.
 	 */
-	readonly exists: boolean;
+	exists(): Promise<boolean>;
 	/**
 	 * The length of the file in bytes, or -1 for a directory or non-existing files.
 	 */

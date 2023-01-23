@@ -107,7 +107,7 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 			new PhysicalFileProvider(getTempPath()),
 			async (provider) => {
 				const info = provider.getFileInfo(path);
-				expect(info.exists).toBe(false);
+				expect(await info.exists()).toBe(false);
 			},
 		);
 	}

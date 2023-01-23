@@ -23,11 +23,11 @@ export abstract class FileConfigProvider
 
 	abstract loadStream(stream: Stream): Promise<void>;
 
-	private loadCore(reload: boolean): Promise<void> {
+	private async loadCore(reload: boolean): Promise<void> {
 		const file = this.source.fileProvider?.getFileInfo(
 			this.source.path ?? '',
 		);
-		if (file === undefined || !file.exists) {
+		if (file === undefined || !(await file.exists())) {
 			if (this.source.optional || reload) {
 				this.data = new CaseInsensitiveMap<string | undefined>();
 			} else {
@@ -45,7 +45,6 @@ export abstract class FileConfigProvider
 			// TODO
 			throw new Error('Method not implemented.');
 		}
-		return Promise.resolve();
 	}
 
 	load(): Promise<void> {

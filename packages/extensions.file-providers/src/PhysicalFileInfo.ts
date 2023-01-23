@@ -6,8 +6,8 @@ import { IFileInfo } from './IFileInfo';
 export class PhysicalFileInfo implements IFileInfo {
 	constructor(private readonly info: FileInfo) {}
 
-	get exists(): boolean {
-		return this.info.exists;
+	exists(): Promise<boolean> {
+		return this.info.exists();
 	}
 
 	get length(): number {

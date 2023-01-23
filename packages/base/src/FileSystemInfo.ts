@@ -13,7 +13,7 @@ export abstract class FileSystemInfo {
 
 	abstract get name(): string;
 
-	abstract get exists(): boolean;
+	abstract exists(): Promise<boolean>;
 
 	get attributes(): FileAttributes {
 		throw new Error('Method not implemented.');
