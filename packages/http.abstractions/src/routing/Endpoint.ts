@@ -7,4 +7,8 @@ export class Endpoint {
 		// TODO: readonly metadata: EndpointMetadataCollection | undefined,
 		readonly displayName: string | undefined,
 	) {}
+
+	toString(): string | undefined {
+		return this.displayName;
+	}
 }

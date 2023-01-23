@@ -21,3 +21,4 @@ Yohira is an experimental project to port ASP.NET Core to TypeScript.
 -   [Dependency injection guidelines - .NET | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines)
 -   [Strongly Typed Configuration Settings in ASP.NET Core - Rick Strahl's Web Log](https://weblog.west-wind.com/posts/2016/may/23/strongly-typed-configuration-settings-in-aspnet-core)
 -   [Easy Configuration Binding in ASP.NET Core - revisited - Rick Strahl's Web Log](https://weblog.west-wind.com/posts/2017/dec/12/easy-configuration-binding-in-aspnet-core-revisited)
+-   [Routing in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing)

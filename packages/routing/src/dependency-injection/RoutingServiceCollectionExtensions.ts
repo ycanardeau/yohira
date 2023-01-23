@@ -8,6 +8,7 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 
+import { EndpointMiddleware } from '../EndpointMiddleware';
 import { EndpointRoutingMiddleware } from '../EndpointRoutingMiddleware';
 import { RouteOptions } from '../RouteOptions';
 import { RoutingMarkerService } from '../RoutingMarkerService';
@@ -77,6 +78,11 @@ export function addRouting(
 		/* REVIEW */ services,
 		Type.from('EndpointRoutingMiddleware'),
 		EndpointRoutingMiddleware,
+	);
+	addSingletonCtor(
+		/* REVIEW */ services,
+		Type.from('EndpointMiddleware'),
+		EndpointMiddleware,
 	);
 
 	return services;
