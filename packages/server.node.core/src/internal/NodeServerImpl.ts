@@ -28,7 +28,7 @@ export class NodeServerImpl implements IServer {
 		throw new Error('Method not implemented.');
 	}
 
-	dispose(): void {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IServiceProvider, Type } from '@yohira/base';
+import { IDisposable, IServiceProvider, Type } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -11,7 +11,7 @@ export class ServiceProviderEngineScope
 	implements
 		IServiceScope,
 		IServiceProvider,
-		IAsyncDisposable,
+		IDisposable,
 		IServiceScopeFactory
 {
 	private disposed = false;
@@ -37,12 +37,7 @@ export class ServiceProviderEngineScope
 		return this.rootProvider.createScope();
 	}
 
-	dispose(): void {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-
-	disposeAsync(): Promise<void> {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

@@ -51,7 +51,7 @@ export abstract class FileConfigProvider
 		this.loadCore(false);
 	}
 
-	dispose(): void {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

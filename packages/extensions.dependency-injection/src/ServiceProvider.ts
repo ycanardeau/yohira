@@ -1,5 +1,4 @@
 import {
-	IAsyncDisposable,
 	ICollection,
 	IDisposable,
 	IServiceProvider,
@@ -23,9 +22,7 @@ import { ServiceProviderEngine } from './service-lookup/ServiceProviderEngine';
 import { ServiceProviderEngineScope } from './service-lookup/ServiceProviderEngineScope';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceProvider.cs,7b97f84895159f6d,references
-export class ServiceProvider
-	implements IServiceProvider, IDisposable, IAsyncDisposable
-{
+export class ServiceProvider implements IServiceProvider, IDisposable {
 	private readonly callSiteValidator?: CallSiteValidator;
 
 	// Internal for testing
@@ -141,12 +138,7 @@ export class ServiceProvider
 		return result as T | undefined;
 	}
 
-	dispose(): void {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-
-	disposeAsync(): Promise<void> {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

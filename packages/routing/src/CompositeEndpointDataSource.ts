@@ -53,7 +53,7 @@ export class CompositeEndpointDataSource
 		return this._endpoints!;
 	}
 
-	dispose(): void {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

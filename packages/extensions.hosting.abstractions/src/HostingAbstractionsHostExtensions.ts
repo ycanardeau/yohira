@@ -1,5 +1,3 @@
-import { IAsyncDisposable } from '@yohira/base';
-
 import { IHost } from './IHost';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting.Abstractions/HostingAbstractionsHostExtensions.cs,ad617e075364b8b3,references
@@ -14,18 +12,12 @@ export async function waitForShutdown(host: IHost): Promise<void> {
 }
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting.Abstractions/HostingAbstractionsHostExtensions.cs,ddd71cc5c5437524,references
-export async function run(
-	host: IHost | (IHost & IAsyncDisposable),
-): Promise<void> {
+export async function run(host: IHost): Promise<void> {
 	try {
 		await host.start();
 
 		await waitForShutdown(host);
 	} finally {
-		if ('disposeAsync' in host) {
-			await host.disposeAsync();
-		} else {
-			host.dispose();
-		}
+		await host.dispose();
 	}
 }

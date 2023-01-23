@@ -52,7 +52,7 @@ export class ChainedConfigProvider implements IConfigProvider, IDisposable {
 		return keys;
 	}
 
-	dispose(): void {
+	dispose(): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
