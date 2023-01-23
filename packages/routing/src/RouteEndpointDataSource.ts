@@ -1,4 +1,3 @@
-import { IReadonlyList } from '@yohira/base';
 import {
 	Endpoint,
 	HttpMethods,
@@ -11,7 +10,7 @@ import { RoutePattern } from './patterns/RoutePattern';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/RouteEndpointDataSource.cs,7d6e72cb02c99c6e,references
 export class RouteEndpointDataSource extends EndpointDataSource {
-	get endpoints(): IReadonlyList<Endpoint> {
+	get endpoints(): readonly Endpoint[] {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

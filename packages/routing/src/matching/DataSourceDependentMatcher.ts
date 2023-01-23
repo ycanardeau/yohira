@@ -1,4 +1,3 @@
-import { IReadonlyList } from '@yohira/base';
 import { Endpoint, IHttpContext } from '@yohira/http.abstractions';
 
 import { DataSourceDependentCache } from '../DataSourceDependentCache';
@@ -11,11 +10,11 @@ import { MatcherBuilder } from './MatcherBuilder';
 export class DataSourceDependentMatcher extends Matcher {
 	private readonly cache: DataSourceDependentCache<Matcher>;
 
-	private createMatcher = (endpoints: IReadonlyList<Endpoint>): Matcher => {
+	private createMatcher = (endpoints: readonly Endpoint[]): Matcher => {
 		const builder = this.matcherBuilderFactory();
 		const seenEndpointNames = new Map<string, string | undefined>();
-		for (let i = 0; i < endpoints.count; i++) {
-			const endpoint = endpoints.get(i);
+		for (let i = 0; i < endpoints.length; i++) {
+			const endpoint = endpoints[i];
 			if (endpoint instanceof RouteEndpoint) {
 				// TODO: Validate that endpoint names are unique.
 

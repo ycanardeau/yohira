@@ -1,4 +1,4 @@
-import { ICollection, IDisposable, IReadonlyList, List } from '@yohira/base';
+import { ICollection, IDisposable, List } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { EndpointDataSource } from './EndpointDataSource';
@@ -10,7 +10,7 @@ export class CompositeEndpointDataSource
 {
 	private readonly dataSources: ICollection<EndpointDataSource>;
 
-	private _endpoints?: List<Endpoint>;
+	private _endpoints?: Endpoint[];
 
 	constructor(endpointDataSources: Iterable<EndpointDataSource>) {
 		super();
@@ -23,10 +23,10 @@ export class CompositeEndpointDataSource
 	}
 
 	private createEndpointsUnsynchronized(): void {
-		const endpoints = new List<Endpoint>();
+		const endpoints: Endpoint[] = [];
 
 		for (const dataSource of this.dataSources) {
-			endpoints.addRange(dataSource.endpoints);
+			endpoints.push(...dataSource.endpoints);
 		}
 
 		this._endpoints = endpoints;
@@ -47,7 +47,7 @@ export class CompositeEndpointDataSource
 		this.createEndpointsUnsynchronized();
 	}
 
-	get endpoints(): IReadonlyList<Endpoint> {
+	get endpoints(): readonly Endpoint[] {
 		this.ensureEndpointsInitialized();
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._endpoints!;
