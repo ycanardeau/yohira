@@ -69,7 +69,7 @@ export class DfaMatcher extends Matcher {
 		candidates: Candidate[];
 		policies: IEndpointSelectorPolicy[];
 	} {
-		const { states } = this;
+		const states = this.states;
 
 		// Process each path segment
 		let destination = 0;

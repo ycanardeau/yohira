@@ -17,7 +17,7 @@ export class WebAppBuilder {
 		/* TODO: context: WebHostBuilderContext, */
 		app: IAppBuilder,
 	): void => {
-		const { builtApp } = this;
+		const builtApp = this.builtApp;
 		if (builtApp === undefined) {
 			throw new Error('Assertion failed.');
 		}

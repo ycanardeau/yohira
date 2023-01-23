@@ -1,7 +1,12 @@
+import { Stream } from 'node:stream';
+
 import { IHttpContext } from './IHttpContext';
 import { StatusCodes } from './StatusCodes';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpResponse.cs,7642421540ea6ef2,references
+/**
+ * Represents the outgoing side of an individual HTTP request.
+ */
 export interface IHttpResponse {
 	/**
 	 * Gets the {@link IHttpContext} for this response.
@@ -11,6 +16,10 @@ export interface IHttpResponse {
 	 * Gets or sets the HTTP response code.
 	 */
 	statusCode: StatusCodes;
+	/**
+	 * Gets or sets the response body {@link Stream}.
+	 */
+	body: Stream;
 	/**
 	 * Gets or sets the value for the <c>Content-Type</c> response header.
 	 */

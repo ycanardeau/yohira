@@ -1,6 +1,6 @@
 import { createWebAppBuilder } from '@yohira/core';
 import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
-import { use } from '@yohira/http.abstractions';
+import { use, write } from '@yohira/http.abstractions';
 import { getEndpoint } from '@yohira/http.abstractions';
 import { addRouting, mapGet, useEndpoints, useRouting } from '@yohira/routing';
 import { addStaticFiles, useStaticFiles } from '@yohira/static-files';
@@ -48,6 +48,7 @@ export async function main(): Promise<void> {
 				getEndpoint(context)?.displayName ?? '(undefined)'
 			}`,
 		);
+		await write(context.response, 'Hello World!');
 	});
 
 	useEndpoints(app, () => {});

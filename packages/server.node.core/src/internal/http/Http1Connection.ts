@@ -4,21 +4,29 @@ import { IHttpApp } from '@yohira/hosting.server.abstractions';
 import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
 import {
 	IHttpRequestFeature,
+	IHttpResponseBodyFeature,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 import { IncomingMessage, ServerResponse } from 'node:http';
+import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/Http/Http1Connection.cs,9a7555a5b425c5dc,references
 export class Http1Connection
-	implements IFeatureCollection, IHttpRequestFeature, IEndpointFeature
+	implements
+		IFeatureCollection,
+		IHttpRequestFeature,
+		IHttpResponseBodyFeature,
+		IEndpointFeature
 {
 	private currentIHttpRequestFeature?: IHttpRequestFeature;
+	private currentIHttpResponseBodyFeature?: IHttpResponseBodyFeature;
 	private currentIEndpointFeature?: IEndpointFeature;
 
 	private currentIServiceProvidersFeature?: IServiceProvidersFeature;
 
 	private fastReset(): void {
 		this.currentIHttpRequestFeature = this;
+		this.currentIHttpResponseBodyFeature = this;
 		this.currentIEndpointFeature = this;
 
 		this.currentIServiceProvidersFeature = undefined;
@@ -92,6 +100,19 @@ export class Http1Connection
 		this._endpoint = value;
 	}
 
+	get stream(): Stream {
+		return this.response;
+	}
+
+	sendFile(
+		path: string,
+		offset: number,
+		count: number | undefined,
+	): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	private featureRevision = 0;
 	get revision(): number {
 		return this.featureRevision;
@@ -101,6 +122,8 @@ export class Http1Connection
 		let feature: T | undefined;
 		if (key.equals(Type.from('IHttpRequestFeature'))) {
 			feature = this.currentIHttpRequestFeature as T;
+		} else if (key.equals(Type.from('IHttpResponseBodyFeature'))) {
+			feature = this.currentIHttpResponseBodyFeature as T;
 		} else if (key.equals(Type.from('IEndpointFeature'))) {
 			feature = this.currentIEndpointFeature as T;
 		} else if (key.equals(Type.from('IServiceProvidersFeature'))) {
@@ -119,6 +142,9 @@ export class Http1Connection
 		this.featureRevision++;
 		if (key.equals(Type.from('IHttpRequestFeature'))) {
 			this.currentIHttpRequestFeature = instance as IHttpRequestFeature;
+		} else if (key.equals(Type.from('IHttpResponseBodyFeature'))) {
+			this.currentIHttpResponseBodyFeature =
+				instance as IHttpResponseBodyFeature;
 		} else if (key.equals(Type.from('IEndpointFeature'))) {
 			this.currentIEndpointFeature = instance as IEndpointFeature;
 		} else if (key.equals(Type.from('IServiceProvidersFeature'))) {
