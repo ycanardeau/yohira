@@ -3,6 +3,12 @@ import { IAppBuilder } from '@yohira/http.abstractions';
 
 import { ISupportsStartup } from './infrastructure/ISupportsStartup';
 
+function isISupportsStartup(
+	hostBuilder: IWebHostBuilder | ISupportsStartup,
+): hostBuilder is ISupportsStartup {
+	return 'configure' in hostBuilder;
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/WebHostBuilderExtensions.cs,660aae01ddc11d31,references
 export function configure(
 	hostBuilder: IWebHostBuilder | ISupportsStartup,
@@ -12,7 +18,7 @@ export function configure(
 ): IWebHostBuilder {
 	// TODO
 
-	if ('configure' in /* TODO */ hostBuilder) {
+	if (isISupportsStartup(hostBuilder)) {
 		return hostBuilder.configure(configureApp);
 	}
 

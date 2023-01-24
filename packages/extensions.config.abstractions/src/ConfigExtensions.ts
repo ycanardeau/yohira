@@ -23,6 +23,12 @@ export function getConnectionString(
 	return config?.getSection('ConnectionStrings').get(name);
 }
 
+function isIConfigSection(
+	config: IConfig | IConfigSection,
+): config is IConfigSection {
+	return 'key' in config && 'path' in config && 'value' in config;
+}
+
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Abstractions/ConfigurationExtensions.cs,c921372a618475b0,references
 export function* asIterable(
 	config: IConfig | IConfigSection,
@@ -31,19 +37,14 @@ export function* asIterable(
 	const stack: (IConfig | IConfigSection)[] = [];
 	stack.push(config);
 	const prefixLength =
-		makePathsRelative &&
-		'key' in config &&
-		'path' in config &&
-		'value' in config
+		makePathsRelative && isIConfigSection(config)
 			? config.path.length + 1
 			: 0;
 	while (stack.length > 0) {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const section = stack.pop()!;
 		if (
-			'key' in section &&
-			'path' in section &&
-			'value' in section &&
+			isIConfigSection(section) &&
 			(!makePathsRelative || section !== config)
 		) {
 			yield [section.path.substring(prefixLength), section.value];

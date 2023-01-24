@@ -85,6 +85,12 @@ function bindProperties(
 	}
 }
 
+function isIConfigSection(
+	config: IConfig | IConfigSection,
+): config is IConfigSection {
+	return 'key' in config && 'path' in config && 'value' in config;
+}
+
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,f87b0f53a2b9251a,references
 function bindInstance(
 	ctor: Ctor,
@@ -94,7 +100,7 @@ function bindInstance(
 ): void {
 	// TODO
 
-	if ('key' in config && 'path' in config && 'value' in config) {
+	if (isIConfigSection(config)) {
 		const section = config;
 		const configValue = section.value;
 		if (configValue !== undefined) {

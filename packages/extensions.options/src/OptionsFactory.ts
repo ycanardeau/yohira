@@ -24,10 +24,16 @@ export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 		return new optionsCtor();
 	}
 
+	private static isIConfigureNamedOptions<TOptions>(
+		setup: IConfigureOptions<TOptions> | IConfigureNamedOptions<TOptions>,
+	): setup is IConfigureNamedOptions<TOptions> {
+		return 'configureNamed' in setup;
+	}
+
 	create(optionsCtor: Ctor<TOptions>, name: string): TOptions {
 		const options = this.createInstance(optionsCtor, name);
 		for (const setup of this.setups) {
-			if ('configureNamed' in setup) {
+			if (OptionsFactory.isIConfigureNamedOptions(setup)) {
 				setup.configureNamed(name, options);
 			} else if (name === Options.defaultName) {
 				setup.configure(options);
