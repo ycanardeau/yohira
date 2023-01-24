@@ -11,13 +11,13 @@ function createRouteEndpointCore(
 	routePattern: RoutePattern,
 	order = 0,
 	displayName?: string,
-	// TODO: metadata,
+	metadata?: undefined /* TODO */,
 ): RouteEndpoint {
 	return new RouteEndpoint(
 		emptyRequestDelegate,
 		routePattern,
-		// TODO: order,
-		// TODO
+		order,
+		undefined /* TODO */,
 		displayName,
 	);
 }
@@ -30,9 +30,9 @@ export function createRouteEndpoint(
 	// TODO: requiredValues,
 	order = 0,
 	displayName?: string,
-	// TODO: metadata,
+	metadata?: undefined /* TODO */,
 ): RouteEndpoint {
 	const routePattern = parseRoutePattern(template /* TODO */);
 
-	return createRouteEndpointCore(routePattern, order, displayName /* TODO */);
+	return createRouteEndpointCore(routePattern, order, displayName, metadata);
 }

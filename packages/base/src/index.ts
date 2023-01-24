@@ -8,6 +8,8 @@ export * from './ICollection';
 export * from './IDisposable';
 export * from './IEquatable';
 export * from './IList';
+export * from './IReadonlyCollection';
+export * from './IReadonlyList';
 export * from './IServiceProvider';
 export * from './List';
 export * from './MapExtensions';

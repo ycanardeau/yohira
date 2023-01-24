@@ -1,7 +1,8 @@
 import { IList } from './IList';
+import { IReadonlyList } from './IReadonlyList';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/List.cs,9e5352b2b304ceba
-export class List<T> implements IList<T> {
+export class List<T> implements IList<T>, IReadonlyList<T> {
 	private readonly items: T[] = [];
 
 	get count(): number {

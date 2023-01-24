@@ -1,4 +1,8 @@
-import { Endpoint, RequestDelegate } from '@yohira/http.abstractions';
+import {
+	Endpoint,
+	EndpointMetadataCollection,
+	RequestDelegate,
+} from '@yohira/http.abstractions';
 
 import { RoutePattern } from './patterns/RoutePattern';
 
@@ -7,8 +11,10 @@ export class RouteEndpoint extends Endpoint {
 	constructor(
 		requestDelegate: RequestDelegate,
 		readonly routePattern: RoutePattern,
+		readonly order: number,
+		metadata: EndpointMetadataCollection | undefined,
 		displayName: string | undefined,
 	) {
-		super(requestDelegate, displayName);
+		super(requestDelegate, metadata, displayName);
 	}
 }
