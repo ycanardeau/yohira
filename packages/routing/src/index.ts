@@ -23,6 +23,8 @@ export * from './patterns/RoutePatternSeparatorPart';
 export * from './DefaultEndpointDataSource';
 export * from './EndpointDataSource';
 export * from './EndpointRoutingApplicationBuilderExtensions';
+export * from './HttpMethodMetadata';
 export * from './IEndpointRouteBuilder';
 export * from './RouteEndpoint';
+export * from './RouteEndpointBuilder';
 export * from './RouteOptions';
