@@ -6,6 +6,7 @@ import {
 } from '@yohira/http.abstractions';
 
 import { EndpointDataSource } from './EndpointDataSource';
+import { HttpMethodMetadata } from './HttpMethodMetadata';
 import { RouteEndpoint } from './RouteEndpoint';
 import { RouteEndpointBuilder } from './RouteEndpointBuilder';
 import { RouteHandlerBuilder } from './builder/RouteHandlerBuilder';
@@ -99,6 +100,12 @@ export class RouteEndpointDataSource extends EndpointDataSource {
 		);
 		builder.displayName = displayName;
 		// TODO: builder.appServices = this.appServices;
+
+		// TODO
+
+		if (entry.httpMethods !== undefined) {
+			builder.metadata.add(new HttpMethodMetadata(entry.httpMethods));
+		}
 
 		// TODO
 

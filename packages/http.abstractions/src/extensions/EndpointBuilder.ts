@@ -1,3 +1,5 @@
+import { IList, List } from '@yohira/base';
+
 import { RequestDelegate } from '../RequestDelegate';
 import { Endpoint } from '../routing/Endpoint';
 
@@ -14,6 +16,10 @@ export abstract class EndpointBuilder {
 	 * Gets or sets the informational display name of this endpoint.
 	 */
 	displayName?: string;
+	/**
+	 * Gets the collection of metadata associated with this endpoint.
+	 */
+	readonly metadata: IList<object> = new List<object>();
 
 	/**
 	 * Creates an instance of {@link Endpoint} from the {@link EndpointBuilder}.
