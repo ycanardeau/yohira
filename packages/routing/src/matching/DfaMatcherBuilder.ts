@@ -21,6 +21,7 @@ import { INodeBuilderPolicy } from './INodeBuilderPolicy';
 import { buildJumpTable } from './JumpTableBuilder';
 import { Matcher } from './Matcher';
 import { MatcherBuilder } from './MatcherBuilder';
+import { MatcherPolicy } from './MatcherPolicy';
 import { PolicyJumpTable } from './PolicyJumpTable';
 import { PolicyJumpTableEdge } from './PolicyJumpTableEdge';
 
@@ -288,6 +289,8 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		private readonly loggerFactory: ILoggerFactory,
 		@inject(Type.from('EndpointSelector'))
 		private readonly selector: EndpointSelector,
+		@inject(Type.from('Iterable<MatcherPolicy>'))
+		policies: Iterable<MatcherPolicy>,
 	) {
 		super();
 

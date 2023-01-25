@@ -5,6 +5,7 @@ import {
 	ServiceLifetime,
 	addSingletonCtor,
 	tryAddServiceDescriptor,
+	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 
@@ -15,6 +16,7 @@ import { RoutingMarkerService } from '../RoutingMarkerService';
 import { DefaultEndpointSelector } from '../matching/DefaultEndpointSelector';
 import { DfaMatcherBuilder } from '../matching/DfaMatcherBuilder';
 import { DfaMatcherFactory } from '../matching/DfaMatcherFactory';
+import { HttpMethodMatcherPolicy } from '../matching/HttpMethodMatcherPolicy';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/DependencyInjection/RoutingServiceCollectionExtensions.cs,25e3665e57533cd3,references
 export function addRouting(
@@ -62,6 +64,9 @@ export function addRouting(
 
 	// TODO
 
+	//
+	// Endpoint Selection
+	//
 	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
@@ -70,6 +75,15 @@ export function addRouting(
 			DefaultEndpointSelector,
 		),
 	);
+	tryAddServiceDescriptorIterable(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			Type.from('MatcherPolicy'),
+			HttpMethodMatcherPolicy,
+		),
+	);
+	// TODO
 
 	// TODO
 
