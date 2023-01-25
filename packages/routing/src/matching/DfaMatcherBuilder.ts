@@ -280,9 +280,58 @@ class DfaBuilderWorker {
 export class DfaMatcherBuilder extends MatcherBuilder {
 	private readonly endpoints = new List<RouteEndpoint>();
 
-	private endpointSelectorPolicies: IEndpointSelectorPolicy[];
+	private readonly endpointSelectorPolicies: IEndpointSelectorPolicy[];
+	private readonly nodeBuilders: INodeBuilderPolicy[];
 
 	private stateIndex = 0;
+
+	private static isINodeBuilderPolicy(
+		policy: MatcherPolicy | (MatcherPolicy & INodeBuilderPolicy),
+	): policy is MatcherPolicy & INodeBuilderPolicy {
+		return (
+			'endpointSelectorAppliesToEndpoints' in policy && 'apply' in policy
+		);
+	}
+
+	private static isIEndpointSelectorPolicy(
+		policy: MatcherPolicy | (MatcherPolicy & IEndpointSelectorPolicy),
+	): policy is MatcherPolicy & IEndpointSelectorPolicy {
+		return (
+			'nodeBuilderAppliesToEndpoints' in policy &&
+			'getEdges' in policy &&
+			'buildJumpTable' in policy
+		);
+	}
+
+	private static extractPolicies(policies: Iterable<MatcherPolicy>): {
+		nodeBuilderPolicies: INodeBuilderPolicy[];
+		// TODO: endpointComparerPolicies: IEndpointComparerPolicy[];
+		endpointSelectorPolicies: IEndpointSelectorPolicy[];
+	} {
+		const nodeBuilderPolicies: INodeBuilderPolicy[] = [];
+		// TODO: const endpointComparerPolicies: IEndpointComparerPolicy[] = [];
+		const endpointSelectorPolicies: IEndpointSelectorPolicy[] = [];
+
+		for (const policy of policies) {
+			if (DfaMatcherBuilder.isINodeBuilderPolicy(policy)) {
+				nodeBuilderPolicies.push(policy);
+			}
+
+			/* TODO: if (isIEndpointComparerPolicy(policy)) {
+				endpointComparerPolicies.push(policy);
+			} */
+
+			if (DfaMatcherBuilder.isIEndpointSelectorPolicy(policy)) {
+				endpointSelectorPolicies.push(policy);
+			}
+		}
+
+		return {
+			nodeBuilderPolicies: nodeBuilderPolicies,
+			// TODO: endpointComparerPolicies: endpointComparerPolicies,
+			endpointSelectorPolicies: endpointSelectorPolicies,
+		};
+	}
 
 	constructor(
 		@inject(Type.from('ILoggerFactory'))
@@ -294,7 +343,13 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	) {
 		super();
 
-		this.endpointSelectorPolicies = []; /* TODO */
+		const {
+			nodeBuilderPolicies,
+			// TODO: endpointComparerPolicies,
+			endpointSelectorPolicies,
+		} = DfaMatcherBuilder.extractPolicies(policies /* TODO: orderBy */);
+		this.endpointSelectorPolicies = endpointSelectorPolicies;
+		this.nodeBuilders = nodeBuilderPolicies;
 	}
 
 	addEndpoint(endpoint: RouteEndpoint): void {
@@ -311,9 +366,64 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		// TODO: node.matches.sort(this.comparer);
 
 		// Start with the current node as the root.
-		const work = new List<DfaNode>();
+		let work = new List<DfaNode>();
 		work.add(node);
-		// TODO
+		let previousWork: List<DfaNode> | undefined = undefined;
+		for (const nodeBuilder of this.nodeBuilders) {
+			// Build a list of each
+			let nextWork: List<DfaNode> | undefined = undefined;
+			if (previousWork === undefined) {
+				nextWork = new List<DfaNode>();
+			} else {
+				// Reuse previous collection for the next collection
+				previousWork.clear();
+				nextWork = previousWork;
+			}
+
+			for (const parent of work) {
+				if (
+					!nodeBuilder.nodeBuilderAppliesToEndpoints(
+						parent.matches ?? [],
+					)
+				) {
+					// This node-builder doesn't care about this node, so add it to the list
+					// to be processed by the next node-builder.
+					nextWork.add(parent);
+					continue;
+				}
+
+				// This node-builder does apply to this node, so we need to create new nodes for each edge,
+				// and then attach them to the parent.
+				const edges = nodeBuilder.getEdges(parent.matches ?? []);
+				for (const edge of edges) {
+					const next = new DfaNode();
+					// If parent label is undefined then labels are not being included
+					next.label =
+						parent.label !== undefined
+							? parent.label + ' ' + edge.state.toString()
+							: undefined;
+
+					if (edge.endpoints.length > 0) {
+						next.addMatches(edge.endpoints);
+					}
+					nextWork.add(next);
+
+					parent.addPolicyEdge(edge.state, next);
+				}
+
+				// Associate the node-builder so we can build a jump table later.
+				parent.nodeBuilder = nodeBuilder;
+
+				// The parent no longer has matches, it's not considered a terminal node.
+				parent.matches?.splice(
+					0,
+					parent.matches.length,
+				) /* TODO: clear */;
+			}
+
+			previousWork = work;
+			work = nextWork;
+		}
 	};
 
 	buildDfaTree(includeLabel = false): DfaNode {
@@ -548,11 +658,17 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		if (node.matches && node.matches.length > 0) {
 			for (const endpointSelectorPolicy of this
 				.endpointSelectorPolicies) {
-				if (endpointSelectorPolicies === undefined) {
-					endpointSelectorPolicies = [];
-				}
+				if (
+					endpointSelectorPolicy.endpointSelectorAppliesToEndpoints(
+						node.matches,
+					)
+				) {
+					if (endpointSelectorPolicies === undefined) {
+						endpointSelectorPolicies = [];
+					}
 
-				endpointSelectorPolicies.push(endpointSelectorPolicy);
+					endpointSelectorPolicies.push(endpointSelectorPolicy);
+				}
 			}
 		}
 

@@ -24,7 +24,15 @@ export class DfaNode {
 
 	nodeBuilder!: INodeBuilderPolicy;
 
-	policyEdges?: Map<number /* TODO */, DfaNode>;
+	policyEdges?: Map<object /* TODO */, DfaNode>;
+
+	addPolicyEdge(state: object, node: DfaNode): void {
+		if (this.policyEdges === undefined) {
+			this.policyEdges = new Map();
+		}
+
+		this.policyEdges.set(state, node);
+	}
 
 	addLiteral(literal: string, node: DfaNode): void {
 		if (this.literals === undefined) {
@@ -40,6 +48,14 @@ export class DfaNode {
 		}
 
 		this.matches.push(endpoint);
+	}
+
+	addMatches(endpoints: Iterable<Endpoint>): void {
+		if (this.matches === undefined) {
+			this.matches = [];
+		} else {
+			this.matches.push(...endpoints);
+		}
 	}
 
 	visit(visitor: (node: DfaNode) => void): void {

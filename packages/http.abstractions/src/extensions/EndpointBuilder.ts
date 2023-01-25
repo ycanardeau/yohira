@@ -19,7 +19,7 @@ export abstract class EndpointBuilder {
 	/**
 	 * Gets the collection of metadata associated with this endpoint.
 	 */
-	readonly metadata: IList<object> = new List<object>();
+	readonly metadata: IList<object> = new List();
 
 	/**
 	 * Creates an instance of {@link Endpoint} from the {@link EndpointBuilder}.
