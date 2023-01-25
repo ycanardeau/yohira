@@ -3,7 +3,7 @@ import {
 	IServiceCollection,
 	ServiceDescriptor,
 	ServiceLifetime,
-	tryAddIterable,
+	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { IHostedService } from './IHostedService';
@@ -13,7 +13,7 @@ export function addHostedService<THostedService extends IHostedService>(
 	hostedServiceType: Ctor<THostedService>,
 	services: IServiceCollection,
 ): IServiceCollection {
-	tryAddIterable(
+	tryAddServiceDescriptorIterable(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,

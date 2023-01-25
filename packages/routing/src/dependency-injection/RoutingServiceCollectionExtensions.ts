@@ -4,7 +4,7 @@ import {
 	ServiceDescriptor,
 	ServiceLifetime,
 	addSingletonCtor,
-	tryAdd,
+	tryAddServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 
@@ -27,7 +27,7 @@ export function addRouting(
 
 	// TODO
 
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
@@ -39,7 +39,7 @@ export function addRouting(
 	// TODO
 
 	// TODO
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
@@ -50,7 +50,7 @@ export function addRouting(
 	// TODO
 
 	// TODO
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
@@ -62,7 +62,7 @@ export function addRouting(
 
 	// TODO
 
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,

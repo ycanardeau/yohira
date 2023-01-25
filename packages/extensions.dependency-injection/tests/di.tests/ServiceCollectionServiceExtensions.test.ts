@@ -8,8 +8,8 @@ import {
 	addSingletonCtor,
 	addSingletonInstance,
 	addTransientCtor,
-	tryAdd,
-	tryAddIterable,
+	tryAddServiceDescriptor,
+	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
@@ -95,7 +95,7 @@ test('TryAddNoOpFailsIfExists', () => {
 			FakeService,
 		);
 
-		tryAdd(collection, d);
+		tryAddServiceDescriptor(collection, d);
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
@@ -135,7 +135,7 @@ test('TryAdd_WithType_AddsService', () => {
 
 	TryAdd_WithType_AddsService(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Transient,
@@ -150,7 +150,7 @@ test('TryAdd_WithType_AddsService', () => {
 
 	TryAdd_WithType_AddsService(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Scoped,
@@ -165,7 +165,7 @@ test('TryAdd_WithType_AddsService', () => {
 
 	TryAdd_WithType_AddsService(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
@@ -209,7 +209,7 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 
 	TryAdd_WithType_DoesNotAddDuplicate(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Transient,
@@ -223,7 +223,7 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 
 	TryAdd_WithType_DoesNotAddDuplicate(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Scoped,
@@ -237,7 +237,7 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 
 	TryAdd_WithType_DoesNotAddDuplicate(
 		(collection) =>
-			tryAdd(
+			tryAddServiceDescriptor(
 				collection,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
@@ -259,7 +259,7 @@ test('TryAddIfMissingActuallyAdds', () => {
 		FakeService,
 	);
 
-	tryAdd(collection, d);
+	tryAddServiceDescriptor(collection, d);
 
 	expect(collection.count).toBe(1);
 	const descriptor = Array.from(collection)[0];
@@ -280,7 +280,7 @@ test('TryAddEnumerable_AddsService', () => {
 	): void {
 		const collection = new ServiceCollection();
 
-		tryAddIterable(collection, descriptor);
+		tryAddServiceDescriptorIterable(collection, descriptor);
 
 		expect(collection.count).toBe(1);
 		const d = Array.from(collection)[0];
@@ -335,9 +335,9 @@ test('TryAddEnumerable_DoesNotAddDuplicate', () => {
 		expectedLifetime: ServiceLifetime,
 	): void {
 		const collection = new ServiceCollection();
-		tryAddIterable(collection, descriptor);
+		tryAddServiceDescriptorIterable(collection, descriptor);
 
-		tryAddIterable(collection, descriptor);
+		tryAddServiceDescriptorIterable(collection, descriptor);
 
 		expect(collection.count).toBe(1);
 		const d = Array.from(collection)[0];

@@ -4,7 +4,7 @@ import {
 	ServiceDescriptor,
 	ServiceLifetime,
 	addSingletonInstance,
-	tryAdd,
+	tryAddServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { ConfigureNamedOptions } from './ConfigureNamedOptions';
@@ -16,7 +16,7 @@ import { UnnamedOptionsManager } from './UnnamedOptionsManager';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsServiceCollectionExtensions.cs,4909ed65f60d1c84,references
 export function addOptions(services: IServiceCollection): IServiceCollection {
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
@@ -25,7 +25,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 		),
 	);
 	// TODO
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
@@ -33,7 +33,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 			OptionsMonitor,
 		),
 	);
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
@@ -41,7 +41,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 			OptionsFactory,
 		),
 	);
-	tryAdd(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,

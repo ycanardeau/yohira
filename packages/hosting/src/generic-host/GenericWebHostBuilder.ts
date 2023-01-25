@@ -4,7 +4,7 @@ import {
 	ServiceDescriptor,
 	ServiceLifetime,
 	addSingletonInstance,
-	tryAdd,
+	tryAddServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	HostBuilderContext,
@@ -60,7 +60,7 @@ export class GenericWebHostBuilder
 
 			// TODO
 
-			tryAdd(
+			tryAddServiceDescriptor(
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
@@ -69,7 +69,7 @@ export class GenericWebHostBuilder
 				),
 			);
 			// TODO: IMiddlewareFactory
-			tryAdd(
+			tryAddServiceDescriptor(
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
