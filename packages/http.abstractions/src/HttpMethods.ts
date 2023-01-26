@@ -11,44 +11,44 @@ export enum HttpMethods {
 	Trace = 'TRACE',
 }
 
-function equals(left: HttpMethods, right: string): boolean {
+export function HttpMethodsEquals(left: string, right: string): boolean {
 	return left.toLowerCase() === right.toLowerCase();
 }
 
 export function isConnect(method: string): boolean {
-	return equals(HttpMethods.Connect, method);
+	return HttpMethodsEquals(HttpMethods.Connect, method);
 }
 
 export function isDelete(method: string): boolean {
-	return equals(HttpMethods.Delete, method);
+	return HttpMethodsEquals(HttpMethods.Delete, method);
 }
 
 export function isGet(method: string): boolean {
-	return equals(HttpMethods.Get, method);
+	return HttpMethodsEquals(HttpMethods.Get, method);
 }
 
 export function isHead(method: string): boolean {
-	return equals(HttpMethods.Head, method);
+	return HttpMethodsEquals(HttpMethods.Head, method);
 }
 
 export function isOptions(method: string): boolean {
-	return equals(HttpMethods.Options, method);
+	return HttpMethodsEquals(HttpMethods.Options, method);
 }
 
 export function isPatch(method: string): boolean {
-	return equals(HttpMethods.Patch, method);
+	return HttpMethodsEquals(HttpMethods.Patch, method);
 }
 
 export function isPost(method: string): boolean {
-	return equals(HttpMethods.Post, method);
+	return HttpMethodsEquals(HttpMethods.Post, method);
 }
 
 export function isPut(method: string): boolean {
-	return equals(HttpMethods.Put, method);
+	return HttpMethodsEquals(HttpMethods.Put, method);
 }
 
 export function isTrace(method: string): boolean {
-	return equals(HttpMethods.Trace, method);
+	return HttpMethodsEquals(HttpMethods.Trace, method);
 }
 
 export function getCanonicalizedValue(method: string): HttpMethods {

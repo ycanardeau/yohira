@@ -1,6 +1,6 @@
-import { Type, typedef } from '@yohira/base';
+import { IEquatable, Type, getStringHashCode, typedef } from '@yohira/base';
 import { HttpContext } from '@yohira/http';
-import { Endpoint } from '@yohira/http.abstractions';
+import { Endpoint, HttpMethodsEquals } from '@yohira/http.abstractions';
 
 import { IHttpMethodMetadata } from '../IHttpMethodMetadata';
 import { CandidateSet } from './CandidateSet';
@@ -10,6 +10,46 @@ import { MatcherPolicy } from './MatcherPolicy';
 import { PolicyJumpTable } from './PolicyJumpTable';
 import { PolicyJumpTableEdge } from './PolicyJumpTableEdge';
 import { PolicyNodeEdge } from './PolicyNodeEdge';
+
+const anyMethod = '*';
+
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/HttpMethodMatcherPolicy.cs,c75c4b24f2133482,references
+class EdgeKey implements IEquatable<EdgeKey> {
+	constructor(
+		readonly httpMethod: string,
+		readonly isCorsPreflightRequest: boolean,
+	) {}
+
+	static equals(
+		left: EdgeKey | undefined,
+		right: EdgeKey | undefined,
+	): boolean {
+		if (left === undefined && right === undefined) {
+			return true;
+		}
+
+		if (left === undefined || right === undefined) {
+			return false;
+		}
+
+		return (
+			left.isCorsPreflightRequest === right.isCorsPreflightRequest &&
+			HttpMethodsEquals(left.httpMethod, right.httpMethod)
+		);
+	}
+
+	equals(other: EdgeKey | undefined): boolean {
+		return EdgeKey.equals(this, other);
+	}
+
+	getHashCode(): number {
+		return (
+			((this.httpMethod ? getStringHashCode(this.httpMethod) : 23) *
+				397) ^
+			(this.isCorsPreflightRequest ? 1 : 0)
+		);
+	}
+}
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/HttpMethodMatcherPolicy.cs,e1986934a0392a00,references
 @typedef(Type.from('HttpMethodMatcherPolicy'), {
@@ -68,9 +108,160 @@ export class HttpMethodMatcherPolicy
 		throw new Error('Method not implemented.');
 	}
 
+	private static containsHttpMethod(
+		httpMethods: string[],
+		httpMethod: string,
+	): boolean {
+		for (const method of httpMethods) {
+			if (HttpMethodsEquals(method, httpMethod)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	getEdges(endpoints: readonly Endpoint[]): readonly PolicyNodeEdge[] {
+		function getHttpMethods(e: Endpoint): {
+			httpMethods: readonly string[];
+			acceptCorsPreflight: boolean;
+		} {
+			const metadata = e.metadata.getMetadata<IHttpMethodMetadata>(
+				Type.from('IHttpMethodMetadata'),
+			);
+			return metadata === undefined
+				? {
+						httpMethods: [],
+						acceptCorsPreflight: false,
+				  }
+				: {
+						httpMethods: metadata.httpMethods,
+						acceptCorsPreflight: metadata.acceptCorsPreflight,
+				  };
+		}
+
+		const allHttpMethods: string[] = [];
+		const edges = new Map<
+			number /* TODO: EdgeKey */,
+			{ key: EdgeKey /* TODO: remove */; endpoints: Endpoint[] }
+		>();
+		for (const endpoint of endpoints) {
+			const getHttpMethodsResult = getHttpMethods(endpoint);
+			let httpMethods = getHttpMethodsResult.httpMethods;
+			const acceptCorsPreflight =
+				getHttpMethodsResult.acceptCorsPreflight;
+
+			// If the action doesn't list HTTP methods then it supports all methods.
+			// In this phase we use a sentinel value to represent the *other* HTTP method
+			// a state that represents any HTTP method that doesn't have a match.
+			if (httpMethods.length === 0) {
+				httpMethods = [anyMethod];
+			}
+
+			for (const httpMethod of httpMethods) {
+				// An endpoint that allows CORS reqests will match both CORS and non-CORS
+				// so we model it as both.
+				let key = new EdgeKey(httpMethod, acceptCorsPreflight);
+				if (!edges.has(key.getHashCode())) {
+					edges.set(key.getHashCode(), { key: key, endpoints: [] });
+				}
+
+				// An endpoint that allows CORS reqests will match both CORS and non-CORS
+				// so we model it as both.
+				if (acceptCorsPreflight) {
+					key = new EdgeKey(httpMethod, false);
+					if (!edges.has(key.getHashCode())) {
+						edges.set(key.getHashCode(), {
+							key: key,
+							endpoints: [],
+						});
+					}
+				}
+
+				// Also if it's not the *any* method key, then track it.
+				if (anyMethod.toLowerCase() !== httpMethod.toLowerCase()) {
+					if (
+						!HttpMethodMatcherPolicy.containsHttpMethod(
+							allHttpMethods,
+							httpMethod,
+						)
+					) {
+						allHttpMethods.push(httpMethod);
+					}
+				}
+			}
+		}
+
+		// TODO: allHttpMethods.sort(/* TODO */);
+
+		// Now in a second loop, add endpoints to these lists. We've enumerated all of
+		// the states, so we want to see which states this endpoint matches.
+		for (const endpoint of endpoints) {
+			const { httpMethods, acceptCorsPreflight } =
+				getHttpMethods(endpoint);
+
+			if (httpMethods.length === 0) {
+				// OK this means that this endpoint matches *all* HTTP methods.
+				// So, loop and add it to all states.
+				for (const [, value] of edges) {
+					if (
+						acceptCorsPreflight ||
+						!value.key.isCorsPreflightRequest
+					) {
+						value.endpoints.push(endpoint);
+					}
+				}
+			} else {
+				// OK this endpoint matches specific methods.
+				for (const httpMethod of httpMethods) {
+					let key = new EdgeKey(httpMethod, acceptCorsPreflight);
+
+					const edge = edges.get(key.getHashCode());
+					if (edge === undefined) {
+						throw new Error('Assertion failed.');
+					}
+
+					edge.endpoints.push(endpoint);
+
+					// An endpoint that allows CORS reqests will match both CORS and non-CORS
+					// so we model it as both.
+					if (acceptCorsPreflight) {
+						key = new EdgeKey(httpMethod, false);
+						edge.endpoints.push(endpoint);
+					}
+				}
+			}
+		}
+
+		// Adds a very low priority endpoint that will reject the request with
+		// a 405 if nothing else can handle this verb. This is only done if
+		// no other actions exist that handle the 'all verbs'.
+		//
+		// The rationale for this is that we want to report a 405 if none of
+		// the supported methods match, but we don't want to report a 405 in a
+		// case where an application defines an endpoint that handles all verbs, but
+		// a constraint rejects the request, or a complex segment fails to parse. We
+		// consider a case like that a 'user input validation' failure  rather than
+		// a semantic violation of HTTP.
+		//
+		// This will make 405 much more likely in API-focused applications, and somewhat
+		// unlikely in a traditional MVC application. That's good.
+		//
+		// We don't bother returning a 405 when the CORS preflight method doesn't exist.
+		// The developer calling the API will see it as a CORS error, which is fine because
+		// there isn't an endpoint to check for a CORS policy.
 		// TODO
-		throw new Error('Method not implemented.');
+
+		const policyNodeEdges: PolicyNodeEdge[] = new Array(edges.size);
+		let index = 0;
+		for (const [, value] of edges) {
+			policyNodeEdges[index++] = new PolicyNodeEdge(
+				value.key,
+				value.endpoints,
+			);
+		}
+
+		return policyNodeEdges;
 	}
 
 	buildJumpTable(

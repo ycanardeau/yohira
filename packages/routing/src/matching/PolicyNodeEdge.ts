@@ -7,12 +7,12 @@ import { Endpoint } from '@yohira/http.abstractions';
 export class PolicyNodeEdge {
 	constructor(
 		/**
-		 * Gets the endpoints that match the policy defined by {@link State}.
-		 */
-		readonly endpoints: readonly Endpoint[],
-		/**
 		 * Gets the object used to represent the match heuristic. Can be a host, HTTP method, etc.
 		 */
 		readonly state: object,
+		/**
+		 * Gets the endpoints that match the policy defined by {@link State}.
+		 */
+		readonly endpoints: readonly Endpoint[],
 	) {}
 }
