@@ -1,9 +1,19 @@
-import { IEquatable, Type, getStringHashCode, typedef } from '@yohira/base';
+import {
+	CaseInsensitiveMap,
+	IEquatable,
+	Type,
+	getStringHashCode,
+	tryGetValue,
+	typedef,
+} from '@yohira/base';
 import { HttpContext } from '@yohira/http';
 import { Endpoint, HttpMethodsEquals } from '@yohira/http.abstractions';
+import { Result } from '@yohira/third-party.ts-results';
 
 import { IHttpMethodMetadata } from '../IHttpMethodMetadata';
 import { CandidateSet } from './CandidateSet';
+import { HttpMethodDictionaryPolicyJumpTable } from './HttpMethodDictionaryPolicyJumpTable';
+import { HttpMethodSingleEntryPolicyJumpTable } from './HttpMethodSingleEntryPolicyJumpTable';
 import { IEndpointSelectorPolicy } from './IEndpointSelectorPolicy';
 import { INodeBuilderPolicy } from './INodeBuilderPolicy';
 import { MatcherPolicy } from './MatcherPolicy';
@@ -268,7 +278,83 @@ export class HttpMethodMatcherPolicy
 		exitDestination: number,
 		edges: readonly PolicyJumpTableEdge[],
 	): PolicyJumpTable {
-		// TODO
-		throw new Error('Method not implemented.');
+		let destinations: CaseInsensitiveMap<number> | undefined = undefined;
+		let corsPreflightDestinations: CaseInsensitiveMap<number> | undefined =
+			undefined;
+		for (const edge of edges) {
+			const key = edge.state as EdgeKey;
+			if (key.isCorsPreflightRequest) {
+				if (corsPreflightDestinations === undefined) {
+					corsPreflightDestinations = new CaseInsensitiveMap();
+				}
+
+				corsPreflightDestinations.set(key.httpMethod, edge.destination);
+			} else {
+				if (destinations === undefined) {
+					destinations = new CaseInsensitiveMap();
+				}
+
+				destinations.set(key.httpMethod, edge.destination);
+			}
+		}
+
+		let tryGetValueResult: Result<number, undefined>;
+
+		let corsPreflightExitDestination = exitDestination;
+		if (
+			corsPreflightDestinations !== undefined &&
+			(tryGetValueResult = tryGetValue(
+				corsPreflightDestinations,
+				anyMethod,
+			)) &&
+			tryGetValueResult.ok
+		) {
+			// If we have endpoints that match any HTTP method, use that as the exit.
+			corsPreflightExitDestination = tryGetValueResult.val;
+			corsPreflightDestinations.delete(anyMethod);
+		}
+
+		if (
+			destinations !== undefined &&
+			(tryGetValueResult = tryGetValue(destinations, anyMethod)) &&
+			tryGetValueResult.ok
+		) {
+			// If we have endpoints that match any HTTP method, use that as the exit.
+			exitDestination = tryGetValueResult.val;
+			destinations.delete(anyMethod);
+		}
+
+		if (destinations?.size === 1) {
+			// If there is only a single valid HTTP method then use an optimized jump table.
+			// It avoids unnecessary dictionary lookups with the method name.
+			const [method, destination] = Array.from(destinations)[0];
+			let supportsCorsPreflight = false;
+			let corsPreflightDestination = 0;
+
+			if (
+				corsPreflightDestinations !== undefined &&
+				corsPreflightDestinations.size > 0
+			) {
+				supportsCorsPreflight = true;
+				const [, value] = Array.from(corsPreflightDestinations)[0];
+				corsPreflightDestination = value;
+			}
+
+			return new HttpMethodSingleEntryPolicyJumpTable(
+				exitDestination,
+				method,
+				destination,
+				supportsCorsPreflight,
+				corsPreflightExitDestination,
+				corsPreflightDestination,
+			);
+		} else {
+			return new HttpMethodDictionaryPolicyJumpTable(
+				exitDestination,
+				destinations,
+				corsPreflightExitDestination,
+				corsPreflightDestinations,
+			);
+		}
 	}
 }
