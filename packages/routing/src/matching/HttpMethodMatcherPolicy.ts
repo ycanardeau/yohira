@@ -1,5 +1,6 @@
 import {
 	CaseInsensitiveMap,
+	CaseInsensitiveSet,
 	IEquatable,
 	Type,
 	getStringHashCode,
@@ -7,7 +8,11 @@ import {
 	typedef,
 } from '@yohira/base';
 import { HttpContext } from '@yohira/http';
-import { Endpoint, HttpMethodsEquals } from '@yohira/http.abstractions';
+import {
+	Endpoint,
+	HttpMethods,
+	HttpMethodsEquals,
+} from '@yohira/http.abstractions';
 import { Result } from '@yohira/third-party.ts-results';
 
 import { IHttpMethodMetadata } from '../IHttpMethodMetadata';
@@ -20,6 +25,10 @@ import { MatcherPolicy } from './MatcherPolicy';
 import { PolicyJumpTable } from './PolicyJumpTable';
 import { PolicyJumpTableEdge } from './PolicyJumpTableEdge';
 import { PolicyNodeEdge } from './PolicyNodeEdge';
+
+export const preflightHttpMethod = HttpMethods.Options;
+
+export const http405EndpointDisplayName = '405 HTTP Method Not Supported';
 
 const anyMethod = '*';
 
@@ -114,8 +123,65 @@ export class HttpMethodMatcherPolicy
 	}
 
 	apply(httpContext: HttpContext, candidates: CandidateSet): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		let needs405Endpoint: boolean | undefined = undefined;
+		let methods: CaseInsensitiveSet | undefined = new CaseInsensitiveSet();
+
+		for (let i = 0; i < candidates.count; i++) {
+			const metadata = candidates
+				.get(i)
+				.endpoint?.metadata.getMetadata<IHttpMethodMetadata>(
+					Type.from('IHttpMethodMetadata'),
+				);
+			if (metadata === undefined || metadata.httpMethods.length === 0) {
+				// Can match any method.
+				needs405Endpoint = false;
+				continue;
+			}
+
+			// Saw a valid endpoint.
+			needs405Endpoint = needs405Endpoint ?? true;
+
+			if (!candidates.isValidCandidate(i)) {
+				continue;
+			}
+
+			const httpMethod = httpContext.request.method;
+			// TODO: const headers = httpContext.request.headers;
+			if (
+				metadata.acceptCorsPreflight &&
+				HttpMethodsEquals(httpMethod, preflightHttpMethod)
+				// TODO
+			) {
+				needs405Endpoint = false; // We don't return a 405 for a CORS preflight request when the endpoints accept CORS preflight.
+				// TODO: httpMethod =
+			}
+
+			let matched = false;
+			for (let j = 0; j < metadata.httpMethods.length; j++) {
+				const candidateMethod = metadata.httpMethods[j];
+				if (!HttpMethodsEquals(httpMethod, candidateMethod)) {
+					methods = methods ?? new CaseInsensitiveSet();
+					methods.add(candidateMethod);
+					continue;
+				}
+
+				matched = true;
+				needs405Endpoint = false;
+				break;
+			}
+
+			if (!matched) {
+				candidates.setValidity(i, false);
+			}
+		}
+
+		if (needs405Endpoint === true) {
+			// We saw some endpoints coming in, and we eliminated them all.
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		return Promise.resolve();
 	}
 
 	private static containsHttpMethod(

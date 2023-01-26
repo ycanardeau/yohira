@@ -4,6 +4,10 @@ import { IHttpContext } from '../IHttpContext';
 import { Endpoint } from '../routing/Endpoint';
 import { IEndpointFeature } from './IEndpointFeature';
 
+class EndpointFeature implements IEndpointFeature {
+	endpoint?: Endpoint;
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Routing/EndpointHttpContextExtensions.cs,ea7f441e3031e7ce,references
 /**
  * Extension method for getting the {@link Endpoint} for the current request.
@@ -24,15 +28,14 @@ export function setEndpoint(
 	context: IHttpContext,
 	endpoint: Endpoint | undefined,
 ): void {
-	const feature = context.features.get<IEndpointFeature>(
+	let feature = context.features.get<IEndpointFeature>(
 		Type.from('IEndpointFeature'),
 	);
 
 	if (endpoint !== undefined) {
 		if (feature === undefined) {
-			/* TODO: feature = new EndpointFeature();
-			context.features.set(feature); */
-			throw new Error('Method not implemented.');
+			feature = new EndpointFeature();
+			context.features.set(Type.from('IEndpointFeature'), feature);
 		}
 
 		feature.endpoint = endpoint;

@@ -48,6 +48,9 @@ export class HttpRequest implements IHttpRequest {
 	get method(): string {
 		return this.httpRequestFeature.method;
 	}
+	set method(value: string) {
+		this.httpRequestFeature.method = value;
+	}
 
 	get path(): PathString {
 		return new PathString(this.httpRequestFeature.path);

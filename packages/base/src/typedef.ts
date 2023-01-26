@@ -17,7 +17,8 @@ export function typedef(
 ): (ctor: Ctor) => void {
 	return (ctor) => {
 		if (ctorTypeMap.has(ctor) || typeTypesMap.has(type.value)) {
-			throw new Error(/* TODO: message */);
+			// TODO: throw new Error(/* TODO: message */);
+			return;
 		}
 
 		ctorTypeMap.set(ctor, type);
