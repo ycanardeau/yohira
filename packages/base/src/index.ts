@@ -16,3 +16,4 @@ export * from './MapExtensions';
 export * from './Path';
 export * from './StringExtensions';
 export * from './Type';
+export * from './typedef';
