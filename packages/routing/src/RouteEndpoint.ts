@@ -1,3 +1,4 @@
+import { Type, typedef } from '@yohira/base';
 import {
 	Endpoint,
 	EndpointMetadataCollection,
@@ -7,6 +8,7 @@ import {
 import { RoutePattern } from './patterns/RoutePattern';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/RouteEndpoint.cs,60b018d52e2d0a7f,references
+@typedef(Type.from('RouteEndpoint'), { extends: Type.from('Endpoint') })
 export class RouteEndpoint extends Endpoint {
 	constructor(
 		requestDelegate: RequestDelegate,
