@@ -52,7 +52,7 @@ export class DfaNode {
 
 	addMatches(endpoints: Iterable<Endpoint>): void {
 		if (this.matches === undefined) {
-			this.matches = [];
+			this.matches = [...endpoints];
 		} else {
 			this.matches.push(...endpoints);
 		}
