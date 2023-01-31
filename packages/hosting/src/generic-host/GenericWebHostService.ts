@@ -27,7 +27,7 @@ export class GenericWebHostService implements IHostedService {
 		@inject(Type.from('IAppBuilderFactory'))
 		readonly appBuilderFactory: IAppBuilderFactory,
 		@inject(Type.from('Iterable<IStartupFilter>'))
-		readonly startupFilters: readonly IStartupFilter[],
+		readonly startupFilters: Iterable<IStartupFilter>,
 	) {
 		this.options = options.getValue(GenericWebHostServiceOptions);
 	}

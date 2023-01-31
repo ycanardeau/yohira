@@ -10,10 +10,9 @@ import { Options } from './Options';
 export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 	constructor(
 		@inject(Type.from('Iterable<IConfigureOptions<>>'))
-		private readonly setups: (
-			| IConfigureOptions<TOptions>
-			| IConfigureNamedOptions<TOptions>
-		)[],
+		private readonly setups: Iterable<
+			IConfigureOptions<TOptions> | IConfigureNamedOptions<TOptions>
+		>,
 	) {}
 
 	protected createInstance(
