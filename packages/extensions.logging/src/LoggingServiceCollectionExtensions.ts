@@ -26,7 +26,7 @@ export function addLogging(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('ILogger<>'),
+			Type.from('ILoggerT<>'),
 			LoggerT,
 		),
 	);

@@ -74,7 +74,7 @@ export class EndpointRoutingMiddleware implements IMiddleware {
 	constructor(
 		@inject(Type.from('MatcherFactory'))
 		private readonly matcherFactory: MatcherFactory,
-		@inject(Type.from('ILogger<EndpointRoutingMiddleware>'))
+		@inject(Type.from('ILoggerT<EndpointRoutingMiddleware>'))
 		private readonly logger: ILoggerT<EndpointRoutingMiddleware>,
 	) {
 		// HACK

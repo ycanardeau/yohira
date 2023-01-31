@@ -28,7 +28,7 @@ export class EndpointMiddleware implements IMiddleware {
 	private readonly logger: ILogger;
 
 	constructor(
-		@inject(Type.from('ILogger<EndpointMiddleware>'))
+		@inject(Type.from('ILoggerT<EndpointMiddleware>'))
 		logger: ILoggerT<EndpointMiddleware>,
 		// TODO: routeOptions
 	) {

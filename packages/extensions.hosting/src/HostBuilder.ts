@@ -46,7 +46,7 @@ export function populateServiceCollection(
 			appServices,
 			getRequiredService<ILoggerT<Host>>(
 				appServices,
-				Type.from('ILogger<Host>'),
+				Type.from('ILoggerT<Host>'),
 			),
 		);
 	});

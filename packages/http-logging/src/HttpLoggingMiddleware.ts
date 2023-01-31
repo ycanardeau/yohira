@@ -18,7 +18,7 @@ export class HttpLoggingMiddleware implements IMiddleware {
 	constructor(
 		@inject(Type.from('IOptionsMonitor<HttpLoggingOptions>'))
 		private readonly options: IOptionsMonitor<HttpLoggingOptions>,
-		@inject(Type.from('ILogger<HttpLoggingMiddleware>'))
+		@inject(Type.from('ILoggerT<HttpLoggingMiddleware>'))
 		private readonly logger: ILoggerT<HttpLoggingMiddleware>,
 	) {}
 
