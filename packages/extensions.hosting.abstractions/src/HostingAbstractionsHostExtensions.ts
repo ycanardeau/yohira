@@ -12,7 +12,7 @@ export async function waitForShutdown(host: IHost): Promise<void> {
 }
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting.Abstractions/HostingAbstractionsHostExtensions.cs,ddd71cc5c5437524,references
-export async function run(host: IHost): Promise<void> {
+export async function runApp(host: IHost): Promise<void> {
 	try {
 		await host.start();
 

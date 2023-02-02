@@ -1,5 +1,5 @@
 import { ICollection, IDisposable, IServiceProvider, List } from '@yohira/base';
-import { IHost, run } from '@yohira/extensions.hosting.abstractions';
+import { IHost, runApp } from '@yohira/extensions.hosting.abstractions';
 import { AppBuilder } from '@yohira/http';
 import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
 import { EndpointDataSource, IEndpointRouteBuilder } from '@yohira/routing';
@@ -66,7 +66,7 @@ export class WebApp
 
 	run(): Promise<void> {
 		this.listen();
-		return run(this);
+		return runApp(this);
 	}
 }
 

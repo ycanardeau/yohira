@@ -1,7 +1,7 @@
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
 import { HostAppBuilder } from '@yohira/extensions.hosting';
 import { configure } from '@yohira/hosting';
-import { IAppBuilder, run } from '@yohira/http.abstractions';
+import { IAppBuilder, addTerminalMiddleware } from '@yohira/http.abstractions';
 
 import { BootstrapHostBuilder } from './BootstrapHostBuilder';
 import { configureWebHostDefaults } from './GenericHostBuilderExtensions';
@@ -25,7 +25,7 @@ export class WebAppBuilder {
 		// TODO
 
 		app.use((next) => {
-			run(builtApp, next);
+			addTerminalMiddleware(builtApp, next);
 			return builtApp.build();
 		});
 
