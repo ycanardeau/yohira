@@ -1,4 +1,4 @@
-import { IList, List } from '@yohira/base';
+import { IList, List, replaceAll } from '@yohira/base';
 import {
 	ConfigRoot,
 	MemoryConfigProvider,
@@ -283,7 +283,7 @@ export abstract class ConfigProviderTestBase {
 
 	protected assertDebugView(config: IConfigRoot, expected: string): void {
 		function removeLineEnds(source: string): string {
-			return source.replace('\n', '').replace('\r', '');
+			return replaceAll(replaceAll(source, '\n', ''), '\r', '');
 		}
 
 		const actual = getDebugView(config);
