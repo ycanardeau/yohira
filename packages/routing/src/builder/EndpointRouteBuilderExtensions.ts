@@ -7,6 +7,10 @@ import { RoutePattern } from '../patterns/RoutePattern';
 import { parseRoutePattern } from '../patterns/RoutePatternParser';
 
 const getVerb = [HttpMethods.Get];
+const postVerb = [HttpMethods.Post];
+const putVerb = [HttpMethods.Put];
+const deleteVerb = [HttpMethods.Delete];
+const patchVerb = [HttpMethods.Patch];
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Builder/EndpointRouteBuilderExtensions.cs,9671c2cebb1a83d1,references
 function getOrAddRouteEndpointDataSource(
@@ -67,4 +71,36 @@ export function mapGet(
 	requestDelegate: RequestDelegate,
 ): IEndpointConventionBuilder {
 	return mapMethods(endpoints, pattern, getVerb, requestDelegate);
+}
+
+export function mapPost(
+	endpoints: IEndpointRouteBuilder,
+	pattern: string,
+	requestDelegate: RequestDelegate,
+): IEndpointConventionBuilder {
+	return mapMethods(endpoints, pattern, postVerb, requestDelegate);
+}
+
+export function mapPut(
+	endpoints: IEndpointRouteBuilder,
+	pattern: string,
+	requestDelegate: RequestDelegate,
+): IEndpointConventionBuilder {
+	return mapMethods(endpoints, pattern, putVerb, requestDelegate);
+}
+
+export function mapDelete(
+	endpoints: IEndpointRouteBuilder,
+	pattern: string,
+	requestDelegate: RequestDelegate,
+): IEndpointConventionBuilder {
+	return mapMethods(endpoints, pattern, deleteVerb, requestDelegate);
+}
+
+export function mapPatch(
+	endpoints: IEndpointRouteBuilder,
+	pattern: string,
+	requestDelegate: RequestDelegate,
+): IEndpointConventionBuilder {
+	return mapMethods(endpoints, pattern, patchVerb, requestDelegate);
 }
