@@ -1,4 +1,5 @@
 import {
+	AggregateError,
 	ICollection,
 	IDisposable,
 	IServiceProvider,
@@ -59,7 +60,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	): ((
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined) => {
-		const callSite = this.callSiteFactory.getCallSite(
+		const callSite = this.callSiteFactory.getCallSiteByType(
 			serviceType,
 			new CallSiteChain(),
 		);
@@ -74,6 +75,27 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 		return () => undefined;
 	};
+
+	private validateService(descriptor: ServiceDescriptor): void {
+		if (false /* TODO */) {
+			return;
+		}
+
+		try {
+			const callSite =
+				this.callSiteFactory.getCallSiteByServiceDescriptor(
+					descriptor,
+					new CallSiteChain(),
+				);
+			if (callSite !== undefined) {
+				this.onCreate(callSite);
+			}
+		} catch (error) {
+			throw new Error(
+				`Error while validating the service descriptor '${descriptor}': ${error}`,
+			);
+		}
+	}
 
 	constructor(
 		serviceDescriptors: ICollection<ServiceDescriptor>,
@@ -104,7 +126,24 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 			this.callSiteValidator = new CallSiteValidator();
 		}
 
-		// TODO
+		if (options.validateOnBuild) {
+			let errors: unknown[] | undefined = undefined;
+			for (const serviceDescriptor of serviceDescriptors) {
+				try {
+					this.validateService(serviceDescriptor);
+				} catch (error) {
+					errors ??= [];
+					errors.push(error);
+				}
+			}
+
+			if (errors !== undefined) {
+				throw new AggregateError(
+					errors,
+					'Some services are not able to be constructed',
+				);
+			}
+		}
 
 		// TODO: Log.
 	}

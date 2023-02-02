@@ -6,7 +6,6 @@ import {
 
 import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
 import { CtorCallSite } from '../service-lookup/CtorCallSite';
-import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
 import { IterableCallSite } from '../service-lookup/IterableCallSite';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
 
@@ -92,16 +91,16 @@ export class CallSiteValidator extends CallSiteVisitor<
 		iterableCallSite: IterableCallSite,
 		state: CallSiteValidatorState,
 	): symbol | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+		let result: symbol | undefined = undefined;
+		for (const serviceCallSite of iterableCallSite.serviceCallSites) {
+			const scoped = this.visitCallSite(serviceCallSite, state);
+			result ??= scoped;
+		}
+		return result;
 	}
 
-	protected visitFactory(
-		factoryCallSite: FactoryCallSite,
-		state: CallSiteValidatorState,
-	): symbol | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+	protected visitFactory(): symbol | undefined {
+		return undefined;
 	}
 
 	protected visitRootCache(

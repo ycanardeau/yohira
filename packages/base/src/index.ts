@@ -1,3 +1,4 @@
+export * from './AggregateError';
 export * from './CaseInsensitiveMap';
 export * from './CaseInsensitiveSet';
 export * from './Ctor';

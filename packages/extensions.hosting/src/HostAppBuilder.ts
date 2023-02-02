@@ -1,5 +1,8 @@
 import { IServiceProvider } from '@yohira/base';
-import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
+import {
+	ServiceProviderOptions,
+	buildServiceProvider,
+} from '@yohira/extensions.dependency-injection';
 import {
 	IServiceCollection,
 	ServiceCollection,
@@ -9,11 +12,13 @@ import {
 	IHost,
 } from '@yohira/extensions.hosting.abstractions';
 
+import { HostAppBuilderSettings } from './HostAppBuilderSettings';
 import {
 	createHostingEnv,
 	populateServiceCollection,
 	resolveHost,
 } from './HostBuilder';
+import { createDefaultServiceProviderOptions } from './HostingHostBuilderExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostApplicationBuilder.cs,c659330adb7f1ad0,references
 export class HostAppBuilder {
@@ -25,7 +30,7 @@ export class HostAppBuilder {
 	private hostBuilt = false;
 	private appServices?: IServiceProvider;
 
-	constructor() {
+	constructor(settings: HostAppBuilderSettings) {
 		// TODO
 
 		const { hostingEnv } = createHostingEnv(/* TODO */);
@@ -47,9 +52,19 @@ export class HostAppBuilder {
 
 		// TODO
 
+		let serviceProviderOptions: ServiceProviderOptions | undefined =
+			undefined;
+
+		if (!settings.disableDefaults) {
+			// TODO
+			serviceProviderOptions = createDefaultServiceProviderOptions(
+				this.hostBuilderContext,
+			);
+		}
+
 		this.createServiceProvider = (): IServiceProvider => {
 			// TODO
-			return buildServiceProvider(this.services);
+			return buildServiceProvider(this.services, serviceProviderOptions);
 		};
 	}
 

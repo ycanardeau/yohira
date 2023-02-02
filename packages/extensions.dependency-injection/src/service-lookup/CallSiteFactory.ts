@@ -236,7 +236,10 @@ export class CallSiteFactory implements IServiceProviderIsService {
 	): ServiceCallSite[] | undefined {
 		const parameterCallSites: ServiceCallSite[] = [];
 		for (const parameterType of parameterTypes) {
-			const callSite = this.getCallSite(parameterType, callSiteChain);
+			const callSite = this.getCallSiteByType(
+				parameterType,
+				callSiteChain,
+			);
 
 			if (callSite === undefined) {
 				// TODO
@@ -526,7 +529,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return callSite;
 	}
 
-	getCallSite(
+	getCallSiteByType(
 		serviceType: symbol,
 		callSiteChain: CallSiteChain,
 	): ServiceCallSite | undefined {
@@ -540,6 +543,28 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		return tryGetValueResult.ok
 			? tryGetValueResult.val
 			: this.createCallSite(serviceType, callSiteChain);
+	}
+
+	getCallSiteByServiceDescriptor(
+		serviceDescriptor: ServiceDescriptor,
+		callSiteChain: CallSiteChain,
+	): ServiceCallSite | undefined {
+		const tryGetValueResult = tryGetValue(
+			this.descriptorLookup,
+			serviceDescriptor.serviceType,
+		);
+		if (tryGetValueResult.ok) {
+			return this.tryCreateExactCore(
+				serviceDescriptor,
+				serviceDescriptor.serviceType,
+				callSiteChain,
+				tryGetValueResult.val.getSlot(serviceDescriptor),
+			);
+		}
+
+		throw new Error(
+			"descriptorLookup didn't contain requested serviceDescriptor",
+		);
 	}
 
 	isService(serviceType: symbol): boolean {

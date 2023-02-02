@@ -1,4 +1,6 @@
+export * from './Envs';
 export * from './HostBuilderContext';
+export * from './HostEnvEnvExtensions';
 export * from './HostingAbstractionsHostExtensions';
 export * from './IHost';
 export * from './IHostBuilder';

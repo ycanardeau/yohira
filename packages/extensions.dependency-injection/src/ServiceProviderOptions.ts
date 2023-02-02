@@ -10,5 +10,5 @@ export class ServiceProviderOptions {
 	 * <c>true</c> to perform check verifying that all services can be created during <c>BuildServiceProvider</c> call; otherwise <c>false</c>. Defaults to <c>false</c>.
 	 * NOTE: this check doesn't verify open generics services.
 	 */
-	// TODO: validateOnBuild = false;
+	validateOnBuild = false;
 }

@@ -6,6 +6,7 @@ import {
 	getRequiredService,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
+	Envs,
 	HostBuilderContext,
 	IHost,
 } from '@yohira/extensions.hosting.abstractions';
@@ -18,7 +19,7 @@ import { Host } from './internal/Host';
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,afe23a39fda43335,references
 export function createHostingEnv(): { hostingEnv: HostingEnv } {
 	const hostingEnv = new HostingEnv();
-	// TODO
+	hostingEnv.envName = /* TODO */ Envs.Production;
 	hostingEnv.contentRootPath = ''; /* TODO */
 
 	// TODO

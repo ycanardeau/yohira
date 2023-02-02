@@ -1,5 +1,8 @@
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
-import { HostAppBuilder } from '@yohira/extensions.hosting';
+import {
+	HostAppBuilder,
+	HostAppBuilderSettings,
+} from '@yohira/extensions.hosting';
 import { configure } from '@yohira/hosting';
 import { IAppBuilder, addTerminalMiddleware } from '@yohira/http.abstractions';
 
@@ -35,7 +38,9 @@ export class WebAppBuilder {
 	constructor() {
 		// TODO
 
-		this.hostAppBuilder = new HostAppBuilder(/* TODO */);
+		const hostAppBuilderSettings = new HostAppBuilderSettings();
+		// TODO
+		this.hostAppBuilder = new HostAppBuilder(hostAppBuilderSettings);
 
 		const bootstrapHostBuilder = new BootstrapHostBuilder(
 			this.hostAppBuilder,
