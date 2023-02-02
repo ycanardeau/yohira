@@ -70,7 +70,7 @@ class EdgeKey implements IEquatable<EdgeKey> {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/HttpMethodMatcherPolicy.cs,e1986934a0392a00,references
-@typedef(Symbol.for('HttpMethodMatcherPolicy'), {
+@typedef({
 	extends: Symbol.for('MatcherPolicy'),
 	implements: [
 		Symbol.for('INodeBuilderPolicy'),

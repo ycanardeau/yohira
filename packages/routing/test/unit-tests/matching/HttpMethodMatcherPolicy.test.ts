@@ -43,7 +43,7 @@ function createPolicy(): HttpMethodMatcherPolicy {
 	return new HttpMethodMatcherPolicy();
 }
 
-@typedef(Symbol.for('DynamicEndpointMetadata'), {
+@typedef({
 	implements: [Symbol.for('IDynamicEndpointMetadata')],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {

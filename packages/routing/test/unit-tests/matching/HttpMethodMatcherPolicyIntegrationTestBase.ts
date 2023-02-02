@@ -32,7 +32,7 @@ import { expect, test } from 'vitest';
 import { emptyRequestDelegate } from '../TestConstants';
 import { assertMatch } from './MatcherAssert';
 
-@typedef(Symbol.for('DynamicEndpointMetadata'), {
+@typedef({
 	implements: [Symbol.for('IDynamicEndpointMetadata')],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {

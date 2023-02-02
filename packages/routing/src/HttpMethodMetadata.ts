@@ -4,7 +4,7 @@ import { HttpMethods, getCanonicalizedValue } from '@yohira/http.abstractions';
 import { IHttpMethodMetadata } from './IHttpMethodMetadata';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/HttpMethodMetadata.cs,13c7687564af679f,references
-@typedef(Symbol.for('HttpMethodMetadata'), {
+@typedef({
 	implements: [Symbol.for('IHttpMethodMetadata')],
 })
 export class HttpMethodMetadata implements IHttpMethodMetadata {

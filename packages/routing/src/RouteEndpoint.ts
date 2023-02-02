@@ -8,7 +8,7 @@ import {
 import { RoutePattern } from './patterns/RoutePattern';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/RouteEndpoint.cs,60b018d52e2d0a7f,references
-@typedef(Symbol.for('RouteEndpoint'), { extends: Symbol.for('Endpoint') })
+@typedef({ extends: Symbol.for('Endpoint') })
 export class RouteEndpoint extends Endpoint {
 	constructor(
 		requestDelegate: RequestDelegate,

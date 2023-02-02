@@ -5,20 +5,20 @@ interface TypedefOptions {
 	implements?: readonly symbol[];
 }
 
-const ctorTypeMap = new Map<Ctor, symbol>();
-const typeTypesMap = new Map<symbol, Set<symbol>>();
+interface ClassMetadata {
+	ctor: Ctor;
+	compatibleTypes: Set<symbol>;
+}
 
-export function typedef(
-	type: symbol,
-	options?: TypedefOptions,
-): (ctor: Ctor) => void {
+const classMetadataMap = new Map<symbol, ClassMetadata>();
+
+export function typedef(options?: TypedefOptions): (ctor: Ctor) => void {
 	return (ctor) => {
-		if (ctorTypeMap.has(ctor) || typeTypesMap.has(type)) {
+		const type = Symbol.for(ctor.name);
+		if (classMetadataMap.has(type)) {
 			// TODO: throw new Error(/* TODO: message */);
 			return;
 		}
-
-		ctorTypeMap.set(ctor, type);
 
 		const set = new Set<symbol>();
 		set.add(type);
@@ -33,24 +33,23 @@ export function typedef(
 				}
 			}
 		}
-		typeTypesMap.set(type, set);
+		classMetadataMap.set(type, { ctor: ctor, compatibleTypes: set });
 	};
 }
 
 export function getType(instance: object): symbol {
-	const type = ctorTypeMap.get(instance.constructor as Ctor);
-	if (type === undefined) {
+	return Symbol.for(instance.constructor.name);
+}
+
+export function getClassMetadata(type: symbol): ClassMetadata {
+	const metadata = classMetadataMap.get(type);
+	if (metadata === undefined) {
 		throw new Error(/* TODO: message */);
 	}
-
-	return type;
+	return metadata;
 }
 
 export function isCompatibleWith(left: symbol, right: symbol): boolean {
-	const types = typeTypesMap.get(left);
-	if (types === undefined) {
-		throw new Error(/* TODO: message */);
-	}
-
-	return types.has(right);
+	const { compatibleTypes } = getClassMetadata(left);
+	return compatibleTypes.has(right);
 }
