@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { IConfigureNamedOptions } from './IConfigureNamedOptions';
@@ -9,7 +9,7 @@ import { Options } from './Options';
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsFactory.cs,89202ae8d1498a3f,references
 export class OptionsFactory<TOptions> implements IOptionsFactory<TOptions> {
 	constructor(
-		@inject(Type.from('Iterable<IConfigureOptions<>>'))
+		@inject(Symbol.for('Iterable<IConfigureOptions<>>'))
 		private readonly setups: Iterable<IConfigureOptions<TOptions>>,
 	) {}
 

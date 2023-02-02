@@ -1,4 +1,4 @@
-import { Type, typedef } from '@yohira/base';
+import { typedef } from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
 	IServiceCollection,
@@ -32,8 +32,8 @@ import { expect, test } from 'vitest';
 import { emptyRequestDelegate } from '../TestConstants';
 import { assertMatch } from './MatcherAssert';
 
-@typedef(Type.from('DynamicEndpointMetadata'), {
-	implements: [Type.from('IDynamicEndpointMetadata')],
+@typedef(Symbol.for('DynamicEndpointMetadata'), {
+	implements: [Symbol.for('IDynamicEndpointMetadata')],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {
 	get isDynamic(): boolean {
@@ -94,7 +94,7 @@ export abstract class HttpMethodMatcherPolicyIntegrationTestBase {
 
 		const builder = getRequiredService<DfaMatcherBuilder>(
 			services,
-			Type.from('DfaMatcherBuilder'),
+			Symbol.for('DfaMatcherBuilder'),
 		);
 		for (const endpoint of endpoints) {
 			builder.addEndpoint(endpoint);
@@ -112,7 +112,7 @@ export abstract class HttpMethodMatcherPolicyIntegrationTestBase {
 			new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
 		const httpContext = new HttpContext(features);
 		features.set(
-			Type.from('IHttpRequestFeature'),
+			Symbol.for('IHttpRequestFeature'),
 			new HttpRequestFeature(),
 		);
 		// TODO

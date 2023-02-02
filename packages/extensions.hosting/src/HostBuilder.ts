@@ -1,4 +1,4 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	IServiceCollection,
 	addSingletonFactory,
@@ -35,18 +35,18 @@ export function populateServiceCollection(
 	// TODO
 	addSingletonInstance(
 		services,
-		Type.from('HostBuilderContext'),
+		Symbol.for('HostBuilderContext'),
 		hostBuilderContext,
 	);
 	// TODO
 
-	addSingletonFactory(services, Type.from('IHost'), () => {
+	addSingletonFactory(services, Symbol.for('IHost'), () => {
 		const appServices = serviceProviderGetter();
 		return new Host(
 			appServices,
 			getRequiredService<ILoggerT<Host>>(
 				appServices,
-				Type.from('ILoggerT<Host>'),
+				Symbol.for('ILoggerT<Host>'),
 			),
 		);
 	});
@@ -60,7 +60,10 @@ export function resolveHost(
 ): IHost {
 	// TODO
 
-	const host = getRequiredService<IHost>(serviceProvider, Type.from('IHost'));
+	const host = getRequiredService<IHost>(
+		serviceProvider,
+		Symbol.for('IHost'),
+	);
 
 	// TODO
 

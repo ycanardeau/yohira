@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { IDynamicEndpointMetadata } from '../IDynamicEndpointMetadata';
@@ -13,7 +12,7 @@ export abstract class MatcherPolicy {
 		for (const endpoint of endpoints) {
 			const metadata =
 				endpoint.metadata.getMetadata<IDynamicEndpointMetadata>(
-					Type.from('IDynamicEndpointMetadata'),
+					Symbol.for('IDynamicEndpointMetadata'),
 				);
 			if (metadata?.isDynamic === true) {
 				return true;

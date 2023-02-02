@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { FeatureReferences } from '@yohira/extensions.features';
 import {
 	IHttpContext,
@@ -32,7 +31,7 @@ export class HttpResponse implements IHttpResponse {
 	private get httpResponseBodyFeature(): IHttpResponseBodyFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.features.fetch(
-			Type.from('IHttpResponseBodyFeature'),
+			Symbol.for('IHttpResponseBodyFeature'),
 			{
 				get: () => {
 					return this.features.cache.responseBody;

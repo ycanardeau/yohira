@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 
 class ChainItemInfo {
 	constructor(readonly order: number, readonly implCtor: Ctor | undefined) {}
@@ -6,38 +6,34 @@ class ChainItemInfo {
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteChain.cs,ae1fab1640004f66,references
 export class CallSiteChain {
-	private readonly callSiteChain: Map<
-		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
-		ChainItemInfo
-	>;
+	private readonly callSiteChain: Map<symbol, ChainItemInfo>;
 
 	constructor() {
-		this.callSiteChain = new Map<
-			string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
-			ChainItemInfo
-		>();
+		this.callSiteChain = new Map<symbol, ChainItemInfo>();
 	}
 
-	private createCircularDependencyErrorMessage(type: Type): string {
+	private createCircularDependencyErrorMessage(type: symbol): string {
 		// TODO
-		return `A circular dependency was detected for the service of type '${type}'.`; /* LOC */
+		return `A circular dependency was detected for the service of type '${Symbol.keyFor(
+			type,
+		)}'.`; /* LOC */
 	}
 
-	checkCircularDependency(serviceType: Type): void {
-		if (this.callSiteChain.has(serviceType.value)) {
+	checkCircularDependency(serviceType: symbol): void {
+		if (this.callSiteChain.has(serviceType)) {
 			throw new Error(
 				this.createCircularDependencyErrorMessage(serviceType),
 			);
 		}
 	}
 
-	remove(serviceType: Type): void {
-		this.callSiteChain.delete(serviceType.value);
+	remove(serviceType: symbol): void {
+		this.callSiteChain.delete(serviceType);
 	}
 
-	add(serviceType: Type, implCtor: Ctor | undefined): void {
+	add(serviceType: symbol, implCtor: Ctor | undefined): void {
 		this.callSiteChain.set(
-			serviceType.value,
+			serviceType,
 			new ChainItemInfo(this.callSiteChain.size, implCtor),
 		);
 	}

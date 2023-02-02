@@ -8,7 +8,7 @@ export function tryAddServiceDescriptor(
 ): void {
 	const count = collection.count;
 	for (let i = 0; i < count; i++) {
-		if (collection.get(i).serviceType.equals(descriptor.serviceType)) {
+		if (collection.get(i).serviceType === descriptor.serviceType) {
 			// Already added
 			return;
 		}

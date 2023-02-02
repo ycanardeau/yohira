@@ -1,4 +1,4 @@
-import { Type, tryGetValue } from '@yohira/base';
+import { tryGetValue } from '@yohira/base';
 import {
 	IServiceScope,
 	ServiceLifetime,
@@ -17,12 +17,9 @@ class CallSiteValidatorState {
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteValidator.cs,80039ca1254de7d7,references
 export class CallSiteValidator extends CallSiteVisitor<
 	CallSiteValidatorState,
-	Type | undefined
+	symbol | undefined
 > {
-	private readonly scopedServices = new Map<
-		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
-		Type
-	>();
+	private readonly scopedServices = new Map<symbol, symbol>();
 
 	validateCallSite(callSite: ServiceCallSite): void {
 		const scoped = this.visitCallSite(
@@ -30,36 +27,42 @@ export class CallSiteValidator extends CallSiteVisitor<
 			new CallSiteValidatorState(),
 		);
 		if (scoped !== undefined) {
-			this.scopedServices.set(callSite.serviceType.value, scoped);
+			this.scopedServices.set(callSite.serviceType, scoped);
 		}
 	}
 
 	validateResolution(
-		serviceType: Type,
+		serviceType: symbol,
 		scope: IServiceScope,
 		rootScope: IServiceScope,
 	): void {
 		if (scope === rootScope) {
 			const tryGetValueResult = tryGetValue(
 				this.scopedServices,
-				serviceType.value,
+				serviceType,
 			);
 			if (tryGetValueResult.ok) {
 				const { val: scopedService } = tryGetValueResult;
-				if (serviceType.equals(scopedService)) {
+				if (serviceType === scopedService) {
 					throw new Error(
 						`Cannot resolve ${[
 							ServiceLifetime[
 								ServiceLifetime.Scoped
 							].toLowerCase(),
-						]} service '${serviceType}' from root provider.` /* LOC */,
+						]} service '${Symbol.keyFor(
+							serviceType,
+						)}' from root provider.` /* LOC */,
 					);
 				}
 
 				throw new Error(
-					`Cannot resolve '${serviceType}' from root provider because it requires ${ServiceLifetime[
+					`Cannot resolve '${Symbol.keyFor(
+						serviceType,
+					)}' from root provider because it requires ${ServiceLifetime[
 						ServiceLifetime.Scoped
-					].toLowerCase()} service '${scopedService}'.` /* LOC */,
+					].toLowerCase()} service '${Symbol.keyFor(
+						scopedService,
+					)}'.` /* LOC */,
 				);
 			}
 		}
@@ -68,8 +71,8 @@ export class CallSiteValidator extends CallSiteVisitor<
 	protected visitCtor(
 		ctorCallSite: CtorCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined {
-		let result: Type | undefined = undefined;
+	): symbol | undefined {
+		let result: symbol | undefined = undefined;
 		for (const parameterCallSite of ctorCallSite.parameterCallSites) {
 			const scoped = this.visitCallSite(parameterCallSite, state);
 			result ??= scoped;
@@ -77,18 +80,18 @@ export class CallSiteValidator extends CallSiteVisitor<
 		return result;
 	}
 
-	protected visitConstant(): Type | undefined {
+	protected visitConstant(): symbol | undefined {
 		return undefined;
 	}
 
-	protected visitServiceProvider(): Type | undefined {
+	protected visitServiceProvider(): symbol | undefined {
 		return undefined;
 	}
 
 	protected visitIterable(
 		iterableCallSite: IterableCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined {
+	): symbol | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
@@ -96,7 +99,7 @@ export class CallSiteValidator extends CallSiteVisitor<
 	protected visitFactory(
 		factoryCallSite: FactoryCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined {
+	): symbol | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
@@ -104,7 +107,7 @@ export class CallSiteValidator extends CallSiteVisitor<
 	protected visitRootCache(
 		singletonCallSite: ServiceCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined {
+	): symbol | undefined {
 		state.singleton = singletonCallSite;
 		return this.visitCallSiteMain(singletonCallSite, state);
 	}
@@ -112,17 +115,19 @@ export class CallSiteValidator extends CallSiteVisitor<
 	protected visitScopeCache(
 		scopedCallSite: ServiceCallSite,
 		state: CallSiteValidatorState,
-	): Type | undefined {
+	): symbol | undefined {
 		// TODO: IServiceScopeFactory
 		if (state.singleton !== undefined) {
 			throw new Error(
 				`Cannot consume ${ServiceLifetime[
 					ServiceLifetime.Scoped
-				].toLowerCase()} service '${
-					scopedCallSite.serviceType
-				}' from ${ServiceLifetime[
+				].toLowerCase()} service '${Symbol.keyFor(
+					scopedCallSite.serviceType,
+				)}' from ${ServiceLifetime[
 					ServiceLifetime.Singleton
-				].toLowerCase()} '${state.singleton.serviceType}'.`,
+				].toLowerCase()} '${Symbol.keyFor(
+					state.singleton.serviceType,
+				)}'.`,
 			);
 		}
 

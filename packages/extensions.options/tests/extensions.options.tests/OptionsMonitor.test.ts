@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
 	IServiceCollection,
@@ -26,7 +25,7 @@ test('MonitorUsesFactory', () => {
 	$ = new ServiceCollection();
 	$ = addSingletonCtor(
 		$,
-		Type.from('IOptionsFactory<FakeOptions>'),
+		Symbol.for('IOptionsFactory<FakeOptions>'),
 		FakeOptionsFactory,
 	);
 	$ = configureOptionsServices(FakeOptions, $, (o) => {
@@ -36,7 +35,7 @@ test('MonitorUsesFactory', () => {
 
 	const monitor = getRequiredService<IOptionsMonitor<FakeOptions>>(
 		services,
-		Type.from('IOptionsMonitor<FakeOptions>'),
+		Symbol.for('IOptionsMonitor<FakeOptions>'),
 	);
 	expect(monitor.getCurrentValue(FakeOptions)).toBe(
 		FakeOptionsFactory.options,
@@ -69,7 +68,7 @@ test('CanClearNamedOptions', () => {
 	$ = addOptions($);
 	$ = addSingletonInstance(
 		$,
-		Type.from('IConfigureOptions<FakeOptions>'),
+		Symbol.for('IConfigureOptions<FakeOptions>'),
 		new CountIncrement(),
 	);
 
@@ -77,11 +76,11 @@ test('CanClearNamedOptions', () => {
 
 	const monitor = getRequiredService<IOptionsMonitor<FakeOptions>>(
 		sp,
-		Type.from('IOptionsMonitor<FakeOptions>'),
+		Symbol.for('IOptionsMonitor<FakeOptions>'),
 	);
 	const cache = getRequiredService<IOptionsMonitorCache<FakeOptions>>(
 		sp,
-		Type.from('IOptionsMonitorCache<FakeOptions>'),
+		Symbol.for('IOptionsMonitorCache<FakeOptions>'),
 	);
 	expect(monitor.get(FakeOptions, '#1').message).toBe('1');
 	expect(monitor.get(FakeOptions, '#2').message).toBe('2');

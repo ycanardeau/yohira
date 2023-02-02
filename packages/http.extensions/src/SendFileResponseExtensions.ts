@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { getRequiredFeature } from '@yohira/extensions.features';
 import { IFileInfo } from '@yohira/extensions.file-providers';
 import { IHttpResponse } from '@yohira/http.abstractions';
@@ -15,7 +14,7 @@ async function sendFileCore(
 	// TODO
 	const sendFile = getRequiredFeature<IHttpResponseBodyFeature>(
 		response.httpContext.features,
-		Type.from('IHttpResponseBodyFeature'),
+		Symbol.for('IHttpResponseBodyFeature'),
 	);
 
 	// TODO: try

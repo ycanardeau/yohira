@@ -1,4 +1,4 @@
-import { Type, tryGetValue } from '@yohira/base';
+import { tryGetValue } from '@yohira/base';
 import { IAppBuilder, useMiddleware } from '@yohira/http.abstractions';
 
 import { DefaultEndpointRouteBuilder } from './DefaultEndpointRouteBuilder';
@@ -15,7 +15,7 @@ const globalEndpointRouteBuilderKey = '__GlobalEndpointRouteBuilder';
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Builder/EndpointRoutingApplicationBuilderExtensions.cs,6fdcda103963a43b,references
 function verifyRoutingServicesAreRegistered(app: IAppBuilder): void {
 	if (
-		app.appServices.getService(Type.from('RoutingMarkerService')) ===
+		app.appServices.getService(Symbol.for('RoutingMarkerService')) ===
 		undefined
 	) {
 		throw new Error(

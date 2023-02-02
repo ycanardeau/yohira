@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	ConfigBuilder,
 	addInMemoryCollection,
@@ -28,7 +27,7 @@ test('UsesFactory', () => {
 	$ = new ServiceCollection();
 	$ = addSingletonCtor(
 		$,
-		Type.from('IOptionsFactory<FakeOptions>'),
+		Symbol.for('IOptionsFactory<FakeOptions>'),
 		FakeOptionsFactory,
 	);
 	$ = configureOptionsServices(FakeOptions, $, (o) => {
@@ -38,7 +37,7 @@ test('UsesFactory', () => {
 
 	const snap = getRequiredService<IOptions<FakeOptions>>(
 		services,
-		Type.from('IOptions<FakeOptions>'),
+		Symbol.for('IOptions<FakeOptions>'),
 	);
 	expect(snap.getValue(FakeOptions)).toBe(FakeOptionsFactory.options);
 });
@@ -55,7 +54,7 @@ test('CanReadComplexProperties', async () => {
 	const sp = buildServiceProvider(services);
 	const options = getRequiredService<IOptions<ComplexOptions>>(
 		sp,
-		Type.from('IOptions<ComplexOptions>'),
+		Symbol.for('IOptions<ComplexOptions>'),
 	).getValue(ComplexOptions);
 	expect(options.boolean).toBe(true);
 	expect(options.integer).toBe(-2);
@@ -79,7 +78,7 @@ test('CanReadInheritedProperties', async () => {
 	const sp = buildServiceProvider(services);
 	const options = getRequiredService<IOptions<DerivedOptions>>(
 		sp,
-		Type.from('IOptions<DerivedOptions>'),
+		Symbol.for('IOptions<DerivedOptions>'),
 	).getValue(DerivedOptions);
 	expect(options.boolean).toBe(true);
 	expect(options.integer).toBe(-2);
@@ -101,7 +100,7 @@ test('CanReadStaticProperty', async () => {
 	const sp = buildServiceProvider(services);
 	getRequiredService<IOptions<ComplexOptions>>(
 		sp,
-		Type.from('IOptions<ComplexOptions>'),
+		Symbol.for('IOptions<ComplexOptions>'),
 	).getValue(ComplexOptions);
 	expect(ComplexOptions.staticProperty).toBe('stuff');
 });
@@ -129,7 +128,7 @@ test('SetupCallsInOrder', async () => {
 
 	const service = buildServiceProvider(services).getService<
 		IOptions<FakeOptions>
-	>(Type.from('IOptions<FakeOptions>'));
+	>(Symbol.for('IOptions<FakeOptions>'));
 	expect(service).not.toBeUndefined();
 	if (service === undefined) {
 		throw new Error();

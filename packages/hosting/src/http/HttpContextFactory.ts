@@ -1,4 +1,4 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	IServiceScopeFactory,
 	getRequiredService,
@@ -13,12 +13,12 @@ export class HttpContextFactory implements IHttpContextFactory {
 	private readonly serviceScopeFactory: IServiceScopeFactory;
 
 	constructor(
-		@inject(Type.from('IServiceProvider'))
+		@inject(Symbol.for('IServiceProvider'))
 		serviceProvider: IServiceProvider,
 	) {
 		this.serviceScopeFactory = getRequiredService(
 			serviceProvider,
-			Type.from('IServiceScopeFactory'),
+			Symbol.for('IServiceScopeFactory'),
 		);
 	}
 

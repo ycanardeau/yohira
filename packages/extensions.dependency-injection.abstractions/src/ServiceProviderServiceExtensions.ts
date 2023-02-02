@@ -1,16 +1,18 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,60d5205872e18356,references
 export function getRequiredService<T>(
 	provider: IServiceProvider,
-	serviceType: Type,
+	serviceType: symbol,
 ): T {
 	// TODO
 
 	const service = provider.getService<T>(serviceType);
 	if (service === undefined) {
 		throw new Error(
-			`No service for type '${serviceType}' has been registered.` /* LOC */,
+			`No service for type '${Symbol.keyFor(
+				serviceType,
+			)}' has been registered.` /* LOC */,
 		);
 	}
 
@@ -19,10 +21,10 @@ export function getRequiredService<T>(
 
 export function getServices<T>(
 	provider: IServiceProvider,
-	serviceType: Type,
+	serviceType: symbol,
 ): T[] {
 	return getRequiredService<T[]>(
 		provider,
-		Type.from(`Iterable<${serviceType}>`),
+		Symbol.for(`Iterable<${Symbol.keyFor(serviceType)}>`),
 	);
 }

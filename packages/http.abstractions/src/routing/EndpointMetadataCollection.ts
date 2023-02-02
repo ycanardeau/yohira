@@ -1,6 +1,5 @@
 import {
 	IReadonlyList,
-	Type,
 	getType,
 	isCompatibleWith,
 	tryAdd,
@@ -10,10 +9,7 @@ import {
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Routing/EndpointMetadataCollection.cs,1e3e563632786f2c,references
 export class EndpointMetadataCollection implements IReadonlyList<object> {
 	private readonly items: object[];
-	private readonly cache: Map<
-		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
-		object[]
-	>;
+	private readonly cache: Map<symbol, object[]>;
 
 	constructor(items: Iterable<object>) {
 		this.items = Array.from(items);
@@ -34,7 +30,7 @@ export class EndpointMetadataCollection implements IReadonlyList<object> {
 		return this.items[index];
 	}
 
-	private getOrderedMetadataSlow<T extends object>(type: Type): T[] {
+	private getOrderedMetadataSlow<T extends object>(type: symbol): T[] {
 		let matches: T[] | undefined = undefined;
 
 		const items = this.items;
@@ -46,18 +42,18 @@ export class EndpointMetadataCollection implements IReadonlyList<object> {
 		}
 
 		const results = matches === undefined ? [] : matches;
-		tryAdd(this.cache, type.value, results);
+		tryAdd(this.cache, type, results);
 		return results;
 	}
 
-	private getMetadataSlow<T extends object>(type: Type): T | undefined {
+	private getMetadataSlow<T extends object>(type: symbol): T | undefined {
 		const result = this.getOrderedMetadataSlow<T>(type);
 		const length = result.length;
 		return length > 0 ? result[length - 1] : undefined;
 	}
 
-	getMetadata<T extends object>(type: Type): T | undefined {
-		const tryGetValueResult = tryGetValue(this.cache, type.value);
+	getMetadata<T extends object>(type: symbol): T | undefined {
+		const tryGetValueResult = tryGetValue(this.cache, type);
 		if (tryGetValueResult.ok) {
 			const result = tryGetValueResult.val as T[];
 			const length = result.length;

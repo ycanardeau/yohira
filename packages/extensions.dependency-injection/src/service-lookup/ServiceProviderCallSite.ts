@@ -1,5 +1,3 @@
-import { Type } from '@yohira/base';
-
 import { CallSiteKind } from './CallSiteKind';
 import { ResultCache } from './ResultCache';
 import { ServiceCallSite } from './ServiceCallSite';
@@ -10,7 +8,7 @@ export class ServiceProviderCallSite extends ServiceCallSite {
 		super(ResultCache.none);
 	}
 
-	readonly serviceType = Type.from('IServiceProvider');
+	readonly serviceType = Symbol.for('IServiceProvider');
 
 	readonly kind = CallSiteKind.ServiceProvider;
 }

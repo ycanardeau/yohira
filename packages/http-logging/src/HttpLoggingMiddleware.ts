@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { ILoggerT, LogLevel } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
@@ -16,9 +15,9 @@ import { HttpRequestLog } from './HttpRequestLog';
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpLoggingMiddleware.cs,35c5841599b94285,references
 export class HttpLoggingMiddleware implements IMiddleware {
 	constructor(
-		@inject(Type.from('IOptionsMonitor<HttpLoggingOptions>'))
+		@inject(Symbol.for('IOptionsMonitor<HttpLoggingOptions>'))
 		private readonly options: IOptionsMonitor<HttpLoggingOptions>,
-		@inject(Type.from('ILoggerT<HttpLoggingMiddleware>'))
+		@inject(Symbol.for('ILoggerT<HttpLoggingMiddleware>'))
 		private readonly logger: ILoggerT<HttpLoggingMiddleware>,
 	) {}
 

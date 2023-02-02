@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { NoCircularDependencySameTypeMultipleTimesB } from './NoCircularDependencySameTypeMultipleTimesB';
@@ -12,11 +11,11 @@ import { NoCircularDependencySameTypeMultipleTimesC } from './NoCircularDependen
 // C
 export class NoCircularDependencySameTypeMultipleTimesA {
 	constructor(
-		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesB'))
+		@inject(Symbol.for('NoCircularDependencySameTypeMultipleTimesB'))
 		readonly b: NoCircularDependencySameTypeMultipleTimesB,
-		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesC'))
+		@inject(Symbol.for('NoCircularDependencySameTypeMultipleTimesC'))
 		readonly c1: NoCircularDependencySameTypeMultipleTimesC,
-		@inject(Type.from('NoCircularDependencySameTypeMultipleTimesC'))
+		@inject(Symbol.for('NoCircularDependencySameTypeMultipleTimesC'))
 		readonly c2: NoCircularDependencySameTypeMultipleTimesC,
 	) {}
 }

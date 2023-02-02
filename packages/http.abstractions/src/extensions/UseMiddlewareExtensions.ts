@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { IAppBuilder } from '../IAppBuilder';
@@ -13,7 +13,7 @@ export function useMiddleware<T extends IMiddleware>(
 	return use(app, async (context, next) => {
 		const middleware = getRequiredService<T>(
 			context.requestServices,
-			Type.from(ctor.name),
+			Symbol.for(ctor.name),
 		);
 		await middleware.invoke(context, next);
 	});

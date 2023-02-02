@@ -1,5 +1,3 @@
-import { Type } from '@yohira/base';
-
 import { CallSiteKind } from '../service-lookup/CallSiteKind';
 import { ResultCache } from '../service-lookup/ResultCache';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
@@ -10,13 +8,13 @@ export class IterableCallSite extends ServiceCallSite {
 
 	constructor(
 		cache: ResultCache,
-		readonly itemType: Type,
+		readonly itemType: symbol,
 		readonly serviceCallSites: ServiceCallSite[],
 	) {
 		super(cache);
 	}
 
-	get serviceType(): Type {
+	get serviceType(): symbol {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

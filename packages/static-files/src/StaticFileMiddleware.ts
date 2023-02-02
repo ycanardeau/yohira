@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { IFileProvider } from '@yohira/extensions.file-providers';
 import {
@@ -42,10 +41,10 @@ export class StaticFileMiddleware implements IMiddleware {
 	private readonly contentTypeProvider: IContentTypeProvider;
 
 	constructor(
-		@inject(Type.from('IWebHostEnv')) hostingEnv: IWebHostEnv,
-		@inject(Type.from('IOptions<StaticFileOptions>'))
+		@inject(Symbol.for('IWebHostEnv')) hostingEnv: IWebHostEnv,
+		@inject(Symbol.for('IOptions<StaticFileOptions>'))
 		options: IOptions<StaticFileOptions>,
-		@inject(Type.from('ILoggerFactory')) loggerFactory: ILoggerFactory,
+		@inject(Symbol.for('ILoggerFactory')) loggerFactory: ILoggerFactory,
 	) {
 		this.options = options.getValue(StaticFileOptions);
 		this.contentTypeProvider =

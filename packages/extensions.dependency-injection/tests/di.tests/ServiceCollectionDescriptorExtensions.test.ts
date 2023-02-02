@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	ServiceCollection,
 	ServiceDescriptor,
@@ -15,7 +14,7 @@ test('Add_AddsDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Type.from('IFakeService'),
+		Symbol.for('IFakeService'),
 		FakeService,
 	);
 
@@ -31,12 +30,12 @@ test('Add_AddsMultipleDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Type.from('IFakeService'),
+		Symbol.for('IFakeService'),
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		Type.from('IFactoryService'),
+		Symbol.for('IFactoryService'),
 		TransientFactoryService,
 	);
 
@@ -52,12 +51,12 @@ test('ServiceDescriptors_AllowsRemovingPreviousRegisteredServices', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Type.from('IFakeService'),
+		Symbol.for('IFakeService'),
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		Type.from('IFactoryService'),
+		Symbol.for('IFactoryService'),
 		TransientFactoryService,
 	);
 

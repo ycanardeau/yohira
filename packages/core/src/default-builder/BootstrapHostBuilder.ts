@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
 import { HostAppBuilder } from '@yohira/extensions.hosting';
 import {
@@ -18,9 +17,7 @@ export class BootstrapHostBuilder implements IHostBuilder {
 	constructor(private readonly builder: HostAppBuilder) {
 		let context: HostBuilderContext | undefined;
 		for (const descriptor of builder.services) {
-			if (
-				descriptor.serviceType.equals(Type.from('HostBuilderContext'))
-			) {
+			if (descriptor.serviceType === Symbol.for('HostBuilderContext')) {
 				context = descriptor.implInstance as HostBuilderContext;
 				break;
 			}

@@ -1,4 +1,4 @@
-import { List, Type, tryGetValue } from '@yohira/base';
+import { List, tryGetValue } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { Endpoint } from '@yohira/http.abstractions';
@@ -334,11 +334,11 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	}
 
 	constructor(
-		@inject(Type.from('ILoggerFactory'))
+		@inject(Symbol.for('ILoggerFactory'))
 		private readonly loggerFactory: ILoggerFactory,
-		@inject(Type.from('EndpointSelector'))
+		@inject(Symbol.for('EndpointSelector'))
 		private readonly selector: EndpointSelector,
-		@inject(Type.from('Iterable<MatcherPolicy>'))
+		@inject(Symbol.for('Iterable<MatcherPolicy>'))
 		policies: Iterable<MatcherPolicy>,
 	) {
 		super();

@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { CallSiteResultCacheLocation } from '../service-lookup/CallSiteResultCacheLocation';
@@ -18,7 +17,7 @@ export class ResultCache {
 
 	static create(
 		lifetime: ServiceLifetime,
-		type: Type | undefined,
+		type: symbol | undefined,
 		slot: number,
 	): ResultCache {
 		if (lifetime !== ServiceLifetime.Transient && type === undefined) {

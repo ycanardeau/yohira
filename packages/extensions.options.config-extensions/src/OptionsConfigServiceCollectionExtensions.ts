@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import { IConfig } from '@yohira/extensions.config.abstractions';
 import {
 	IServiceCollection,
@@ -18,7 +18,7 @@ export function configureOptionsConfigServices<TOptions extends object>(
 	// TODO
 	return addSingletonInstance(
 		services,
-		Type.from(`IConfigureOptions<${optionsCtor.name}>`),
+		Symbol.for(`IConfigureOptions<${optionsCtor.name}>`),
 		new NamedConfigureFromConfigOptions<TOptions>(
 			Options.defaultName,
 			config,

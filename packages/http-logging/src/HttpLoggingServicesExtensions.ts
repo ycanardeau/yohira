@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	IServiceCollection,
 	addSingletonCtor,
@@ -24,7 +23,7 @@ export function addHttpLogging(
 	// HACK
 	addSingletonCtor(
 		/* REVIEW */ services,
-		Type.from('HttpLoggingMiddleware'),
+		Symbol.for('HttpLoggingMiddleware'),
 		HttpLoggingMiddleware,
 	);
 	return services;

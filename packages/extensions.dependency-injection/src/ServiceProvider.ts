@@ -2,7 +2,6 @@ import {
 	ICollection,
 	IDisposable,
 	IServiceProvider,
-	Type,
 	getOrAdd,
 } from '@yohira/base';
 import {
@@ -29,7 +28,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	/** @internal */ engine: ServiceProviderEngine;
 
 	private readonly _createServiceAccessor: (
-		serviceType: string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+		serviceType: symbol,
 	) => (
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined;
@@ -37,7 +36,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	private disposed = false;
 
 	private realizedServices: Map<
-		string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+		symbol,
 		(
 			serviceProviderEngineScope: ServiceProviderEngineScope,
 		) => object | undefined
@@ -56,12 +55,12 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	}
 
 	private createServiceAccessor = (
-		serviceType: string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+		serviceType: symbol,
 	): ((
 		serviceProviderEngineScope: ServiceProviderEngineScope,
 	) => object | undefined) => {
 		const callSite = this.callSiteFactory.getCallSite(
-			Type.from(serviceType),
+			serviceType,
 			new CallSiteChain(),
 		);
 		if (callSite !== undefined) {
@@ -84,7 +83,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		this.engine = this.getEngine();
 		this._createServiceAccessor = this.createServiceAccessor;
 		this.realizedServices = new Map<
-			string /* TODO: Replace with Type. See tc39/proposal-record-tuple. */,
+			symbol,
 			(
 				serviceProviderEngineScope: ServiceProviderEngineScope,
 			) => object | undefined
@@ -92,12 +91,12 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 		this.callSiteFactory = new CallSiteFactory(serviceDescriptors);
 		this.callSiteFactory.add(
-			Type.from('IServiceProvider'),
+			Symbol.for('IServiceProvider'),
 			new ServiceProviderCallSite(),
 		);
 		this.callSiteFactory.add(
-			Type.from('IServiceScopeFactory'),
-			new ConstantCallSite(Type.from('IServiceScopeFactory'), this.root),
+			Symbol.for('IServiceScopeFactory'),
+			new ConstantCallSite(Symbol.for('IServiceScopeFactory'), this.root),
 		);
 		// TODO
 
@@ -110,7 +109,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 		// TODO: Log.
 	}
 
-	private onResolve(serviceType: Type, scope: IServiceScope): void {
+	private onResolve(serviceType: symbol, scope: IServiceScope): void {
 		this.callSiteValidator?.validateResolution(
 			serviceType,
 			scope,
@@ -119,7 +118,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 	}
 
 	getService<T>(
-		serviceType: Type,
+		serviceType: symbol,
 		serviceProviderEngineScope = this.root,
 	): T | undefined {
 		if (this.disposed) {
@@ -128,7 +127,7 @@ export class ServiceProvider implements IServiceProvider, IDisposable {
 
 		const realizedService = getOrAdd(
 			this.realizedServices,
-			serviceType.value,
+			serviceType,
 			this._createServiceAccessor,
 		);
 		this.onResolve(serviceType, serviceProviderEngineScope);

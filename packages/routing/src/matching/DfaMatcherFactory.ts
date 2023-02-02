@@ -1,4 +1,4 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	getRequiredService,
 	inject,
@@ -13,7 +13,7 @@ import { MatcherFactory } from './MatcherFactory';
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DfaMatcherFactory.cs,a63b3345343c56b3,references
 export class DfaMatcherFactory extends MatcherFactory {
 	constructor(
-		@inject(Type.from('IServiceProvider'))
+		@inject(Symbol.for('IServiceProvider'))
 		private readonly services: IServiceProvider,
 	) {
 		super();
@@ -28,7 +28,7 @@ export class DfaMatcherFactory extends MatcherFactory {
 			() => {
 				return getRequiredService<DfaMatcherBuilder>(
 					this.services,
-					Type.from('DfaMatcherBuilder'),
+					Symbol.for('DfaMatcherBuilder'),
 				);
 			},
 		);

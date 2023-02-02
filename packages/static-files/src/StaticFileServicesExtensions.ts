@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	IServiceCollection,
 	addSingletonCtor,
@@ -20,7 +19,7 @@ export function addStaticFiles(
 	// HACK
 	addSingletonCtor(
 		/* REVIEW */ services,
-		Type.from('StaticFileMiddleware'),
+		Symbol.for('StaticFileMiddleware'),
 		StaticFileMiddleware,
 	);
 	return services;

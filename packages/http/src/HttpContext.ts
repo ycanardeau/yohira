@@ -1,4 +1,4 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import { IServiceScopeFactory } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	FeatureReferences,
@@ -45,7 +45,7 @@ export class HttpContext implements IHttpContext {
 	private get serviceProvidersFeature(): IServiceProvidersFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._features.fetch(
-			Type.from('IServiceProvidersFeature'),
+			Symbol.for('IServiceProvidersFeature'),
 			{
 				get: () => {
 					return this._features.cache.serviceProviders;

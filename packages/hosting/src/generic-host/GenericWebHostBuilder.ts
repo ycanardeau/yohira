@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -54,7 +53,7 @@ export class GenericWebHostBuilder
 
 			addSingletonInstance(
 				services,
-				Type.from('IWebHostEnv'),
+				Symbol.for('IWebHostEnv'),
 				webHostContext.hostingEnv,
 			);
 
@@ -64,7 +63,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					Type.from('IHttpContextFactory'),
+					Symbol.for('IHttpContextFactory'),
 					HttpContextFactory,
 				),
 			);
@@ -73,7 +72,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					Type.from('IAppBuilderFactory'),
+					Symbol.for('IAppBuilderFactory'),
 					AppBuilderFactory,
 				),
 			);

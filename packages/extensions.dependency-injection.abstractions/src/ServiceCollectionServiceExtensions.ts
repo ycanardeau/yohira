@@ -1,4 +1,4 @@
-import { Ctor, IServiceProvider, Type } from '@yohira/base';
+import { Ctor, IServiceProvider } from '@yohira/base';
 
 import { IServiceCollection } from './IServiceCollection';
 import { ServiceDescriptor } from './ServiceDescriptor';
@@ -7,7 +7,7 @@ import { ServiceLifetime } from './ServiceLifetime';
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollectionServiceExtensions.cs,865c289313a49193,references
 export function addSingletonCtor(
 	services: IServiceCollection,
-	serviceType: Type,
+	serviceType: symbol,
 	implCtor: Ctor<object>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
@@ -21,7 +21,7 @@ export function addSingletonCtor(
 
 export function addSingletonInstance(
 	services: IServiceCollection,
-	serviceType: Type,
+	serviceType: symbol,
 	implInstance: object,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromInstance(
@@ -35,7 +35,7 @@ export function addSingletonInstance(
 
 export function addSingletonFactory(
 	services: IServiceCollection,
-	serviceType: Type,
+	serviceType: symbol,
 	implFactory: (serviceProvider: IServiceProvider) => object,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
@@ -49,7 +49,7 @@ export function addSingletonFactory(
 
 export function addScopedCtor(
 	services: IServiceCollection,
-	serviceType: Type,
+	serviceType: symbol,
 	implCtor: Ctor<object>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
@@ -63,7 +63,7 @@ export function addScopedCtor(
 
 export function addTransientCtor(
 	services: IServiceCollection,
-	serviceType: Type,
+	serviceType: symbol,
 	implCtor: Ctor<object>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(

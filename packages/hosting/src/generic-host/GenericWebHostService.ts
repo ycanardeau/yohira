@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHostedService } from '@yohira/extensions.hosting.abstractions';
 import { IOptions } from '@yohira/extensions.options';
@@ -18,15 +17,15 @@ export class GenericWebHostService implements IHostedService {
 	private readonly options: GenericWebHostServiceOptions;
 
 	constructor(
-		@inject(Type.from('IOptions<GenericWebHostServiceOptions>'))
+		@inject(Symbol.for('IOptions<GenericWebHostServiceOptions>'))
 		options: IOptions<GenericWebHostServiceOptions>,
-		@inject(Type.from('IServer'))
+		@inject(Symbol.for('IServer'))
 		readonly server: IServer,
-		@inject(Type.from('IHttpContextFactory'))
+		@inject(Symbol.for('IHttpContextFactory'))
 		readonly httpContextFactory: IHttpContextFactory,
-		@inject(Type.from('IAppBuilderFactory'))
+		@inject(Symbol.for('IAppBuilderFactory'))
 		readonly appBuilderFactory: IAppBuilderFactory,
-		@inject(Type.from('Iterable<IStartupFilter>'))
+		@inject(Symbol.for('Iterable<IStartupFilter>'))
 		readonly startupFilters: Iterable<IStartupFilter>,
 	) {
 		this.options = options.getValue(GenericWebHostServiceOptions);

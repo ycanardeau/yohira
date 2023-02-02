@@ -1,4 +1,4 @@
-import { Ctor, IServiceProvider, Type } from '@yohira/base';
+import { Ctor, IServiceProvider } from '@yohira/base';
 
 import { ServiceLifetime } from './ServiceLifetime';
 
@@ -6,7 +6,7 @@ import { ServiceLifetime } from './ServiceLifetime';
 export class ServiceDescriptor {
 	private constructor(
 		readonly lifetime: ServiceLifetime,
-		readonly serviceType: Type,
+		readonly serviceType: symbol,
 		readonly implCtor: Ctor<object> | undefined,
 		readonly implInstance: object | undefined,
 		readonly implFactory:
@@ -16,7 +16,7 @@ export class ServiceDescriptor {
 
 	static fromCtor(
 		lifetime: ServiceLifetime,
-		serviceType: Type,
+		serviceType: symbol,
 		ctor: Ctor<object>,
 	): ServiceDescriptor {
 		return new ServiceDescriptor(
@@ -30,7 +30,7 @@ export class ServiceDescriptor {
 
 	static fromInstance(
 		lifetime: ServiceLifetime,
-		serviceType: Type,
+		serviceType: symbol,
 		instance: object,
 	): ServiceDescriptor {
 		return new ServiceDescriptor(
@@ -44,7 +44,7 @@ export class ServiceDescriptor {
 
 	static fromFactory<T>(
 		lifetime: ServiceLifetime,
-		serviceType: Type,
+		serviceType: symbol,
 		factory: (serviceProvider: IServiceProvider) => object,
 	): ServiceDescriptor {
 		return new ServiceDescriptor(
@@ -57,9 +57,9 @@ export class ServiceDescriptor {
 	}
 
 	toString(): string {
-		const lifetime = `serviceType: ${this.serviceType} lifetime: ${
-			ServiceLifetime[this.lifetime]
-		} `;
+		const lifetime = `serviceType: ${Symbol.keyFor(
+			this.serviceType,
+		)} lifetime: ${ServiceLifetime[this.lifetime]} `;
 
 		if (this.implCtor !== undefined) {
 			return `${lifetime}implCtor: ${this.implCtor.name}`;

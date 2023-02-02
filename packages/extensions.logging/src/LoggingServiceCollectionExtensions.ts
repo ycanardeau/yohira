@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -18,7 +17,7 @@ export function addLogging(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('ILoggerFactory'),
+			Symbol.for('ILoggerFactory'),
 			LoggerFactory,
 		),
 	);
@@ -26,7 +25,7 @@ export function addLogging(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('ILoggerT<>'),
+			Symbol.for('ILoggerT<>'),
 			LoggerT,
 		),
 	);

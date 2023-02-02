@@ -1,4 +1,4 @@
-import { IDisposable, IServiceProvider, Type } from '@yohira/base';
+import { IDisposable, IServiceProvider } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -21,7 +21,7 @@ export class ServiceProviderEngineScope
 		readonly isRootScope: boolean,
 	) {}
 
-	getService<T>(serviceType: Type): T | undefined {
+	getService<T>(serviceType: symbol): T | undefined {
 		if (this.disposed) {
 			throw new Error('Cannot access a disposed object.' /* LOC */);
 		}

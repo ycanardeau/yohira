@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { ILogger } from './ILogger';
@@ -10,7 +9,7 @@ import { LogLevel } from './LogLevel';
 export class LoggerT<T> implements ILoggerT<T> {
 	private readonly logger: ILogger;
 
-	constructor(@inject(Type.from('ILoggerFactory')) factory: ILoggerFactory) {
+	constructor(@inject(Symbol.for('ILoggerFactory')) factory: ILoggerFactory) {
 		this.logger = factory.createLogger('' /* TODO */);
 	}
 

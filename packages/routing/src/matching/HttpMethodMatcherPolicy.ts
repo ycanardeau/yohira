@@ -2,7 +2,6 @@ import {
 	CaseInsensitiveMap,
 	CaseInsensitiveSet,
 	IEquatable,
-	Type,
 	getStringHashCode,
 	tryGetValue,
 	typedef,
@@ -71,11 +70,11 @@ class EdgeKey implements IEquatable<EdgeKey> {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/HttpMethodMatcherPolicy.cs,e1986934a0392a00,references
-@typedef(Type.from('HttpMethodMatcherPolicy'), {
-	extends: Type.from('MatcherPolicy'),
+@typedef(Symbol.for('HttpMethodMatcherPolicy'), {
+	extends: Symbol.for('MatcherPolicy'),
 	implements: [
-		Type.from('INodeBuilderPolicy'),
-		Type.from('IEndpointSelectorPolicy'),
+		Symbol.for('INodeBuilderPolicy'),
+		Symbol.for('IEndpointSelectorPolicy'),
 	],
 })
 export class HttpMethodMatcherPolicy
@@ -92,7 +91,7 @@ export class HttpMethodMatcherPolicy
 		for (const endpoint of endpoints) {
 			const httpMethodMetadata =
 				endpoint.metadata.getMetadata<IHttpMethodMetadata>(
-					Type.from('IHttpMethodMetadata'),
+					Symbol.for('IHttpMethodMetadata'),
 				);
 			if (
 				httpMethodMetadata !== undefined &&
@@ -130,7 +129,7 @@ export class HttpMethodMatcherPolicy
 			const metadata = candidates
 				.get(i)
 				.endpoint?.metadata.getMetadata<IHttpMethodMetadata>(
-					Type.from('IHttpMethodMetadata'),
+					Symbol.for('IHttpMethodMetadata'),
 				);
 			if (metadata === undefined || metadata.httpMethods.length === 0) {
 				// Can match any method.
@@ -203,7 +202,7 @@ export class HttpMethodMatcherPolicy
 			acceptCorsPreflight: boolean;
 		} {
 			const metadata = e.metadata.getMetadata<IHttpMethodMetadata>(
-				Type.from('IHttpMethodMetadata'),
+				Symbol.for('IHttpMethodMetadata'),
 			);
 			return metadata === undefined
 				? {

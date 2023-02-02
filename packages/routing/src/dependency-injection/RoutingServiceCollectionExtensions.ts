@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -33,7 +32,7 @@ export function addRouting(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('RoutingMarkerService'),
+			Symbol.for('RoutingMarkerService'),
 			RoutingMarkerService,
 		),
 	);
@@ -45,7 +44,7 @@ export function addRouting(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
-			Type.from('DfaMatcherBuilder'),
+			Symbol.for('DfaMatcherBuilder'),
 			DfaMatcherBuilder,
 		),
 	);
@@ -56,7 +55,7 @@ export function addRouting(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('MatcherFactory'),
+			Symbol.for('MatcherFactory'),
 			DfaMatcherFactory,
 		),
 	);
@@ -71,7 +70,7 @@ export function addRouting(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('EndpointSelector'),
+			Symbol.for('EndpointSelector'),
 			DefaultEndpointSelector,
 		),
 	);
@@ -79,7 +78,7 @@ export function addRouting(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('MatcherPolicy'),
+			Symbol.for('MatcherPolicy'),
 			HttpMethodMatcherPolicy,
 		),
 	);
@@ -90,12 +89,12 @@ export function addRouting(
 	// HACK
 	addSingletonCtor(
 		/* REVIEW */ services,
-		Type.from('EndpointRoutingMiddleware'),
+		Symbol.for('EndpointRoutingMiddleware'),
 		EndpointRoutingMiddleware,
 	);
 	addSingletonCtor(
 		/* REVIEW */ services,
-		Type.from('EndpointMiddleware'),
+		Symbol.for('EndpointMiddleware'),
 		EndpointMiddleware,
 	);
 

@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
 	IServiceCollection,
@@ -64,7 +63,7 @@ function createDfaMatcher(
 	if (endpointSelector !== undefined) {
 		addSingletonInstance(
 			serviceCollection,
-			Type.from('EndpointSelector'),
+			Symbol.for('EndpointSelector'),
 			endpointSelector,
 		);
 	}
@@ -72,7 +71,7 @@ function createDfaMatcher(
 	if (loggerFactory !== undefined) {
 		addSingletonInstance(
 			serviceCollection,
-			Type.from('ILoggerFactory'),
+			Symbol.for('ILoggerFactory'),
 			loggerFactory,
 		);
 	}
@@ -81,7 +80,7 @@ function createDfaMatcher(
 
 	const factory = getRequiredService<MatcherFactory>(
 		services,
-		Type.from('MatcherFactory'),
+		Symbol.for('MatcherFactory'),
 	);
 	const matcher = factory.createMatcher(dataSource);
 	if (!(matcher instanceof DataSourceDependentMatcher)) {
@@ -94,7 +93,7 @@ function createContext(): IHttpContext {
 	const features =
 		new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
 	const context = new HttpContext(features);
-	features.set(Type.from('IHttpRequestFeature'), new HttpRequestFeature());
+	features.set(Symbol.for('IHttpRequestFeature'), new HttpRequestFeature());
 	// TODO
 	return context;
 }

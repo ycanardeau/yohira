@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 import { WebHostBuilderContext } from '@yohira/hosting';
@@ -27,7 +26,7 @@ function useNodeCore(hostBuilder: IWebHostBuilder): IWebHostBuilder {
 		// TODO
 
 		// TODO
-		addSingletonCtor(services, Type.from('IServer'), NodeServerImpl);
+		addSingletonCtor(services, Symbol.for('IServer'), NodeServerImpl);
 	});
 
 	// TODO

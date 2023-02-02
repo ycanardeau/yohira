@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -17,7 +17,7 @@ export function addHostedService<THostedService extends IHostedService>(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('IHostedService'),
+			Symbol.for('IHostedService'),
 			hostedServiceType,
 		),
 	);

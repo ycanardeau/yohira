@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
 	IServiceCollection,
@@ -31,7 +30,7 @@ test('SelfCircularDependency', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Type.from('SelfCircularDependency'),
+		Symbol.for('SelfCircularDependency'),
 		SelfCircularDependency,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -39,7 +38,7 @@ test('SelfCircularDependency', () => {
 	expect(() =>
 		getRequiredService<SelfCircularDependency>(
 			serviceProvider,
-			Type.from('SelfCircularDependency'),
+			Symbol.for('SelfCircularDependency'),
 		),
 	).toThrowError(expectedMessage);
 });
@@ -55,7 +54,7 @@ test('SelfCircularDependencyGenericDirect', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Type.from('SelfCircularDependencyGeneric<string>'),
+		Symbol.for('SelfCircularDependencyGeneric<string>'),
 		SelfCircularDependencyGeneric,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -63,7 +62,7 @@ test('SelfCircularDependencyGenericDirect', () => {
 	expect(() =>
 		getRequiredService<SelfCircularDependencyGeneric<string>>(
 			serviceProvider,
-			Type.from('SelfCircularDependencyGeneric<string>'),
+			Symbol.for('SelfCircularDependencyGeneric<string>'),
 		),
 	).toThrowError(expectedMessage);
 });
@@ -77,12 +76,12 @@ test('SelfCircularDependencyGenericIndirect', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Type.from('SelfCircularDependencyGeneric<number>'),
+		Symbol.for('SelfCircularDependencyGeneric<number>'),
 		SelfCircularDependencyGeneric,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('SelfCircularDependencyGeneric<string>'),
+		Symbol.for('SelfCircularDependencyGeneric<string>'),
 		SelfCircularDependencyGeneric,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -90,7 +89,7 @@ test('SelfCircularDependencyGenericIndirect', () => {
 	expect(() =>
 		getRequiredService<SelfCircularDependencyGeneric<number>>(
 			serviceProvider,
-			Type.from('SelfCircularDependencyGeneric<number>'),
+			Symbol.for('SelfCircularDependencyGeneric<number>'),
 		),
 	).toThrowError(expectedMessage);
 });
@@ -101,12 +100,12 @@ test('NoCircularDependencyGeneric', () => {
 	$ = new ServiceCollection();
 	$ = addSingletonInstance(
 		$,
-		Type.from('SelfCircularDependencyGeneric<string>'),
+		Symbol.for('SelfCircularDependencyGeneric<string>'),
 		new SelfCircularDependencyGeneric<string>(),
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('SelfCircularDependencyGeneric<number>'),
+		Symbol.for('SelfCircularDependencyGeneric<number>'),
 		SelfCircularDependencyGeneric,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -115,7 +114,7 @@ test('NoCircularDependencyGeneric', () => {
 	// using the parameterless constructor which has no circular dependency
 	const resolvedService = getRequiredService<
 		SelfCircularDependencyGeneric<number>
-	>(serviceProvider, Type.from('SelfCircularDependencyGeneric<number>'));
+	>(serviceProvider, Symbol.for('SelfCircularDependencyGeneric<number>'));
 	expect(resolvedService).not.toBeUndefined();
 });
 
@@ -128,12 +127,12 @@ test('DirectCircularDependency', () => {
 	$ = new ServiceCollection();
 	$ = addSingletonCtor(
 		$,
-		Type.from('DirectCircularDependencyA'),
+		Symbol.for('DirectCircularDependencyA'),
 		DirectCircularDependencyA,
 	);
 	$ = addSingletonCtor(
 		$,
-		Type.from('DirectCircularDependencyB'),
+		Symbol.for('DirectCircularDependencyB'),
 		DirectCircularDependencyB,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -141,7 +140,7 @@ test('DirectCircularDependency', () => {
 	expect(() =>
 		getRequiredService<DirectCircularDependencyA>(
 			serviceProvider,
-			Type.from('DirectCircularDependencyA'),
+			Symbol.for('DirectCircularDependencyA'),
 		),
 	).toThrowError(expectedMessage);
 });
@@ -155,17 +154,17 @@ test('IndirectCircularDependency', () => {
 	$ = new ServiceCollection();
 	$ = addSingletonCtor(
 		$,
-		Type.from('IndirectCircularDependencyA'),
+		Symbol.for('IndirectCircularDependencyA'),
 		IndirectCircularDependencyA,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('IndirectCircularDependencyB'),
+		Symbol.for('IndirectCircularDependencyB'),
 		IndirectCircularDependencyB,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('IndirectCircularDependencyC'),
+		Symbol.for('IndirectCircularDependencyC'),
 		IndirectCircularDependencyC,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -173,7 +172,7 @@ test('IndirectCircularDependency', () => {
 	expect(() =>
 		getRequiredService<IndirectCircularDependencyA>(
 			serviceProvider,
-			Type.from('IndirectCircularDependencyA'),
+			Symbol.for('IndirectCircularDependencyA'),
 		),
 	).toThrowError(expectedMessage);
 });
@@ -184,17 +183,17 @@ test('NoCircularDependencySameTypeMultipleTimes', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Type.from('NoCircularDependencySameTypeMultipleTimesA'),
+		Symbol.for('NoCircularDependencySameTypeMultipleTimesA'),
 		NoCircularDependencySameTypeMultipleTimesA,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('NoCircularDependencySameTypeMultipleTimesB'),
+		Symbol.for('NoCircularDependencySameTypeMultipleTimesB'),
 		NoCircularDependencySameTypeMultipleTimesB,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('NoCircularDependencySameTypeMultipleTimesC'),
+		Symbol.for('NoCircularDependencySameTypeMultipleTimesC'),
 		NoCircularDependencySameTypeMultipleTimesC,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -202,7 +201,7 @@ test('NoCircularDependencySameTypeMultipleTimes', () => {
 	const resolvedService =
 		getRequiredService<NoCircularDependencySameTypeMultipleTimesA>(
 			serviceProvider,
-			Type.from('NoCircularDependencySameTypeMultipleTimesA'),
+			Symbol.for('NoCircularDependencySameTypeMultipleTimesA'),
 		);
 	expect(resolvedService).not.toBeUndefined();
 });
@@ -216,17 +215,17 @@ test('DependencyOnCircularDependency', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Type.from('DependencyOnCircularDependency'),
+		Symbol.for('DependencyOnCircularDependency'),
 		DependencyOnCircularDependency,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('DirectCircularDependencyA'),
+		Symbol.for('DirectCircularDependencyA'),
 		DirectCircularDependencyA,
 	);
 	$ = addTransientCtor(
 		$,
-		Type.from('DirectCircularDependencyB'),
+		Symbol.for('DirectCircularDependencyB'),
 		DirectCircularDependencyB,
 	);
 	const serviceProvider = buildServiceProvider($);
@@ -234,7 +233,7 @@ test('DependencyOnCircularDependency', () => {
 	expect(() =>
 		getRequiredService<DependencyOnCircularDependency>(
 			serviceProvider,
-			Type.from('DependencyOnCircularDependency'),
+			Symbol.for('DependencyOnCircularDependency'),
 		),
 	).toThrowError(expectedMessage);
 });

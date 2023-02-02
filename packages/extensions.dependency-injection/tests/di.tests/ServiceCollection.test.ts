@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import {
 	ServiceCollection,
 	ServiceDescriptor,
@@ -15,7 +14,7 @@ test('makeReadonly', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		Type.from('IFakeService'),
+		Symbol.for('IFakeService'),
 		new FakeService(),
 	);
 	serviceCollection.add(descriptor);
@@ -24,7 +23,7 @@ test('makeReadonly', () => {
 
 	const descriptor2 = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		Type.from('IFakeEveryService'),
+		Symbol.for('IFakeEveryService'),
 		new FakeService(),
 	);
 

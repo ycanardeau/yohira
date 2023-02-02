@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 
 import { CallSiteKind } from '../service-lookup/CallSiteKind';
 import { ResultCache } from '../service-lookup/ResultCache';
@@ -10,7 +10,7 @@ export class CtorCallSite extends ServiceCallSite {
 
 	constructor(
 		cache: ResultCache,
-		readonly serviceType: Type,
+		readonly serviceType: symbol,
 		readonly implCtor: Ctor<object>,
 		readonly parameterCallSites: ServiceCallSite[] = [],
 	) {

@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -20,7 +20,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('IOptions<>'),
+			Symbol.for('IOptions<>'),
 			UnnamedOptionsManager,
 		),
 	);
@@ -29,7 +29,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('IOptionsMonitor<>'),
+			Symbol.for('IOptionsMonitor<>'),
 			OptionsMonitor,
 		),
 	);
@@ -37,7 +37,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
-			Type.from('IOptionsFactory<>'),
+			Symbol.for('IOptionsFactory<>'),
 			OptionsFactory,
 		),
 	);
@@ -45,7 +45,7 @@ export function addOptions(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Type.from('IOptionsMonitorCache<>'),
+			Symbol.for('IOptionsMonitorCache<>'),
 			OptionsCache,
 		),
 	);
@@ -62,7 +62,7 @@ export function configureNamedOptionsServices<TOptions>(
 	addOptions(services);
 	addSingletonInstance(
 		services,
-		Type.from(`IConfigureOptions<${optionsCtor.name}>`),
+		Symbol.for(`IConfigureOptions<${optionsCtor.name}>`),
 		new ConfigureNamedOptions(name, configureOptions),
 	);
 	return services;

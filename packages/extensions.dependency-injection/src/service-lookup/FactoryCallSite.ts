@@ -1,4 +1,4 @@
-import { IServiceProvider, Type } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 
 import { CallSiteKind } from '../service-lookup/CallSiteKind';
 import { ResultCache } from '../service-lookup/ResultCache';
@@ -10,7 +10,7 @@ export class FactoryCallSite extends ServiceCallSite {
 
 	constructor(
 		cache: ResultCache,
-		readonly serviceType: Type,
+		readonly serviceType: symbol,
 		readonly factory: (serviceProvider: IServiceProvider) => object,
 	) {
 		super(cache);

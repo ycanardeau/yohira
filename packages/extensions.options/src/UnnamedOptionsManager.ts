@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { IOptions } from './IOptions';
@@ -10,7 +10,7 @@ export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
 	private _value?: TOptions;
 
 	constructor(
-		@inject(Type.from('IOptionsFactory<>'))
+		@inject(Symbol.for('IOptionsFactory<>'))
 		private readonly factory: IOptionsFactory<TOptions>,
 	) {}
 

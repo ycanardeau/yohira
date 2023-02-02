@@ -1,5 +1,3 @@
-import { Type } from '@yohira/base';
-
 import { CallSiteKind } from '../service-lookup/CallSiteKind';
 import { ResultCache } from '../service-lookup/ResultCache';
 
@@ -7,7 +5,7 @@ import { ResultCache } from '../service-lookup/ResultCache';
 export abstract class ServiceCallSite {
 	protected constructor(readonly cache: ResultCache) {}
 
-	abstract get serviceType(): Type;
+	abstract get serviceType(): symbol;
 	// TODO: implType
 	abstract get kind(): CallSiteKind;
 	value?: object;

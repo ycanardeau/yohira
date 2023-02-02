@@ -1,5 +1,3 @@
-import { Type } from '@yohira/base';
-
 import { CallSiteKind } from '../service-lookup/CallSiteKind';
 import { ResultCache } from '../service-lookup/ResultCache';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
@@ -9,7 +7,7 @@ export class ConstantCallSite extends ServiceCallSite {
 	readonly kind = CallSiteKind.Constant;
 
 	constructor(
-		readonly serviceType: Type,
+		readonly serviceType: symbol,
 		readonly defaultValue: object | undefined,
 	) {
 		super(ResultCache.none);

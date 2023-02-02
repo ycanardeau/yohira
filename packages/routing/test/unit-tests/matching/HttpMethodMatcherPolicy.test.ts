@@ -1,4 +1,4 @@
-import { Type, typedef } from '@yohira/base';
+import { typedef } from '@yohira/base';
 import {
 	EndpointMetadataCollection,
 	HttpMethods,
@@ -43,8 +43,8 @@ function createPolicy(): HttpMethodMatcherPolicy {
 	return new HttpMethodMatcherPolicy();
 }
 
-@typedef(Type.from('DynamicEndpointMetadata'), {
-	implements: [Type.from('IDynamicEndpointMetadata')],
+@typedef(Symbol.for('DynamicEndpointMetadata'), {
+	implements: [Symbol.for('IDynamicEndpointMetadata')],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {
 	get isDynamic(): boolean {

@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -72,9 +71,9 @@ export class EndpointRoutingMiddleware implements IMiddleware {
 	private readonly endpointDataSource: EndpointDataSource;
 
 	constructor(
-		@inject(Type.from('MatcherFactory'))
+		@inject(Symbol.for('MatcherFactory'))
 		private readonly matcherFactory: MatcherFactory,
-		@inject(Type.from('ILoggerT<EndpointRoutingMiddleware>'))
+		@inject(Symbol.for('ILoggerT<EndpointRoutingMiddleware>'))
 		private readonly logger: ILoggerT<EndpointRoutingMiddleware>,
 	) {
 		// HACK

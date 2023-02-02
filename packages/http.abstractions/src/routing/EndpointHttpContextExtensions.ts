@@ -1,5 +1,3 @@
-import { Type } from '@yohira/base';
-
 import { IHttpContext } from '../IHttpContext';
 import { Endpoint } from '../routing/Endpoint';
 import { IEndpointFeature } from './IEndpointFeature';
@@ -15,8 +13,9 @@ class EndpointFeature implements IEndpointFeature {
  * @returns The {@link Endpoint}.
  */
 export function getEndpoint(context: IHttpContext): Endpoint | undefined {
-	return context.features.get<IEndpointFeature>(Type.from('IEndpointFeature'))
-		?.endpoint;
+	return context.features.get<IEndpointFeature>(
+		Symbol.for('IEndpointFeature'),
+	)?.endpoint;
 }
 
 /**
@@ -29,13 +28,13 @@ export function setEndpoint(
 	endpoint: Endpoint | undefined,
 ): void {
 	let feature = context.features.get<IEndpointFeature>(
-		Type.from('IEndpointFeature'),
+		Symbol.for('IEndpointFeature'),
 	);
 
 	if (endpoint !== undefined) {
 		if (feature === undefined) {
 			feature = new EndpointFeature();
-			context.features.set(Type.from('IEndpointFeature'), feature);
+			context.features.set(Symbol.for('IEndpointFeature'), feature);
 		}
 
 		feature.endpoint = endpoint;

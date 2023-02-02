@@ -1,4 +1,4 @@
-import { Ctor, Type } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 
 import { IOptionsFactory } from './IOptionsFactory';
@@ -10,9 +10,9 @@ import { OptionsCache } from './OptionsCache';
 // https://source.dot.net/#Microsoft.Extensions.Options/OptionsMonitor.cs,0e2f503af67e26a9,references
 export class OptionsMonitor<TOptions> implements IOptionsMonitor<TOptions> {
 	constructor(
-		@inject(Type.from('IOptionsFactory<>'))
+		@inject(Symbol.for('IOptionsFactory<>'))
 		private readonly factory: IOptionsFactory<TOptions>,
-		@inject(Type.from('IOptionsMonitorCache<>'))
+		@inject(Symbol.for('IOptionsMonitorCache<>'))
 		private readonly cache: IOptionsMonitorCache<TOptions>,
 	) {}
 

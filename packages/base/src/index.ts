@@ -1,5 +1,6 @@
 export * from './CaseInsensitiveMap';
 export * from './CaseInsensitiveSet';
+export * from './Ctor';
 export * from './FileAttributes';
 export * from './FileInfo';
 export * from './FileSystemInfo';
@@ -15,5 +16,4 @@ export * from './List';
 export * from './MapExtensions';
 export * from './Path';
 export * from './StringExtensions';
-export * from './Type';
 export * from './typedef';

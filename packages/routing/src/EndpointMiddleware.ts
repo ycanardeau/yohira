@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -28,7 +27,7 @@ export class EndpointMiddleware implements IMiddleware {
 	private readonly logger: ILogger;
 
 	constructor(
-		@inject(Type.from('ILoggerT<EndpointMiddleware>'))
+		@inject(Symbol.for('ILoggerT<EndpointMiddleware>'))
 		logger: ILoggerT<EndpointMiddleware>,
 		// TODO: routeOptions
 	) {

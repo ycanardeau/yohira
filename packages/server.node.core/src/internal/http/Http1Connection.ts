@@ -1,4 +1,3 @@
-import { Type } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { IHttpApp } from '@yohira/hosting.server.abstractions';
 import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
@@ -118,15 +117,15 @@ export class Http1Connection
 		return this.featureRevision;
 	}
 
-	get<T>(key: Type): T | undefined {
+	get<T>(key: symbol): T | undefined {
 		let feature: T | undefined;
-		if (key.equals(Type.from('IHttpRequestFeature'))) {
+		if (key === Symbol.for('IHttpRequestFeature')) {
 			feature = this.currentIHttpRequestFeature as T;
-		} else if (key.equals(Type.from('IHttpResponseBodyFeature'))) {
+		} else if (key === Symbol.for('IHttpResponseBodyFeature')) {
 			feature = this.currentIHttpResponseBodyFeature as T;
-		} else if (key.equals(Type.from('IEndpointFeature'))) {
+		} else if (key === Symbol.for('IEndpointFeature')) {
 			feature = this.currentIEndpointFeature as T;
-		} else if (key.equals(Type.from('IServiceProvidersFeature'))) {
+		} else if (key === Symbol.for('IServiceProvidersFeature')) {
 			feature = this.currentIServiceProvidersFeature as T;
 		} else {
 			// TODO
@@ -138,16 +137,16 @@ export class Http1Connection
 		return feature;
 	}
 
-	set<T>(key: Type, instance: T | undefined): void {
+	set<T>(key: symbol, instance: T | undefined): void {
 		this.featureRevision++;
-		if (key.equals(Type.from('IHttpRequestFeature'))) {
+		if (key === Symbol.for('IHttpRequestFeature')) {
 			this.currentIHttpRequestFeature = instance as IHttpRequestFeature;
-		} else if (key.equals(Type.from('IHttpResponseBodyFeature'))) {
+		} else if (key === Symbol.for('IHttpResponseBodyFeature')) {
 			this.currentIHttpResponseBodyFeature =
 				instance as IHttpResponseBodyFeature;
-		} else if (key.equals(Type.from('IEndpointFeature'))) {
+		} else if (key === Symbol.for('IEndpointFeature')) {
 			this.currentIEndpointFeature = instance as IEndpointFeature;
-		} else if (key.equals(Type.from('IServiceProvidersFeature'))) {
+		} else if (key === Symbol.for('IServiceProvidersFeature')) {
 			this.currentIServiceProvidersFeature =
 				instance as IServiceProvidersFeature;
 		} else {
