@@ -1,5 +1,5 @@
 import { ConfigBuilder } from '@yohira/extensions.config';
-import { bind, type } from '@yohira/extensions.config.binder';
+import { bind, bindProperty } from '@yohira/extensions.config.binder';
 import {
 	EnvVariablesConfigProvider,
 	addEnvVariables,
@@ -235,7 +235,7 @@ test('PrefixPreventsLoadingSqlConnectionStrings', async () => {
 const envVariable =
 	'Microsoft__Extensions__Configuration__EnvironmentVariables__Test__Foo';
 class SettingsWithFoo {
-	@type(() => String) foo?: string;
+	@bindProperty(String) foo?: string;
 }
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L245

@@ -7,7 +7,7 @@ import { Ok, Result } from '@yohira/third-party.ts-results';
 
 import { BinderOptions } from './BinderOptions';
 import { BindingPoint } from './BindingPoint';
-import { PropertyInfo, getProperties } from './type';
+import { PropertyInfo, getProperties } from './bindProperty';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/ConfigurationBinder.cs,fc155b7d06f7f55f,references
 function tryConvertValue(
@@ -56,7 +56,7 @@ function bindProperty(
 	);
 
 	bindInstance(
-		property.ctorFunc(),
+		property.ctor,
 		propertyBindingPoint,
 		config.getSection(getPropertyName(property)),
 		options,

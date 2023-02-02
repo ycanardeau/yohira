@@ -3,7 +3,7 @@ import { Ctor, getOrAdd } from '@yohira/base';
 export interface PropertyInfo {
 	target: any;
 	name: string;
-	ctorFunc: () => Ctor;
+	ctor: Ctor;
 }
 
 type PropertyInfoMap = Map<string, PropertyInfo>;
@@ -26,8 +26,8 @@ export function getProperties(target: Ctor): PropertyInfo[] {
 	return Array.from(propertyInfoMap.values());
 }
 
-export function type(
-	ctorFunc: () => Ctor,
+export function bindProperty(
+	ctor: Ctor,
 ): (
 	target: any,
 	propertyKey: string,
@@ -37,7 +37,7 @@ export function type(
 		const propertyInfo = {
 			target: target,
 			name: propertyKey,
-			ctorFunc: ctorFunc,
+			ctor: ctor,
 		};
 		addPropertyInfo(propertyInfo);
 	};
