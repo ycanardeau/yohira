@@ -17,7 +17,7 @@ import { expect, test } from 'vitest';
 import { get } from './common/ConfigProviderExtensions';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L15
-test('LoadAndCombineKeyValuePairsFromDifferentConfigurationProviders', async () => {
+test('LoadAndCombineKeyValuePairsFromDifferentConfigurationProviders', () => {
 	const dic1 = { 'Mem1:KeyInMem1': 'ValueInMem1' };
 	const dic2 = { 'Mem2:keyInMem2': 'ValueInMem2' };
 	const dic3 = { 'Mem3:keyInMem3': 'ValueInMem3' };
@@ -31,7 +31,7 @@ test('LoadAndCombineKeyValuePairsFromDifferentConfigurationProviders', async () 
 	configBuilder.add(memConfigSrc2);
 	configBuilder.add(memConfigSrc3);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	const memVal1 = config.get('mem1:keyinmem1');
 	const memVal2 = config.get('Mem2:KeyInMem2');
@@ -52,7 +52,7 @@ test('LoadAndCombineKeyValuePairsFromDifferentConfigurationProviders', async () 
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L63
-test('CanChainConfiguration', async () => {
+test('CanChainConfiguration', () => {
 	const dic1 = { 'Mem1:KeyInMem1': 'ValueInMem1' };
 	const dic2 = { 'Mem2:KeyInMem2': 'ValueInMem2' };
 	const dic3 = { 'Mem3:KeyInMem3': 'ValueInMem3' };
@@ -66,9 +66,9 @@ test('CanChainConfiguration', async () => {
 	configBuilder.add(memConfigSrc2);
 	configBuilder.add(memConfigSrc3);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
-	const chained = await addConfig(new ConfigBuilder(), config).build();
+	const chained = addConfig(new ConfigBuilder(), config).buildSync();
 	const memVal1 = chained.get('mem1:keyinmem1');
 	const memVal2 = chained.get('Mem2:KeyInMem2');
 	const memVal3 = chained.get('MEM3:KEYINMEM3');
@@ -81,10 +81,10 @@ test('CanChainConfiguration', async () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L108
-test('ChainedAsEnumerateFlattensIntoDictionaryTest', async () => {
-	async function ChainedAsEnumerateFlattensIntoDictionaryTest(
+test('ChainedAsEnumerateFlattensIntoDictionaryTest', () => {
+	function ChainedAsEnumerateFlattensIntoDictionaryTest(
 		removePath: boolean,
-	): Promise<void> {
+	): void {
 		const dic1 = {
 			Mem1: 'Value1',
 			'Mem1:': 'NoKeyValue1',
@@ -111,12 +111,9 @@ test('ChainedAsEnumerateFlattensIntoDictionaryTest', async () => {
 
 		configBuilder.add(memConfigSrc1);
 		configBuilder.add(memConfigSrc2);
-		const config = await addConfig(
-			new ConfigBuilder(),
-			await configBuilder.build(),
-		)
+		const config = addConfig(new ConfigBuilder(), configBuilder.buildSync())
 			.add(memConfigSrc3)
-			.build();
+			.buildSync();
 		const dict = Object.fromEntries(asIterable(config, removePath));
 
 		expect(dict['Mem1'.toLowerCase()]).toBe('Value1');
@@ -132,15 +129,13 @@ test('ChainedAsEnumerateFlattensIntoDictionaryTest', async () => {
 		expect(dict['Mem3:KeyInMem3:Deep3'.toLowerCase()]).toBe('ValueDeep3');
 	}
 
-	await ChainedAsEnumerateFlattensIntoDictionaryTest(true);
-	await ChainedAsEnumerateFlattensIntoDictionaryTest(false);
+	ChainedAsEnumerateFlattensIntoDictionaryTest(true);
+	ChainedAsEnumerateFlattensIntoDictionaryTest(false);
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L164
-test('AsEnumerateFlattensIntoDictionaryTest', async () => {
-	async function AsEnumerateFlattensIntoDictionaryTest(
-		removePath: boolean,
-	): Promise<void> {
+test('AsEnumerateFlattensIntoDictionaryTest', () => {
+	function AsEnumerateFlattensIntoDictionaryTest(removePath: boolean): void {
 		const dic1 = {
 			Mem1: 'Value1',
 			'Mem1:': 'NoKeyValue1',
@@ -168,7 +163,7 @@ test('AsEnumerateFlattensIntoDictionaryTest', async () => {
 		configBuilder.add(memConfigSrc1);
 		configBuilder.add(memConfigSrc2);
 		configBuilder.add(memConfigSrc3);
-		const config = await configBuilder.build();
+		const config = configBuilder.buildSync();
 		const dict = Object.fromEntries(asIterable(config, removePath));
 
 		expect(dict['Mem1'.toLowerCase()]).toBe('Value1');
@@ -184,12 +179,12 @@ test('AsEnumerateFlattensIntoDictionaryTest', async () => {
 		expect(dict['Mem3:KeyInMem3:Deep3'.toLowerCase()]).toBe('ValueDeep3');
 	}
 
-	await AsEnumerateFlattensIntoDictionaryTest(true);
-	await AsEnumerateFlattensIntoDictionaryTest(false);
+	AsEnumerateFlattensIntoDictionaryTest(true);
+	AsEnumerateFlattensIntoDictionaryTest(false);
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L216
-test('AsEnumerateStripsKeyFromChildren', async () => {
+test('AsEnumerateStripsKeyFromChildren', () => {
 	const dic1 = {
 		Mem1: 'Value1',
 		'Mem1:': 'NoKeyValue1',
@@ -220,7 +215,7 @@ test('AsEnumerateStripsKeyFromChildren', async () => {
 	configBuilder.add(memConfigSrc2);
 	configBuilder.add(memConfigSrc3);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	const dict = Object.fromEntries(
 		asIterable(config.getSection('Mem1'), true),
@@ -250,7 +245,7 @@ test('AsEnumerateStripsKeyFromChildren', async () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L278
-test('NewConfigurationProviderOverridesOldOneWhenKeyIsDuplicated', async () => {
+test('NewConfigurationProviderOverridesOldOneWhenKeyIsDuplicated', () => {
 	const dic1 = { 'Key1:Key2': 'ValueInMem1' };
 	const dic2 = { 'Key1:Key2': 'ValueInMem2' };
 	const memConfigSrc1 = new MemoryConfigSource(dic1);
@@ -261,22 +256,22 @@ test('NewConfigurationProviderOverridesOldOneWhenKeyIsDuplicated', async () => {
 	configBuilder.add(memConfigSrc1);
 	configBuilder.add(memConfigSrc2);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	expect(config.get('Key1:Key2')).toBe('ValueInMem2');
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L305
-test('NewConfigurationRootMayBeBuiltFromExistingWithDuplicateKeys', async () => {
+test('NewConfigurationRootMayBeBuiltFromExistingWithDuplicateKeys', () => {
 	let $: ConfigBuilder;
 	$ = new ConfigBuilder();
 	$ = addInMemoryCollection($, { 'keya:keyb': 'valueA' });
 	$ = addInMemoryCollection($, { 'KEYA:KEYB': 'valueB' });
-	const configRoot = await $.build();
-	const newConfigRoot = await addInMemoryCollection(
+	const configRoot = $.buildSync();
+	const newConfigRoot = addInMemoryCollection(
 		new ConfigBuilder(),
 		Object.fromEntries(asIterable(configRoot)),
-	).build();
+	).buildSync();
 	expect(newConfigRoot.get('keya:keyb')).toBe('valueB');
 });
 
@@ -294,7 +289,7 @@ class TestMemorySourceProvider
 }
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L336
-test('SettingValueUpdatesAllConfigurationProviders', async () => {
+test('SettingValueUpdatesAllConfigurationProviders', () => {
 	const dict = {
 		Key1: 'Value1',
 		Key2: 'Value2',
@@ -310,7 +305,7 @@ test('SettingValueUpdatesAllConfigurationProviders', async () => {
 	configBuilder.add(memConfigSrc2);
 	configBuilder.add(memConfigSrc3);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	config.set('Key1', 'NewValue1');
 	config.set('Key2', 'NewValue2');
@@ -330,7 +325,7 @@ test('SettingValueUpdatesAllConfigurationProviders', async () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L377
-test('CanGetConfigurationSection', async () => {
+test('CanGetConfigurationSection', () => {
 	const dic1 = {
 		'Data:DB1:Connection1': 'MemVal1',
 		'Data:DB1:Connection2': 'MemVal2',
@@ -350,7 +345,7 @@ test('CanGetConfigurationSection', async () => {
 	configBuilder.add(memConfigSrc2);
 	configBuilder.add(memConfigSrc3);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	const configFocus = config.getSection('Data');
 
@@ -372,7 +367,7 @@ test('CanGetConfigurationSection', async () => {
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.Configuration/tests/ConfigurationTest.cs#L426
-test('CanGetConnectionStrings', async () => {
+test('CanGetConnectionStrings', () => {
 	const dic1 = {
 		'ConnectionStrings:DB1:Connection1': 'MemVal1',
 		'ConnectionStrings:DB1:Connection2': 'MemVal2',
@@ -387,7 +382,7 @@ test('CanGetConnectionStrings', async () => {
 	configBuilder.add(memConfigSrc1);
 	configBuilder.add(memConfigSrc2);
 
-	const config = await configBuilder.build();
+	const config = configBuilder.buildSync();
 
 	const memVal1 = getConnectionString(config, 'DB1:Connection1');
 	const memVal2 = getConnectionString(config, 'DB1:Connection2');

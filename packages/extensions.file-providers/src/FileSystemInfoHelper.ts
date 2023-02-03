@@ -3,10 +3,10 @@ import { FileSystemInfo } from '@yohira/base';
 import { ExclusionFilters } from './ExclusionFilters';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/Internal/FileSystemInfoHelper.cs,020c80373ae5f76c,references
-export async function isExcluded(
+export function isExcluded(
 	fileSystemInfo: FileSystemInfo,
 	filters: ExclusionFilters,
-): Promise<boolean> {
+): boolean {
 	if (filters === ExclusionFilters.None) {
 		return false;
 	} else if (
@@ -15,7 +15,7 @@ export async function isExcluded(
 	) {
 		return true;
 	} /* TODO: else if (
-		await fileSystemInfo.exists() &&
+		fileSystemInfo.existsSync() &&
 		(((fileSystemInfo.attributes & FileAttributes.Hidden) !== 0 &&
 			(filters & ExclusionFilters.Hidden) !== 0) ||
 			((fileSystemInfo.attributes & FileAttributes.System) !== 0 &&

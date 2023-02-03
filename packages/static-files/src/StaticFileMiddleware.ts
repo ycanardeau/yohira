@@ -91,7 +91,7 @@ export class StaticFileMiddleware implements IMiddleware {
 		return new Err(undefined);
 	}
 
-	private async tryServeStaticFile(
+	private tryServeStaticFile(
 		context: IHttpContext,
 		next: RequestDelegate,
 		contentType: string | undefined,
@@ -106,13 +106,13 @@ export class StaticFileMiddleware implements IMiddleware {
 			subPath,
 		);
 
-		if (!(await fileContext.lookupFileInfo())) {
+		if (!fileContext.lookupFileInfoSync()) {
 			logFileNotFound(this.logger, fileContext.subPath);
 		} else {
-			await fileContext.serveStaticFile(context, next);
+			return fileContext.serveStaticFile(context, next);
 		}
 
-		await next(context);
+		return next(context);
 	}
 
 	invoke(context: IHttpContext, next: RequestDelegate): Promise<void> {

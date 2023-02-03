@@ -10,9 +10,9 @@ import {
 } from '../../extensions.config/tests/ConfigProviderTestBase';
 
 class ConfigProviderEnvVariablesTest extends ConfigProviderTestBase {
-	protected loadThroughProvider(testConfig: TestSection): {
+	protected loadThroughProviderSync(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => Promise<void>;
+		initializer: () => void;
 	} {
 		const values = new List<[string, string]>();
 		ConfigProviderTestBase.sectionToValues(testConfig, '', values);
@@ -21,17 +21,16 @@ class ConfigProviderEnvVariablesTest extends ConfigProviderTestBase {
 
 		return {
 			provider: provider,
-			initializer: () => provider.loadCore(Object.fromEntries(values)),
+			initializer: () =>
+				provider.loadCoreSync(Object.fromEntries(values)),
 		};
 	}
 
 	// TODO: Load_from_single_provider_with_differing_case_duplicates_throws(): void {}
 
-	async Null_values_are_included_in_the_config(): Promise<void> {
+	Null_values_are_included_in_the_config(): void {
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadThroughProvider(nullsTestConfig),
-			),
+			this.buildConfigRoot(this.loadThroughProviderSync(nullsTestConfig)),
 			true,
 		);
 	}

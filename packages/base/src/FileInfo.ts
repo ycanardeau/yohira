@@ -1,17 +1,7 @@
-import { PathLike } from 'node:fs';
-import { access } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 
 import { FileSystemInfo } from './FileSystemInfo';
 import { getFileName, getFullPath } from './Path';
-
-async function exists(path: PathLike): Promise<boolean> {
-	try {
-		await access(path);
-		return true;
-	} catch {
-		return false;
-	}
-}
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/FileInfo.cs,4ee673c1a4ecad41,references
 export class FileInfo extends FileSystemInfo {
@@ -42,7 +32,7 @@ export class FileInfo extends FileSystemInfo {
 		return 0; /* TODO */
 	}
 
-	exists(): Promise<boolean> {
-		return exists(this.fullPath);
+	existsSync(): boolean {
+		return existsSync(this.fullPath);
 	}
 }

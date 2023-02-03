@@ -244,9 +244,9 @@ export abstract class ConfigProviderTestBase {
 		}
 	}
 
-	protected loadUsingMemoryProvider(testConfig: TestSection): {
+	protected loadUsingMemoryProviderSync(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => Promise<void>;
+		initializer: () => void;
 	} {
 		const values = new List<[string, string]>();
 		ConfigProviderTestBase.sectionToValues(testConfig, '', values);
@@ -255,27 +255,25 @@ export abstract class ConfigProviderTestBase {
 			provider: new MemoryConfigProvider(
 				new MemoryConfigSource(Object.fromEntries(values)),
 			),
-			initializer: () => Promise.resolve(),
+			initializer: (): void => {},
 		};
 	}
 
-	protected abstract loadThroughProvider(testConfig: TestSection): {
+	protected abstract loadThroughProviderSync(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => Promise<void>;
+		initializer: () => void;
 	};
 
-	protected async buildConfigRoot(
+	protected buildConfigRoot(
 		...providers: {
 			provider: IConfigProvider;
-			initializer: () => Promise<void>;
+			initializer: () => void;
 		}[]
-	): Promise<IConfigRoot> {
-		const root = await ConfigRoot.create(
-			toList(providers.map((e) => e.provider)),
-		);
+	): IConfigRoot {
+		const root = new ConfigRoot(toList(providers.map((e) => e.provider)));
 
 		for (const initializer of providers.map((e) => e.initializer)) {
-			await initializer();
+			initializer();
 		}
 
 		return root;
@@ -463,17 +461,17 @@ export abstract class ConfigProviderTestBase {
 		expect(sections[0].value).toBe(value344);
 	}
 
-	async Load_from_single_provider(): Promise<void> {
-		const configRoot = await this.buildConfigRoot(
-			this.loadThroughProvider(testConfig),
+	Load_from_single_provider(): void {
+		const configRoot = this.buildConfigRoot(
+			this.loadThroughProviderSync(testConfig),
 		);
 
 		this.assertConfig(configRoot);
 	}
 
-	async Has_debug_view(): Promise<void> {
-		const configRoot = await this.buildConfigRoot(
-			this.loadThroughProvider(testConfig),
+	Has_debug_view(): void {
+		const configRoot = this.buildConfigRoot(
+			this.loadThroughProviderSync(testConfig),
 		);
 		const providerTag = Array.from(configRoot.providers)[0].toString();
 
@@ -494,62 +492,60 @@ section3:
 		this.assertDebugView(configRoot, expected);
 	}
 
-	async Null_values_are_included_in_the_config(): Promise<void> {
+	Null_values_are_included_in_the_config(): void {
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadThroughProvider(nullsTestConfig),
-			),
+			this.buildConfigRoot(this.loadThroughProviderSync(nullsTestConfig)),
 			true,
 			'',
 		);
 	}
 
-	async Combine_after_other_provider(): Promise<void> {
+	Combine_after_other_provider(): void {
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadUsingMemoryProvider(missingSection2ValuesConfig),
-				this.loadThroughProvider(missingSection4Config),
+			this.buildConfigRoot(
+				this.loadUsingMemoryProviderSync(missingSection2ValuesConfig),
+				this.loadThroughProviderSync(missingSection4Config),
 			),
 		);
 
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadUsingMemoryProvider(missingSection4Config),
-				this.loadThroughProvider(missingSection2ValuesConfig),
-			),
-		);
-	}
-
-	async Combine_before_other_provider(): Promise<void> {
-		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadThroughProvider(missingSection2ValuesConfig),
-				this.loadUsingMemoryProvider(missingSection4Config),
-			),
-		);
-
-		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadThroughProvider(missingSection4Config),
-				this.loadUsingMemoryProvider(missingSection2ValuesConfig),
+			this.buildConfigRoot(
+				this.loadUsingMemoryProviderSync(missingSection4Config),
+				this.loadThroughProviderSync(missingSection2ValuesConfig),
 			),
 		);
 	}
 
-	async Second_provider_overrides_values_from_first(): Promise<void> {
+	Combine_before_other_provider(): void {
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadUsingMemoryProvider(noValuesTestConfig),
-				this.loadThroughProvider(testConfig),
+			this.buildConfigRoot(
+				this.loadThroughProviderSync(missingSection2ValuesConfig),
+				this.loadUsingMemoryProviderSync(missingSection4Config),
+			),
+		);
+
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadThroughProviderSync(missingSection4Config),
+				this.loadUsingMemoryProviderSync(missingSection2ValuesConfig),
 			),
 		);
 	}
 
-	async Combining_from_multiple_providers_is_case_insensitive(): Promise<void> {
+	Second_provider_overrides_values_from_first(): void {
 		this.assertConfig(
-			await this.buildConfigRoot(
-				this.loadUsingMemoryProvider(differentCasedTestConfig),
-				this.loadThroughProvider(testConfig),
+			this.buildConfigRoot(
+				this.loadUsingMemoryProviderSync(noValuesTestConfig),
+				this.loadThroughProviderSync(testConfig),
+			),
+		);
+	}
+
+	Combining_from_multiple_providers_is_case_insensitive(): void {
+		this.assertConfig(
+			this.buildConfigRoot(
+				this.loadUsingMemoryProviderSync(differentCasedTestConfig),
+				this.loadThroughProviderSync(testConfig),
 			),
 		);
 	}
@@ -560,32 +556,32 @@ section3:
 export function testConfigProvider(
 	configProviderTest: ConfigProviderTestBase,
 ): void {
-	test('Load_from_single_provider', async () => {
-		await configProviderTest.Load_from_single_provider();
+	test('Load_from_single_provider', () => {
+		configProviderTest.Load_from_single_provider();
 	});
 
-	test('Has_debug_view', async () => {
-		await configProviderTest.Has_debug_view();
+	test('Has_debug_view', () => {
+		configProviderTest.Has_debug_view();
 	});
 
-	test('Null_values_are_included_in_the_config', async () => {
-		await configProviderTest.Null_values_are_included_in_the_config();
+	test('Null_values_are_included_in_the_config', () => {
+		configProviderTest.Null_values_are_included_in_the_config();
 	});
 
-	test('Combine_after_other_provider', async () => {
-		await configProviderTest.Combine_after_other_provider();
+	test('Combine_after_other_provider', () => {
+		configProviderTest.Combine_after_other_provider();
 	});
 
-	test('Combine_before_other_provider', async () => {
-		await configProviderTest.Combine_before_other_provider();
+	test('Combine_before_other_provider', () => {
+		configProviderTest.Combine_before_other_provider();
 	});
 
-	test('Second_provider_overrides_values_from_first', async () => {
-		await configProviderTest.Second_provider_overrides_values_from_first();
+	test('Second_provider_overrides_values_from_first', () => {
+		configProviderTest.Second_provider_overrides_values_from_first();
 	});
 
-	test('Combining_from_multiple_providers_is_case_insensitive', async () => {
-		await configProviderTest.Combining_from_multiple_providers_is_case_insensitive();
+	test('Combining_from_multiple_providers_is_case_insensitive', () => {
+		configProviderTest.Combining_from_multiple_providers_is_case_insensitive();
 	});
 
 	// TODO

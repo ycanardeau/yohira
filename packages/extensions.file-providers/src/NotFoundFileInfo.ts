@@ -4,8 +4,8 @@ import { IFileInfo } from './IFileInfo';
 export class NotFoundFileInfo implements IFileInfo {
 	constructor(readonly name: string) {}
 
-	exists(): Promise<boolean> {
-		return Promise.resolve(false);
+	existsSync(): boolean {
+		return false;
 	}
 
 	get length(): number {

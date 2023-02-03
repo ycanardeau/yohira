@@ -22,7 +22,7 @@ async function using<T extends IDisposable>(
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L34
 test('GetFileInfoReturnsNotFoundFileInfoForEmptyPath', async () => {
 	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
-		const info = await provider.getFileInfo('');
+		const info = provider.getFileInfoSync('');
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 });
@@ -31,7 +31,7 @@ async function GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes
 	path: string,
 ): Promise<void> {
 	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
-		const info = await provider.getFileInfo(path);
+		const info = provider.getFileInfoSync(path);
 		expect(info).toBeInstanceOf(PhysicalFileInfo);
 	});
 }
@@ -66,7 +66,7 @@ async function GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashe
 	path: string,
 ): Promise<void> {
 	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
-		const info = await provider.getFileInfo(path);
+		const info = provider.getFileInfoSync(path);
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 }
@@ -106,8 +106,8 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 		await using(
 			new PhysicalFileProvider(getTempPath()),
 			async (provider) => {
-				const info = await provider.getFileInfo(path);
-				expect(await info.exists()).toBe(false);
+				const info = provider.getFileInfoSync(path);
+				expect(info.existsSync()).toBe(false);
 			},
 		);
 	}
@@ -120,7 +120,7 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L179
 /* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', async () => {
 	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
-		const info = await provider.getFileInfo(
+		const info = provider.getFileInfoSync(
 			combinePaths(getTempPath(), randomUUID()),
 		);
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
@@ -130,7 +130,7 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L189
 /* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', async () => {
 	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
-		const info = await provider.getFileInfo(
+		const info = provider.getFileInfoSync(
 			combinePaths('..', randomUUID()),
 		);
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
@@ -143,7 +143,7 @@ async function InvalidPath_DoesNotThrowGeneric_GetFileInfo(
 	path: string,
 ): Promise<void> {
 	await using(new PhysicalFileProvider(cwd()), async (provider) => {
-		const info = await provider.getFileInfo(path);
+		const info = provider.getFileInfoSync(path);
 		expect(info).not.toBeUndefined();
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});

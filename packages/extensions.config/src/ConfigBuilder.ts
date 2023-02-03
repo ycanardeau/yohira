@@ -18,12 +18,12 @@ export class ConfigBuilder implements IConfigBuilder {
 		return this;
 	}
 
-	build(): Promise<IConfigRoot> {
+	buildSync(): IConfigRoot {
 		const providers = new List<IConfigProvider>();
 		for (const source of this.sources) {
 			const provider = source.build(this);
 			providers.add(provider);
 		}
-		return ConfigRoot.create(providers);
+		return new ConfigRoot(providers);
 	}
 }

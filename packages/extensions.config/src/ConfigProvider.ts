@@ -24,9 +24,7 @@ export abstract class ConfigProvider implements IConfigProvider {
 		this.data.set(key, value);
 	}
 
-	load(): Promise<void> {
-		return Promise.resolve();
-	}
+	loadSync(): void {}
 
 	private static segment(key: string, prefixLength: number): string {
 		const indexOf = indexOfIgnoreCase(key, keyDelimiter, prefixLength);

@@ -47,9 +47,9 @@ class ConfigProviderJsonTest extends ConfigProviderTestBase {
 		}
 	}
 
-	protected loadThroughProvider(testConfig: TestSection): {
+	protected loadThroughProviderSync(testConfig: TestSection): {
 		provider: IConfigProvider;
-		initializer: () => Promise<void>;
+		initializer: () => void;
 	} {
 		const jsonBuilder: string[] = [];
 		this.sectionToJson(jsonBuilder, testConfig, false);
@@ -62,7 +62,7 @@ class ConfigProviderJsonTest extends ConfigProviderTestBase {
 		json = JSON5.stringify(JSON5.parse(json));
 		return {
 			provider: provider,
-			initializer: () => provider.loadStream(Readable.from(json)),
+			initializer: () => provider.loadStreamSync(Readable.from(json)),
 		};
 	}
 

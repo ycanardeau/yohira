@@ -21,13 +21,13 @@ export abstract class FileConfigProvider
 		})`;
 	}
 
-	abstract loadStream(stream: Stream): Promise<void>;
+	abstract loadStreamSync(stream: Stream): void;
 
-	private async loadCore(reload: boolean): Promise<void> {
-		const file = await this.source.fileProvider?.getFileInfo(
+	private loadCoreSync(reload: boolean): void {
+		const file = this.source.fileProvider?.getFileInfoSync(
 			this.source.path ?? '',
 		);
-		if (file === undefined || !(await file.exists())) {
+		if (file === undefined || !file.existsSync()) {
 			if (this.source.optional || reload) {
 				this.data = new CaseInsensitiveMap<string | undefined>();
 			} else {
@@ -47,8 +47,8 @@ export abstract class FileConfigProvider
 		}
 	}
 
-	load(): Promise<void> {
-		return this.loadCore(false);
+	loadSync(): void {
+		return this.loadCoreSync(false);
 	}
 
 	dispose(): Promise<void> {

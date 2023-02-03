@@ -10,23 +10,13 @@ import { getChildrenImpl } from './InternalConfigRootExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationRoot.cs,0a5ad779923b882b,references
 export class ConfigRoot implements IConfigRoot, IDisposable {
-	private constructor(private readonly _providers: IList<IConfigProvider>) {
+	constructor(private readonly _providers: IList<IConfigProvider>) {
 		// TODO
-	}
 
-	private async initialize(): Promise<void> {
 		for (const provider of this._providers) {
-			await provider.load();
+			provider.loadSync();
 			// TODO
 		}
-	}
-
-	static async create(
-		providers: IList<IConfigProvider>,
-	): Promise<ConfigRoot> {
-		const root = new ConfigRoot(providers);
-		await root.initialize();
-		return root;
 	}
 
 	get providers(): Iterable<IConfigProvider> {
@@ -86,9 +76,9 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		throw new Error('Method not implemented.');
 	}
 
-	async reload(): Promise<void> {
+	reloadSync(): void {
 		for (const provider of this._providers) {
-			await provider.load();
+			provider.loadSync();
 		}
 		this.raiseChanged();
 	}

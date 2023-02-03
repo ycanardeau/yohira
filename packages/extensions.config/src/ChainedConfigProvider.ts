@@ -33,9 +33,7 @@ export class ChainedConfigProvider implements IConfigProvider, IDisposable {
 		this.config.set(key, value);
 	}
 
-	load(): Promise<void> {
-		return Promise.resolve();
-	}
+	loadSync(): void {}
 
 	getChildKeys(
 		earlierKeys: string[],

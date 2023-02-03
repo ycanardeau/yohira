@@ -11,9 +11,9 @@ export abstract class StreamConfigProvider extends ConfigProvider {
 		super();
 	}
 
-	abstract loadStream(stream: Stream): Promise<void>;
+	abstract loadStreamSync(stream: Stream): void;
 
-	async load(): Promise<void> {
+	loadSync(): void {
 		if (this.loaded) {
 			throw new Error(
 				'StreamConfigProviders cannot be loaded more than once.' /* LOC */,
@@ -24,7 +24,7 @@ export abstract class StreamConfigProvider extends ConfigProvider {
 			throw new Error('source.stream cannot be undefined.' /* LOC */);
 		}
 
-		await this.loadStream(this.source.stream);
+		this.loadStreamSync(this.source.stream);
 		this.loaded = true;
 	}
 }
