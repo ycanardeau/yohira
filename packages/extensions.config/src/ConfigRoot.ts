@@ -83,7 +83,7 @@ export class ConfigRoot implements IConfigRoot, IDisposable {
 		this.raiseChanged();
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

@@ -1,4 +1,4 @@
-import { IDisposable, IServiceProvider } from '@yohira/base';
+import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -8,7 +8,7 @@ import { IServiceProvidersFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Features/RequestServicesFeature.cs,108ec86c767ee7c3,references
 export class RequestServicesFeature
-	implements IServiceProvidersFeature, IDisposable
+	implements IServiceProvidersFeature, IDisposable, IAsyncDisposable
 {
 	private _requestServices?: IServiceProvider;
 	private scope?: IServiceScope;
@@ -34,7 +34,12 @@ export class RequestServicesFeature
 		this.requestServicesSet = true;
 	}
 
-	dispose(): Promise<void> {
+	disposeAsync(): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	dispose(): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

@@ -1,4 +1,4 @@
-import { IDisposable, IServiceProvider } from '@yohira/base';
+import { IAsyncDisposable, IServiceProvider } from '@yohira/base';
 import { getServices } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHost, IHostedService } from '@yohira/extensions.hosting.abstractions';
 import { ILoggerT } from '@yohira/extensions.logging.abstractions';
@@ -11,7 +11,7 @@ import {
 } from '../internal/HostingLoggerExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
-export class Host implements IHost, IDisposable {
+export class Host implements IHost, IAsyncDisposable {
 	private hostedServices?: IHostedService[];
 	private stopCalled = false;
 
@@ -52,7 +52,12 @@ export class Host implements IHost, IDisposable {
 		logStopped(this.logger);
 	}
 
-	dispose(): Promise<void> {
+	disposeAsync(): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	dispose(): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

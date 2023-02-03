@@ -6,6 +6,7 @@ export * from './FileAttributes';
 export * from './FileInfo';
 export * from './FileSystemInfo';
 export * from './HeaderNames';
+export * from './IAsyncDisposable';
 export * from './ICollection';
 export * from './IDisposable';
 export * from './IEquatable';

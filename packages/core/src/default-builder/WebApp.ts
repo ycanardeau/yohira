@@ -1,4 +1,9 @@
-import { ICollection, IDisposable, IServiceProvider, List } from '@yohira/base';
+import {
+	IAsyncDisposable,
+	ICollection,
+	IServiceProvider,
+	List,
+} from '@yohira/base';
 import { IHost, runApp } from '@yohira/extensions.hosting.abstractions';
 import { AppBuilder } from '@yohira/http';
 import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
@@ -10,7 +15,7 @@ const globalEndpointRouteBuilderKey = '__GlobalEndpointRouteBuilder';
 
 // https://source.dot.net/#Microsoft.AspNetCore/WebApplication.cs,e41b5d12c49f9700,references
 export class WebApp
-	implements IHost, IAppBuilder, IEndpointRouteBuilder, IDisposable
+	implements IHost, IAppBuilder, IEndpointRouteBuilder, IAsyncDisposable
 {
 	private readonly _dataSources = new List<EndpointDataSource>();
 	get dataSources(): ICollection<EndpointDataSource> {
@@ -23,7 +28,7 @@ export class WebApp
 		return this.appBuilder.properties;
 	}
 
-	constructor(private readonly host: IHost) {
+	constructor(private readonly host: IHost | (IHost & IAsyncDisposable)) {
 		this.appBuilder = new AppBuilder(host.services /* TODO */);
 		// TODO: logger
 
@@ -49,8 +54,12 @@ export class WebApp
 		return this.host.stop();
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		return this.host.dispose();
+	}
+
+	disposeAsync(): Promise<void> {
+		return (this.host as IAsyncDisposable).disposeAsync();
 	}
 
 	use(middleware: (next: RequestDelegate) => RequestDelegate): this {

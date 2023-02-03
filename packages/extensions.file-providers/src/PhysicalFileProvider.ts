@@ -37,10 +37,9 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		// TODO
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		// TODO
 		//throw new Error('Method not implemented.');
-		return Promise.resolve();
 	}
 
 	private isUnderneathRoot(fullPath: string): boolean {

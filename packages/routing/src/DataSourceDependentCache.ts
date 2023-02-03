@@ -51,13 +51,12 @@ export class DataSourceDependentCache<T> implements IDisposable {
 		return this._value;
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		// REVIEW: lock
 		if (!this.disposed) {
 			// TODO
 
 			this.disposed = true;
 		}
-		return Promise.resolve();
 	}
 }

@@ -8,84 +8,68 @@ import { randomUUID } from 'node:crypto';
 import { cwd } from 'node:process';
 import { expect, test } from 'vitest';
 
-async function using<T extends IDisposable>(
+function using<T extends IDisposable>(
 	disposable: T,
-	action: (disposable: T) => Promise<void>,
-): Promise<void> {
+	action: (disposable: T) => void,
+): void {
 	try {
-		await action(disposable);
+		action(disposable);
 	} finally {
-		await disposable.dispose();
+		disposable.dispose();
 	}
 }
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L34
-test('GetFileInfoReturnsNotFoundFileInfoForEmptyPath', async () => {
-	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
+test('GetFileInfoReturnsNotFoundFileInfoForEmptyPath', () => {
+	using(new PhysicalFileProvider(getTempPath()), (provider) => {
 		const info = provider.getFileInfoSync('');
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 });
 
-async function GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
+function GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
 	path: string,
-): Promise<void> {
-	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
+): void {
+	using(new PhysicalFileProvider(getTempPath()), (provider) => {
 		const info = provider.getFileInfoSync(path);
 		expect(info).toBeInstanceOf(PhysicalFileInfo);
 	});
 }
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L50
-test('GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes_Windows', async () => {
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'/',
-	);
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'///',
-	);
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'/\\/',
-	);
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'\\/\\/',
-	);
+test('GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes_Windows', () => {
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('/');
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('///');
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('/\\/');
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('\\/\\/');
 });
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L60
-test('GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes_Unix', async () => {
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'/',
-	);
-	await GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes(
-		'///',
-	);
+test('GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes_Unix', () => {
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('/');
+	GetFileInfoReturnsPhysicalFileInfoForValidPathsWithLeadingSlashes('///');
 });
 
-async function GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
+function GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
 	path: string,
-): Promise<void> {
-	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
+): void {
+	using(new PhysicalFileProvider(getTempPath()), (provider) => {
 		const info = provider.getFileInfoSync(path);
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
 	});
 }
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L79
-test('GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes_Windows', async () => {
-	await GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
+test('GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes_Windows', () => {
+	GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
 		'/C:\\Windows\\System32',
 	);
-	await GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
-		'/\0/',
-	);
+	GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes('/\0/');
 });
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L88
-test('GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes_Unix', async () => {
-	await GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes(
-		'/\0/',
-	);
+test('GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes_Unix', () => {
+	GetFileInfoReturnsNotFoundFileInfoForIllegalPathWithLeadingSlashes('/\0/');
 });
 
 // TODO
@@ -99,27 +83,24 @@ const invalidPaths = [
 ] as const;
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L167
-test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
-	async function GetFileInfoReturnsNonExistentFileInfoForIllegalPath(
+test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', () => {
+	function GetFileInfoReturnsNonExistentFileInfoForIllegalPath(
 		path: string,
-	): Promise<void> {
-		await using(
-			new PhysicalFileProvider(getTempPath()),
-			async (provider) => {
-				const info = provider.getFileInfoSync(path);
-				expect(info.existsSync()).toBe(false);
-			},
-		);
+	): void {
+		using(new PhysicalFileProvider(getTempPath()), (provider) => {
+			const info = provider.getFileInfoSync(path);
+			expect(info.existsSync()).toBe(false);
+		});
 	}
 
 	for (const path of invalidPaths) {
-		await GetFileInfoReturnsNonExistentFileInfoForIllegalPath(path);
+		GetFileInfoReturnsNonExistentFileInfoForIllegalPath(path);
 	}
 });
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L179
-/* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', async () => {
-	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
+/* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForAbsolutePath', () => {
+	using(new PhysicalFileProvider(getTempPath()), (provider) => {
 		const info = provider.getFileInfoSync(
 			combinePaths(getTempPath(), randomUUID()),
 		);
@@ -128,8 +109,8 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 }); */
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L189
-/* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', async () => {
-	await using(new PhysicalFileProvider(getTempPath()), async (provider) => {
+/* FIXME: test('GetFileInfoReturnsNotFoundFileInfoForRelativePathAboveRootPath', () => {
+	using(new PhysicalFileProvider(getTempPath()), (provider) => {
 		const info = provider.getFileInfoSync(
 			combinePaths('..', randomUUID()),
 		);
@@ -139,10 +120,8 @@ test('GetFileInfoReturnsNonExistentFileInfoForIllegalPath', async () => {
 
 // TODO
 
-async function InvalidPath_DoesNotThrowGeneric_GetFileInfo(
-	path: string,
-): Promise<void> {
-	await using(new PhysicalFileProvider(cwd()), async (provider) => {
+function InvalidPath_DoesNotThrowGeneric_GetFileInfo(path: string): void {
+	using(new PhysicalFileProvider(cwd()), (provider) => {
 		const info = provider.getFileInfoSync(path);
 		expect(info).not.toBeUndefined();
 		expect(info).toBeInstanceOf(NotFoundFileInfo);
@@ -150,17 +129,17 @@ async function InvalidPath_DoesNotThrowGeneric_GetFileInfo(
 }
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L513
-test('InvalidPath_DoesNotThrowWindows_GetFileInfo', async () => {
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/test:test');
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir/name"');
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir>/name');
+test('InvalidPath_DoesNotThrowWindows_GetFileInfo', () => {
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/test:test');
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir/name"');
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir>/name');
 });
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L523
-test('InvalidPath_DoesNotThrowUnix_GetFileInfo', async () => {
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/test:test\0');
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir/\0name"');
-	await InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir>/name\0');
+test('InvalidPath_DoesNotThrowUnix_GetFileInfo', () => {
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/test:test\0');
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir/\0name"');
+	InvalidPath_DoesNotThrowGeneric_GetFileInfo('/dir>/name\0');
 });
 
 // TODO

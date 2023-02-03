@@ -24,7 +24,7 @@ export class LoggerFactory implements ILoggerFactory {
 		return logger;
 	}
 
-	dispose(): Promise<void> {
+	dispose(): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
