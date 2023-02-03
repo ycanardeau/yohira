@@ -5,6 +5,7 @@ import { IWebHostEnv } from '@yohira/hosting.abstractions';
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironment.cs,0e08dcc04b780183,references
 export class HostingEnv implements IWebHostEnv {
 	envName: string = Envs.Production;
+	appName?: string;
 	webRootPath!: string;
 	webRootFileProvider!: IFileProvider;
 	contentRootPath!: string;

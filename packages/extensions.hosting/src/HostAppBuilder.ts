@@ -19,7 +19,10 @@ import {
 	populateServiceCollection,
 	resolveHost,
 } from './HostBuilder';
-import { createDefaultServiceProviderOptions } from './HostingHostBuilderExtensions';
+import {
+	applyDefaultAppConfig,
+	createDefaultServiceProviderOptions,
+} from './HostingHostBuilderExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostApplicationBuilder.cs,c659330adb7f1ad0,references
 export class HostAppBuilder {
@@ -67,6 +70,11 @@ export class HostAppBuilder {
 			undefined;
 
 		if (!settings.disableDefaults) {
+			applyDefaultAppConfig(
+				this.hostBuilderContext,
+				this.config,
+				settings.args,
+			);
 			// TODO
 			serviceProviderOptions = createDefaultServiceProviderOptions(
 				this.hostBuilderContext,

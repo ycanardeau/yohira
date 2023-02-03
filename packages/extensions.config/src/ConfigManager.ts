@@ -122,8 +122,8 @@ export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
 	}
 
 	add(source: IConfigSource): this {
-		// TODO
-		throw new Error('Method not implemented.');
+		this._sources.add(source);
+		return this;
 	}
 
 	buildSync(): IConfigRoot {
