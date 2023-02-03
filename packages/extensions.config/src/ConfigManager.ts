@@ -68,15 +68,25 @@ class ConfigSources implements IList<IConfigSource> {
 	}
 }
 
+// https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationManager.cs,4b2b14522623b048,references
+export class ConfigBuilderProperties extends Map<string, unknown> {
+	constructor(private readonly config: ConfigManager) {
+		super();
+	}
+
+	// TODO
+}
+
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationManager.cs,9fd7bcd9fe6aeaa6,references
 export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
 	private readonly _sources: ConfigSources;
+	private readonly _properties: ConfigBuilderProperties;
 	// HACK: https://github.com/dotnet/runtime/blob/a490a3417adb78dbc36891624e67720ebdca919f/src/libraries/Microsoft.Extensions.Configuration/src/ConfigurationManager.cs#L23
 	private readonly _providers = new List<IConfigProvider>();
 
 	constructor() {
 		this._sources = new ConfigSources(this);
-		// TODO: this._properties
+		this._properties = new ConfigBuilderProperties(this);
 
 		this._sources.add(new MemoryConfigSource());
 	}
@@ -101,8 +111,7 @@ export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
 	}
 
 	get properties(): Map<string, unknown> {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this._properties;
 	}
 
 	get sources(): IList<IConfigSource> {
