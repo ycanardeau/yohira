@@ -1,4 +1,5 @@
 import { IServiceProvider } from '@yohira/base';
+import { IConfig } from '@yohira/extensions.config.abstractions';
 import {
 	IServiceCollection,
 	addSingletonFactory,
@@ -8,6 +9,7 @@ import {
 import {
 	Envs,
 	HostBuilderContext,
+	HostDefaults,
 	IHost,
 } from '@yohira/extensions.hosting.abstractions';
 import { addLogging } from '@yohira/extensions.logging';
@@ -17,9 +19,11 @@ import { HostingEnv } from '@yohira/hosting';
 import { Host } from './internal/Host';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostBuilder.cs,afe23a39fda43335,references
-export function createHostingEnv(): { hostingEnv: HostingEnv } {
+export function createHostingEnv(hostConfig: IConfig): {
+	hostingEnv: HostingEnv;
+} {
 	const hostingEnv = new HostingEnv();
-	hostingEnv.envName = /* TODO */ Envs.Production;
+	hostingEnv.envName = hostConfig.get(HostDefaults.EnvKey) ?? Envs.Production;
 	hostingEnv.contentRootPath = ''; /* TODO */
 
 	// TODO

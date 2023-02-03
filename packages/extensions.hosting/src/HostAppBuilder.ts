@@ -1,4 +1,5 @@
 import { IServiceProvider } from '@yohira/base';
+import { ConfigManager } from '@yohira/extensions.config';
 import {
 	ServiceProviderOptions,
 	buildServiceProvider,
@@ -30,10 +31,20 @@ export class HostAppBuilder {
 	private hostBuilt = false;
 	private appServices?: IServiceProvider;
 
-	constructor(settings: HostAppBuilderSettings) {
+	/**
+	 * A collection of services for the application to compose. This is useful for adding user provided or framework provided services.
+	 */
+	readonly config: ConfigManager;
+
+	constructor(settings: HostAppBuilderSettings | undefined) {
+		settings ??= new HostAppBuilderSettings();
+		this.config = settings.config ?? new ConfigManager();
+
 		// TODO
 
-		const { hostingEnv } = createHostingEnv(/* TODO */);
+		const { hostingEnv } = createHostingEnv(this.config);
+
+		// TODO: this.config.setFileProvider(physicalFileProvider);
 
 		// TODO
 

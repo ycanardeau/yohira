@@ -2,6 +2,7 @@ export * from './ChainedBuilderExtensions';
 export * from './ChainedConfigProvider';
 export * from './ChainedConfigSource';
 export * from './ConfigBuilder';
+export * from './ConfigManager';
 export * from './ConfigProvider';
 export * from './ConfigRoot';
 export * from './ConfigSection';
