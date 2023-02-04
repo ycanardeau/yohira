@@ -1,6 +1,7 @@
 import { CaseInsensitiveMap, IDisposable } from '@yohira/base';
 import { ConfigProvider } from '@yohira/extensions.config';
-import { Stream } from 'node:stream';
+import { readFileSync } from 'node:fs';
+import { Readable, Stream } from 'node:stream';
 
 import { FileConfigSource } from './FileConfigSource';
 
@@ -42,8 +43,14 @@ export abstract class FileConfigProvider
 				throw new Error(error.join('')) /* TODO: handleException */;
 			}
 		} else {
-			// TODO
-			throw new Error('Method not implemented.');
+			try {
+				// TODO: Convert to async function.
+				const stream = Readable.from(readFileSync(file.physicalPath!));
+				this.loadStreamSync(stream);
+			} catch (error) {
+				// TODO
+				throw error;
+			}
 		}
 	}
 

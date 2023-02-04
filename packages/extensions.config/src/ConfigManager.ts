@@ -155,7 +155,8 @@ export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
 		provider.loadSync();
 		// TODO
 
-		// TODO
+		// HACK: https://github.com/dotnet/runtime/blob/a490a3417adb78dbc36891624e67720ebdca919f/src/libraries/Microsoft.Extensions.Configuration/src/ConfigurationManager.cs#L132
+		this._providers.add(provider);
 		this.raiseChanged();
 	}
 
