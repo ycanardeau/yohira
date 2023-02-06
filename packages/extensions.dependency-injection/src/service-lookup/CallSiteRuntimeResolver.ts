@@ -1,3 +1,5 @@
+import { tryGetValue } from '@yohira/base';
+
 import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
 import { ConstantCallSite } from '../service-lookup/ConstantCallSite';
 import { CtorCallSite } from '../service-lookup/CtorCallSite';
@@ -90,8 +92,29 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		serviceProviderEngine: ServiceProviderEngineScope,
 		// TODO
 	): object | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+		// REVIEW
+		const resolvedServices = serviceProviderEngine.resolvedServices;
+		// REVIEW
+
+		// REVIEW: try
+		const tryGetValueResult = tryGetValue(
+			resolvedServices,
+			callSite.cache.key.getHashCode(),
+		);
+		if (tryGetValueResult.ok) {
+			return tryGetValueResult.val;
+		}
+
+		const resolved = this.visitCallSiteMain(
+			callSite,
+			new RuntimeResolverContext(
+				serviceProviderEngine /* REVIEW: acquiredLocks */,
+			),
+		);
+		// TODO: serviceProviderEngine.captureDisposable(resolved);
+		resolvedServices.set(callSite.cache.key.getHashCode(), resolved);
+		return resolved;
+		// REVIEW: finally
 	}
 
 	visitScopeCache(

@@ -16,10 +16,17 @@ export class ServiceProviderEngineScope
 {
 	private disposed = false;
 
+	/** @internal */ readonly resolvedServices: Map<
+		number /* TODO: ServiceCacheKey */,
+		object | undefined
+	>;
+
 	constructor(
 		readonly rootProvider: ServiceProvider,
 		readonly isRootScope: boolean,
-	) {}
+	) {
+		this.resolvedServices = new Map();
+	}
 
 	getService<T>(serviceType: symbol): T | undefined {
 		if (this.disposed) {
