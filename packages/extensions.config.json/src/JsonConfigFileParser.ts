@@ -1,6 +1,5 @@
 import { CaseInsensitiveMap } from '@yohira/base';
 import { keyDelimiter } from '@yohira/extensions.config.abstractions';
-import JSON5 from 'json5';
 import { Readable, Stream } from 'node:stream';
 
 // https://source.dot.net/#System.Text.Json/System/Text/Json/Document/JsonValueKind.cs,1ae5746019726119,references
@@ -148,7 +147,8 @@ export class JsonConfigFileParser {
 	}
 
 	private parseStream(input: Stream): CaseInsensitiveMap<string | undefined> {
-		const doc = JSON5.parse((input as Readable).read());
+		// Do not use JSON5.parse for now.
+		const doc = JSON.parse((input as Readable).read());
 		const valueKind = getJsonValueKind(doc);
 		if (valueKind !== JsonValueKind.Object) {
 			throw new Error(

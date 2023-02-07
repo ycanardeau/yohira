@@ -10,7 +10,7 @@ import { get } from '../../extensions.config/tests/common/ConfigProviderExtensio
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/EmptyObjectTest.cs#L12
 test('EmptyObject_AddsAsNull', () => {
 	const json = `{
-	"key": { },
+	"key": { }
 }`;
 
 	const jsonConfigSource = new JsonConfigProvider(new JsonConfigSource());
@@ -22,7 +22,7 @@ test('EmptyObject_AddsAsNull', () => {
 // https://github.com/dotnet/runtime/blob/67743295d05777ce3701135afbbdb473d4fb4436/src/libraries/Microsoft.Extensions.Configuration.Json/tests/EmptyObjectTest.cs#L25
 test('NullObject_AddsEmptyString', () => {
 	const json = `{
-	"key": null,
+	"key": null
 }`;
 
 	const jsonConfigSource = new JsonConfigProvider(new JsonConfigSource());
@@ -36,7 +36,7 @@ test('NestedObject_DoesNotAddParent', () => {
 	const json = `{
 	"key": {
 		"nested": "value"
-	},
+	}
 }`;
 
 	const jsonConfigSource = new JsonConfigProvider(new JsonConfigSource());

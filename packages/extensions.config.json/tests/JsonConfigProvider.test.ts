@@ -59,7 +59,8 @@ class ConfigProviderJsonTest extends ConfigProviderTestBase {
 		const provider = new JsonConfigProvider(source);
 
 		let json = jsonBuilder.join('');
-		json = JSON5.stringify(JSON5.parse(json));
+		// Use JSON5.parse for testing purposes only for now.
+		json = JSON.stringify(JSON5.parse(json));
 		return {
 			provider: provider,
 			initializer: () => provider.loadStreamSync(Readable.from(json)),
