@@ -8,9 +8,10 @@ export function write(
 	text: string,
 	encoding: BufferEncoding = 'utf8',
 ): Promise<void> {
-	// TODO
-	const body = response.body as Writable;
-	body.write(text, encoding);
-	body.end();
-	return Promise.resolve();
+	return new Promise((resolve) => {
+		// REVIEW
+		const body = response.body as Writable;
+		body.write(text, encoding);
+		body.end(resolve);
+	});
 }
