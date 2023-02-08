@@ -1,4 +1,4 @@
-import { Writable } from 'node:stream';
+import { ServerResponse } from 'node:http';
 
 import { IHttpResponse } from '../IHttpResponse';
 
@@ -10,7 +10,8 @@ export function write(
 ): Promise<void> {
 	return new Promise((resolve) => {
 		// REVIEW
-		const body = response.body as Writable;
+		const body = response.body as ServerResponse;
+		body.statusCode = response.statusCode;
 		body.write(text, encoding);
 		body.end(resolve);
 	});
