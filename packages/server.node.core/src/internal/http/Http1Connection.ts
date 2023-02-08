@@ -38,10 +38,20 @@ export class Http1Connection
 		this.featureRevision++;
 	}
 
+	private _path?: string;
+	private _queryString?: string;
+	private _rawBody?: string;
+
 	reset(): void {
 		// TODO
 
 		this.resetFeatureCollection();
+
+		// TODO
+		this._path = undefined;
+		this._queryString = undefined;
+		this._rawBody = undefined;
+		// TODO
 
 		// TODO
 	}
@@ -70,6 +80,21 @@ export class Http1Connection
 	): Promise<void> {
 		this.beginRequestProcessing();
 
+		const url = new URL(
+			this.request.url ?? '',
+			`http://${this.request.headers.host}`,
+		);
+		this._path = url.pathname;
+		this._queryString = url.search;
+
+		// REVIEW
+		// https://nodejs.bootcss.com/node-request-data/
+		const buffers = [];
+		for await (const chunk of this.request) {
+			buffers.push(chunk);
+		}
+		this._rawBody = Buffer.concat(buffers).toString();
+
 		const context = app.createContext(this);
 
 		// TODO: try
@@ -83,12 +108,23 @@ export class Http1Connection
 		// TODO: catch
 	}
 
+	get rawBody(): string {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._rawBody!;
+	}
+
 	get method(): string {
 		return this.request.method ?? '';
 	}
 
 	get path(): string {
-		return this.request.url ?? '';
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._path!;
+	}
+
+	get queryString(): string {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._queryString!;
 	}
 
 	private _endpoint?: Endpoint;

@@ -2,4 +2,6 @@
 export interface IHttpRequestFeature {
 	method: string;
 	path: string;
+	queryString: string;
+	rawBody: string;
 }

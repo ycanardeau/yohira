@@ -4,9 +4,13 @@ import { IHttpRequestFeature } from '@yohira/http.features';
 export class HttpRequestFeature implements IHttpRequestFeature {
 	method: string;
 	path: string;
+	queryString: string;
+	rawBody: string;
 
 	constructor() {
+		this.rawBody = '';
 		this.method = '';
 		this.path = '';
+		this.queryString = '';
 	}
 }

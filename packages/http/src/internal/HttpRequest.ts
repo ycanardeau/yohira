@@ -44,6 +44,10 @@ export class HttpRequest implements IHttpRequest {
 		)!;
 	}
 
+	get rawBody(): string {
+		return this.httpRequestFeature.rawBody;
+	}
+
 	get method(): string {
 		return this.httpRequestFeature.method;
 	}
@@ -56,5 +60,9 @@ export class HttpRequest implements IHttpRequest {
 	}
 	set path(value: PathString) {
 		this.httpRequestFeature.path = value.value ?? '';
+	}
+
+	get queryString(): string {
+		return this.httpRequestFeature.queryString;
 	}
 }

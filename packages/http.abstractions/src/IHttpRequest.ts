@@ -6,4 +6,6 @@ export interface IHttpRequest {
 	readonly httpContext: IHttpContext;
 	method: string;
 	path: PathString;
+	queryString: string;
+	rawBody: string;
 }
