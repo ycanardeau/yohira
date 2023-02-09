@@ -12,6 +12,7 @@ import { IAppBuilder, RequestDelegate } from '@yohira/http.abstractions';
 import { EndpointDataSource, IEndpointRouteBuilder } from '@yohira/routing';
 
 import { WebAppBuilder } from './WebAppBuilder';
+import { WebAppOptions } from './WebAppOptions';
 
 const globalEndpointRouteBuilderKey = '__GlobalEndpointRouteBuilder';
 
@@ -116,6 +117,6 @@ export class WebApp
 	}
 }
 
-export function createWebAppBuilder(): WebAppBuilder {
-	return new WebAppBuilder(); /* TODO */
+export function createWebAppBuilder(options?: WebAppOptions): WebAppBuilder {
+	return new WebAppBuilder(options ?? new WebAppOptions());
 }

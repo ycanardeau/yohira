@@ -1,5 +1,8 @@
 import { IServiceProvider } from '@yohira/base';
-import { ConfigManager } from '@yohira/extensions.config';
+import {
+	ConfigManager,
+	addInMemoryCollection,
+} from '@yohira/extensions.config';
 import {
 	ServiceProviderOptions,
 	buildServiceProvider,
@@ -10,7 +13,9 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	HostBuilderContext,
+	HostDefaults,
 	IHost,
+	IHostEnv,
 } from '@yohira/extensions.hosting.abstractions';
 
 import { HostAppBuilderSettings } from './HostAppBuilderSettings';
@@ -35,6 +40,11 @@ export class HostAppBuilder {
 	private appServices?: IServiceProvider;
 
 	/**
+	 * Provides information about the hosting environment an application is running in.
+	 */
+	readonly env: IHostEnv;
+
+	/**
 	 * A collection of services for the application to compose. This is useful for adding user provided or framework provided services.
 	 */
 	readonly config: ConfigManager;
@@ -45,6 +55,27 @@ export class HostAppBuilder {
 
 		// TODO
 
+		// HostApplicationBuilderSettings override all other config sources.
+		let optionList: [string, string | undefined][] | undefined = undefined;
+		if (settings.appName !== undefined) {
+			optionList ??= [];
+			optionList.push([HostDefaults.AppKey, settings.appName]);
+		}
+		if (settings.envName !== undefined) {
+			optionList ??= [];
+			optionList.push([HostDefaults.EnvKey, settings.envName]);
+		}
+		if (settings.contentRootPath !== undefined) {
+			optionList ??= [];
+			optionList.push([
+				HostDefaults.ContentRootKey,
+				settings.contentRootPath,
+			]);
+		}
+		if (optionList !== undefined) {
+			addInMemoryCollection(this.config, Object.fromEntries(optionList));
+		}
+
 		const { hostingEnv } = createHostingEnv(this.config);
 
 		// TODO: this.config.setFileProvider(physicalFileProvider);
@@ -53,9 +84,9 @@ export class HostAppBuilder {
 
 		this.hostBuilderContext = new HostBuilderContext(/* TODO */);
 		this.hostBuilderContext.hostingEnv = hostingEnv;
-		// TODO
+		this.hostBuilderContext.config = this.config;
 
-		// TODO
+		this.env = hostingEnv;
 
 		populateServiceCollection(
 			this.services,

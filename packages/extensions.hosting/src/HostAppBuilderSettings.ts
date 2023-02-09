@@ -5,4 +5,7 @@ export class HostAppBuilderSettings {
 	disableDefaults = false;
 	args?: string[];
 	config?: ConfigManager;
+	envName?: string;
+	appName?: string;
+	contentRootPath?: string;
 }

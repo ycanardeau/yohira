@@ -31,7 +31,7 @@ export class GenericWebHostBuilder
 	private getWebHostBuilderContext(
 		context: HostBuilderContext,
 	): WebHostBuilderContext {
-		const options = new WebHostOptions();
+		const options = new WebHostOptions(context.config);
 		const webHostBuilderContext = new WebHostBuilderContext(/* TODO */);
 		// TODO
 		webHostBuilderContext.hostingEnv = new HostingEnv();
