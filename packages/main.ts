@@ -64,3 +64,5 @@ export async function main(): Promise<void> {
 
 	await app.run();
 }
+
+main();
