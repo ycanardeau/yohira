@@ -20,6 +20,7 @@ import { NoCircularDependencySameTypeMultipleTimesB } from './fakes/circular-ref
 import { NoCircularDependencySameTypeMultipleTimesC } from './fakes/circular-references/NoCircularDependencySameTypeMultipleTimesC';
 import { SelfCircularDependency } from './fakes/circular-references/SelfCircularDependency';
 import { SelfCircularDependencyGeneric } from './fakes/circular-references/SelfCircularDependencyGeneric';
+import { SelfCircularDependencyWithInterface } from './fakes/circular-references/SelfCircularDependencyWithInterface';
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L14
 test('SelfCircularDependency', () => {
@@ -46,7 +47,31 @@ test('SelfCircularDependency', () => {
 	).toThrowError(expectedMessage);
 });
 
-// TODO
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L33
+test('SelfCircularDependencyInEnumerable', () => {
+	const expectedMessage =
+		"A circular dependency was detected for the service of type 'SelfCircularDependency'." +
+		'\n' +
+		'Iterable<SelfCircularDependency> -> ' +
+		'SelfCircularDependency -> ' +
+		'SelfCircularDependency';
+
+	let $: IServiceCollection;
+	$ = new ServiceCollection();
+	$ = addTransientCtor(
+		$,
+		Symbol.for('SelfCircularDependency'),
+		SelfCircularDependency,
+	);
+	const serviceProvider = buildServiceProvider($);
+
+	expect(() =>
+		getRequiredService(
+			serviceProvider,
+			Symbol.for('Iterable<SelfCircularDependency>'),
+		),
+	).toThrowError(expectedMessage);
+});
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L53
 test('SelfCircularDependencyGenericDirect', () => {
@@ -126,6 +151,33 @@ test('NoCircularDependencyGeneric', () => {
 		SelfCircularDependencyGeneric<number>
 	>(serviceProvider, Symbol.for('SelfCircularDependencyGeneric<number>'));
 	expect(resolvedService).not.toBeUndefined();
+});
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L107
+test('SelfCircularDependencyWithInterface', () => {
+	const expectedMessage =
+		"A circular dependency was detected for the service of type 'ISelfCircularDependencyWithInterface'.";
+
+	let $: IServiceCollection;
+	$ = new ServiceCollection();
+	$ = addTransientCtor(
+		$,
+		Symbol.for('ISelfCircularDependencyWithInterface'),
+		SelfCircularDependencyWithInterface,
+	);
+	$ = addTransientCtor(
+		$,
+		Symbol.for('SelfCircularDependencyWithInterface'),
+		SelfCircularDependencyWithInterface,
+	);
+	const serviceProvider = buildServiceProvider($);
+
+	expect(() =>
+		getRequiredService<SelfCircularDependencyWithInterface>(
+			serviceProvider,
+			Symbol.for('SelfCircularDependencyWithInterface'),
+		),
+	).toThrowError(expectedMessage);
 });
 
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L129
