@@ -47,5 +47,5 @@ export function initialize(
 		hostingEnv.webRootFileProvider = new NullFileProvider();
 	}
 
-	// TODO
+	hostingEnv.envName = baseEnv?.envName ?? options.env ?? hostingEnv.envName;
 }
