@@ -294,7 +294,9 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			);
 			// TODO: Remove.
 			if (parameterTypes.length !== implCtor.length) {
-				throw new Error(/* TODO: message */);
+				throw new Error(
+					`Type '${implCtor.name}' has incorrect number of @inject decorators for constructor. Expected ${implCtor.length} @inject decorators, but got ${parameterTypes.length}.`,
+				);
 			}
 			if (parameterTypes.length === 0) {
 				return new CtorCallSite(lifetime, serviceType, implCtor);

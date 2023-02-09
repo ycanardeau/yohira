@@ -12,11 +12,47 @@ export class CallSiteChain {
 		this.callSiteChain = new Map<symbol, ChainItemInfo>();
 	}
 
+	private appendResolutionPath(
+		builder: string[],
+		currentlyResolving: symbol,
+	): void {
+		const ordered = this.callSiteChain.entries();
+		// TODO: sort
+
+		for (const [serviceType, value] of ordered) {
+			const implCtor = value.implCtor;
+			if (
+				implCtor === undefined ||
+				serviceType === Symbol.for(implCtor.name)
+			) {
+				builder.push(Symbol.keyFor(serviceType)!);
+			} else {
+				builder.push(
+					Symbol.keyFor(serviceType)!,
+					'(',
+					implCtor.name,
+					')',
+				);
+			}
+
+			builder.push(' -> ');
+		}
+
+		builder.push(Symbol.keyFor(currentlyResolving)!);
+	}
+
 	private createCircularDependencyErrorMessage(type: symbol): string {
-		// TODO
-		return `A circular dependency was detected for the service of type '${Symbol.keyFor(
-			type,
-		)}'.`; /* LOC */
+		const messageBuilder: string[] = [];
+		messageBuilder.push(
+			`A circular dependency was detected for the service of type '${Symbol.keyFor(
+				type,
+			)}'.` /* LOC */,
+		);
+		messageBuilder.push('\n');
+
+		this.appendResolutionPath(messageBuilder, type);
+
+		return messageBuilder.join('');
 	}
 
 	checkCircularDependency(serviceType: symbol): void {

@@ -24,7 +24,10 @@ import { SelfCircularDependencyGeneric } from './fakes/circular-references/SelfC
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L14
 test('SelfCircularDependency', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'SelfCircularDependency'.";
+		"A circular dependency was detected for the service of type 'SelfCircularDependency'." +
+		'\n' +
+		'SelfCircularDependency -> ' +
+		'SelfCircularDependency';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
@@ -48,7 +51,10 @@ test('SelfCircularDependency', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L53
 test('SelfCircularDependencyGenericDirect', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'SelfCircularDependencyGeneric<string>'.";
+		"A circular dependency was detected for the service of type 'SelfCircularDependencyGeneric<string>'." +
+		'\n' +
+		'SelfCircularDependencyGeneric<string>(SelfCircularDependencyGeneric) -> ' /* HACK */ +
+		'SelfCircularDependencyGeneric<string>';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
@@ -70,7 +76,11 @@ test('SelfCircularDependencyGenericDirect', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L72
 test('SelfCircularDependencyGenericIndirect', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'SelfCircularDependencyGeneric<string>'.";
+		"A circular dependency was detected for the service of type 'SelfCircularDependencyGeneric<string>'." +
+		'\n' +
+		'SelfCircularDependencyGeneric<number>(SelfCircularDependencyGeneric) -> ' /* HACK */ +
+		'SelfCircularDependencyGeneric<string>(SelfCircularDependencyGeneric) -> ' /* HACK */ +
+		'SelfCircularDependencyGeneric<string>';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
@@ -121,7 +131,11 @@ test('NoCircularDependencyGeneric', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L129
 test('DirectCircularDependency', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'DirectCircularDependencyA'.";
+		"A circular dependency was detected for the service of type 'DirectCircularDependencyA'." +
+		'\n' +
+		'DirectCircularDependencyA -> ' +
+		'DirectCircularDependencyB -> ' +
+		'DirectCircularDependencyA';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
@@ -148,7 +162,12 @@ test('DirectCircularDependency', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L150
 test('IndirectCircularDependency', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'IndirectCircularDependencyA'.";
+		"A circular dependency was detected for the service of type 'IndirectCircularDependencyA'." +
+		'\n' +
+		'IndirectCircularDependencyA -> ' +
+		'IndirectCircularDependencyB -> ' +
+		'IndirectCircularDependencyC -> ' +
+		'IndirectCircularDependencyA';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
@@ -209,7 +228,12 @@ test('NoCircularDependencySameTypeMultipleTimes', () => {
 // https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/CircularDependencyTests.cs#L186
 test('DependencyOnCircularDependency', () => {
 	const expectedMessage =
-		"A circular dependency was detected for the service of type 'DirectCircularDependencyA'.";
+		"A circular dependency was detected for the service of type 'DirectCircularDependencyA'." +
+		'\n' +
+		'DependencyOnCircularDependency -> ' +
+		'DirectCircularDependencyA -> ' +
+		'DirectCircularDependencyB -> ' +
+		'DirectCircularDependencyA';
 
 	let $: IServiceCollection;
 	$ = new ServiceCollection();
