@@ -12,7 +12,9 @@ export class ServiceCacheKey {
 
 	getHashCode(): number {
 		return (
-			((this.type ? getStringHashCode(Symbol.keyFor(this.type)!) : 23) *
+			((this.type !== undefined
+				? getStringHashCode(Symbol.keyFor(this.type)!)
+				: 23) *
 				397) ^
 			this.slot
 		);
