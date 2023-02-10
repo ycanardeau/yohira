@@ -34,7 +34,7 @@ export class WebApp
 		return this.appBuilder.properties;
 	}
 
-	constructor(private readonly host: IHost | (IHost & IAsyncDisposable)) {
+	constructor(private readonly host: IHost) {
 		this.appBuilder = new AppBuilder(host.services /* TODO */);
 		// TODO: logger
 
@@ -81,10 +81,6 @@ export class WebApp
 	 */
 	stop(): Promise<void> {
 		return this.host.stop();
-	}
-
-	dispose(): void {
-		return this.host.dispose();
 	}
 
 	disposeAsync(): Promise<void> {

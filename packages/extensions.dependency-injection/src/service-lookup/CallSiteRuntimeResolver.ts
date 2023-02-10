@@ -81,7 +81,7 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 			callSite,
 			new RuntimeResolverContext(serviceProviderEngine),
 		);
-		// TODO: serviceProviderEngine.captureDisposable(resolved);
+		serviceProviderEngine.captureDisposable(resolved);
 		callSite.value = resolved;
 		return resolved;
 	}
@@ -111,7 +111,7 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 				serviceProviderEngine /* REVIEW: acquiredLocks */,
 			),
 		);
-		// TODO: serviceProviderEngine.captureDisposable(resolved);
+		serviceProviderEngine.captureDisposable(resolved);
 		resolvedServices.set(callSite.cache.key.getHashCode(), resolved);
 		return resolved;
 		// REVIEW: finally
@@ -135,9 +135,9 @@ export class CallSiteRuntimeResolver extends CallSiteVisitor<
 		transientCallSite: ServiceCallSite,
 		context: RuntimeResolverContext,
 	): object | undefined {
-		/* TODO: return context.scope.captureDisposable(
+		return context.scope.captureDisposable(
 			this.visitCallSiteMain(transientCallSite, context),
-		); */
+		);
 		return this.visitCallSiteMain(transientCallSite, context);
 	}
 

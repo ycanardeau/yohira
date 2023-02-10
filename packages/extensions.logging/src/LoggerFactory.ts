@@ -9,6 +9,7 @@ import { Logger } from './Logger';
 // https://source.dot.net/#Microsoft.Extensions.Logging/LoggerFactory.cs,173b9b523cabe719,references
 export class LoggerFactory implements ILoggerFactory {
 	private readonly loggers = new Map<string, Logger>();
+	private /* REVIEW: volatile */ disposed = false;
 
 	createLogger(categoryName: string): ILogger {
 		// TODO
@@ -25,7 +26,10 @@ export class LoggerFactory implements ILoggerFactory {
 	}
 
 	dispose(): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (!this.disposed) {
+			this.disposed = true;
+
+			// TODO
+		}
 	}
 }

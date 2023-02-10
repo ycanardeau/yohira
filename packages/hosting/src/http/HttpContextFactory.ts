@@ -38,7 +38,12 @@ export class HttpContextFactory implements IHttpContextFactory {
 	}
 
 	dispose(httpContext: IHttpContext): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		/* TODO: if (this.httpContextAccessor !== undefined) {
+			this.httpContextAccessor.httpContext = undefined;
+		} */
+
+		if (httpContext instanceof HttpContext) {
+			// TODO: httpContext.uninitialize();
+		}
 	}
 }

@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IServiceProvider } from '@yohira/base';
+import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -15,6 +15,7 @@ export class ServiceProviderEngineScope
 		IServiceScopeFactory
 {
 	private disposed = false;
+	private disposables?: (IDisposable | IAsyncDisposable)[];
 
 	/** @internal */ readonly resolvedServices: Map<
 		number /* TODO: ServiceCacheKey */,
@@ -44,13 +45,102 @@ export class ServiceProviderEngineScope
 		return this.rootProvider.createScope();
 	}
 
-	dispose(): void {
-		// TODO
-		throw new Error('Method not implemented.');
+	private isIDisposable(
+		service: object | IDisposable | IAsyncDisposable | undefined,
+	): service is IDisposable {
+		return service !== undefined && 'dispose' in service;
 	}
 
-	disposeAsync(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+	private isIAsyncDisposable(
+		service: object | IDisposable | IAsyncDisposable | undefined,
+	): service is IAsyncDisposable {
+		return service !== undefined && 'disposeAsync' in service;
+	}
+
+	/** @internal */ captureDisposable(
+		service: object | IDisposable | IAsyncDisposable | undefined,
+	): object | IDisposable | IAsyncDisposable | undefined {
+		if (
+			this === service ||
+			!(this.isIDisposable(service) || this.isIAsyncDisposable(service))
+		) {
+			return service;
+		}
+
+		let disposed = false;
+		// REVIEW: lock
+		if (this.disposed) {
+			disposed = true;
+		} else {
+			this.disposables ??= [];
+
+			this.disposables.push(service);
+		}
+
+		if (disposed) {
+			function throwObjectDisposedError(): void {
+				throw new Error('Cannot access a disposed object.' /* LOC */);
+			}
+
+			if (this.isIDisposable(service)) {
+				service.dispose();
+
+				throwObjectDisposedError();
+			} else {
+				service.disposeAsync().then(throwObjectDisposedError);
+			}
+		}
+
+		return service;
+	}
+
+	private beginDispose(): (IDisposable | IAsyncDisposable)[] | undefined {
+		// REVIEW: lock
+		if (this.disposed) {
+			return undefined;
+		}
+
+		// TODO: log
+
+		this.disposed = true;
+
+		if (this.isRootScope && !this.rootProvider.isDisposed()) {
+			this.rootProvider.dispose();
+		}
+
+		return this.disposables;
+	}
+
+	dispose(): void {
+		const toDispose = this.beginDispose();
+
+		if (toDispose !== undefined) {
+			for (let i = toDispose.length - 1; i >= 0; i--) {
+				const disposable = toDispose[i];
+				if (this.isIDisposable(disposable)) {
+					disposable.dispose();
+				} else {
+					throw new Error(
+						`{${disposable.constructor.name}}' type only implements IAsyncDisposable. Use disposeAsync to dispose the container.` /* LOC */,
+					);
+				}
+			}
+		}
+	}
+
+	// REVIEW
+	async disposeAsync(): Promise<void> {
+		const toDispose = this.beginDispose();
+
+		if (toDispose !== undefined) {
+			for (let i = toDispose.length - 1; i >= 0; i--) {
+				const disposable = toDispose[i];
+				if (this.isIAsyncDisposable(disposable)) {
+					await disposable.disposeAsync();
+				} else {
+					disposable.dispose();
+				}
+			}
+		}
 	}
 }

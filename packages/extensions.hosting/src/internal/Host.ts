@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IServiceProvider } from '@yohira/base';
+import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
 import { getServices } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHost, IHostedService } from '@yohira/extensions.hosting.abstractions';
 import { ILoggerT } from '@yohira/extensions.logging.abstractions';
@@ -52,13 +52,32 @@ export class Host implements IHost, IAsyncDisposable {
 		logStopped(this.logger);
 	}
 
-	disposeAsync(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
+	async disposeAsync(): Promise<void> {
+		function isIAsyncDisposable(
+			o: object | IDisposable | IAsyncDisposable,
+		): o is IAsyncDisposable {
+			return 'disposeAsync' in o;
+		}
 
-	dispose(): void {
+		function isIDisposable(
+			o: object | IDisposable | IAsyncDisposable,
+		): o is IDisposable {
+			return 'dispose' in o;
+		}
+
+		async function disposeAsync(
+			o: object | IDisposable | IAsyncDisposable,
+		): Promise<void> {
+			if (isIAsyncDisposable(o)) {
+				await o.disposeAsync();
+			} else if (isIDisposable(o)) {
+				o.dispose();
+			}
+		}
+
 		// TODO
-		throw new Error('Method not implemented.');
+
+		// Dispose the service provider
+		await disposeAsync(this.services);
 	}
 }

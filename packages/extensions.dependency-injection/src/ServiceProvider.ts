@@ -39,6 +39,10 @@ export class ServiceProvider
 
 	private disposed = false;
 
+	/** @internal */ isDisposed(): boolean {
+		return this.disposed;
+	}
+
 	private realizedServices: Map<
 		symbol,
 		(
@@ -179,14 +183,19 @@ export class ServiceProvider
 		return result as T | undefined;
 	}
 
-	dispose(): void {
+	private disposeCore(): void {
+		this.disposed = true;
 		// TODO
-		throw new Error('Method not implemented.');
+	}
+
+	dispose(): void {
+		this.disposeCore();
+		this.root.dispose();
 	}
 
 	disposeAsync(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.disposeCore();
+		return this.root.disposeAsync();
 	}
 
 	/** @internal */ createScope(): IServiceScope {
