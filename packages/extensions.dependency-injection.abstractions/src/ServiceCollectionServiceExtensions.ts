@@ -61,6 +61,34 @@ export function addScopedCtor(
 	return services;
 }
 
+export function addScopedInstance(
+	services: IServiceCollection,
+	serviceType: symbol,
+	implInstance: object,
+): IServiceCollection {
+	const descriptor = ServiceDescriptor.fromInstance(
+		ServiceLifetime.Scoped,
+		serviceType,
+		implInstance,
+	);
+	services.add(descriptor);
+	return services;
+}
+
+export function addScopedFactory(
+	services: IServiceCollection,
+	serviceType: symbol,
+	implFactory: (serviceProvider: IServiceProvider) => Ctor<object>,
+): IServiceCollection {
+	const descriptor = ServiceDescriptor.fromFactory(
+		ServiceLifetime.Scoped,
+		serviceType,
+		implFactory,
+	);
+	services.add(descriptor);
+	return services;
+}
+
 export function addTransientCtor(
 	services: IServiceCollection,
 	serviceType: symbol,
@@ -70,6 +98,34 @@ export function addTransientCtor(
 		ServiceLifetime.Transient,
 		serviceType,
 		implCtor,
+	);
+	services.add(descriptor);
+	return services;
+}
+
+export function addTransientInstance(
+	services: IServiceCollection,
+	serviceType: symbol,
+	implInstance: object,
+): IServiceCollection {
+	const descriptor = ServiceDescriptor.fromInstance(
+		ServiceLifetime.Transient,
+		serviceType,
+		implInstance,
+	);
+	services.add(descriptor);
+	return services;
+}
+
+export function addTransientFactory(
+	services: IServiceCollection,
+	serviceType: symbol,
+	implFactory: (services: IServiceProvider) => Ctor<object>,
+): IServiceCollection {
+	const descriptor = ServiceDescriptor.fromFactory(
+		ServiceLifetime.Transient,
+		serviceType,
+		implFactory,
 	);
 	services.add(descriptor);
 	return services;
