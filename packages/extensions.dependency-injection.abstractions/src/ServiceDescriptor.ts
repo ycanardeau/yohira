@@ -3,22 +3,22 @@ import { Ctor, IServiceProvider } from '@yohira/base';
 import { ServiceLifetime } from './ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceDescriptor.cs,b593fd2837338f2a,references
-export class ServiceDescriptor {
+export class ServiceDescriptor<T extends object = object> {
 	private constructor(
 		readonly lifetime: ServiceLifetime,
 		readonly serviceType: symbol,
-		readonly implCtor: Ctor<object> | undefined,
-		readonly implInstance: object | undefined,
+		readonly implCtor: Ctor<T> | undefined,
+		readonly implInstance: T | undefined,
 		readonly implFactory:
-			| ((serviceProvider: IServiceProvider) => object)
+			| ((serviceProvider: IServiceProvider) => T)
 			| undefined,
 	) {}
 
-	static fromCtor(
+	static fromCtor<T extends object>(
 		lifetime: ServiceLifetime,
 		serviceType: symbol,
-		ctor: Ctor<object>,
-	): ServiceDescriptor {
+		ctor: Ctor<T>,
+	): ServiceDescriptor<T> {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -28,11 +28,11 @@ export class ServiceDescriptor {
 		);
 	}
 
-	static fromInstance(
+	static fromInstance<T extends object>(
 		lifetime: ServiceLifetime,
 		serviceType: symbol,
-		instance: object,
-	): ServiceDescriptor {
+		instance: T,
+	): ServiceDescriptor<T> {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,
@@ -42,11 +42,11 @@ export class ServiceDescriptor {
 		);
 	}
 
-	static fromFactory<T>(
+	static fromFactory<T extends object>(
 		lifetime: ServiceLifetime,
 		serviceType: symbol,
-		factory: (serviceProvider: IServiceProvider) => object,
-	): ServiceDescriptor {
+		factory: (serviceProvider: IServiceProvider) => T,
+	): ServiceDescriptor<T> {
 		return new ServiceDescriptor(
 			lifetime,
 			serviceType,

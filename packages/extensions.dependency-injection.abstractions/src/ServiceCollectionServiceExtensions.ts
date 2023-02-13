@@ -5,10 +5,10 @@ import { ServiceDescriptor } from './ServiceDescriptor';
 import { ServiceLifetime } from './ServiceLifetime';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceCollectionServiceExtensions.cs,865c289313a49193,references
-export function addSingletonCtor(
+export function addSingletonCtor<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implCtor: Ctor<object>,
+	implCtor: Ctor<T>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
@@ -19,10 +19,10 @@ export function addSingletonCtor(
 	return services;
 }
 
-export function addSingletonInstance(
+export function addSingletonInstance<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implInstance: object,
+	implInstance: T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
@@ -33,10 +33,10 @@ export function addSingletonInstance(
 	return services;
 }
 
-export function addSingletonFactory(
+export function addSingletonFactory<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implFactory: (serviceProvider: IServiceProvider) => object,
+	implFactory: (serviceProvider: IServiceProvider) => T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Singleton,
@@ -47,10 +47,10 @@ export function addSingletonFactory(
 	return services;
 }
 
-export function addScopedCtor(
+export function addScopedCtor<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implCtor: Ctor<object>,
+	implCtor: Ctor<T>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Scoped,
@@ -61,10 +61,10 @@ export function addScopedCtor(
 	return services;
 }
 
-export function addScopedInstance(
+export function addScopedInstance<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implInstance: object,
+	implInstance: T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Scoped,
@@ -75,10 +75,10 @@ export function addScopedInstance(
 	return services;
 }
 
-export function addScopedFactory(
+export function addScopedFactory<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implFactory: (serviceProvider: IServiceProvider) => object,
+	implFactory: (serviceProvider: IServiceProvider) => T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Scoped,
@@ -89,10 +89,10 @@ export function addScopedFactory(
 	return services;
 }
 
-export function addTransientCtor(
+export function addTransientCtor<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implCtor: Ctor<object>,
+	implCtor: Ctor<T>,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
@@ -103,10 +103,10 @@ export function addTransientCtor(
 	return services;
 }
 
-export function addTransientInstance(
+export function addTransientInstance<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implInstance: object,
+	implInstance: T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Transient,
@@ -117,10 +117,10 @@ export function addTransientInstance(
 	return services;
 }
 
-export function addTransientFactory(
+export function addTransientFactory<T extends object>(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implFactory: (serviceProvider: IServiceProvider) => object,
+	implFactory: (serviceProvider: IServiceProvider) => T,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Transient,
