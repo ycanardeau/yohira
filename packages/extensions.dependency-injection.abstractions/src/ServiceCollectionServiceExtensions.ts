@@ -78,7 +78,7 @@ export function addScopedInstance(
 export function addScopedFactory(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implFactory: (serviceProvider: IServiceProvider) => Ctor<object>,
+	implFactory: (serviceProvider: IServiceProvider) => object,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Scoped,
@@ -120,7 +120,7 @@ export function addTransientInstance(
 export function addTransientFactory(
 	services: IServiceCollection,
 	serviceType: symbol,
-	implFactory: (services: IServiceProvider) => Ctor<object>,
+	implFactory: (serviceProvider: IServiceProvider) => object,
 ): IServiceCollection {
 	const descriptor = ServiceDescriptor.fromFactory(
 		ServiceLifetime.Transient,
