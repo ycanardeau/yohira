@@ -1,4 +1,4 @@
-import { Ctor, IServiceProvider } from '@yohira/base';
+import { Ctor, IServiceProvider, keyForType } from '@yohira/base';
 
 import { ServiceLifetime } from './ServiceLifetime';
 
@@ -57,7 +57,7 @@ export class ServiceDescriptor<T extends object = object> {
 	}
 
 	toString(): string {
-		const lifetime = `serviceType: ${Symbol.keyFor(
+		const lifetime = `serviceType: ${keyForType(
 			this.serviceType,
 		)} lifetime: ${ServiceLifetime[this.lifetime]} `;
 

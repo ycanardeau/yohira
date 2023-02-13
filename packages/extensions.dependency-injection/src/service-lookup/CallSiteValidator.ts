@@ -1,4 +1,4 @@
-import { tryGetValue } from '@yohira/base';
+import { keyForType, tryGetValue } from '@yohira/base';
 import {
 	IServiceScope,
 	ServiceLifetime,
@@ -48,18 +48,18 @@ export class CallSiteValidator extends CallSiteVisitor<
 							ServiceLifetime[
 								ServiceLifetime.Scoped
 							].toLowerCase(),
-						]} service '${Symbol.keyFor(
+						]} service '${keyForType(
 							serviceType,
 						)}' from root provider.` /* LOC */,
 					);
 				}
 
 				throw new Error(
-					`Cannot resolve '${Symbol.keyFor(
+					`Cannot resolve '${keyForType(
 						serviceType,
 					)}' from root provider because it requires ${ServiceLifetime[
 						ServiceLifetime.Scoped
-					].toLowerCase()} service '${Symbol.keyFor(
+					].toLowerCase()} service '${keyForType(
 						scopedService,
 					)}'.` /* LOC */,
 				);
@@ -120,13 +120,11 @@ export class CallSiteValidator extends CallSiteVisitor<
 			throw new Error(
 				`Cannot consume ${ServiceLifetime[
 					ServiceLifetime.Scoped
-				].toLowerCase()} service '${Symbol.keyFor(
+				].toLowerCase()} service '${keyForType(
 					scopedCallSite.serviceType,
 				)}' from ${ServiceLifetime[
 					ServiceLifetime.Singleton
-				].toLowerCase()} '${Symbol.keyFor(
-					state.singleton.serviceType,
-				)}'.`,
+				].toLowerCase()} '${keyForType(state.singleton.serviceType)}'.`,
 			);
 		}
 

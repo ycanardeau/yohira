@@ -1,4 +1,4 @@
-import { Ctor } from '@yohira/base';
+import { Ctor, keyForType } from '@yohira/base';
 
 class ChainItemInfo {
 	constructor(readonly order: number, readonly implCtor: Ctor | undefined) {}
@@ -25,26 +25,21 @@ export class CallSiteChain {
 				implCtor === undefined ||
 				serviceType === Symbol.for(implCtor.name)
 			) {
-				builder.push(Symbol.keyFor(serviceType)!);
+				builder.push(keyForType(serviceType));
 			} else {
-				builder.push(
-					Symbol.keyFor(serviceType)!,
-					'(',
-					implCtor.name,
-					')',
-				);
+				builder.push(keyForType(serviceType), '(', implCtor.name, ')');
 			}
 
 			builder.push(' -> ');
 		}
 
-		builder.push(Symbol.keyFor(currentlyResolving)!);
+		builder.push(keyForType(currentlyResolving));
 	}
 
 	private createCircularDependencyErrorMessage(type: symbol): string {
 		const messageBuilder: string[] = [];
 		messageBuilder.push(
-			`A circular dependency was detected for the service of type '${Symbol.keyFor(
+			`A circular dependency was detected for the service of type '${keyForType(
 				type,
 			)}'.` /* LOC */,
 		);

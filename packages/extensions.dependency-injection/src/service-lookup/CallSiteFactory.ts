@@ -1,4 +1,4 @@
-import { Ctor, ICollection, List, tryGetValue } from '@yohira/base';
+import { Ctor, ICollection, List, keyForType, tryGetValue } from '@yohira/base';
 import {
 	IServiceProviderIsService,
 	ServiceDescriptor,
@@ -19,11 +19,11 @@ import { ServiceCallSite } from './ServiceCallSite';
 const genericTypeRegExp = /^([\w]+)<([\w<>]+)>$/;
 
 function isConstructedGenericType(type: symbol): boolean {
-	return genericTypeRegExp.test(Symbol.keyFor(type)!);
+	return genericTypeRegExp.test(keyForType(type));
 }
 
 function getGenericTypeDefinition(type: symbol): symbol {
-	const match = genericTypeRegExp.exec(Symbol.keyFor(type)!);
+	const match = genericTypeRegExp.exec(keyForType(type));
 	if (!match) {
 		throw new Error(
 			'This operation is only valid on generic types.' /* LOC */,
@@ -248,7 +248,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			if (callSite === undefined) {
 				if (throwIfCallSiteNotFound) {
 					throw new Error(
-						`Unable to resolve service for type '${Symbol.keyFor(
+						`Unable to resolve service for type '${keyForType(
 							parameterType,
 						)}' while attempting to activate '${
 							implCtor.name
@@ -276,7 +276,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 			const metadataReader = new MetadataReader();
 			const metadata = metadataReader.getConstructorMetadata(implCtor);
 			const { userGeneratedMetadata: ctorArgsMetadata } = metadata;
-			const match = genericTypeRegExp.exec(Symbol.keyFor(serviceType)!);
+			const match = genericTypeRegExp.exec(keyForType(serviceType));
 			const parameterTypes = Object.values(ctorArgsMetadata).map(
 				(metadata) => {
 					const parameterType = metadata.find(
@@ -284,7 +284,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 					)?.value as symbol;
 					return match
 						? Symbol.for(
-								Symbol.keyFor(parameterType)!.replace(
+								keyForType(parameterType).replace(
 									'<>',
 									`<${match[2]}>`,
 								),
@@ -328,7 +328,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		slot: number,
 		throwOnConstraintViolation: boolean,
 	): ServiceCallSite | undefined {
-		const match = genericTypeRegExp.exec(Symbol.keyFor(serviceType)!);
+		const match = genericTypeRegExp.exec(keyForType(serviceType));
 		if (match && Symbol.for(`${match[1]}<>`) === descriptor.serviceType) {
 			const callSiteKey = new ServiceCacheKey(serviceType, slot);
 			const callSiteKeyHashCode = callSiteKey.getHashCode();
@@ -413,7 +413,7 @@ export class CallSiteFactory implements IServiceProviderIsService {
 		try {
 			callSiteChain.add(serviceType, undefined);
 
-			const match = genericTypeRegExp.exec(Symbol.keyFor(serviceType)!);
+			const match = genericTypeRegExp.exec(keyForType(serviceType));
 			if (match && `${match[1]}<>` === 'Iterable<>') {
 				const itemType = Symbol.for(match[2]);
 				let cacheLocation = CallSiteResultCacheLocation.Root;

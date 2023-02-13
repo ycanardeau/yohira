@@ -1,4 +1,4 @@
-import { getStringHashCode } from '@yohira/base';
+import { getStringHashCode, keyForType } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ServiceCacheKey.cs,5f18c3f8ffa0308b,references
 export class ServiceCacheKey {
@@ -13,7 +13,7 @@ export class ServiceCacheKey {
 	getHashCode(): number {
 		return (
 			((this.type !== undefined
-				? getStringHashCode(Symbol.keyFor(this.type)!)
+				? getStringHashCode(keyForType(this.type))
 				: 23) *
 				397) ^
 			this.slot
