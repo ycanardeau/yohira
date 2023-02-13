@@ -8,7 +8,7 @@ import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Builder/ApplicationBuilderFactory.cs,21990cbf6d36c613,references
 export class AppBuilderFactory implements IAppBuilderFactory {
 	constructor(
-		@inject(Symbol.for('IServiceProvider'))
+		@inject(IServiceProvider)
 		private readonly serviceProvider: IServiceProvider,
 	) {}
 

@@ -11,7 +11,10 @@ import {
 	tryAddServiceDescriptor,
 	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
-import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests';
+import {
+	FakeService,
+	IFakeService,
+} from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
 
 const instance = new FakeService();
@@ -35,7 +38,7 @@ test('AddWithTypeAddsServiceWithRightLifecycle', () => {
 		expect(descriptor.lifetime).toBe(lifeCycle);
 	}
 
-	const serviceType = Symbol.for('IFakeService');
+	const serviceType = IFakeService;
 	const implCtor = FakeService;
 
 	AddWithTypeAddsServiceWithRightLifecycle(
@@ -78,7 +81,7 @@ test('AddSingleton_AddsWithSingletonLifecycle', () => {
 	}
 
 	AddSingleton_AddsWithSingletonLifecycle((collection) =>
-		addSingletonInstance(collection, Symbol.for('IFakeService'), instance),
+		addSingletonInstance(collection, IFakeService, instance),
 	);
 });
 
@@ -91,7 +94,7 @@ test('TryAddNoOpFailsIfExists', () => {
 		addAction(collection);
 		const d = ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
-			Symbol.for('IFakeService'),
+			IFakeService,
 			FakeService,
 		);
 
@@ -99,15 +102,13 @@ test('TryAddNoOpFailsIfExists', () => {
 
 		expect(collection.count).toBe(1);
 		const descriptor = Array.from(collection)[0];
-		expect(descriptor.serviceType === Symbol.for('IFakeService')).toBe(
-			true,
-		);
+		expect(descriptor.serviceType === IFakeService).toBe(true);
 		expect(descriptor.implInstance).toBe(instance);
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Singleton);
 	}
 
 	TryAddNoOpFailsIfExists((collection) =>
-		addSingletonInstance(collection, Symbol.for('IFakeService'), instance),
+		addSingletonInstance(collection, IFakeService, instance),
 	);
 });
 
@@ -130,7 +131,7 @@ test('TryAdd_WithType_AddsService', () => {
 		expect(descriptor.lifetime).toBe(expectedLifetime);
 	}
 
-	const serviceType = Symbol.for('IFakeService');
+	const serviceType = IFakeService;
 	const implCtor = FakeService;
 
 	TryAdd_WithType_AddsService(
@@ -204,7 +205,7 @@ test('TryAdd_WithType_DoesNotAddDuplicate', () => {
 		expect(descriptor.lifetime).toBe(ServiceLifetime.Transient);
 	}
 
-	const serviceType = Symbol.for('IFakeService');
+	const serviceType = IFakeService;
 	const implCtor = FakeService;
 
 	TryAdd_WithType_DoesNotAddDuplicate(
@@ -255,7 +256,7 @@ test('TryAddIfMissingActuallyAdds', () => {
 	const collection = new ServiceCollection();
 	const d = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		Symbol.for('IFakeService'),
+		IFakeService,
 		FakeService,
 	);
 
@@ -263,7 +264,7 @@ test('TryAddIfMissingActuallyAdds', () => {
 
 	expect(collection.count).toBe(1);
 	const descriptor = Array.from(collection)[0];
-	expect(descriptor.serviceType === Symbol.for('IFakeService')).toBe(true);
+	expect(descriptor.serviceType === IFakeService).toBe(true);
 	expect(descriptor.implInstance).toBeUndefined();
 	expect(descriptor.lifetime).toBe(ServiceLifetime.Transient);
 });
@@ -289,7 +290,7 @@ test('TryAddEnumerable_AddsService', () => {
 		expect(d.lifetime).toBe(expectedLifetime);
 	}
 
-	const serviceType = Symbol.for('IFakeService');
+	const serviceType = IFakeService;
 	const implCtor = FakeService;
 
 	TryAddEnumerable_AddsService(
@@ -346,7 +347,7 @@ test('TryAddEnumerable_DoesNotAddDuplicate', () => {
 		expect(d.lifetime).toBe(expectedLifetime);
 	}
 
-	const serviceType = Symbol.for('IFakeService');
+	const serviceType = IFakeService;
 	const implCtor = FakeService;
 
 	TryAddEnumerable_DoesNotAddDuplicate(

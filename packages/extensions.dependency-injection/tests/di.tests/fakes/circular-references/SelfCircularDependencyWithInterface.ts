@@ -6,7 +6,7 @@ export class SelfCircularDependencyWithInterface
 	implements ISelfCircularDependencyWithInterface
 {
 	constructor(
-		@inject(Symbol.for('ISelfCircularDependencyWithInterface'))
+		@inject(ISelfCircularDependencyWithInterface)
 		self: ISelfCircularDependencyWithInterface,
 	) {}
 }

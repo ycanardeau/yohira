@@ -45,7 +45,7 @@ export function populateServiceCollection(
 	);
 	// TODO
 
-	addSingletonFactory(services, Symbol.for('IHost'), () => {
+	addSingletonFactory(services, IHost, () => {
 		const appServices = serviceProviderGetter();
 		return new Host(
 			appServices,
@@ -65,10 +65,7 @@ export function resolveHost(
 ): IHost {
 	// TODO
 
-	const host = getRequiredService<IHost>(
-		serviceProvider,
-		Symbol.for('IHost'),
-	);
+	const host = getRequiredService<IHost>(serviceProvider, IHost);
 
 	// TODO
 

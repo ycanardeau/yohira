@@ -71,6 +71,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/http.abstractions/src',
 			),
+			'@yohira/http.features': resolve(
+				__dirname,
+				'./packages/http.features/src',
+			),
 			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,

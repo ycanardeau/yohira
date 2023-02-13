@@ -19,11 +19,11 @@ export class GenericWebHostService implements IHostedService {
 	constructor(
 		@inject(Symbol.for('IOptions<GenericWebHostServiceOptions>'))
 		options: IOptions<GenericWebHostServiceOptions>,
-		@inject(Symbol.for('IServer'))
+		@inject(IServer)
 		readonly server: IServer,
-		@inject(Symbol.for('IHttpContextFactory'))
+		@inject(IHttpContextFactory)
 		readonly httpContextFactory: IHttpContextFactory,
-		@inject(Symbol.for('IAppBuilderFactory'))
+		@inject(IAppBuilderFactory)
 		readonly appBuilderFactory: IAppBuilderFactory,
 		@inject(Symbol.for('Iterable<IStartupFilter>'))
 		readonly startupFilters: Iterable<IStartupFilter>,

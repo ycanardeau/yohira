@@ -44,7 +44,7 @@ function createPolicy(): HttpMethodMatcherPolicy {
 }
 
 @typedef({
-	implements: [Symbol.for('IDynamicEndpointMetadata')],
+	implements: [IDynamicEndpointMetadata],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {
 	get isDynamic(): boolean {

@@ -17,7 +17,7 @@ export function addHostedService<THostedService extends IHostedService>(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Symbol.for('IHostedService'),
+			IHostedService,
 			hostedServiceType,
 		),
 	);

@@ -1,5 +1,6 @@
 import { HttpMethods } from '@yohira/http.abstractions';
 
+export const IHttpMethodMetadata = Symbol.for('IHttpMethodMetadata');
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/IHttpMethodMetadata.cs,3404aba6017edcc5,references
 /**
  * Represents HTTP method metadata used during routing.

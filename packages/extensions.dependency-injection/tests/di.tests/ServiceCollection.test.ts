@@ -3,7 +3,11 @@ import {
 	ServiceDescriptor,
 	ServiceLifetime,
 } from '@yohira/extensions.dependency-injection.abstractions';
-import { FakeService } from '@yohira/extensions.dependency-injection.specification.tests';
+import {
+	FakeService,
+	IFakeEveryService,
+	IFakeService,
+} from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/runtime/blob/279fb0436f475fbc35ffeff68330f970ee77831a/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceCollectionTests.cs#L14
@@ -14,7 +18,7 @@ test('makeReadonly', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		Symbol.for('IFakeService'),
+		IFakeService,
 		new FakeService(),
 	);
 	serviceCollection.add(descriptor);
@@ -23,7 +27,7 @@ test('makeReadonly', () => {
 
 	const descriptor2 = ServiceDescriptor.fromInstance(
 		ServiceLifetime.Singleton,
-		Symbol.for('IFakeEveryService'),
+		IFakeEveryService,
 		new FakeService(),
 	);
 

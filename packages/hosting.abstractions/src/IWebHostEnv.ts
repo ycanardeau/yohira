@@ -1,6 +1,7 @@
 import { IFileProvider } from '@yohira/extensions.file-providers';
 import { IHostEnv } from '@yohira/extensions.hosting.abstractions';
 
+export const IWebHostEnv = Symbol.for('IWebHostEnv');
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Abstractions/IWebHostEnvironment.cs,30ac66307b7b40c9,references
 export interface IWebHostEnv extends IHostEnv {
 	/**

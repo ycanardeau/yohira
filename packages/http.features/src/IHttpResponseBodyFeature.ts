@@ -1,5 +1,6 @@
 import { Stream } from 'node:stream';
 
+export const IHttpResponseBodyFeature = Symbol.for('IHttpResponseBodyFeature');
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Features/IHttpResponseBodyFeature.cs,ecd3d1ed54caffee,references
 /**
  * An aggregate of the different ways to interact with the response body.

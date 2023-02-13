@@ -9,7 +9,7 @@ import { LogLevel } from './LogLevel';
 export class LoggerT<T> implements ILoggerT<T> {
 	private readonly logger: ILogger;
 
-	constructor(@inject(Symbol.for('ILoggerFactory')) factory: ILoggerFactory) {
+	constructor(@inject(ILoggerFactory) factory: ILoggerFactory) {
 		this.logger = factory.createLogger('' /* TODO */);
 	}
 

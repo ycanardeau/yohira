@@ -45,7 +45,7 @@ export class HttpContext implements IHttpContext {
 	private get serviceProvidersFeature(): IServiceProvidersFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._features.fetch(
-			Symbol.for('IServiceProvidersFeature'),
+			IServiceProvidersFeature,
 			{
 				get: () => {
 					return this._features.cache.serviceProviders;

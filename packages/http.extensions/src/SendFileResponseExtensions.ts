@@ -14,7 +14,7 @@ async function sendFileCore(
 	// TODO
 	const sendFile = getRequiredFeature<IHttpResponseBodyFeature>(
 		response.httpContext.features,
-		Symbol.for('IHttpResponseBodyFeature'),
+		IHttpResponseBodyFeature,
 	);
 
 	// TODO: try

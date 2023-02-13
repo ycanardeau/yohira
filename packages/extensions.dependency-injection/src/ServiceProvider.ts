@@ -8,6 +8,7 @@ import {
 } from '@yohira/base';
 import {
 	IServiceScope,
+	IServiceScopeFactory,
 	ServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
 
@@ -120,12 +121,12 @@ export class ServiceProvider
 
 		this.callSiteFactory = new CallSiteFactory(serviceDescriptors);
 		this.callSiteFactory.add(
-			Symbol.for('IServiceProvider'),
+			IServiceProvider,
 			new ServiceProviderCallSite(),
 		);
 		this.callSiteFactory.add(
-			Symbol.for('IServiceScopeFactory'),
-			new ConstantCallSite(Symbol.for('IServiceScopeFactory'), this.root),
+			IServiceScopeFactory,
+			new ConstantCallSite(IServiceScopeFactory, this.root),
 		);
 		// TODO
 

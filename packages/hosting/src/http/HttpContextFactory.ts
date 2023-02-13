@@ -13,12 +13,12 @@ export class HttpContextFactory implements IHttpContextFactory {
 	private readonly serviceScopeFactory: IServiceScopeFactory;
 
 	constructor(
-		@inject(Symbol.for('IServiceProvider'))
+		@inject(IServiceProvider)
 		serviceProvider: IServiceProvider,
 	) {
 		this.serviceScopeFactory = getRequiredService(
 			serviceProvider,
-			Symbol.for('IServiceScopeFactory'),
+			IServiceScopeFactory,
 		);
 	}
 

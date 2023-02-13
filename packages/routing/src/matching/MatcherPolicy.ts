@@ -12,7 +12,7 @@ export abstract class MatcherPolicy {
 		for (const endpoint of endpoints) {
 			const metadata =
 				endpoint.metadata.getMetadata<IDynamicEndpointMetadata>(
-					Symbol.for('IDynamicEndpointMetadata'),
+					IDynamicEndpointMetadata,
 				);
 			if (metadata?.isDynamic === true) {
 				return true;

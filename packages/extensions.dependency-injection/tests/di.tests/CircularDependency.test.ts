@@ -12,6 +12,7 @@ import { expect, test } from 'vitest';
 import { DependencyOnCircularDependency } from './fakes/circular-references/DependencyOnCircularDependency';
 import { DirectCircularDependencyA } from './fakes/circular-references/DirectCircularDependencyA';
 import { DirectCircularDependencyB } from './fakes/circular-references/DirectCircularDependencyB';
+import { ISelfCircularDependencyWithInterface } from './fakes/circular-references/ISelfCircularDependencyWithInterface';
 import { IndirectCircularDependencyA } from './fakes/circular-references/IndirectCircularDependencyA';
 import { IndirectCircularDependencyB } from './fakes/circular-references/IndirectCircularDependencyB';
 import { IndirectCircularDependencyC } from './fakes/circular-references/IndirectCircularDependencyC';
@@ -162,7 +163,7 @@ test('SelfCircularDependencyWithInterface', () => {
 	$ = new ServiceCollection();
 	$ = addTransientCtor(
 		$,
-		Symbol.for('ISelfCircularDependencyWithInterface'),
+		ISelfCircularDependencyWithInterface,
 		SelfCircularDependencyWithInterface,
 	);
 	$ = addTransientCtor(

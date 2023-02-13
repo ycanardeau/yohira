@@ -1,5 +1,5 @@
 import { addTransientCtor } from '@yohira/extensions.dependency-injection.abstractions';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IStartupFilter, IWebHostBuilder } from '@yohira/hosting.abstractions';
 import { useNode } from '@yohira/server.node';
 
 import { HostFilteringStartupFilter } from './HostFilteringStartupFilter';
@@ -12,11 +12,7 @@ export function configureWebDefaults(builder: IWebHostBuilder): void {
 	}).configureServices((hostingContext, services) => {
 		// TODO
 
-		addTransientCtor(
-			services,
-			Symbol.for('IStartupFilter'),
-			HostFilteringStartupFilter,
-		);
+		addTransientCtor(services, IStartupFilter, HostFilteringStartupFilter);
 		// TODO
 
 		// TODO

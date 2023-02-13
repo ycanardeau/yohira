@@ -334,7 +334,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 	}
 
 	constructor(
-		@inject(Symbol.for('ILoggerFactory'))
+		@inject(ILoggerFactory)
 		private readonly loggerFactory: ILoggerFactory,
 		@inject(Symbol.for('EndpointSelector'))
 		private readonly selector: EndpointSelector,

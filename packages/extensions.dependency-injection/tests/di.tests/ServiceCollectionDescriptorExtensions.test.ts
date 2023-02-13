@@ -5,6 +5,8 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	FakeService,
+	IFactoryService,
+	IFakeService,
 	TransientFactoryService,
 } from '@yohira/extensions.dependency-injection.specification.tests';
 import { expect, test } from 'vitest';
@@ -14,7 +16,7 @@ test('Add_AddsDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Symbol.for('IFakeService'),
+		IFakeService,
 		FakeService,
 	);
 
@@ -30,12 +32,12 @@ test('Add_AddsMultipleDescriptorToServiceDescriptors', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Symbol.for('IFakeService'),
+		IFakeService,
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		Symbol.for('IFactoryService'),
+		IFactoryService,
 		TransientFactoryService,
 	);
 
@@ -51,12 +53,12 @@ test('ServiceDescriptors_AllowsRemovingPreviousRegisteredServices', () => {
 	const serviceCollection = new ServiceCollection();
 	const descriptor1 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Singleton,
-		Symbol.for('IFakeService'),
+		IFakeService,
 		FakeService,
 	);
 	const descriptor2 = ServiceDescriptor.fromCtor(
 		ServiceLifetime.Transient,
-		Symbol.for('IFactoryService'),
+		IFactoryService,
 		TransientFactoryService,
 	);
 

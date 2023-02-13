@@ -30,7 +30,7 @@ export class HttpRequest implements IHttpRequest {
 	get httpRequestFeature(): IHttpRequestFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.features.fetch(
-			Symbol.for('IHttpRequestFeature'),
+			IHttpRequestFeature,
 			{
 				get: () => {
 					return this.features.cache.request;

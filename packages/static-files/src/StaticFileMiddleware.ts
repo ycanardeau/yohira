@@ -41,10 +41,10 @@ export class StaticFileMiddleware implements IMiddleware {
 	private readonly contentTypeProvider: IContentTypeProvider;
 
 	constructor(
-		@inject(Symbol.for('IWebHostEnv')) hostingEnv: IWebHostEnv,
+		@inject(IWebHostEnv) hostingEnv: IWebHostEnv,
 		@inject(Symbol.for('IOptions<StaticFileOptions>'))
 		options: IOptions<StaticFileOptions>,
-		@inject(Symbol.for('ILoggerFactory')) loggerFactory: ILoggerFactory,
+		@inject(ILoggerFactory) loggerFactory: ILoggerFactory,
 	) {
 		this.options = options.getValue(StaticFileOptions);
 		this.contentTypeProvider =

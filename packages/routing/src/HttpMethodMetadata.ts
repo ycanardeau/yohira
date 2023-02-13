@@ -5,7 +5,7 @@ import { IHttpMethodMetadata } from './IHttpMethodMetadata';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/HttpMethodMetadata.cs,13c7687564af679f,references
 @typedef({
-	implements: [Symbol.for('IHttpMethodMetadata')],
+	implements: [IHttpMethodMetadata],
 })
 export class HttpMethodMetadata implements IHttpMethodMetadata {
 	readonly httpMethods: HttpMethods[];

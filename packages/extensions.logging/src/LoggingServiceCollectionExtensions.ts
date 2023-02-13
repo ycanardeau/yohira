@@ -4,7 +4,10 @@ import {
 	ServiceLifetime,
 	tryAddServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
-import { LoggerT } from '@yohira/extensions.logging.abstractions';
+import {
+	ILoggerFactory,
+	LoggerT,
+} from '@yohira/extensions.logging.abstractions';
 import { addOptions } from '@yohira/extensions.options';
 
 import { LoggerFactory } from './LoggerFactory';
@@ -17,7 +20,7 @@ export function addLogging(services: IServiceCollection): IServiceCollection {
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Singleton,
-			Symbol.for('ILoggerFactory'),
+			ILoggerFactory,
 			LoggerFactory,
 		),
 	);

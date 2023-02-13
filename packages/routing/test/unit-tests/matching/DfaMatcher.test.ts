@@ -11,6 +11,7 @@ import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { addOptions } from '@yohira/extensions.options';
 import { HttpContext, HttpRequestFeature } from '@yohira/http';
 import { IHttpContext, PathString } from '@yohira/http.abstractions';
+import { IHttpRequestFeature } from '@yohira/http.features';
 import {
 	DataSourceDependentMatcher,
 	DefaultEndpointDataSource,
@@ -69,11 +70,7 @@ function createDfaMatcher(
 	}
 
 	if (loggerFactory !== undefined) {
-		addSingletonInstance(
-			serviceCollection,
-			Symbol.for('ILoggerFactory'),
-			loggerFactory,
-		);
+		addSingletonInstance(serviceCollection, ILoggerFactory, loggerFactory);
 	}
 
 	const services = buildServiceProvider(serviceCollection);
@@ -93,7 +90,7 @@ function createContext(): IHttpContext {
 	const features =
 		new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
 	const context = new HttpContext(features);
-	features.set(Symbol.for('IHttpRequestFeature'), new HttpRequestFeature());
+	features.set(IHttpRequestFeature, new HttpRequestFeature());
 	// TODO
 	return context;
 }

@@ -155,13 +155,13 @@ export class Http1Connection
 
 	get<T>(key: symbol): T | undefined {
 		let feature: T | undefined;
-		if (key === Symbol.for('IHttpRequestFeature')) {
+		if (key === IHttpRequestFeature) {
 			feature = this.currentIHttpRequestFeature as T;
-		} else if (key === Symbol.for('IHttpResponseBodyFeature')) {
+		} else if (key === IHttpResponseBodyFeature) {
 			feature = this.currentIHttpResponseBodyFeature as T;
-		} else if (key === Symbol.for('IEndpointFeature')) {
+		} else if (key === IEndpointFeature) {
 			feature = this.currentIEndpointFeature as T;
-		} else if (key === Symbol.for('IServiceProvidersFeature')) {
+		} else if (key === IServiceProvidersFeature) {
 			feature = this.currentIServiceProvidersFeature as T;
 		} else {
 			// TODO
@@ -175,14 +175,14 @@ export class Http1Connection
 
 	set<T>(key: symbol, instance: T | undefined): void {
 		this.featureRevision++;
-		if (key === Symbol.for('IHttpRequestFeature')) {
+		if (key === IHttpRequestFeature) {
 			this.currentIHttpRequestFeature = instance as IHttpRequestFeature;
-		} else if (key === Symbol.for('IHttpResponseBodyFeature')) {
+		} else if (key === IHttpResponseBodyFeature) {
 			this.currentIHttpResponseBodyFeature =
 				instance as IHttpResponseBodyFeature;
-		} else if (key === Symbol.for('IEndpointFeature')) {
+		} else if (key === IEndpointFeature) {
 			this.currentIEndpointFeature = instance as IEndpointFeature;
-		} else if (key === Symbol.for('IServiceProvidersFeature')) {
+		} else if (key === IServiceProvidersFeature) {
 			this.currentIServiceProvidersFeature =
 				instance as IServiceProvidersFeature;
 		} else {

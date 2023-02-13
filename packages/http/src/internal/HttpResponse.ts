@@ -31,7 +31,7 @@ export class HttpResponse implements IHttpResponse {
 	private get httpResponseBodyFeature(): IHttpResponseBodyFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.features.fetch(
-			Symbol.for('IHttpResponseBodyFeature'),
+			IHttpResponseBodyFeature,
 			{
 				get: () => {
 					return this.features.cache.responseBody;

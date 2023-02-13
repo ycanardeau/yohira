@@ -13,9 +13,7 @@ class EndpointFeature implements IEndpointFeature {
  * @returns The {@link Endpoint}.
  */
 export function getEndpoint(context: IHttpContext): Endpoint | undefined {
-	return context.features.get<IEndpointFeature>(
-		Symbol.for('IEndpointFeature'),
-	)?.endpoint;
+	return context.features.get<IEndpointFeature>(IEndpointFeature)?.endpoint;
 }
 
 /**
@@ -27,14 +25,12 @@ export function setEndpoint(
 	context: IHttpContext,
 	endpoint: Endpoint | undefined,
 ): void {
-	let feature = context.features.get<IEndpointFeature>(
-		Symbol.for('IEndpointFeature'),
-	);
+	let feature = context.features.get<IEndpointFeature>(IEndpointFeature);
 
 	if (endpoint !== undefined) {
 		if (feature === undefined) {
 			feature = new EndpointFeature();
-			context.features.set(Symbol.for('IEndpointFeature'), feature);
+			context.features.set(IEndpointFeature, feature);
 		}
 
 		feature.endpoint = endpoint;

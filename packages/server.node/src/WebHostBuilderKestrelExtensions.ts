@@ -2,6 +2,7 @@ import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstra
 import { configureOptionsServices } from '@yohira/extensions.options';
 import { WebHostBuilderContext } from '@yohira/hosting';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IServer } from '@yohira/hosting.server.abstractions';
 import { NodeServerImpl, NodeServerOptions } from '@yohira/server.node.core';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel/WebHostBuilderKestrelExtensions.cs,01b0faf0417d31d6,references
@@ -26,7 +27,7 @@ function useNodeCore(hostBuilder: IWebHostBuilder): IWebHostBuilder {
 		// TODO
 
 		// TODO
-		addSingletonCtor(services, Symbol.for('IServer'), NodeServerImpl);
+		addSingletonCtor(services, IServer, NodeServerImpl);
 	});
 
 	// TODO

@@ -9,6 +9,7 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { expect, test } from 'vitest';
 
+const IFoo = Symbol.for('IFoo');
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IFoo {}
 
@@ -16,6 +17,7 @@ class Foo1 implements IFoo {}
 
 class Foo2 implements IFoo {}
 
+const IBar = Symbol.for('IBar');
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IBar {}
 
@@ -27,19 +29,19 @@ function createTestServiceProvider(count: number): IServiceProvider {
 	const serviceCollection = new ServiceCollection();
 
 	if (count > 0) {
-		addTransientCtor(serviceCollection, Symbol.for('IFoo'), Foo1);
+		addTransientCtor(serviceCollection, IFoo, Foo1);
 	}
 
 	if (count > 1) {
-		addTransientCtor(serviceCollection, Symbol.for('IFoo'), Foo2);
+		addTransientCtor(serviceCollection, IFoo, Foo2);
 	}
 
 	if (count > 2) {
-		addTransientCtor(serviceCollection, Symbol.for('IBar'), Bar1);
+		addTransientCtor(serviceCollection, IBar, Bar1);
 	}
 
 	if (count > 3) {
-		addTransientCtor(serviceCollection, Symbol.for('IBar'), Bar2);
+		addTransientCtor(serviceCollection, IBar, Bar2);
 	}
 
 	return buildServiceProvider(serviceCollection);
@@ -49,7 +51,7 @@ function createTestServiceProvider(count: number): IServiceProvider {
 test('GetService_Returns_CorrectService', () => {
 	const serviceProvider = createTestServiceProvider(1);
 
-	const service = serviceProvider.getService<IFoo>(Symbol.for('IFoo'));
+	const service = serviceProvider.getService<IFoo>(IFoo);
 
 	expect(service).toBeInstanceOf(Foo1);
 });
@@ -60,9 +62,9 @@ test('GetService_Returns_CorrectService', () => {
 test('GetRequiredService_Throws_WhenNoServiceRegistered', () => {
 	const serviceProvider = createTestServiceProvider(0);
 
-	expect(() =>
-		getRequiredService(serviceProvider, Symbol.for('IFoo')),
-	).toThrowError("No service for type 'IFoo' has been registered.");
+	expect(() => getRequiredService(serviceProvider, IFoo)).toThrowError(
+		"No service for type 'IFoo' has been registered.",
+	);
 });
 
 // TODO
@@ -71,7 +73,7 @@ test('GetRequiredService_Throws_WhenNoServiceRegistered', () => {
 test('GetServices_Returns_AllServices', () => {
 	const serviceProvider = createTestServiceProvider(2);
 
-	const services = getServices<IFoo>(serviceProvider, Symbol.for('IFoo'));
+	const services = getServices<IFoo>(serviceProvider, IFoo);
 
 	expect(services.find((item) => item instanceof Foo1)).not.toBeUndefined();
 	expect(services.find((item) => item instanceof Foo2)).not.toBeUndefined();
@@ -86,7 +88,7 @@ test('GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvail
 	addSingletonInstance(serviceCollection, Symbol.for('Iterable<IFoo>'), []);
 	const serviceProvider = buildServiceProvider(serviceCollection);
 
-	const services = getServices<IFoo>(serviceProvider, Symbol.for('IFoo'));
+	const services = getServices<IFoo>(serviceProvider, IFoo);
 
 	expect(services.length).toBe(0);
 	expect(services).toBeInstanceOf(Array);

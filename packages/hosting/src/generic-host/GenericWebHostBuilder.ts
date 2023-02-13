@@ -10,11 +10,12 @@ import {
 	IHostBuilder,
 } from '@yohira/extensions.hosting.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions';
-import { IAppBuilder } from '@yohira/http.abstractions';
+import { IWebHostBuilder, IWebHostEnv } from '@yohira/hosting.abstractions';
+import { IAppBuilder, IHttpContextFactory } from '@yohira/http.abstractions';
 
 import { WebHostBuilderContext } from '../WebHostBuilderContext';
 import { AppBuilderFactory } from '../builder/AppBuilderFactory';
+import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
 import { GenericWebHostServiceOptions } from '../generic-host/GenericWebHostServiceOptions';
 import { HttpContextFactory } from '../http/HttpContextFactory';
 import { ISupportsStartup } from '../infrastructure/ISupportsStartup';
@@ -53,7 +54,7 @@ export class GenericWebHostBuilder
 
 			addSingletonInstance(
 				services,
-				Symbol.for('IWebHostEnv'),
+				IWebHostEnv,
 				webHostContext.hostingEnv,
 			);
 
@@ -63,7 +64,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					Symbol.for('IHttpContextFactory'),
+					IHttpContextFactory,
 					HttpContextFactory,
 				),
 			);
@@ -72,7 +73,7 @@ export class GenericWebHostBuilder
 				services,
 				ServiceDescriptor.fromCtor(
 					ServiceLifetime.Singleton,
-					Symbol.for('IAppBuilderFactory'),
+					IAppBuilderFactory,
 					AppBuilderFactory,
 				),
 			);

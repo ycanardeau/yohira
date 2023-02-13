@@ -52,10 +52,7 @@ export class WebApp
 	 * The application's configured {@link IWebHostEnv}.
 	 */
 	get env(): IWebHostEnv {
-		return getRequiredService(
-			this.host.services,
-			Symbol.for('IWebHostEnv'),
-		);
+		return getRequiredService(this.host.services, IWebHostEnv);
 	}
 
 	get appServices(): IServiceProvider {

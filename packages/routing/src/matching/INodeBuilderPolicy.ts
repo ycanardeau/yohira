@@ -4,6 +4,7 @@ import { PolicyJumpTable } from './PolicyJumpTable';
 import { PolicyJumpTableEdge } from './PolicyJumpTableEdge';
 import { PolicyNodeEdge } from './PolicyNodeEdge';
 
+export const INodeBuilderPolicy = Symbol.for('INodeBuilderPolicy');
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/INodeBuilderPolicy.cs,f1ec7c18073d9dc1,references
 /**
  * Implements an interface for a matcher policy with support for generating graph representations of the endpoints.

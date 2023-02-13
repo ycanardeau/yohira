@@ -28,7 +28,7 @@ export class Host implements IHost, IAsyncDisposable {
 		// TODO
 		this.hostedServices = getServices<IHostedService>(
 			this.services,
-			Symbol.for('IHostedService'),
+			IHostedService,
 		);
 
 		for (const hostedService of this.hostedServices) {

@@ -16,6 +16,7 @@ import {
 	PathString,
 	getEndpoint,
 } from '@yohira/http.abstractions';
+import { IHttpRequestFeature } from '@yohira/http.features';
 import {
 	DfaMatcherBuilder,
 	HttpMethodMetadata,
@@ -33,7 +34,7 @@ import { emptyRequestDelegate } from '../TestConstants';
 import { assertMatch } from './MatcherAssert';
 
 @typedef({
-	implements: [Symbol.for('IDynamicEndpointMetadata')],
+	implements: [IDynamicEndpointMetadata],
 })
 class DynamicEndpointMetadata implements IDynamicEndpointMetadata {
 	get isDynamic(): boolean {
@@ -111,10 +112,7 @@ export abstract class HttpMethodMatcherPolicyIntegrationTestBase {
 		const features =
 			new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
 		const httpContext = new HttpContext(features);
-		features.set(
-			Symbol.for('IHttpRequestFeature'),
-			new HttpRequestFeature(),
-		);
+		features.set(IHttpRequestFeature, new HttpRequestFeature());
 		// TODO
 		httpContext.request.method = corsPreflight
 			? preflightHttpMethod

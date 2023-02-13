@@ -13,7 +13,7 @@ import { MatcherFactory } from './MatcherFactory';
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DfaMatcherFactory.cs,a63b3345343c56b3,references
 export class DfaMatcherFactory extends MatcherFactory {
 	constructor(
-		@inject(Symbol.for('IServiceProvider'))
+		@inject(IServiceProvider)
 		private readonly services: IServiceProvider,
 	) {
 		super();

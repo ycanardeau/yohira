@@ -72,10 +72,7 @@ class EdgeKey implements IEquatable<EdgeKey> {
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/HttpMethodMatcherPolicy.cs,e1986934a0392a00,references
 @typedef({
 	extends: Symbol.for('MatcherPolicy'),
-	implements: [
-		Symbol.for('INodeBuilderPolicy'),
-		Symbol.for('IEndpointSelectorPolicy'),
-	],
+	implements: [INodeBuilderPolicy, IEndpointSelectorPolicy],
 })
 export class HttpMethodMatcherPolicy
 	extends MatcherPolicy
@@ -91,7 +88,7 @@ export class HttpMethodMatcherPolicy
 		for (const endpoint of endpoints) {
 			const httpMethodMetadata =
 				endpoint.metadata.getMetadata<IHttpMethodMetadata>(
-					Symbol.for('IHttpMethodMetadata'),
+					IHttpMethodMetadata,
 				);
 			if (
 				httpMethodMetadata !== undefined &&
@@ -129,7 +126,7 @@ export class HttpMethodMatcherPolicy
 			const metadata = candidates
 				.get(i)
 				.endpoint?.metadata.getMetadata<IHttpMethodMetadata>(
-					Symbol.for('IHttpMethodMetadata'),
+					IHttpMethodMetadata,
 				);
 			if (metadata === undefined || metadata.httpMethods.length === 0) {
 				// Can match any method.
@@ -201,9 +198,10 @@ export class HttpMethodMatcherPolicy
 			httpMethods: readonly string[];
 			acceptCorsPreflight: boolean;
 		} {
-			const metadata = e.metadata.getMetadata<IHttpMethodMetadata>(
-				Symbol.for('IHttpMethodMetadata'),
-			);
+			const metadata =
+				e.metadata.getMetadata<IHttpMethodMetadata>(
+					IHttpMethodMetadata,
+				);
 			return metadata === undefined
 				? {
 						httpMethods: [],
