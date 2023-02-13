@@ -1,1 +1,1 @@
-export * from './WebHostBuilderKestrelExtensions';
+export * from './WebHostBuilderNodeExtensions';
