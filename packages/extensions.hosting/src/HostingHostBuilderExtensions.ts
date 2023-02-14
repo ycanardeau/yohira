@@ -4,6 +4,7 @@ import { addJsonFile } from '@yohira/extensions.config.json';
 import { ServiceProviderOptions } from '@yohira/extensions.dependency-injection';
 import {
 	HostBuilderContext,
+	IHostBuilder,
 	isDevelopment,
 } from '@yohira/extensions.hosting.abstractions';
 
@@ -44,6 +45,28 @@ export function applyDefaultAppConfig(
 	if (args !== undefined && args.length > 0) {
 		// TODO: addCommandLine(appConfigBuilder, args);
 	}
+}
+
+// https://source.dot.net/#Microsoft.Extensions.Hosting/HostingHostBuilderExtensions.cs,5d86d5acb42aaed3,references
+export function configureDefaults(
+	builder: IHostBuilder,
+	args: string[] | undefined,
+): IHostBuilder {
+	/* TODO: configureHostConfig(builder, (config) =>
+		applyDefaultHostConfig(config, args),
+	);
+	configureAppConfig(builder, (hostingContext, config) =>
+		applyDefaultAppConfig(hostingContext, config, args),
+	);
+	builder.configureServices(addDefaultServices);
+	useServiceProviderFactory(
+		builder,
+		(context) =>
+			new DefaultServiceProviderFactory(
+				createDefaultServiceProviderOptions(context),
+			),
+	); */
+	return builder;
 }
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/HostingHostBuilderExtensions.cs,edb073ce2583a197,references

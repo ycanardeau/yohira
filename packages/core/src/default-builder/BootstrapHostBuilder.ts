@@ -2,6 +2,7 @@ import { IServiceCollection } from '@yohira/extensions.dependency-injection.abst
 import { HostAppBuilder } from '@yohira/extensions.hosting';
 import {
 	HostBuilderContext,
+	IHost,
 	IHostBuilder,
 } from '@yohira/extensions.hosting.abstractions';
 
@@ -49,5 +50,12 @@ export class BootstrapHostBuilder implements IHostBuilder {
 		}
 
 		// TODO
+	}
+
+	build(): IHost {
+		// configureWebHostDefaults should never call this.
+		throw new Error(
+			'Operation is not valid due to the current state of the object.' /* LOC */,
+		);
 	}
 }
