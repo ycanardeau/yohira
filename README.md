@@ -2,6 +2,184 @@
 
 Yohira is an experimental project to port ASP.NET Core to TypeScript.
 
+## Installation
+
+```
+npm i yohira
+```
+
+## [Dependency Injection](https://github.com/ycanardeau/yohira/tree/main/packages/extensions.dependency-injection)
+
+This is a TypeScript port of [`Microsoft.Extensions.DependencyInjection`](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/).
+
+### Add interfaces
+
+```ts
+import { ServiceLifetime } from 'yohira';
+
+interface IReportServiceLifetime {
+    readonly id: string;
+    readonly lifetime: ServiceLifetime;
+}
+
+const IExampleTransientService = Symbol.for('IExampleTransientService');
+interface IExampleTransientService extends IReportServiceLifetime {
+    readonly lifetime: ServiceLifetime.Transient;
+}
+
+const IExampleScopedService = Symbol.for('IExampleScopedService');
+interface IExampleScopedService extends IReportServiceLifetime {
+    readonly lifetime: ServiceLifetime.Scoped;
+}
+
+const IExampleSingletonService = Symbol.for('IExampleSingletonService');
+interface IExampleSingletonService extends IReportServiceLifetime {
+    readonly lifetime: ServiceLifetime.Singleton;
+}
+```
+
+### Add default implementations
+
+```ts
+import { randomUUID } from 'node:crypto';
+
+class ExampleTransientService implements IExampleTransientService {
+    readonly id = randomUUID();
+    readonly lifetime = ServiceLifetime.Transient;
+}
+
+class ExampleScopedService implements IExampleScopedService {
+    readonly id = randomUUID();
+    readonly lifetime = ServiceLifetime.Scoped;
+}
+
+class ExampleSingletonService implements IExampleSingletonService {
+    readonly id = randomUUID();
+    readonly lifetime = ServiceLifetime.Singleton;
+}
+```
+
+### Add a service that requires DI
+
+```ts
+import { inject } from 'yohira';
+
+function logService<T extends IReportServiceLifetime>(
+    name: symbol,
+    service: T,
+    message: string,
+): void {
+    console.log(`    ${Symbol.keyFor(name)}: ${service.id} (${message})`);
+}
+
+class ServiceLifetimeReporter {
+    constructor(
+        @inject(IExampleTransientService)
+        private readonly transientService: IExampleTransientService,
+
+        @inject(IExampleScopedService)
+        private readonly scopedService: IExampleScopedService,
+
+        @inject(IExampleSingletonService)
+        private readonly singletonService: IExampleSingletonService,
+    ) {}
+
+    reportServiceLifetimeDetails(lifetimeDetails: string): void {
+        console.log(lifetimeDetails);
+
+        logService(
+            IExampleTransientService,
+            this.transientService,
+            'Always different',
+        );
+        logService(
+            IExampleScopedService,
+            this.scopedService,
+            'Changes only with lifetime',
+        );
+        logService(
+            IExampleSingletonService,
+            this.singletonService,
+            'Always the same',
+        );
+    }
+}
+```
+
+### Register services for DI
+
+```ts
+import {
+    IServiceProvider,
+    addScopedCtor,
+    addSingletonCtor,
+    addTransientCtor,
+    createDefaultBuilder,
+    createScope,
+    getRequiredService,
+    runApp,
+} from 'yohira';
+
+function exemplifyServiceLifetime(
+    hostProvider: IServiceProvider,
+    lifetime: string,
+): void {
+    const serviceScope = createScope(hostProvider);
+    const provider = serviceScope.serviceProvider;
+    const reporter1 = getRequiredService<ServiceLifetimeReporter>(
+        provider,
+        Symbol.for('ServiceLifetimeReporter'),
+    );
+    reporter1.reportServiceLifetimeDetails(
+        `${lifetime}: Call 1 to ` +
+            "getRequiredService<ServiceLifetimeReporter>(provider, Symbol.for('ServiceLifetimeReporter'))",
+    );
+
+    console.log('...');
+
+    const reporter2 = getRequiredService<ServiceLifetimeReporter>(
+        provider,
+        Symbol.for('ServiceLifetimeReporter'),
+    );
+    reporter2.reportServiceLifetimeDetails(
+        `${lifetime}: Call 2 to ` +
+            "getRequiredService<ServiceLifetimeReporter>(provider, Symbol.for('ServiceLifetimeReporter'))",
+    );
+
+    console.log('\n');
+}
+
+const host = createDefaultBuilder()
+    .configureServices((context, services) => {
+        addTransientCtor(
+            services,
+            IExampleTransientService,
+            ExampleTransientService,
+        );
+        addScopedCtor(services, IExampleScopedService, ExampleScopedService);
+        addSingletonCtor(
+            services,
+            IExampleSingletonService,
+            ExampleSingletonService,
+        );
+        addTransientCtor(
+            services,
+            Symbol.for('ServiceLifetimeReporter'),
+            ServiceLifetimeReporter,
+        );
+    })
+    .build();
+
+exemplifyServiceLifetime(host.services, 'Lifetime 1');
+exemplifyServiceLifetime(host.services, 'Lifetime 2');
+
+await runApp(host);
+```
+
+### See also
+
+-   [Use dependency injection - .NET | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-usage)
+
 ## References
 
 -   [dotnet/aspnetcore: ASP.NET Core is a cross-platform .NET framework for building modern cloud-based web applications on Windows, Mac, or Linux.](https://github.com/dotnet/aspnetcore)
