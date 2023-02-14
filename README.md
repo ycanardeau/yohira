@@ -131,8 +131,8 @@ function exemplifyServiceLifetime(
         Symbol.for('ServiceLifetimeReporter'),
     );
     reporter1.reportServiceLifetimeDetails(
-        `${lifetime}: Call 1 to ` +
-            "getRequiredService<ServiceLifetimeReporter>(provider, Symbol.for('ServiceLifetimeReporter'))",
+        `${lifetime}: Call 1 to getRequiredService<ServiceLifetimeReporter>` +
+            "(provider, Symbol.for('ServiceLifetimeReporter'))",
     );
 
     console.log('...');
@@ -142,11 +142,13 @@ function exemplifyServiceLifetime(
         Symbol.for('ServiceLifetimeReporter'),
     );
     reporter2.reportServiceLifetimeDetails(
-        `${lifetime}: Call 2 to ` +
-            "getRequiredService<ServiceLifetimeReporter>(provider, Symbol.for('ServiceLifetimeReporter'))",
+        `${lifetime}: Call 2 to getRequiredService<ServiceLifetimeReporter>` +
+            "(provider, Symbol.for('ServiceLifetimeReporter'))",
     );
 
     console.log('\n');
+
+    serviceScope.dispose();
 }
 
 const host = createDefaultBuilder()
