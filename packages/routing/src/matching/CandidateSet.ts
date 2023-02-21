@@ -33,12 +33,12 @@ export class CandidateSet {
 		return this.candidates.length;
 	}
 
-	get(index: number): CandidateState {
+	get(index: number): { get: () => CandidateState } {
 		if (index >= this.count) {
 			throw new Error(/* TODO: message */);
 		}
 
-		return this.candidates[index];
+		return { get: () => this.candidates[index] };
 	}
 
 	/** @internal */ static isValidCandidate(
@@ -86,5 +86,28 @@ export class CandidateSet {
 			},
 			value,
 		);
+	}
+
+	replaceEndpoint(
+		index: number,
+		endpoint: Endpoint | undefined,
+		// TODO: values: RouteValueDictionary | undefined,
+	): void {
+		if (index >= this.count) {
+			throw new Error(/* TODO: message */);
+		}
+
+		// CandidateState allows a null-valued endpoint. However a validate candidate should never have a null endpoint
+		// We'll make lives easier for matcher policies by declaring it as non-null.
+		this.candidates[index] = new CandidateState(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			endpoint!,
+			// TODO: values,
+			this.candidates[index].score,
+		);
+
+		if (endpoint === undefined) {
+			this.setValidity(index, false);
+		}
 	}
 }

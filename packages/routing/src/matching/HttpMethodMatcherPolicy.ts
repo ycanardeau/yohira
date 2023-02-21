@@ -125,6 +125,7 @@ export class HttpMethodMatcherPolicy
 		for (let i = 0; i < candidates.count; i++) {
 			const metadata = candidates
 				.get(i)
+				.get()
 				.endpoint?.metadata.getMetadata<IHttpMethodMetadata>(
 					IHttpMethodMetadata,
 				);

@@ -6,9 +6,12 @@ import {
 	getEndpoint,
 } from '@yohira/http.abstractions';
 import { IHttpRequestFeature } from '@yohira/http.features';
-import { RouteEndpoint, parseRoutePattern } from '@yohira/routing';
-import { CandidateSet } from 'packages/routing/src/matching/CandidateSet';
-import { DefaultEndpointSelector } from 'packages/routing/src/matching/DefaultEndpointSelector';
+import {
+	CandidateSet,
+	DefaultEndpointSelector,
+	RouteEndpoint,
+	parseRoutePattern,
+} from '@yohira/routing';
 import { expect, test } from 'vitest';
 
 import { emptyRequestDelegate } from '../TestConstants';
