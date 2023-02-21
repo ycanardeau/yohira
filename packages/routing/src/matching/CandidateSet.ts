@@ -1,8 +1,33 @@
+import { Endpoint } from '@yohira/http.abstractions';
+
 import { CandidateState } from './CandidateState';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/CandidateSet.cs,718ed4434c292456,references
 export class CandidateSet {
 	constructor(/** @internal */ readonly candidates: CandidateState[]) {}
+
+	static fromEndpoints(
+		endpoints: Endpoint[],
+		// TODO: values: RouteValueDictionary[],
+		scores: number[],
+	): CandidateSet {
+		if (/* TODO */ endpoints.length !== scores.length) {
+			throw new Error(
+				`The provided endpoints, values, and scores must have the same length.`,
+			);
+		}
+
+		return new CandidateSet(
+			[...Array(endpoints.length).keys()].map(
+				(i) =>
+					new CandidateState(
+						endpoints[i],
+						// TODO: values[i],
+						scores[i],
+					),
+			),
+		);
+	}
 
 	get count(): number {
 		return this.candidates.length;
@@ -31,16 +56,21 @@ export class CandidateSet {
 	}
 
 	/** @internal */ static setValidity(
-		candidate: CandidateState,
+		candidate: {
+			get: () => CandidateState;
+			set: (value: CandidateState) => void;
+		},
 		value: boolean,
 	): void {
-		const originalScore = candidate.score;
+		const originalScore = candidate.get().score;
 		const score =
 			originalScore >= 0 !== value ? ~originalScore : originalScore;
-		candidate = new CandidateState(
-			candidate.endpoint,
-			// TODO: candidate.values,
-			score,
+		candidate.set(
+			new CandidateState(
+				candidate.get().endpoint,
+				// TODO: candidate.values,
+				score,
+			),
 		);
 	}
 
@@ -49,7 +79,12 @@ export class CandidateSet {
 			throw new Error(/* TODO: message */);
 		}
 
-		const original = this.candidates[index];
-		CandidateSet.setValidity(original, value);
+		CandidateSet.setValidity(
+			{
+				get: () => this.candidates[index],
+				set: (value) => (this.candidates[index] = value),
+			},
+			value,
+		);
 	}
 }
