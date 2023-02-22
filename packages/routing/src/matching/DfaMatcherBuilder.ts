@@ -75,6 +75,7 @@ function getPrecedenceDigitAtDepth(
 	return computeInboundPrecedenceDigit(endpoint.routePattern, segment);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Matching/DfaMatcherBuilder.cs,c7063a4a4712cc25,references
 class DfaBuilderWorker {
 	private previousWork: List<DfaBuilderWorkerWorkItem>;
 	private workCount = 0;
@@ -164,6 +165,10 @@ class DfaBuilderWorker {
 	): void {
 		for (const parent of parents) {
 			const part = segment.parts[0];
+			const parameterPart =
+				part instanceof RoutePatternParameterPart
+					? (part as RoutePatternParameterPart)
+					: undefined;
 			let tryGetRequiredValueResult: Result<unknown, undefined>;
 			if (segment.isSimple && part instanceof RoutePatternLiteralPart) {
 				DfaBuilderWorker.addLiteralNode(
@@ -174,32 +179,55 @@ class DfaBuilderWorker {
 				);
 			} else if (
 				segment.isSimple &&
-				part instanceof RoutePatternParameterPart &&
-				part.isCatchAll
+				parameterPart !== undefined &&
+				parameterPart.isCatchAll
 			) {
-				// TODO
-				throw new Error('Method not implemented.');
+				// A catch all should traverse all literal nodes as well as parameter nodes
+				// we don't need to create the parameter node here because of ordering
+				// all catchalls will be processed after all parameters.
+				if (parent.literals !== undefined) {
+					nextParents.addRange(parent.literals.values());
+				}
+				if (parent.parameters !== undefined) {
+					nextParents.add(parent.parameters);
+				}
+
+				// We also create a 'catchall' here. We don't do further traversals
+				// on the catchall node because only catchalls can end up here. The
+				// catchall node allows us to capture an unlimited amount of segments
+				// and also to match a zero-length segment, which a parameter node
+				// doesn't allow.
+				if (parent.catchAll === undefined) {
+					parent.catchAll = new DfaNode();
+					parent.catchAll.pathDepth = parent.pathDepth + 1;
+					parent.catchAll.label = this.includeLabel
+						? `${parent.label}{*...}/`
+						: undefined;
+
+					// The catchall node just loops.
+					parent.catchAll.parameters = parent.catchAll;
+					parent.catchAll.catchAll = parent.catchAll;
+				}
+
+				parent.catchAll.addMatch(endpoint);
 			} else if (
 				segment.isSimple &&
-				part instanceof RoutePatternParameterPart &&
+				parameterPart !== undefined &&
 				(tryGetRequiredValueResult =
 					DfaBuilderWorker.tryGetRequiredValue(
 						endpoint.routePattern,
-						part,
+						parameterPart,
 					)) &&
 				tryGetRequiredValueResult.ok
 			) {
 				// TODO
 				throw new Error('Method not implemented.');
-			} else if (
-				segment.isSimple &&
-				part instanceof RoutePatternParameterPart
-			) {
+			} else if (segment.isSimple && parameterPart !== undefined) {
 				if (parent.parameters === undefined) {
 					parent.parameters = new DfaNode();
 					parent.parameters.pathDepth = parent.pathDepth + 1;
 					parent.parameters.label = this.includeLabel
-						? parent.label + '{...}/'
+						? `${parent.label}{...}/`
 						: undefined;
 				}
 
@@ -222,8 +250,28 @@ class DfaBuilderWorker {
 
 				nextParents.add(parent.parameters);
 			} else {
-				// TODO
-				throw new Error('Method not implemented.');
+				// Complex segment - we treat these are parameters here and do the
+				// expensive processing later. We don't want to spend time processing
+				// complex segments unless they are the best match, and treating them
+				// like parameters in the DFA allows us to do just that.
+				if (parent.parameters === undefined) {
+					parent.parameters = new DfaNode();
+					parent.parameters.pathDepth = parent.pathDepth + 1;
+					parent.label = this.includeLabel
+						? `${parent.label}{...}/`
+						: undefined;
+				}
+
+				if (parent.literals !== undefined) {
+					// For a complex segment like this, we can evaluate the literals and avoid adding extra nodes to
+					// the tree on cases where the literal won't ever be able to match the complex parameter.
+					// For example, if we have a complex parameter {a}-{b}.{c?} and a literal "Hello" we can guarantee
+					// that it will never be a match.
+					// We filter out sibling literals that don't match the complex parameter segment to avoid adding nodes to the DFA
+					// that will never match a route and which will result in a much higher memory usage.
+					// TODO: this.addParentsMatchingComplexSegment();
+				}
+				nextParents.add(parent.parameters);
 			}
 		}
 	}
@@ -519,8 +567,8 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 			dfaWorker.processLevel(depth);
 		}
 
-		// TODO
-
+		// Build the trees of policy nodes (like HTTP methods). Post-order traversal
+		// means that we won't have infinite recursion.
 		root.visit(this.applyPolicies);
 
 		return root;
