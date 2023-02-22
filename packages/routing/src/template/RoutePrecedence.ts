@@ -32,3 +32,23 @@ export function computeInboundPrecedenceDigit(
 		throw new Error('Specified method is not supported.' /* LOC */);
 	}
 }
+
+// https://source.dot.net/#Microsoft.AspNetCore.Routing/Template/RoutePrecedence.cs,0194f8007e142bda,references
+export function computeInbound(routePattern: RoutePattern): number {
+	// TODO: validateSegmentLength(routePattern.pathSegments.length);
+
+	let precedence = 0;
+
+	for (let i = 0; i < routePattern.pathSegments.length; i++) {
+		const segment = routePattern.pathSegments[i];
+
+		const digit = computeInboundPrecedenceDigit(routePattern, segment);
+		if (digit < 0 || digit >= 10) {
+			throw new Error('Assertion failed.');
+		}
+
+		precedence += digit / Math.pow(10, i);
+	}
+
+	return precedence;
+}

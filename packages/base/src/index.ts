@@ -8,6 +8,7 @@ export * from './FileSystemInfo';
 export * from './HeaderNames';
 export * from './IAsyncDisposable';
 export * from './ICollection';
+export * from './IComparer';
 export * from './IDisposable';
 export * from './IEquatable';
 export * from './IList';

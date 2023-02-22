@@ -15,7 +15,9 @@ import { Candidate } from './Candidate';
 import { DfaMatcher } from './DfaMatcher';
 import { DfaNode } from './DfaNode';
 import { DfaState } from './DfaState';
+import { EndpointComparer } from './EndpointComparer';
 import { EndpointSelector } from './EndpointSelector';
+import { IEndpointComparerPolicy } from './IEndpointComparerPolicy';
 import { IEndpointSelectorPolicy } from './IEndpointSelectorPolicy';
 import { INodeBuilderPolicy } from './INodeBuilderPolicy';
 import { buildJumpTable } from './JumpTableBuilder';
@@ -282,6 +284,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 	private readonly endpointSelectorPolicies: IEndpointSelectorPolicy[];
 	private readonly nodeBuilders: INodeBuilderPolicy[];
+	private readonly comparer: EndpointComparer;
 
 	private stateIndex = 0;
 
@@ -291,6 +294,12 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 		return (
 			'endpointSelectorAppliesToEndpoints' in policy && 'apply' in policy
 		);
+	}
+
+	private static isIEndpointComparerPolicy(
+		policy: MatcherPolicy | (MatcherPolicy & IEndpointComparerPolicy),
+	): policy is MatcherPolicy & IEndpointComparerPolicy {
+		return 'comparer' in policy;
 	}
 
 	private static isIEndpointSelectorPolicy(
@@ -305,11 +314,11 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 	private static extractPolicies(policies: Iterable<MatcherPolicy>): {
 		nodeBuilderPolicies: INodeBuilderPolicy[];
-		// TODO: endpointComparerPolicies: IEndpointComparerPolicy[];
+		endpointComparerPolicies: IEndpointComparerPolicy[];
 		endpointSelectorPolicies: IEndpointSelectorPolicy[];
 	} {
 		const nodeBuilderPolicies: INodeBuilderPolicy[] = [];
-		// TODO: const endpointComparerPolicies: IEndpointComparerPolicy[] = [];
+		const endpointComparerPolicies: IEndpointComparerPolicy[] = [];
 		const endpointSelectorPolicies: IEndpointSelectorPolicy[] = [];
 
 		for (const policy of policies) {
@@ -317,9 +326,9 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 				nodeBuilderPolicies.push(policy);
 			}
 
-			/* TODO: if (isIEndpointComparerPolicy(policy)) {
+			if (DfaMatcherBuilder.isIEndpointComparerPolicy(policy)) {
 				endpointComparerPolicies.push(policy);
-			} */
+			}
 
 			if (DfaMatcherBuilder.isIEndpointSelectorPolicy(policy)) {
 				endpointSelectorPolicies.push(policy);
@@ -328,7 +337,7 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 		return {
 			nodeBuilderPolicies: nodeBuilderPolicies,
-			// TODO: endpointComparerPolicies: endpointComparerPolicies,
+			endpointComparerPolicies: endpointComparerPolicies,
 			endpointSelectorPolicies: endpointSelectorPolicies,
 		};
 	}
@@ -345,11 +354,12 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 		const {
 			nodeBuilderPolicies,
-			// TODO: endpointComparerPolicies,
+			endpointComparerPolicies,
 			endpointSelectorPolicies,
 		} = DfaMatcherBuilder.extractPolicies(policies /* TODO: orderBy */);
 		this.endpointSelectorPolicies = endpointSelectorPolicies;
 		this.nodeBuilders = nodeBuilderPolicies;
+		this.comparer = new EndpointComparer(endpointComparerPolicies);
 	}
 
 	addEndpoint(endpoint: RouteEndpoint): void {
@@ -363,7 +373,9 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 
 		// We're done with the precedence based work. Sort the endpoints
 		// before applying policies for simplicity in policy-related code.
-		// TODO: node.matches.sort(this.comparer);
+		node.matches.sort(
+			(x, y) => this.comparer.compare(x, y) /* TODO: bind this */,
+		);
 
 		// Start with the current node as the root.
 		let work = new List<DfaNode>();
@@ -591,7 +603,9 @@ export class DfaMatcherBuilder extends MatcherBuilder {
 			}
 		};
 
-		// TODO: node.matches?.sort(this.comparer);
+		node.matches?.sort(
+			(x, y) => this.comparer.compare(x, y) /* TODO: bind this */,
+		);
 
 		const currentStateIndex = this.stateIndex;
 
