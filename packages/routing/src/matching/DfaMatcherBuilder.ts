@@ -91,7 +91,34 @@ class DfaBuilderWorker {
 		endpoint: RouteEndpoint,
 		depth: number,
 	): boolean {
-		// TODO
+		for (
+			let i = depth;
+			i < endpoint.routePattern.pathSegments.length;
+			i++
+		) {
+			const segment = endpoint.routePattern.pathSegments[i];
+			if (!segment.isSimple) {
+				// Complex segments always require more processing
+				return true;
+			}
+
+			const parameterPart =
+				segment.parts[0] instanceof RoutePatternParameterPart
+					? (segment.parts[0] as RoutePatternParameterPart)
+					: undefined;
+			if (parameterPart === undefined) {
+				// It's a literal
+				return true;
+			}
+
+			if (
+				!parameterPart.isOptional &&
+				!parameterPart.isCatchAll &&
+				true /* TODO: parameterPart.defaultValue === undefined */
+			) {
+				return true;
+			}
+		}
 
 		return false;
 	}
