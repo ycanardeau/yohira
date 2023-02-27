@@ -1,9 +1,13 @@
-import { IServiceProvider } from '@yohira/base';
+import { IServiceProvider, usingAsync } from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
+	IServiceScopeFactory,
 	ServiceCollection,
+	addScopedCtor,
 	addSingletonInstance,
 	addTransientCtor,
+	createAsyncScopeFromProvider,
+	createAsyncScopeFromServiceScopeFactory,
 	getRequiredService,
 	getServices,
 } from '@yohira/extensions.dependency-injection.abstractions';
@@ -94,4 +98,49 @@ test('GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvail
 	expect(services).toBeInstanceOf(Array);
 });
 
-// TODO
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L202
+test('NonGeneric_GetServices_WithBuildServiceProvider_Returns_EmptyList_WhenNoServicesAvailable', () => {
+	const serviceCollection = new ServiceCollection();
+	addSingletonInstance(serviceCollection, Symbol.for('Iterable<IFoo>'), []);
+	const serviceProvider = buildServiceProvider(serviceCollection);
+
+	const services = getServices<IFoo>(serviceProvider, IFoo);
+
+	expect(services.length).toBe(0);
+	expect(services).instanceof(Array);
+});
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L218
+test('CreateAsyncScope_Returns_AsyncServiceScope_Wrapping_ServiceScope', async () => {
+	const serviceCollection = new ServiceCollection();
+	addScopedCtor(serviceCollection, IFoo, Foo1);
+	const serviceProvider = buildServiceProvider(serviceCollection);
+
+	await usingAsync(
+		createAsyncScopeFromProvider(serviceProvider),
+		async (scope) => {
+			const service = scope.serviceProvider.getService<IFoo>(IFoo);
+
+			expect(service).instanceof(Foo1);
+		},
+	);
+});
+
+// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/src/libraries/Microsoft.Extensions.DependencyInjection/tests/DI.Tests/ServiceProviderServiceExtensionsTest.cs#L235
+test('CreateAsyncScope_Returns_AsyncServiceScope_Wrapping_ServiceScope_For_IServiceScopeFactory', async () => {
+	const serviceCollection = new ServiceCollection();
+	addScopedCtor(serviceCollection, IFoo, Foo1);
+	const serviceProvider = buildServiceProvider(serviceCollection);
+	const factory =
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		serviceProvider.getService<IServiceScopeFactory>(IServiceScopeFactory)!;
+
+	await usingAsync(
+		createAsyncScopeFromServiceScopeFactory(factory),
+		async (scope) => {
+			const service = scope.serviceProvider.getService<IFoo>(IFoo);
+
+			expect(service).toBeInstanceOf(Foo1);
+		},
+	);
+});

@@ -1,4 +1,5 @@
 import { IServiceProvider, keyForType } from '@yohira/base';
+import { AsyncServiceScope } from 'packages/extensions.dependency-injection.abstractions/src/AsyncServiceScope';
 
 import { IServiceScope } from './IServiceScope';
 import { IServiceScopeFactory } from './IServiceScopeFactory';
@@ -33,9 +34,25 @@ export function getServices<T>(
 }
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,f2e7eaaea226269d,references
-export function createScope(provider: IServiceProvider): IServiceScope {
+export function createScopeFromProvider(
+	provider: IServiceProvider,
+): IServiceScope {
 	return getRequiredService<IServiceScopeFactory>(
 		provider,
 		IServiceScopeFactory,
 	).createScope();
+}
+
+// https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,478af7c6d9193e2a,references
+export function createAsyncScopeFromProvider(
+	provider: IServiceProvider,
+): AsyncServiceScope {
+	return new AsyncServiceScope(createScopeFromProvider(provider));
+}
+
+// https://source.dot.net/#Microsoft.Extensions.DependencyInjection.Abstractions/ServiceProviderServiceExtensions.cs,f45ecbe0b9fb9005,references
+export function createAsyncScopeFromServiceScopeFactory(
+	serviceScopeFactory: IServiceScopeFactory,
+): AsyncServiceScope {
+	return new AsyncServiceScope(serviceScopeFactory.createScope());
 }

@@ -1,4 +1,4 @@
-import { IDisposable, combinePaths, getTempPath } from '@yohira/base';
+import { combinePaths, getTempPath, using } from '@yohira/base';
 import {
 	NotFoundFileInfo,
 	PhysicalFileInfo,
@@ -7,17 +7,6 @@ import {
 import { randomUUID } from 'node:crypto';
 import { cwd } from 'node:process';
 import { expect, test } from 'vitest';
-
-function using<T extends IDisposable>(
-	disposable: T,
-	action: (disposable: T) => void,
-): void {
-	try {
-		action(disposable);
-	} finally {
-		disposable.dispose();
-	}
-}
 
 // https://github.com/dotnet/runtime/blob/632f2cd18ac052eb2b4b89cb595221fd4b59a4f4/src/libraries/Microsoft.Extensions.FileProviders.Physical/tests/PhysicalFileProviderTests.cs#L34
 test('GetFileInfoReturnsNotFoundFileInfoForEmptyPath', () => {
