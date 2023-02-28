@@ -15,6 +15,9 @@
 		"declaration": true,
 		"baseUrl": "./",
 		"paths": {
+			"@yohira/authentication.abstractions": [
+				"packages/authentication.abstractions/src"
+			],
 			"@yohira/base": ["packages/base/src"],
 			"@yohira/core": ["packages/core/src"],
 			"@yohira/extensions.config": ["packages/extensions.config/src"],

@@ -1,6 +1,6 @@
 import { IServiceProvider, keyForType } from '@yohira/base';
-import { AsyncServiceScope } from 'packages/extensions.dependency-injection.abstractions/src/AsyncServiceScope';
 
+import { AsyncServiceScope } from './AsyncServiceScope';
 import { IServiceScope } from './IServiceScope';
 import { IServiceScopeFactory } from './IServiceScopeFactory';
 

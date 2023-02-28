@@ -204,3 +204,4 @@ await runApp(host);
 -   [Routing in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing)
 -   [Why doesn&#39;t IConfigurationProvider have an async Load method? · Issue #36018 · dotnet/runtime](https://github.com/dotnet/runtime/issues/36018)
 -   [[API Proposal]: AsyncConfigurationProvider · Issue #79193 · dotnet/runtime](https://github.com/dotnet/runtime/issues/79193)
+-   [c# - What&#39;s the role of the ClaimsPrincipal, why does it have multiple Identities? - Stack Overflow](https://stackoverflow.com/questions/32584074/whats-the-role-of-the-claimsprincipal-why-does-it-have-multiple-identities)
