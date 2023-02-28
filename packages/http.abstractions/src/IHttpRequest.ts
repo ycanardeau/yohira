@@ -1,3 +1,5 @@
+import { IncomingHttpHeaders } from 'node:http';
+
 import { IHttpContext } from './IHttpContext';
 import { PathString } from './PathString';
 
@@ -7,5 +9,6 @@ export interface IHttpRequest {
 	method: string;
 	path: PathString;
 	queryString: string;
+	readonly headers: IncomingHttpHeaders;
 	rawBody: string;
 }

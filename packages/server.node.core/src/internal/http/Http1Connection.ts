@@ -6,7 +6,11 @@ import {
 	IHttpResponseBodyFeature,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
-import { IncomingMessage, ServerResponse } from 'node:http';
+import {
+	IncomingHttpHeaders,
+	IncomingMessage,
+	ServerResponse,
+} from 'node:http';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/Http/Http1Connection.cs,9a7555a5b425c5dc,references
@@ -125,6 +129,10 @@ export class Http1Connection
 	get queryString(): string {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._queryString!;
+	}
+
+	get headers(): IncomingHttpHeaders {
+		return this.request.headers;
 	}
 
 	private _endpoint?: Endpoint;

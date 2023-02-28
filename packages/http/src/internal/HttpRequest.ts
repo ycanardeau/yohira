@@ -5,6 +5,7 @@ import {
 	PathString,
 } from '@yohira/http.abstractions';
 import { IHttpRequestFeature } from '@yohira/http.features';
+import { IncomingHttpHeaders } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpRequest.cs,00ce2db34b5033bf,references
 class FeatureInterfaces {
@@ -64,5 +65,9 @@ export class HttpRequest implements IHttpRequest {
 
 	get queryString(): string {
 		return this.httpRequestFeature.queryString;
+	}
+
+	get headers(): IncomingHttpHeaders {
+		return this.httpRequestFeature.headers;
 	}
 }
