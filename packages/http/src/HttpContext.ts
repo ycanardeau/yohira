@@ -28,7 +28,7 @@ export class HttpContext implements IHttpContext {
 		new RequestServicesFeature(context, context.serviceScopeFactory);
 
 	private _features = new FeatureReferences<FeatureInterfaces>(
-		FeatureInterfaces,
+		() => new FeatureInterfaces(),
 	);
 
 	readonly request: IHttpRequest;

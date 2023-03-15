@@ -1,3 +1,4 @@
+import { IHeaderDictionary, IResponseCookies } from '@yohira/http.features';
 import { Stream } from 'node:stream';
 
 import { IHttpContext } from './IHttpContext';
@@ -17,6 +18,10 @@ export interface IHttpResponse {
 	 */
 	statusCode: StatusCodes;
 	/**
+	 * Gets the response headers.
+	 */
+	headers: IHeaderDictionary;
+	/**
 	 * Gets or sets the response body {@link Stream}.
 	 */
 	body: Stream;
@@ -24,4 +29,13 @@ export interface IHttpResponse {
 	 * Gets or sets the value for the <c>Content-Type</c> response header.
 	 */
 	contentType: string | undefined;
+	/**
+	 * Gets an object that can be used to manage cookies for this response.
+	 */
+	readonly cookies: IResponseCookies;
+	/**
+	 * Gets a value indicating whether response headers have been sent to the client.
+	 */
+	readonly hasStarted: boolean;
+	onStarting(callback: (state: object) => Promise<void>, state: object): void;
 }

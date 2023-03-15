@@ -1,3 +1,4 @@
+import { IRequestCookieCollection } from '@yohira/http.features';
 import { IncomingHttpHeaders } from 'node:http';
 
 import { IHttpContext } from './IHttpContext';
@@ -10,5 +11,10 @@ export interface IHttpRequest {
 	path: PathString;
 	queryString: string;
 	readonly headers: IncomingHttpHeaders;
+	/**
+	 * Gets the collection of Cookies for this request.
+	 * @returns The collection of Cookies for this request.
+	 */
+	readonly cookies: IRequestCookieCollection;
 	rawBody: string;
 }

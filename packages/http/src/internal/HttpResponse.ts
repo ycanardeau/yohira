@@ -4,7 +4,11 @@ import {
 	IHttpResponse,
 	StatusCodes,
 } from '@yohira/http.abstractions';
-import { IHttpResponseBodyFeature } from '@yohira/http.features';
+import {
+	IHeaderDictionary,
+	IHttpResponseBodyFeature,
+	IResponseCookies,
+} from '@yohira/http.features';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
@@ -21,7 +25,7 @@ export class HttpResponse implements IHttpResponse {
 	};
 
 	private readonly features = new FeatureReferences<FeatureInterfaces>(
-		FeatureInterfaces,
+		() => new FeatureInterfaces(),
 	);
 
 	constructor(readonly httpContext: IHttpContext) {
@@ -50,6 +54,11 @@ export class HttpResponse implements IHttpResponse {
 		this._statusCode = value;
 	}
 
+	get headers(): IHeaderDictionary {
+		// TODO: return this.httpResponseFeature.headers;
+		throw new Error('Method not implemented.');
+	}
+
 	get body(): Stream {
 		return this.httpResponseBodyFeature.stream;
 	}
@@ -61,5 +70,23 @@ export class HttpResponse implements IHttpResponse {
 	}
 	set contentType(value: string | undefined) {
 		this._contentType = value;
+	}
+
+	get cookies(): IResponseCookies {
+		// TODO: return this.responseCookiesFeature.cookies;
+		throw new Error('Method not implemented.');
+	}
+
+	get hasStarted(): boolean {
+		// TODO: return this.httpResponseFeature.hasStarted;
+		throw new Error('Method not implemented.');
+	}
+
+	onStarting(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }

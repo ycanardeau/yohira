@@ -1,4 +1,4 @@
-import { Ctor, Ref } from '@yohira/base';
+import { Ref } from '@yohira/base';
 
 import { IFeatureCollection } from './IFeatureCollection';
 
@@ -19,8 +19,8 @@ export class FeatureReferences<TCache> {
 
 	cache: TCache;
 
-	constructor(private readonly cacheCtor: Ctor<TCache>) {
-		this.cache = new cacheCtor();
+	constructor(private readonly defaultValueFactory: () => TCache) {
+		this.cache = defaultValueFactory();
 	}
 
 	initialize(collection: IFeatureCollection): void {
@@ -37,7 +37,7 @@ export class FeatureReferences<TCache> {
 	): TFeature | undefined {
 		if (flush) {
 			// Collection detected as changed, clear cache
-			this.cache = new this.cacheCtor();
+			this.cache = this.defaultValueFactory();
 		}
 
 		let cachedValue = this.collection.get<TFeature>(featureType);
