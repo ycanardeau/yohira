@@ -8,6 +8,8 @@ export * from './routing/Endpoint';
 export * from './routing/EndpointHttpContextExtensions';
 export * from './routing/EndpointMetadataCollection';
 export * from './routing/IEndpointFeature';
+export * from './CookieBuilder';
+export * from './CookieSecurePolicy';
 export * from './HttpMethods';
 export * from './IAppBuilder';
 export * from './IHttpContext';

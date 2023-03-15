@@ -83,6 +83,7 @@
 			"@yohira/http.features": ["packages/http.features/src"],
 			"@yohira/http.shared": ["packages/http.shared/src"],
 			"@yohira/routing": ["packages/routing/src"],
+			"@yohira/session": ["packages/session/src"],
 			"@yohira/server.node": ["packages/server.node/src"],
 			"@yohira/server.node.core": ["packages/server.node.core/src"],
 			"@yohira/shared": ["packages/shared/src"],

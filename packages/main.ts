@@ -3,6 +3,7 @@ import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
 import { use, write } from '@yohira/http.abstractions';
 import { getEndpoint } from '@yohira/http.abstractions';
 import { addRouting, mapGet, useEndpoints, useRouting } from '@yohira/routing';
+import { addSession, useSession } from '@yohira/session';
 import { addStaticFiles, useStaticFiles } from '@yohira/static-files';
 
 export async function main(): Promise<void> {
@@ -13,6 +14,14 @@ export async function main(): Promise<void> {
 	addHttpLogging(builder.services);
 
 	addRouting(builder.services);
+
+	// TODO: addDistributedMemoryCache(builder.services);
+
+	addSession(builder.services, (options) => {
+		// TODO: options.idleTimeout =
+		options.cookie.httpOnly = true;
+		options.cookie.isEssential = true;
+	});
 
 	// TODO
 
@@ -32,6 +41,8 @@ export async function main(): Promise<void> {
 	});
 
 	useRouting(app);
+
+	useSession(app);
 
 	use(app, async (context, next) => {
 		console.log(
