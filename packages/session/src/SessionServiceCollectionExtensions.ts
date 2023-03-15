@@ -8,19 +8,20 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 
+import { DistributedSessionStore } from './DistributedSessionStore';
 import { ISessionStore } from './ISessionStore';
 import { SessionMiddleware } from './SessionMiddleware';
 import { SessionOptions } from './SessionOptions';
 
 function addSessionCore(services: IServiceCollection): IServiceCollection {
-	/* TODO: tryAddServiceDescriptor(
+	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(
 			ServiceLifetime.Transient,
 			ISessionStore,
 			DistributedSessionStore,
 		),
-	); */
+	);
 	addDataProtection(services);
 
 	// HACK

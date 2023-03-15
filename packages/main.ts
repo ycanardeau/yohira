@@ -1,4 +1,5 @@
 import { createWebAppBuilder } from '@yohira/core';
+import { addDistributedMemoryCache } from '@yohira/extensions.caching.memory';
 import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
 import { use, write } from '@yohira/http.abstractions';
 import { getEndpoint } from '@yohira/http.abstractions';
@@ -15,7 +16,7 @@ export async function main(): Promise<void> {
 
 	addRouting(builder.services);
 
-	// TODO: addDistributedMemoryCache(builder.services);
+	addDistributedMemoryCache(builder.services);
 
 	addSession(builder.services, (options) => {
 		// TODO: options.idleTimeout =

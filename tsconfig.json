@@ -24,6 +24,12 @@
 			"@yohira/data-protection.abstractions": [
 				"packages/data-protection.abstractions/src"
 			],
+			"@yohira/extensions.caching.abstractions": [
+				"packages/extensions.caching.abstractions/src"
+			],
+			"@yohira/extensions.caching.memory": [
+				"packages/extensions.caching.memory/src"
+			],
 			"@yohira/extensions.config": ["packages/extensions.config/src"],
 			"@yohira/extensions.config.abstractions": [
 				"packages/extensions.config.abstractions/src"
