@@ -171,9 +171,6 @@ export class Http1Connection
 			feature = this.currentIEndpointFeature as T;
 		} else if (key === IServiceProvidersFeature) {
 			feature = this.currentIServiceProvidersFeature as T;
-		} else {
-			// TODO
-			throw new Error('Method not implemented.');
 		}
 
 		// TODO
@@ -193,9 +190,8 @@ export class Http1Connection
 		} else if (key === IServiceProvidersFeature) {
 			this.currentIServiceProvidersFeature =
 				instance as IServiceProvidersFeature;
-		} else {
-			// TODO
-			throw new Error('Method not implemented.');
 		}
+
+		// TODO
 	}
 }
