@@ -1,3 +1,4 @@
+import { addDataProtection } from '@yohira/data-protection';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -20,7 +21,7 @@ function addSessionCore(services: IServiceCollection): IServiceCollection {
 			DistributedSessionStore,
 		),
 	); */
-	// TODO: addDataProtection(services);
+	addDataProtection(services);
 
 	// HACK
 	addSingletonCtor(
