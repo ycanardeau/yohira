@@ -11,8 +11,14 @@ function errorUnprotectingSessionCookie(logger: ILogger): void {
 
 // https://source.dot.net/#Microsoft.AspNetCore.Session/CookieProtection.cs,abe9e173c3604d5f,references
 export function protectCookie(protector: IDataProtector, data: string): string {
-	// TODO
-	throw new Error('Method not implemented.');
+	if (!data) {
+		return data;
+	}
+
+	const userData = Buffer.from(data);
+
+	const protectedData = protector.protect(userData);
+	return protectedData.toString('base64').replace(/=+$/, '');
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Session/CookieProtection.cs,dee77770acee2199,references
