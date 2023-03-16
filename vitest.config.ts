@@ -5,6 +5,14 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@yohira/base': resolve(__dirname, './packages/base/src'),
+			'@yohira/data-protection': resolve(
+				__dirname,
+				'./packages/data-protection/src',
+			),
+			'@yohira/data-protection.abstractions': resolve(
+				__dirname,
+				'./packages/data-protection.abstractions/src',
+			),
 			'@yohira/extensions.config': resolve(
 				__dirname,
 				'./packages/extensions.config/src',

@@ -10,7 +10,7 @@ test('MemoryStream_Ctor_NegativeIndices', () => {
 	): void {
 		expect(() =>
 			MemoryStream.from(Buffer.alloc(arraySize), index, count),
-		).toThrowError();
+		).toThrowError('must be a non-negative value.');
 	}
 
 	MemoryStream_Ctor_NegativeIndices(10, -1, Number.MAX_VALUE);
@@ -26,7 +26,9 @@ test('MemoryStream_Ctor_OutOfRangeIndices', () => {
 	): void {
 		expect(() =>
 			MemoryStream.from(Buffer.alloc(arraySize), index, count),
-		).toThrowError();
+		).toThrowError(
+			'Offset and length were out of bounds for the array or count is greater than the number of elements from index to the end of the source collection.',
+		);
 	}
 
 	MemoryStream_Ctor_OutOfRangeIndices(1, 2, 1);
@@ -36,12 +38,16 @@ test('MemoryStream_Ctor_OutOfRangeIndices', () => {
 // https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/MemoryStream/MemoryStream.ConstructorTests.cs#L27
 test('MemoryStream_Ctor_NullArray', () => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	expect(() => MemoryStream.from(undefined!, 5, 2)).toThrowError();
+	expect(() => MemoryStream.from(undefined!, 5, 2)).toThrowError(
+		'Value cannot be null.',
+	);
 });
 
 // https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/MemoryStream/MemoryStream.ConstructorTests.cs#L33
 test('MemoryStream_Ctor_InvalidCapacities', () => {
 	// TODO: expect(() => MemoryStream.alloc(Number.MIN_VALUE)).toThrowError();
-	expect(() => MemoryStream.alloc(-1)).toThrowError();
+	expect(() => MemoryStream.alloc(-1)).toThrowError(
+		"'capacity' must be a non-negative value.",
+	);
 	// TODO
 });

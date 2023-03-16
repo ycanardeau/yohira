@@ -1,5 +1,6 @@
 import { IDisposable } from './IDisposable';
 import { MemoryStream } from './MemoryStream';
+import { SeekOrigin } from './SeekOrigin';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/BinaryWriter.cs,cf806b417abe1a35,references
 export class BinaryWriter implements IDisposable {
@@ -7,6 +8,10 @@ export class BinaryWriter implements IDisposable {
 
 	dispose(): void {
 		this.outStream.dispose();
+	}
+
+	seek(offset: number, loc: SeekOrigin): number {
+		return this.outStream.seek(offset, loc);
 	}
 
 	flush(): void {
@@ -57,6 +62,31 @@ export class BinaryWriter implements IDisposable {
 	writeUint32LE(value: number): void {
 		const buffer = Buffer.alloc(4);
 		buffer.writeUint32LE(value);
+		this.outStream.write(buffer, 0, buffer.length);
+	}
+
+	writeUint32BE(value: number): void {
+		const buffer = Buffer.alloc(4);
+		buffer.writeUint32BE(value);
+		this.outStream.write(buffer, 0, buffer.length);
+	}
+
+	// Writes a length-prefixed string to this stream in the BinaryWriter's
+	// current Encoding. This method first writes the length of the string as
+	// an encoded unsigned integer with variable length, and then writes that many characters
+	// to the stream.
+	//
+	writeString(value: string): void {
+		if (value === undefined) {
+			throw new Error('Value cannot be null.' /* LOC */);
+		}
+
+		// TODO
+
+		const buffer = Buffer.from(value /* TODO: encoding */);
+		const actualBytecount = buffer.length;
+		this.write7BitEncodedInt(actualBytecount);
+		// TODO
 		this.outStream.write(buffer, 0, buffer.length);
 	}
 }

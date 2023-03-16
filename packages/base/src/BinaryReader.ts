@@ -70,4 +70,16 @@ export class BinaryReader implements IDisposable {
 		this._stream.read(buffer, 0, buffer.length);
 		return buffer.readUint32LE();
 	}
+
+	readString(): string {
+		const stringLength = this.read7BitEncodedInt();
+		// TODO
+
+		// TODO
+
+		// TODO
+		const buffer = Buffer.alloc(stringLength);
+		this._stream.read(buffer, 0, buffer.length);
+		return buffer.toString(/* TODO: encoding */);
+	}
 }

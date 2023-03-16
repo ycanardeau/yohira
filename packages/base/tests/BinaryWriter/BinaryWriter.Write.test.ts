@@ -151,3 +151,43 @@ test('BinaryWriter_WriteUInt32Test', () => {
 });
 
 // TODO
+
+// https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/BinaryWriter/BinaryWriter.WriteTests.cs#L158
+test('BinaryWriter_WriteStringTest', () => {
+	const sb: string[] = [];
+	for (let ii = 0; ii < 5; ii++) {
+		sb.push('abc');
+	}
+	const str1 = sb.join();
+
+	const strArr = [
+		'ABC',
+		'\t\t\n\n\n\0\r\r\v\v\t\0\rHello',
+		'This is a normal string',
+		'12345667789!@#$%^&&())_+_)@#',
+		'ABSDAFJPIRUETROPEWTGRUOGHJDOLJHLDHWEROTYIETYWsdifhsiudyoweurscnkjhdfusiyugjlskdjfoiwueriye',
+		'     ',
+		'\0\0\0\t\t\tHey""',
+		'\u0022\u0011',
+		str1,
+		'',
+	];
+
+	writeTest(
+		strArr,
+		(bw, s) => bw.writeString(s),
+		(br) => br.readString(),
+	);
+});
+
+// https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/BinaryWriter/BinaryWriter.WriteTests.cs#L175
+test('BinaryWriter_WriteStringTest_Null', () => {
+	using(createStream(), (memStream) => {
+		using(new BinaryWriter(memStream), (dw2) => {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			expect(() => dw2.writeString(undefined!)).toThrowError(
+				'Value cannot be null.',
+			);
+		});
+	});
+});

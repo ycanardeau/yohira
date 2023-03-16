@@ -20,6 +20,10 @@
 			],
 			"@yohira/base": ["packages/base/src"],
 			"@yohira/core": ["packages/core/src"],
+			"@yohira/data-protection": ["packages/data-protection/src"],
+			"@yohira/data-protection.abstractions": [
+				"packages/data-protection.abstractions/src"
+			],
 			"@yohira/extensions.config": ["packages/extensions.config/src"],
 			"@yohira/extensions.config.abstractions": [
 				"packages/extensions.config.abstractions/src"

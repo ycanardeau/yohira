@@ -11,7 +11,9 @@ test('MemoryStream_GetBuffer_Length', () => {
 // https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/MemoryStream/MemoryStream.GetBufferTests.cs#L19
 test('MemoryStream_GetBuffer_NonExposable', () => {
 	const ms = MemoryStream.from(Buffer.alloc(100), 0, 100);
-	expect(() => ms.getBuffer()).toThrowError();
+	expect(() => ms.getBuffer()).toThrowError(
+		"MemoryStream's internal buffer cannot be accessed.",
+	);
 });
 
 // https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/MemoryStream/MemoryStream.GetBufferTests.cs#L26
