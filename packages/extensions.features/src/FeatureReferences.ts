@@ -1,4 +1,4 @@
-import { Ctor } from '@yohira/base';
+import { Ctor, Ref } from '@yohira/base';
 
 import { IFeatureCollection } from './IFeatureCollection';
 
@@ -29,10 +29,7 @@ export class FeatureReferences<TCache> {
 
 	private updateCached<TFeature, TState>(
 		featureType: symbol,
-		cached: {
-			get: () => TFeature | undefined;
-			set: (value: TFeature | undefined) => void;
-		},
+		cached: Ref<TFeature | undefined>,
 		state: TState,
 		factory: (state: TState) => TFeature | undefined,
 		revision: number,
@@ -62,10 +59,7 @@ export class FeatureReferences<TCache> {
 
 	fetch<TFeature, TState>(
 		featureType: symbol,
-		cached: {
-			get: () => TFeature | undefined;
-			set: (value: TFeature | undefined) => void;
-		},
+		cached: Ref<TFeature | undefined>,
 		state: TState,
 		factory: (state: TState) => TFeature | undefined,
 	): TFeature | undefined {

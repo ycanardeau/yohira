@@ -33,12 +33,8 @@ export class HttpResponse implements IHttpResponse {
 		return this.features.fetch(
 			IHttpResponseBodyFeature,
 			{
-				get: () => {
-					return this.features.cache.responseBody;
-				},
-				set: (value) => {
-					this.features.cache.responseBody = value;
-				},
+				get: () => this.features.cache.responseBody,
+				set: (value) => (this.features.cache.responseBody = value),
 			},
 			this.features.collection,
 			HttpResponse.nullResponseBodyFeature,

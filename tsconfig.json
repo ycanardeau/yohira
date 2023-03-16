@@ -61,6 +61,9 @@
 			"@yohira/extensions.options.config-extensions": [
 				"packages/extensions.options.config-extensions/src"
 			],
+			"@yohira/extensions.primitives": [
+				"packages/extensions.primitives/src"
+			],
 			"@yohira/features": ["packages/features/src"],
 			"@yohira/hosting": ["packages/hosting/src"],
 			"@yohira/hosting.abstractions": [
@@ -74,9 +77,11 @@
 			"@yohira/http.abstractions": ["packages/http.abstractions/src"],
 			"@yohira/http.extensions": ["packages/http.extensions/src"],
 			"@yohira/http.features": ["packages/http.features/src"],
+			"@yohira/http.shared": ["packages/http.shared/src"],
 			"@yohira/routing": ["packages/routing/src"],
 			"@yohira/server.node": ["packages/server.node/src"],
 			"@yohira/server.node.core": ["packages/server.node.core/src"],
+			"@yohira/shared": ["packages/shared/src"],
 			"@yohira/static-files": ["packages/static-files/src"],
 			"@yohira/third-party.inversify": [
 				"packages/third-party.inversify/src"

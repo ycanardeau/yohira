@@ -1,3 +1,4 @@
+import { Ref } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { CandidateState } from './CandidateState';
@@ -33,12 +34,15 @@ export class CandidateSet {
 		return this.candidates.length;
 	}
 
-	get(index: number): { get: () => CandidateState } {
+	get(index: number): Ref<CandidateState> {
 		if (index >= this.count) {
 			throw new Error(/* TODO: message */);
 		}
 
-		return { get: () => this.candidates[index] };
+		return {
+			get: () => this.candidates[index],
+			set: (value) => (this.candidates[index] = value),
+		};
 	}
 
 	/** @internal */ static isValidCandidate(
@@ -56,10 +60,7 @@ export class CandidateSet {
 	}
 
 	/** @internal */ static setValidity(
-		candidate: {
-			get: () => CandidateState;
-			set: (value: CandidateState) => void;
-		},
+		candidate: Ref<CandidateState>,
 		value: boolean,
 	): void {
 		const originalScore = candidate.get().score;

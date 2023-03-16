@@ -170,9 +170,10 @@ function parseLiteral(context: Context, parts: RoutePatternPart[]): boolean {
 	}
 }
 
-export function indexOfAny(array: string, values: string[]): number {
+// OPTIMIZE
+export function indexOfAny(searchSpace: string, values: string[]): number {
 	for (const value of values) {
-		const indexOf = array.indexOf(value);
+		const indexOf = searchSpace.indexOf(value);
 		if (indexOf >= 0) {
 			return indexOf;
 		}

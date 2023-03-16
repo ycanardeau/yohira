@@ -33,12 +33,8 @@ export class HttpRequest implements IHttpRequest {
 		return this.features.fetch(
 			IHttpRequestFeature,
 			{
-				get: () => {
-					return this.features.cache.request;
-				},
-				set: (value) => {
-					this.features.cache.request = value;
-				},
+				get: () => this.features.cache.request,
+				set: (value) => (this.features.cache.request = value),
 			},
 			this.features.collection,
 			HttpRequest.nullRequestFeature,

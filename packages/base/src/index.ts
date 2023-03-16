@@ -18,6 +18,7 @@ export * from './IServiceProvider';
 export * from './List';
 export * from './MapExtensions';
 export * from './Path';
+export * from './Ref';
 export * from './StringExtensions';
 export * from './Type';
 export * from './typedef';

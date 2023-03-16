@@ -47,12 +47,8 @@ export class HttpContext implements IHttpContext {
 		return this._features.fetch(
 			IServiceProvidersFeature,
 			{
-				get: () => {
-					return this._features.cache.serviceProviders;
-				},
-				set: (value) => {
-					this._features.cache.serviceProviders = value;
-				},
+				get: () => this._features.cache.serviceProviders,
+				set: (value) => (this._features.cache.serviceProviders = value),
 			},
 			this,
 			HttpContext.newServiceProvidersFeature,

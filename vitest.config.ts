@@ -66,6 +66,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.options.config-extensions/src',
 			),
+			'@yohira/extensions.primitives': resolve(
+				__dirname,
+				'./packages/extensions.primitives/src',
+			),
 			'@yohira/http': resolve(__dirname, './packages/http/src'),
 			'@yohira/http.abstractions': resolve(
 				__dirname,
@@ -75,7 +79,12 @@ export default defineConfig({
 				__dirname,
 				'./packages/http.features/src',
 			),
+			'@yohira/http.shared': resolve(
+				__dirname,
+				'./packages/http.shared/src',
+			),
 			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
+			'@yohira/shared': resolve(__dirname, './packages/shared/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,
 				'./packages/third-party.inversify/src',
