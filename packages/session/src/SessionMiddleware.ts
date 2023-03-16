@@ -16,6 +16,7 @@ import {
 	RequestDelegate,
 } from '@yohira/http.abstractions';
 import { ISessionFeature } from '@yohira/http.features';
+import { randomUUID } from 'node:crypto';
 
 import { protectCookie, unprotectCookie } from './CookieProtection';
 import { ISessionStore } from './ISessionStore';
@@ -112,8 +113,7 @@ export class SessionMiddleware implements IMiddleware {
 		);
 		if (!sessionKey.trim() || sessionKey.length !== sessionKeyLength) {
 			function getSessionKey(): string {
-				// TODO
-				throw new Error('Method not implemented.');
+				return randomUUID();
 			}
 
 			// No valid cookie, new session.
