@@ -1,4 +1,6 @@
 export * from './AggregateError';
+export * from './BinaryReader';
+export * from './BinaryWriter';
 export * from './CaseInsensitiveMap';
 export * from './CaseInsensitiveSet';
 export * from './Ctor';
@@ -17,6 +19,7 @@ export * from './IReadonlyList';
 export * from './IServiceProvider';
 export * from './List';
 export * from './MapExtensions';
+export * from './MemoryStream';
 export * from './Path';
 export * from './Ref';
 export * from './StringExtensions';
