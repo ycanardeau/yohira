@@ -19,7 +19,7 @@
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
 		"tsc-alias": "^1.7.1",
-		"typescript": "^5.0.0-beta",
+		"typescript": "^5.0.2",
 		"vitest": "^0.29.3"
 	},
 	"scripts": {
