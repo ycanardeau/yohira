@@ -13,7 +13,6 @@ import { IPersistedDataProtector } from '../IPersistedDataProtector';
 import { isDebugLevelEnabled, isTraceLevelEnabled } from '../LoggingExtensions';
 import { encrypt } from '../authenticated-encryption/AuthenticatedEncryptorExtensions';
 import { CryptographicError } from './CryptographicError';
-import { KeyRingProvider } from './KeyRingProvider';
 import { IKeyRingProvider } from './internal/IKeyRingProvider';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,d74adcb73a7fb357,references

@@ -1,13 +1,18 @@
 import { BinaryWriter, Guid, MemoryStream } from '@yohira/base';
 import {
+	AuthenticatedEncryptorFactory,
+	CacheableKeyRing,
 	CryptographicError,
 	IAuthenticatedEncryptor,
 	IAuthenticatedEncryptorDescriptor,
+	ICacheableKeyRingProvider,
 	IKeyRing,
 	IKeyRingProvider,
 	Key,
+	KeyManagementOptions,
 	KeyRing,
 	KeyRingBasedDataProtector,
+	KeyRingProvider,
 	writeGuid,
 } from '@yohira/data-protection';
 import { IDataProtector } from '@yohira/data-protection.abstractions';
@@ -15,7 +20,16 @@ import {
 	ILogger,
 	NullLoggerFactory,
 } from '@yohira/extensions.logging.abstractions';
+import { createOptions } from '@yohira/extensions.options';
 import { expect, test } from 'vitest';
+
+class TestKeyRingProvider implements ICacheableKeyRingProvider {
+	constructor(private keyRing: CacheableKeyRing) {}
+
+	getCacheableKeyRing(): CacheableKeyRing {
+		return this.keyRing;
+	}
+}
 
 function buildAadFromPurposeStrings(
 	keyId: Guid,
@@ -314,6 +328,73 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 
 	const protector = new KeyRingBasedDataProtector(
 		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	expect(() => protector.unprotect(protectedData)).toThrowError(
+		`The key ${
+			notFoundKeyId.toString(/* TODO: 'B' */)
+		} was not found in the key ring.`,
+	);
+});
+
+function createKeyRingProvider(
+	cacheableKeyRingProvider: ICacheableKeyRingProvider,
+): KeyRingProvider {
+	const mockEncryptorFactory = {};
+	const options = new KeyManagementOptions();
+	options.authenticatedEncryptorFactories.add(mockEncryptorFactory);
+
+	const keyRingProvider = new KeyRingProvider(
+		undefined!,
+		createOptions(options),
+		undefined!,
+		NullLoggerFactory.instance,
+	);
+	keyRingProvider.cacheableKeyRingProvider = cacheableKeyRingProvider;
+	return keyRingProvider;
+}
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L247
+test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
+	const notFoundKeyId = Guid.fromString(
+		'654057ab-2491-4471-a72a-b3b114afda38',
+	);
+	const protectedData = buildProtectedDataFromCiphertext(
+		notFoundKeyId,
+		Buffer.alloc(0),
+	);
+
+	const mockDescriptor = {};
+	const mockEncryptorFactory = {};
+	const encryptorFactory = new AuthenticatedEncryptorFactory(
+		NullLoggerFactory.instance,
+	);
+
+	// the keyring has only one key
+	const key = new Key(
+		Guid.empty,
+		new Date(),
+		new Date(),
+		new Date(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = CacheableKeyRing.create(
+		// TODO: expirationToken,
+		new Date(8640000000000000) /* TODO */,
+		key,
+		[key],
+	);
+
+	const keyRingProvider = createKeyRingProvider(
+		new TestKeyRingProvider(keyRing),
+	);
+
+	const protector = new KeyRingBasedDataProtector(
+		keyRingProvider,
 		getLogger(),
 		undefined,
 		'purpose',
