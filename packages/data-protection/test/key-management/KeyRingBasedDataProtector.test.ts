@@ -31,6 +31,23 @@ class TestKeyRingProvider implements ICacheableKeyRingProvider {
 	}
 }
 
+class RefreshTestKeyRingProvider implements ICacheableKeyRingProvider {
+	private called = false;
+
+	constructor(
+		private keyRing: CacheableKeyRing,
+		private refreshKeyRing: CacheableKeyRing,
+	) {}
+
+	getCacheableKeyRing(): CacheableKeyRing {
+		if (!this.called) {
+			this.called = true;
+			return this.keyRing;
+		}
+		return this.refreshKeyRing;
+	}
+}
+
 function buildAadFromPurposeStrings(
 	keyId: Guid,
 	...purposes: string[]
@@ -392,6 +409,73 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 	const keyRingProvider = createKeyRingProvider(
 		new TestKeyRingProvider(keyRing),
 	);
+
+	const protector = new KeyRingBasedDataProtector(
+		keyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	expect(() => protector.unprotect(protectedData)).toThrowError(
+		`The key ${
+			notFoundKeyId.toString(/* TODO: 'B' */)
+		} was not found in the key ring.`,
+	);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L278
+test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
+	const notFoundKeyId = Guid.fromString(
+		'654057ab-2491-4471-a72a-b3b114afda38',
+	);
+	const protectedData = buildProtectedDataFromCiphertext(
+		notFoundKeyId,
+		Buffer.alloc(0),
+	);
+
+	const mockDescriptor = {};
+	const mockEncryptorFactory = {};
+	const encryptorFactory = new AuthenticatedEncryptorFactory(
+		NullLoggerFactory.instance,
+	);
+
+	// the keyring has only one key
+	const key = new Key(
+		Guid.empty,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = CacheableKeyRing.create(
+		// TODO: expirationToken,
+		Number.MAX_VALUE /* TODO */,
+		key,
+		[key],
+	);
+
+	// the refresh keyring has the notfound key
+	const key2 = new Key(
+		notFoundKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing2 = CacheableKeyRing.create(
+		// TODO: expirationToken,
+		Number.MAX_VALUE /* TODO */,
+		key2,
+		[key2],
+	);
+
+	const keyRingProvider = createKeyRingProvider(
+		new RefreshTestKeyRingProvider(keyRing, keyRing2),
+	);
+	keyRingProvider.autoRefreshWindowEnd = Date.now();
 
 	const protector = new KeyRingBasedDataProtector(
 		keyRingProvider,

@@ -13,6 +13,7 @@ import { IPersistedDataProtector } from '../IPersistedDataProtector';
 import { isDebugLevelEnabled, isTraceLevelEnabled } from '../LoggingExtensions';
 import { encrypt } from '../authenticated-encryption/AuthenticatedEncryptorExtensions';
 import { CryptographicError } from './CryptographicError';
+import { KeyRingProvider } from './KeyRingProvider';
 import { IKeyRingProvider } from './internal/IKeyRingProvider';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,d74adcb73a7fb357,references
@@ -331,20 +332,25 @@ export class KeyRingBasedDataProtector
 
 			// Find the correct encryptor in the keyring.
 			let keyWasRevoked = false;
-			const currentKeyRing = this.keyRingProvider.getCurrentKeyRing();
-			const requestedEncryptor =
+			let currentKeyRing = this.keyRingProvider.getCurrentKeyRing();
+			let requestedEncryptor =
 				currentKeyRing.getAuthenticatedEncryptorByKeyId(
 					keyIdFromPayload,
 					{ set: (value) => (keyWasRevoked = value) },
 				);
 			if (requestedEncryptor === undefined) {
-				/* TODO: if (
+				if (
 					this.keyRingProvider instanceof KeyRingProvider &&
 					this.keyRingProvider.inAutoRefreshWindow()
 				) {
-					// TODO
-					throw new Error('Method not implemented.');
-				} */
+					currentKeyRing =
+						this.keyRingProvider.refreshCurrentKeyRing();
+					requestedEncryptor =
+						currentKeyRing.getAuthenticatedEncryptorByKeyId(
+							keyIdFromPayload,
+							{ set: (value) => (keyWasRevoked = value) },
+						);
+				}
 
 				if (requestedEncryptor === undefined) {
 					if (

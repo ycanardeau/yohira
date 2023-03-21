@@ -31,7 +31,9 @@ export class KeyRingProvider
 	private readonly logger: ILogger;
 
 	// for testing
-	/* @internal */ cacheableKeyRingProvider: ICacheableKeyRingProvider;
+	/** @internal */ cacheableKeyRingProvider: ICacheableKeyRingProvider;
+
+	/** @internal */ autoRefreshWindowEnd: number;
 
 	constructor(
 		private readonly keyManager: IKeyManager,
@@ -45,7 +47,12 @@ export class KeyRingProvider
 		this.cacheableKeyRingProvider = this;
 		this.logger = loggerFactory.createLogger(KeyRingProvider.name);
 
-		// TODO
+		// We will automatically refresh any unknown keys for 2 minutes see https://github.com/dotnet/aspnetcore/issues/3975
+		this.autoRefreshWindowEnd = Date.now() + 2 * 60 * 1000;
+	}
+
+	inAutoRefreshWindow(): boolean {
+		return Date.now() < this.autoRefreshWindowEnd;
 	}
 
 	/** @internal */ getCurrentKeyRingCore(
@@ -82,7 +89,11 @@ export class KeyRingProvider
 	}
 
 	getCurrentKeyRing(): IKeyRing {
-		return this.getCurrentKeyRingCore(Date.now() /* TODO */);
+		return this.getCurrentKeyRingCore(Date.now());
+	}
+
+	/** @internal */ refreshCurrentKeyRing(): IKeyRing {
+		return this.getCurrentKeyRingCore(Date.now(), true);
 	}
 
 	private createCacheableKeyRingCore(
