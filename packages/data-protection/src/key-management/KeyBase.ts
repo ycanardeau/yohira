@@ -39,4 +39,8 @@ export abstract class KeyBase implements IKey {
 
 		return this.encryptor;
 	}
+
+	/** @internal */ setRevoked(): void {
+		this.isRevoked = true;
+	}
 }

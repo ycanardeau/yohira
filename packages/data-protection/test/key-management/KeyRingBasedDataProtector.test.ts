@@ -327,12 +327,10 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 
 	const mockDescriptor: IAuthenticatedEncryptorDescriptor = {};
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
-		createEncryptorInstance(): IAuthenticatedEncryptor {
-			return {
-				decrypt: () => Buffer.alloc(0),
-				encrypt: () => Buffer.alloc(0),
-			};
-		},
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
 	};
 
 	// the keyring has only one key
@@ -369,12 +367,10 @@ function createKeyRingProvider(
 	cacheableKeyRingProvider: ICacheableKeyRingProvider,
 ): KeyRingProvider {
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
-		createEncryptorInstance(): IAuthenticatedEncryptor {
-			return {
-				decrypt: () => Buffer.alloc(0),
-				encrypt: () => Buffer.alloc(0),
-			};
-		},
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
 	};
 	const options = new KeyManagementOptions();
 	options.authenticatedEncryptorFactories.add(mockEncryptorFactory);
@@ -401,12 +397,10 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 
 	const mockDescriptor = {};
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
-		createEncryptorInstance(): IAuthenticatedEncryptor {
-			return {
-				decrypt: () => Buffer.alloc(0),
-				encrypt: () => Buffer.alloc(0),
-			};
-		},
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
 	};
 	const encryptorFactory = new AuthenticatedEncryptorFactory(
 		NullLoggerFactory.instance,
@@ -458,12 +452,10 @@ test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
 
 	const mockDescriptor = {};
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
-		createEncryptorInstance(): IAuthenticatedEncryptor {
-			return {
-				decrypt: () => Buffer.alloc(0),
-				encrypt: () => Buffer.alloc(0),
-			};
-		},
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
 	};
 	const encryptorFactory = new AuthenticatedEncryptorFactory(
 		NullLoggerFactory.instance,
@@ -532,12 +524,10 @@ test('Unprotect_KeyNotFound_RefreshOnce_CanFindKey', () => {
 
 	const mockDescriptor = {};
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
-		createEncryptorInstance(): IAuthenticatedEncryptor {
-			return {
-				decrypt: () => Buffer.alloc(0),
-				encrypt: () => Buffer.alloc(0),
-			};
-		},
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
 	};
 	const encryptorFactory = new AuthenticatedEncryptorFactory(
 		NullLoggerFactory.instance,
@@ -588,6 +578,53 @@ test('Unprotect_KeyNotFound_RefreshOnce_CanFindKey', () => {
 
 	const result = protector.unprotect(protectedData);
 	expect(result.equals(Buffer.alloc(0))).toBe(true);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L381
+test('Unprotect_KeyRevoked_RevocationDisallowed_ThrowsKeyRevoked', () => {
+	const keyId = Guid.fromString('654057ab-2491-4471-a72a-b3b114afda38');
+	const protectedData = buildProtectedDataFromCiphertext(
+		keyId,
+		Buffer.alloc(0),
+	);
+
+	const mockDescriptor = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance: () => ({
+			decrypt: () => Buffer.alloc(0),
+			encrypt: () => Buffer.alloc(0),
+		}),
+	};
+
+	// the keyring has only one key
+	const key = new Key(
+		keyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	key.setRevoked();
+	const keyRing = new KeyRing(
+		// TODO: expirationToken,
+		key,
+		[key],
+	);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => keyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	expect(() => protector.unprotect(protectedData)).toThrowError(
+		`The key ${keyId.toString(/* TODO: 'B' */)} has been revoked.`,
+	);
 });
 
 // TODO
