@@ -7,11 +7,23 @@ import { IKeyRing } from './internal/IKeyRing';
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/KeyRing.cs,416bb76dcc1a693c,references
 // used for providing lazy activation of the authenticated encryptor instance
 class KeyHolder {
+	private encryptor?: IAuthenticatedEncryptor;
+
 	constructor(private readonly key: IKey) {}
 
-	getEncryptorInstance(isRevoked: Out<boolean>): IAuthenticatedEncryptor {
-		// TODO
-		throw new Error('Method not implemented.');
+	getEncryptorInstance(
+		isRevoked: Out<boolean>,
+	): IAuthenticatedEncryptor | undefined {
+		// REVIEW: lock
+		// REVIEW: Volatile.Read
+		let encryptor = this.encryptor;
+		if (encryptor === undefined) {
+			encryptor = this.key.createEncryptor();
+			// REVIEW: Volatile.Write
+			this.encryptor = encryptor;
+		}
+		isRevoked.set(this.key.isRevoked);
+		return encryptor;
 	}
 }
 

@@ -1,6 +1,7 @@
 export * from './authenticated-encryption/AuthenticatedEncryptorFactory';
 export * from './authenticated-encryption/IAuthenticatedEncryptor';
 export * from './authenticated-encryption/IAuthenticatedEncryptorDescriptor';
+export * from './authenticated-encryption/IAuthenticatedEncryptorFactory';
 export * from './key-management/internal/CacheableKeyRing';
 export * from './key-management/internal/ICacheableKeyRingProvider';
 export * from './key-management/internal/IKeyRing';

@@ -5,6 +5,7 @@ import {
 	CryptographicError,
 	IAuthenticatedEncryptor,
 	IAuthenticatedEncryptorDescriptor,
+	IAuthenticatedEncryptorFactory,
 	ICacheableKeyRingProvider,
 	IKeyRing,
 	IKeyRingProvider,
@@ -325,7 +326,14 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 	);
 
 	const mockDescriptor: IAuthenticatedEncryptorDescriptor = {};
-	const mockEncryptorFactory = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance(): IAuthenticatedEncryptor {
+			return {
+				decrypt: () => Buffer.alloc(0),
+				encrypt: () => Buffer.alloc(0),
+			};
+		},
+	};
 
 	// the keyring has only one key
 	const key = new Key(
@@ -360,7 +368,14 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 function createKeyRingProvider(
 	cacheableKeyRingProvider: ICacheableKeyRingProvider,
 ): KeyRingProvider {
-	const mockEncryptorFactory = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance(): IAuthenticatedEncryptor {
+			return {
+				decrypt: () => Buffer.alloc(0),
+				encrypt: () => Buffer.alloc(0),
+			};
+		},
+	};
 	const options = new KeyManagementOptions();
 	options.authenticatedEncryptorFactories.add(mockEncryptorFactory);
 
@@ -385,7 +400,14 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 	);
 
 	const mockDescriptor = {};
-	const mockEncryptorFactory = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance(): IAuthenticatedEncryptor {
+			return {
+				decrypt: () => Buffer.alloc(0),
+				encrypt: () => Buffer.alloc(0),
+			};
+		},
+	};
 	const encryptorFactory = new AuthenticatedEncryptorFactory(
 		NullLoggerFactory.instance,
 	);
@@ -435,7 +457,14 @@ test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
 	);
 
 	const mockDescriptor = {};
-	const mockEncryptorFactory = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance(): IAuthenticatedEncryptor {
+			return {
+				decrypt: () => Buffer.alloc(0),
+				encrypt: () => Buffer.alloc(0),
+			};
+		},
+	};
 	const encryptorFactory = new AuthenticatedEncryptorFactory(
 		NullLoggerFactory.instance,
 	);
@@ -489,6 +518,76 @@ test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
 			notFoundKeyId.toString(/* TODO: 'B' */)
 		} was not found in the key ring.`,
 	);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L314
+test('Unprotect_KeyNotFound_RefreshOnce_CanFindKey', () => {
+	const notFoundKeyId = Guid.fromString(
+		'654057ab-2491-4471-a72a-b3b114afda38',
+	);
+	const protectedData = buildProtectedDataFromCiphertext(
+		notFoundKeyId,
+		Buffer.alloc(0),
+	);
+
+	const mockDescriptor = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance(): IAuthenticatedEncryptor {
+			return {
+				decrypt: () => Buffer.alloc(0),
+				encrypt: () => Buffer.alloc(0),
+			};
+		},
+	};
+	const encryptorFactory = new AuthenticatedEncryptorFactory(
+		NullLoggerFactory.instance,
+	);
+
+	// the keyring has only one key
+	const key = new Key(
+		Guid.empty,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = CacheableKeyRing.create(
+		// TODO: expirationToken,
+		Number.MAX_VALUE /* TODO */,
+		key,
+		[key],
+	);
+
+	// the refresh keyring has the notfound key
+	const key2 = new Key(
+		notFoundKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing2 = CacheableKeyRing.create(
+		// TODO: expirationToken,
+		Number.MAX_VALUE /* TODO */,
+		key2,
+		[key2],
+	);
+
+	const keyRingProvider = createKeyRingProvider(
+		new RefreshTestKeyRingProvider(keyRing, keyRing2),
+	);
+
+	const protector = new KeyRingBasedDataProtector(
+		keyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	const result = protector.unprotect(protectedData);
+	expect(result.equals(Buffer.alloc(0))).toBe(true);
 });
 
 // TODO

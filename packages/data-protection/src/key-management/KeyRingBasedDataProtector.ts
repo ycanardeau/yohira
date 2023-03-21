@@ -43,6 +43,32 @@ function keyWasNotFoundInTheKeyRingUnprotectOperationCannotProceed(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,c518a53646ccc4fe,references
+function keyWasRevokedCallerRequestedUnprotectOperationProceedRegardless(
+	logger: ILogger,
+	keyId: Guid,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		`Key ${
+			keyId.toString(/* TODO: 'B' */)
+		} was revoked. Caller requested unprotect operation proceed regardless.` /* LOC */,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,b64a35c27e8b2342,references
+function keyWasRevokedUnprotectOperationCannotProceed(
+	logger: ILogger,
+	keyId: Guid,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		`Key ${
+			keyId.toString(/* TODO: 'B' */)
+		} was revoked. Unprotect operation cannot proceed.` /* LOC */,
+	);
+}
+
 const sizeofUint32 = 4;
 const sizeofGuid = 16;
 
@@ -370,8 +396,59 @@ export class KeyRingBasedDataProtector
 				}
 			}
 
-			// TODO
-			throw new Error('Method not implemented.');
+			// Do we need to notify the caller that they should reprotect the data?
+			status.set(UnprotectStatus.Ok);
+			if (!keyIdFromPayload.equals(currentKeyRing.defaultKeyId)) {
+				status.set(UnprotectStatus.DefaultEncryptionKeyChanged);
+			}
+
+			// Do we need to notify the caller that this key was revoked?
+			if (keyWasRevoked) {
+				if (allowOperationsOnRevokedKeys) {
+					if (
+						this.logger !== undefined &&
+						isDebugLevelEnabled(this.logger)
+					) {
+						keyWasRevokedCallerRequestedUnprotectOperationProceedRegardless(
+							this.logger,
+							keyIdFromPayload,
+						);
+					}
+					status.set(UnprotectStatus.DecryptionKeyWasRevoked);
+				} else {
+					if (
+						this.logger !== undefined &&
+						isDebugLevelEnabled(this.logger)
+					) {
+						keyWasRevokedUnprotectOperationCannotProceed(
+							this.logger,
+							keyIdFromPayload,
+						);
+					}
+					throw new CryptographicError(
+						`The key ${
+							keyIdFromPayload.toString(/* TODO: 'B' */)
+						} has been revoked.` /* LOC */,
+					);
+				}
+			}
+
+			// Perform the decryption operation.
+			const ciphertext = protectedData.subarray(
+				sizeofUint32 + sizeofGuid,
+				protectedData.length,
+			); // chop off magic header + encryptor id
+			const additionalAuthenticatedData = this.aadTemplate.getAadForKey(
+				keyIdFromPayload,
+				false,
+			);
+
+			// At this point, cipherText := { encryptorSpecificPayload },
+			// so all that's left is to invoke the decryption routine directly.
+			return requestedEncryptor.decrypt(
+				ciphertext,
+				additionalAuthenticatedData,
+			);
 		} catch (error) {
 			if (!(error instanceof Error)) {
 				throw new Error(/* TODO: message */);
