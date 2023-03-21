@@ -313,9 +313,9 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 	// the keyring has only one key
 	const key = new Key(
 		Guid.empty,
-		new Date(),
-		new Date(),
-		new Date(),
+		Date.now(),
+		Date.now(),
+		Date.now(),
 		mockDescriptor,
 		[mockEncryptorFactory],
 	);
@@ -376,15 +376,15 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 	// the keyring has only one key
 	const key = new Key(
 		Guid.empty,
-		new Date(),
-		new Date(),
-		new Date(),
+		Date.now(),
+		Date.now(),
+		Date.now(),
 		mockDescriptor,
 		[mockEncryptorFactory],
 	);
 	const keyRing = CacheableKeyRing.create(
 		// TODO: expirationToken,
-		new Date(8640000000000000) /* TODO */,
+		Number.MAX_VALUE /* TODO */,
 		key,
 		[key],
 	);

@@ -6,12 +6,12 @@ import { IKeyRing } from './IKeyRing';
 export class CacheableKeyRing {
 	private constructor(
 		// TODO: expirationToken,
-		readonly expirationTime: Date,
+		readonly expirationTime: number,
 		readonly keyRing: IKeyRing,
 	) {}
 
 	static create(
-		expirationTime: Date,
+		expirationTime: number,
 		defaultKey: IKey,
 		allKeys: Iterable<IKey>,
 	): CacheableKeyRing {
@@ -23,7 +23,7 @@ export class CacheableKeyRing {
 
 	static isValid(
 		keyRing: CacheableKeyRing | undefined,
-		utcNow: Date,
+		utcNow: number,
 	): boolean {
 		return (
 			keyRing !== undefined /* TODO */ && keyRing.expirationTime > utcNow

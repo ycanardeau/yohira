@@ -8,9 +8,9 @@ import { IKey } from './IKey';
 export abstract class KeyBase implements IKey {
 	constructor(
 		readonly keyId: Guid,
-		readonly creationDate: Date,
-		readonly activationDate: Date,
-		readonly expirationDate: Date,
+		readonly creationDate: number,
+		readonly activationDate: number,
+		readonly expirationDate: number,
 		private readonly lazyDescriptor: Lazy<IAuthenticatedEncryptorDescriptor>,
 		private readonly encryptorFactories: Iterable<IAuthenticatedEncryptorFactory>,
 	) {}

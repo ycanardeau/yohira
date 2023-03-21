@@ -7,9 +7,9 @@ import { KeyBase } from './KeyBase';
 export class Key extends KeyBase {
 	constructor(
 		keyId: Guid,
-		creationDate: Date,
-		activationDate: Date,
-		expirationDate: Date,
+		creationDate: number,
+		activationDate: number,
+		expirationDate: number,
 		descriptor: IAuthenticatedEncryptorDescriptor,
 		encryptorFactories: Iterable<IAuthenticatedEncryptorFactory>,
 	) {

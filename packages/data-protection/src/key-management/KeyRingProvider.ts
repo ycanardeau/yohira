@@ -49,12 +49,10 @@ export class KeyRingProvider
 	}
 
 	/** @internal */ getCurrentKeyRingCore(
-		utcNow: Date,
+		utcNow: number,
 		forceRefresh = false,
 	): IKeyRing {
-		if (utcNow.getTimezoneOffset() !== 0 /* TODO */) {
-			throw new Error('Assertion failed.');
-		}
+		// TODO: assert
 
 		// REVIEW: lock
 		let existingCacheableKeyRing: CacheableKeyRing | undefined = undefined;
@@ -84,18 +82,18 @@ export class KeyRingProvider
 	}
 
 	getCurrentKeyRing(): IKeyRing {
-		return this.getCurrentKeyRingCore(new Date() /* TODO */);
+		return this.getCurrentKeyRingCore(Date.now() /* TODO */);
 	}
 
 	private createCacheableKeyRingCore(
-		now: Date,
+		now: number,
 		keyJustAdded: IKey | undefined,
 	): CacheableKeyRing {
 		// TODO
 		throw new Error('Method not implemented.');
 	}
 
-	getCacheableKeyRing(now: Date): CacheableKeyRing {
+	getCacheableKeyRing(now: number): CacheableKeyRing {
 		// the entry point allows one recursive call
 		return this.createCacheableKeyRingCore(now, undefined);
 	}
