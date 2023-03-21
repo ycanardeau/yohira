@@ -830,3 +830,48 @@ test('Unprotect_IsNotDefaultKey_Success_RequiresMigration', () => {
 });
 
 // TODO
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L584
+test('CreateProtector_ChainsPurposes', () => {
+	const defaultKey = Guid.fromString('ba73c9ce-d322-4e45-af90-341307e11c38');
+	const expectedPlaintext = Buffer.from([
+		0x03, 0x05, 0x07, 0x11, 0x13, 0x17, 0x19,
+	]);
+	const expectedAad = buildAadFromPurposeStrings(
+		defaultKey,
+		'purpose1',
+		'purpose2',
+	);
+	const expectedProtectedData = buildProtectedDataFromCiphertext(
+		defaultKey,
+		Buffer.from([0x23, 0x29, 0x31, 0x37]),
+	);
+
+	const mockEncryptor: IAuthenticatedEncryptor = {
+		encrypt: (actualPlaintext, actualAad) => {
+			expect(actualPlaintext.equals(expectedPlaintext)).toBe(true);
+			expect(actualAad.equals(expectedAad)).toBe(true);
+			return Buffer.from([0x23, 0x29, 0x31, 0x37]); // ciphertext + tag
+		},
+		decrypt: () => Buffer.alloc(0),
+	};
+
+	const mockKeyRing: IKeyRing = {
+		defaultKeyId: defaultKey,
+		defaultAuthenticatedEncryptor: mockEncryptor,
+	} as IKeyRing;
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => mockKeyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose1',
+	).createProtector('purpose2');
+
+	const retVal = protector.protect(expectedPlaintext);
+
+	expect(retVal.equals(expectedProtectedData)).toBe(true);
+});

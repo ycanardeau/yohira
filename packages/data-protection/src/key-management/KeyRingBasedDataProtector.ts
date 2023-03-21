@@ -206,8 +206,16 @@ export class KeyRingBasedDataProtector
 	}
 
 	createProtector(purpose: string): IDataProtector {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (purpose === undefined) {
+			throw new Error('Value cannot be null.' /* LOC */);
+		}
+
+		return new KeyRingBasedDataProtector(
+			this.keyRingProvider,
+			this.logger,
+			this.purposes,
+			purpose,
+		);
 	}
 
 	private static joinPurposesForLog(purposes: readonly string[]): string {
