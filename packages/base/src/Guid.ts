@@ -177,21 +177,48 @@ export class Guid implements IEquatable<Guid> {
 	}
 
 	toString(): string {
-		return `${((this.a & 0xffffffff) >>> 0).toString(16)}-${(
-			(this.b & 0xffff) >>>
-			0
-		).toString(16)}-${((this.c & 0xffff) >>> 0).toString(16)}-${(
-			(this.d & 0xff) >>>
-			0
-		).toString(16)}${((this.e & 0xff) >>> 0).toString(16)}-${(
-			(this.f & 0xff) >>>
-			0
-		).toString(16)}${((this.g & 0xff) >>> 0).toString(16)}${(
-			(this.h & 0xff) >>>
-			0
-		).toString(16)}${((this.i & 0xff) >>> 0).toString(16)}${(
-			(this.j & 0xff) >>>
-			0
-		).toString(16)}${((this.k & 0xff) >>> 0).toString(16)}`;
+		const parts: string[] = [];
+		parts.push(
+			((): string => {
+				const buffer = Buffer.alloc(4);
+				buffer.writeInt32BE(this.a);
+				return buffer.toString('hex');
+			})(),
+		);
+		parts.push(
+			((): string => {
+				const buffer = Buffer.alloc(2);
+				buffer.writeInt16BE(this.b);
+				return buffer.toString('hex');
+			})(),
+		);
+		parts.push(
+			((): string => {
+				const buffer = Buffer.alloc(2);
+				buffer.writeInt16BE(this.c);
+				return buffer.toString('hex');
+			})(),
+		);
+		parts.push(
+			((): string => {
+				const buffer = Buffer.alloc(2);
+				buffer.writeUint8(this.d, 0);
+				buffer.writeUint8(this.e, 1);
+				return buffer.toString('hex');
+			})(),
+		);
+		parts.push(
+			((): string => {
+				const buffer = Buffer.alloc(6);
+				buffer.writeUint8(this.f, 0);
+				buffer.writeUint8(this.g, 1);
+				buffer.writeUint8(this.h, 2);
+				buffer.writeUint8(this.i, 3);
+				buffer.writeUint8(this.j, 4);
+				buffer.writeUint8(this.k, 5);
+				return buffer.toString('hex');
+			})(),
+		);
+		return parts.join('-');
 	}
 }

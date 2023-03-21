@@ -627,4 +627,206 @@ test('Unprotect_KeyRevoked_RevocationDisallowed_ThrowsKeyRevoked', () => {
 	);
 });
 
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L412
+test('Unprotect_KeyRevoked_RevocationAllowed_ReturnsOriginalData_SetsRevokedAndMigrationFlags', () => {
+	const defaultKeyId = Guid.fromString(
+		'ba73c9ce-d322-4e45-af90-341307e11c38',
+	);
+	const expectedCiphertext = Buffer.from([
+		0x03, 0x05, 0x07, 0x11, 0x13, 0x17, 0x19,
+	]);
+	const protectedData = buildProtectedDataFromCiphertext(
+		defaultKeyId,
+		expectedCiphertext,
+	);
+	const expectedAad = buildAadFromPurposeStrings(defaultKeyId, 'purpose');
+	const expectedPlaintext = Buffer.from([0x23, 0x29, 0x31, 0x37]);
+
+	const mockEncryptor: IAuthenticatedEncryptor = {
+		decrypt: (actualCiphertext, actualAad) => {
+			expect(actualCiphertext.equals(expectedCiphertext)).toBe(true);
+			expect(actualAad.equals(expectedAad)).toBe(true);
+			return expectedPlaintext;
+		},
+		encrypt: () => Buffer.alloc(0),
+	};
+	const mockDescriptor = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance: () => mockEncryptor,
+	};
+
+	const defaultKey = new Key(
+		defaultKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	defaultKey.setRevoked();
+	const keyRing = new KeyRing(defaultKey, [defaultKey]);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => keyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	let requiresMigration = false;
+	let wasRevoked = false;
+	const retVal = protector.dangerousUnprotect(
+		protectedData,
+		true,
+		{ set: (value) => (requiresMigration = value) },
+		{ set: (value) => (wasRevoked = value) },
+	);
+
+	expect(retVal.equals(expectedPlaintext)).toBe(true);
+	expect(requiresMigration).toBe(true);
+	expect(wasRevoked).toBe(true);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L459
+test('Unprotect_IsAlsoDefaultKey_Success_NoMigrationRequired', () => {
+	const defaultKeyId = Guid.fromString(
+		'ba73c9ce-d322-4e45-af90-341307e11c38',
+	);
+	const expectedCiphertext = Buffer.from([
+		0x03, 0x05, 0x07, 0x11, 0x13, 0x17, 0x19,
+	]);
+	const protectedData = buildProtectedDataFromCiphertext(
+		defaultKeyId,
+		expectedCiphertext,
+	);
+	const expectedAad = buildAadFromPurposeStrings(defaultKeyId, 'purpose');
+	const expectedPlaintext = Buffer.from([0x23, 0x29, 0x31, 0x37]);
+
+	const mockEncryptor: IAuthenticatedEncryptor = {
+		decrypt: (actualCiphertext, actualAad) => {
+			expect(actualCiphertext.equals(expectedCiphertext)).toBe(true);
+			expect(actualAad.equals(expectedAad)).toBe(true);
+			return expectedPlaintext;
+		},
+		encrypt: () => Buffer.alloc(0),
+	};
+	const mockDescriptor = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance: () => mockEncryptor,
+	};
+
+	const defaultKey = new Key(
+		defaultKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = new KeyRing(defaultKey, [defaultKey]);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => keyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	let retVal = protector.unprotect(protectedData);
+	expect(retVal.equals(expectedPlaintext)).toBe(true);
+
+	let requiresMigration = false;
+	let wasRevoked = false;
+	retVal = protector.dangerousUnprotect(
+		protectedData,
+		false,
+		{ set: (value) => (requiresMigration = value) },
+		{ set: (value) => (wasRevoked = value) },
+	);
+	expect(retVal.equals(expectedPlaintext)).toBe(true);
+	expect(requiresMigration).toBe(false);
+	expect(wasRevoked).toBe(false);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L507
+test('Unprotect_IsNotDefaultKey_Success_RequiresMigration', () => {
+	const defaultKeyId = Guid.fromString(
+		'ba73c9ce-d322-4e45-af90-341307e11c38',
+	);
+	const embeddedKeyId = Guid.fromString(
+		'9b5d2db3-299f-4eac-89e9-e9067a5c1853',
+	);
+	const expectedCiphertext = Buffer.from([
+		0x03, 0x05, 0x07, 0x11, 0x13, 0x17, 0x19,
+	]);
+	const protectedData = buildProtectedDataFromCiphertext(
+		embeddedKeyId,
+		expectedCiphertext,
+	);
+	const expectedAad = buildAadFromPurposeStrings(embeddedKeyId, 'purpose');
+	const expectedPlaintext = Buffer.from([0x23, 0x29, 0x31, 0x37]);
+
+	const mockEncryptor: IAuthenticatedEncryptor = {
+		decrypt: (actualCiphertext, actualAad) => {
+			expect(actualCiphertext.equals(expectedCiphertext)).toBe(true);
+			expect(actualAad.equals(expectedAad)).toBe(true);
+			return expectedPlaintext;
+		},
+		encrypt: () => Buffer.alloc(0),
+	};
+	const mockDescriptor = {};
+	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
+		createEncryptorInstance: () => mockEncryptor,
+	};
+
+	const defaultKey = new Key(
+		defaultKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const embeddedKey = new Key(
+		embeddedKeyId,
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = new KeyRing(defaultKey, [defaultKey, embeddedKey]);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => keyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	let retVal = protector.unprotect(protectedData);
+	expect(retVal.equals(expectedPlaintext)).toBe(true);
+
+	let requiresMigration = false;
+	let wasRevoked = false;
+	retVal = protector.dangerousUnprotect(
+		protectedData,
+		false,
+		{ set: (value) => (requiresMigration = value) },
+		{ set: (value) => (wasRevoked = value) },
+	);
+	expect(retVal.equals(expectedPlaintext)).toBe(true);
+	expect(requiresMigration).toBe(true);
+	expect(wasRevoked).toBe(false);
+});
+
 // TODO
