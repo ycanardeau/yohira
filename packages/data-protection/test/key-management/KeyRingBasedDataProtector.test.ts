@@ -1,5 +1,6 @@
 import { BinaryWriter, Guid, MemoryStream } from '@yohira/base';
 import {
+	AuthenticatedEncryptorConfig,
 	AuthenticatedEncryptorFactory,
 	CacheableKeyRing,
 	CryptographicError,
@@ -102,8 +103,10 @@ function getLogger(): ILogger {
 test('Protect_NullPlaintext_Throws', () => {
 	const protector: IDataProtector = new KeyRingBasedDataProtector(
 		{
-			getCurrentKeyRing(): IKeyRing {
-				throw new Error();
+			getCurrentKeyRing: (): IKeyRing => {
+				throw new Error(
+					'Invocation needs to return a value and therefore must have a corresponding setup that provides it.' /* LOC */,
+				);
 			},
 		},
 		getLogger(),
@@ -135,21 +138,20 @@ test('Protect_EncryptsToDefaultProtector_MultiplePurposes', () => {
 	);
 
 	const mockEncryptor: IAuthenticatedEncryptor = {
-		encrypt(actualPlaintext: Buffer, actualAad: Buffer): Buffer {
+		decrypt: () => Buffer.alloc(0),
+		encrypt: (actualPlaintext: Buffer, actualAad: Buffer) => {
 			expect(actualPlaintext.equals(expectedPlaintext)).toBe(true);
 			expect(actualAad.equals(expectedAad)).toBe(true);
 			return Buffer.from([0x23, 0x29, 0x31, 0x37]); // ciphertext + tag
 		},
-	} as IAuthenticatedEncryptor;
+	};
 
 	const mockKeyRing: IKeyRing = {
 		defaultKeyId: defaultKey,
 		defaultAuthenticatedEncryptor: mockEncryptor,
 	} as IKeyRing;
 	const mockKeyRingProvider: IKeyRingProvider = {
-		getCurrentKeyRing(): IKeyRing {
-			return mockKeyRing;
-		},
+		getCurrentKeyRing: () => mockKeyRing,
 	};
 
 	const protector = new KeyRingBasedDataProtector(
@@ -180,21 +182,20 @@ test('Protect_EncryptsToDefaultProtector_SinglePurpose', () => {
 	);
 
 	const mockEncryptor: IAuthenticatedEncryptor = {
-		encrypt(actualPlaintext: Buffer, actualAad: Buffer): Buffer {
+		decrypt: () => Buffer.alloc(0),
+		encrypt: (actualPlaintext: Buffer, actualAad: Buffer) => {
 			expect(actualPlaintext.equals(expectedPlaintext)).toBe(true);
 			expect(actualAad.equals(expectedAad)).toBe(true);
 			return Buffer.from([0x23, 0x29, 0x31, 0x37]); // ciphertext + tag
 		},
-	} as IAuthenticatedEncryptor;
+	};
 
 	const mockKeyRing: IKeyRing = {
 		defaultKeyId: defaultKey,
 		defaultAuthenticatedEncryptor: mockEncryptor,
 	} as IKeyRing;
 	const mockKeyRingProvider: IKeyRingProvider = {
-		getCurrentKeyRing(): IKeyRing {
-			return mockKeyRing;
-		},
+		getCurrentKeyRing: () => mockKeyRing,
 	};
 
 	const protector = new KeyRingBasedDataProtector(
@@ -213,7 +214,7 @@ test('Protect_EncryptsToDefaultProtector_SinglePurpose', () => {
 test('Protect_HomogenizesExceptionsToCryptographicException', () => {
 	const protector = new KeyRingBasedDataProtector(
 		{
-			getCurrentKeyRing(): IKeyRing {
+			getCurrentKeyRing: (): IKeyRing => {
 				throw new Error(
 					'Invocation needs to return a value and therefore must have a corresponding setup that provides it.' /* LOC */,
 				);
@@ -344,9 +345,7 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 	);
 	const keyRing = new KeyRing(key, [key]);
 	const mockKeyRingProvider: IKeyRingProvider = {
-		getCurrentKeyRing(): IKeyRing {
-			return keyRing;
-		},
+		getCurrentKeyRing: () => keyRing,
 	};
 
 	const protector = new KeyRingBasedDataProtector(
@@ -829,7 +828,39 @@ test('Unprotect_IsNotDefaultKey_Success_RequiresMigration', () => {
 	expect(wasRevoked).toBe(false);
 });
 
-// TODO
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L557
+test('Protect_Unprotect_RoundTripsProperly', () => {
+	const plaintext = Buffer.from([0x10, 0x20, 0x30, 0x40, 0x50]);
+	const encryptorFactory = new AuthenticatedEncryptorFactory(
+		NullLoggerFactory.instance,
+	);
+	const key = new Key(
+		Guid.newGuid(),
+		Date.now(),
+		Date.now(),
+		Date.now(),
+		new AuthenticatedEncryptorConfig().createNewDescriptor(),
+		[encryptorFactory],
+	);
+	const keyRing = new KeyRing(key, [key]);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing: () => keyRing,
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	const protectedData = protector.protect(plaintext);
+	expect(protectedData).not.toBeUndefined();
+	expect(protectedData.equals(plaintext)).toBe(false);
+
+	const roundTrippedPlaintext = protector.unprotect(protectedData);
+	expect(roundTrippedPlaintext.equals(plaintext)).toBe(true);
+});
 
 // https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L584
 test('CreateProtector_ChainsPurposes', () => {

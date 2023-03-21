@@ -1,3 +1,4 @@
+export * from './authenticated-encryption/config-model/AuthenticatedEncryptorConfig';
 export * from './authenticated-encryption/AuthenticatedEncryptorFactory';
 export * from './authenticated-encryption/IAuthenticatedEncryptor';
 export * from './authenticated-encryption/IAuthenticatedEncryptorDescriptor';
