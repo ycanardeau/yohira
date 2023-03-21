@@ -12,3 +12,8 @@ function isLogLevelEnabledCore(
 export function isDebugLevelEnabled(logger: ILogger | undefined): boolean {
 	return isLogLevelEnabledCore(logger, LogLevel.Debug);
 }
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,017ac1071ea41df9,references
+export function isTraceLevelEnabled(logger: ILogger | undefined): boolean {
+	return isLogLevelEnabledCore(logger, LogLevel.Trace);
+}

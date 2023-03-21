@@ -10,9 +10,10 @@ import { IDataProtector } from '@yohira/data-protection.abstractions';
 import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 
 import { IPersistedDataProtector } from '../IPersistedDataProtector';
-import { isDebugLevelEnabled } from '../LoggingExtensions';
+import { isDebugLevelEnabled, isTraceLevelEnabled } from '../LoggingExtensions';
 import { encrypt } from '../authenticated-encryption/AuthenticatedEncryptorExtensions';
 import { CryptographicError } from './CryptographicError';
+import { KeyRingProvider } from './KeyRingProvider';
 import { IKeyRingProvider } from './internal/IKeyRingProvider';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,d74adcb73a7fb357,references
@@ -26,6 +27,19 @@ function performingProtectOperationToKeyWithPurposes(
 		`Performing protect operation to key ${
 			keyId /* TODO: :B */
 		} with purposes ${purposes}.` /* LOC */,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,548a69640d62f161,references
+function keyWasNotFoundInTheKeyRingUnprotectOperationCannotProceed(
+	logger: ILogger,
+	keyId: Guid,
+): void {
+	logger.log(
+		LogLevel.Trace,
+		`Key ${
+			keyId.toString(/* TODO: 'B' */)
+		} was not found in the key ring. Unprotect operation cannot proceed.`,
 	);
 }
 
@@ -317,6 +331,39 @@ export class KeyRingBasedDataProtector
 			}
 
 			// Find the correct encryptor in the keyring.
+			let keyWasRevoked = false;
+			const currentKeyRing = this.keyRingProvider.getCurrentKeyRing();
+			const requestedEncryptor =
+				currentKeyRing.getAuthenticatedEncryptorByKeyId(
+					keyIdFromPayload,
+					{ set: (value) => (keyWasRevoked = value) },
+				);
+			if (requestedEncryptor === undefined) {
+				/* TODO: if (
+					this.keyRingProvider instanceof KeyRingProvider &&
+					this.keyRingProvider.inAutoRefreshWindow()
+				) {
+					// TODO
+					throw new Error('Method not implemented.');
+				} */
+
+				if (requestedEncryptor === undefined) {
+					if (
+						this.logger !== undefined &&
+						isTraceLevelEnabled(this.logger)
+					) {
+						keyWasNotFoundInTheKeyRingUnprotectOperationCannotProceed(
+							this.logger,
+							keyIdFromPayload,
+						);
+					}
+					throw new CryptographicError(
+						`The key ${
+							keyIdFromPayload.toString(/* TODO: 'B' */)
+						} was not found in the key ring.` /* LOC */,
+					);
+				}
+			}
 
 			// TODO
 			throw new Error('Method not implemented.');

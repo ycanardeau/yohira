@@ -2,8 +2,11 @@ import { BinaryWriter, Guid, MemoryStream } from '@yohira/base';
 import {
 	CryptographicError,
 	IAuthenticatedEncryptor,
+	IAuthenticatedEncryptorDescriptor,
 	IKeyRing,
 	IKeyRingProvider,
+	Key,
+	KeyRing,
 	KeyRingBasedDataProtector,
 	writeGuid,
 } from '@yohira/data-protection';
@@ -110,7 +113,7 @@ test('Protect_EncryptsToDefaultProtector_MultiplePurposes', () => {
 	const mockKeyRing: IKeyRing = {
 		defaultKeyId: defaultKey,
 		defaultAuthenticatedEncryptor: mockEncryptor,
-	};
+	} as IKeyRing;
 	const mockKeyRingProvider: IKeyRingProvider = {
 		getCurrentKeyRing(): IKeyRing {
 			return mockKeyRing;
@@ -155,7 +158,7 @@ test('Protect_EncryptsToDefaultProtector_SinglePurpose', () => {
 	const mockKeyRing: IKeyRing = {
 		defaultKeyId: defaultKey,
 		defaultAuthenticatedEncryptor: mockEncryptor,
-	};
+	} as IKeyRing;
 	const mockKeyRingProvider: IKeyRingProvider = {
 		getCurrentKeyRing(): IKeyRing {
 			return mockKeyRing;
@@ -277,6 +280,49 @@ test('Unprotect_PayloadHasIncorrectVersionMarker_ThrowsNewerVersion', () => {
 
 	expect(() => protector.unprotect(badProtectedPayload)).toThrowError(
 		'The provided payload cannot be decrypted because it was protected with a newer version of the protection provider.',
+	);
+});
+
+// https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/KeyRingBasedDataProtectorTests.cs#L194
+test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
+	const notFoundKeyId = Guid.fromString(
+		'654057ab-2491-4471-a72a-b3b114afda38',
+	);
+	const protectedData = buildProtectedDataFromCiphertext(
+		notFoundKeyId,
+		Buffer.alloc(0),
+	);
+
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor = {};
+	const mockEncryptorFactory = {};
+
+	// the keyring has only one key
+	const key = new Key(
+		Guid.empty,
+		new Date(),
+		new Date(),
+		new Date(),
+		mockDescriptor,
+		[mockEncryptorFactory],
+	);
+	const keyRing = new KeyRing(key, [key]);
+	const mockKeyRingProvider: IKeyRingProvider = {
+		getCurrentKeyRing(): IKeyRing {
+			return keyRing;
+		},
+	};
+
+	const protector = new KeyRingBasedDataProtector(
+		mockKeyRingProvider,
+		getLogger(),
+		undefined,
+		'purpose',
+	);
+
+	expect(() => protector.unprotect(protectedData)).toThrowError(
+		`The key ${
+			notFoundKeyId.toString(/* TODO: 'B' */)
+		} was not found in the key ring.`,
 	);
 });
 

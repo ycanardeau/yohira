@@ -1,4 +1,4 @@
-import { Guid } from '@yohira/base';
+import { Guid, Out } from '@yohira/base';
 
 import { IAuthenticatedEncryptor } from '../../authenticated-encryption/IAuthenticatedEncryptor';
 
@@ -6,4 +6,8 @@ import { IAuthenticatedEncryptor } from '../../authenticated-encryption/IAuthent
 export interface IKeyRing {
 	readonly defaultAuthenticatedEncryptor: IAuthenticatedEncryptor | undefined;
 	readonly defaultKeyId: Guid;
+	getAuthenticatedEncryptorByKeyId(
+		keyId: Guid,
+		isRevoked: Out<boolean>,
+	): IAuthenticatedEncryptor | undefined;
 }

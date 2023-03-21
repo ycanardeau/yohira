@@ -175,4 +175,23 @@ export class Guid implements IEquatable<Guid> {
 		buffer.writeUint8(this.k, 15);
 		return buffer;
 	}
+
+	toString(): string {
+		return `${((this.a & 0xffffffff) >>> 0).toString(16)}-${(
+			(this.b & 0xffff) >>>
+			0
+		).toString(16)}-${((this.c & 0xffff) >>> 0).toString(16)}-${(
+			(this.d & 0xff) >>>
+			0
+		).toString(16)}${((this.e & 0xff) >>> 0).toString(16)}-${(
+			(this.f & 0xff) >>>
+			0
+		).toString(16)}${((this.g & 0xff) >>> 0).toString(16)}${(
+			(this.h & 0xff) >>>
+			0
+		).toString(16)}${((this.i & 0xff) >>> 0).toString(16)}${(
+			(this.j & 0xff) >>>
+			0
+		).toString(16)}${((this.k & 0xff) >>> 0).toString(16)}`;
+	}
 }

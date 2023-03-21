@@ -18,6 +18,7 @@ export * from './IList';
 export * from './IReadonlyCollection';
 export * from './IReadonlyList';
 export * from './IServiceProvider';
+export * from './Lazy';
 export * from './List';
 export * from './MapExtensions';
 export * from './MemoryStream';
