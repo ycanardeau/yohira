@@ -2,12 +2,12 @@ export interface IDisposable {
 	dispose(): void;
 }
 
-export function using<T extends IDisposable>(
-	disposable: T,
-	action: (disposable: T) => void,
-): void {
+export function using<TDisposable extends IDisposable, T>(
+	disposable: TDisposable,
+	callback: (disposable: TDisposable) => T,
+): T {
 	try {
-		action(disposable);
+		return callback(disposable);
 	} finally {
 		disposable.dispose();
 	}

@@ -1,3 +1,4 @@
+import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
 	ILoggerFactory,
@@ -13,6 +14,16 @@ import { ICacheableKeyRingProvider } from './internal/ICacheableKeyRingProvider'
 import { IDefaultKeyResolver } from './internal/IDefaultKeyResolver';
 import { IKeyRing } from './internal/IKeyRing';
 import { IKeyRingProvider } from './internal/IKeyRingProvider';
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,bfec8e2d51c3ca79,references
+function logPolicyResolutionStatesThatANewKeyShouldBeAddedToTheKeyRing(
+	logger: ILogger,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		'Policy resolution states that a new key should be added to the key ring.' /* LOC */,
+	);
+}
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,96563bcd92b83f09,references
 function existingCachedKeyRingIsExpired(logger: ILogger): void {
@@ -36,9 +47,13 @@ export class KeyRingProvider
 	/** @internal */ autoRefreshWindowEnd: number;
 
 	constructor(
+		@inject(IKeyManager)
 		private readonly keyManager: IKeyManager,
+		@inject(Symbol.for('IOptions<KeyManagementOptions>'))
 		keyManagementOptions: IOptions<KeyManagementOptions>,
+		@inject(IDefaultKeyResolver)
 		private readonly defaultKeyResolver: IDefaultKeyResolver,
+		@inject(ILoggerFactory)
 		loggerFactory: ILoggerFactory,
 	) {
 		this.keyManagementOptions = new KeyManagementOptions(
@@ -96,10 +111,43 @@ export class KeyRingProvider
 		return this.getCurrentKeyRingCore(Date.now(), true);
 	}
 
+	private createCacheableKeyRingCoreStep2(
+		now: number,
+		// TODO: cacheExpirationToken: CancellationToken,
+		defaultKey: IKey,
+		allKeys: Iterable<IKey>,
+	): CacheableKeyRing {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	private createCacheableKeyRingCore(
 		now: number,
 		keyJustAdded: IKey | undefined,
 	): CacheableKeyRing {
+		// Refresh the list of all keys
+		/* TODO: const cacheExpirationToken = */ this.keyManager.getCacheExpirationToken();
+		const allKeys = this.keyManager.getAllKeys();
+
+		// Fetch the current default key from the list of all keys
+		const defaultKeyPolicy =
+			this.defaultKeyResolver.resolveDefaultKeyPolicy(now, allKeys);
+		if (!defaultKeyPolicy.shouldGenerateNewKey) {
+			if (defaultKeyPolicy.defaultKey === undefined) {
+				throw new Error('Assertion failed.');
+			}
+			return this.createCacheableKeyRingCoreStep2(
+				now,
+				// TODO: cacheExpirationToken,
+				defaultKeyPolicy.defaultKey,
+				allKeys,
+			);
+		}
+
+		logPolicyResolutionStatesThatANewKeyShouldBeAddedToTheKeyRing(
+			this.logger,
+		);
+
 		// TODO
 		throw new Error('Method not implemented.');
 	}

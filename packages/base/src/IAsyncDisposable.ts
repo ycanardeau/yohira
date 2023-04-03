@@ -2,12 +2,12 @@ export interface IAsyncDisposable {
 	disposeAsync(): Promise<void>;
 }
 
-export async function usingAsync<T extends IAsyncDisposable>(
-	disposable: T,
-	action: (disposable: T) => Promise<void>,
-): Promise<void> {
+export async function usingAsync<TDisposable extends IAsyncDisposable, T>(
+	disposable: TDisposable,
+	callback: (disposable: TDisposable) => Promise<T>,
+): Promise<T> {
 	try {
-		await action(disposable);
+		return await callback(disposable);
 	} finally {
 		await disposable.disposeAsync();
 	}

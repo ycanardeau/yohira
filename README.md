@@ -206,3 +206,5 @@ await runApp(host);
 -   [[API Proposal]: AsyncConfigurationProvider · Issue #79193 · dotnet/runtime](https://github.com/dotnet/runtime/issues/79193)
 -   [c# - What&#39;s the role of the ClaimsPrincipal, why does it have multiple Identities? - Stack Overflow](https://stackoverflow.com/questions/32584074/whats-the-role-of-the-claimsprincipal-why-does-it-have-multiple-identities)
 -   [Session in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state)
+-   [Key storage format in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-format)
+-   [Key management extensibility in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/extensibility/key-management)

@@ -15,16 +15,37 @@ import { IOptions, addOptions } from '@yohira/extensions.options';
 import { DataProtectionOptions } from './DataProtectionOptions';
 import { IDataProtectionBuilder } from './IDataProtectionBuilder';
 import { DataProtectionBuilder } from './internal/DataProtectionBuilder';
+import { DefaultKeyResolver } from './key-management/DefaultKeyResolver';
+import { IKeyManager } from './key-management/IKeyManager';
 import { KeyRingBasedDataProtectionProvider } from './key-management/KeyRingBasedDataProtectionProvider';
 import { KeyRingProvider } from './key-management/KeyRingProvider';
+import { XmlKeyManager } from './key-management/XmlKeyManager';
+import { IDefaultKeyResolver } from './key-management/internal/IDefaultKeyResolver';
 import { IKeyRingProvider } from './key-management/internal/IKeyRingProvider';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/DataProtectionServiceCollectionExtensions.cs,fa9d3c53032971e2,references
 function addDataProtectionServices(services: IServiceCollection): void {
 	// TODO
 
-	// Internal services
+	tryAddServiceDescriptor(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			IKeyManager,
+			XmlKeyManager,
+		),
+	);
 	// TODO
+
+	// Internal services
+	tryAddServiceDescriptor(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			IDefaultKeyResolver,
+			DefaultKeyResolver,
+		),
+	);
 	tryAddServiceDescriptor(
 		services,
 		ServiceDescriptor.fromCtor(

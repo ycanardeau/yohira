@@ -1,0 +1,21 @@
+// https://source.dot.net/#System.Private.Xml/System/Xml/XmlNodeType.cs,8c138925ba744f20,references
+export enum XmlNodeType {
+	None,
+	Element,
+	Attribute,
+	Text,
+	CDATA,
+	EntityReference,
+	Entity,
+	ProcessingInstruction,
+	Comment,
+	Document,
+	DocumentType,
+	DocumentFragment,
+	Notation,
+	Whitespace,
+	SignificantWhitespace,
+	EndElement,
+	EndEntity,
+	XmlDeclaration,
+}
