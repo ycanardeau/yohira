@@ -179,7 +179,9 @@ export class KeyRingBasedDataProtector
 		newPurpose: string,
 	): string[] {
 		if (originalPurposes !== undefined && originalPurposes.length > 0) {
-			const newPurposes = new Array(originalPurposes.length + 1);
+			const newPurposes: string[] = new Array(
+				originalPurposes.length + 1,
+			);
 			for (let i = 0; i < originalPurposes.length; i++) {
 				newPurposes[i] = originalPurposes[i];
 			}

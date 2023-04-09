@@ -53,6 +53,10 @@ export class StringBuilder {
 		return this;
 	}
 
+	appendString(value: string): void {
+		this.value += value;
+	}
+
 	toString(): string {
 		return this.value;
 	}

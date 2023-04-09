@@ -27,6 +27,7 @@ export * from './Path';
 export * from './Ref';
 export * from './SeekOrigin';
 export * from './StringExtensions';
+export * from './StringWriter';
 export * from './Type';
 export * from './typedef';
 export * from './XElement';

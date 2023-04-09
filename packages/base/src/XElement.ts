@@ -1,13 +1,15 @@
 import { using } from './IDisposable';
 import { StringReader } from './StringReader';
+import { TextWriter } from './TextWriter';
 import { XAttribute } from './XAttribute';
 import { XContainer } from './XContainer';
-import { LoadOptions } from './XLinq';
+import { ElementWriter, LoadOptions, SaveOptions } from './XLinq';
 import { XName } from './XName';
 import { XNamespace } from './XNamespace';
 import { XNode } from './XNode';
 import { XmlNodeType } from './XmlNodeType';
 import { ReadState, XmlReader } from './XmlReader';
+import { XmlWriter } from './XmlWriter';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XElement.cs,3367036406d1344a,references
 export class XElement extends XContainer {
@@ -145,5 +147,22 @@ export class XElement extends XContainer {
 			} while (a !== this.lastAttr);
 		}
 		return undefined;
+	}
+
+	writeTo(writer: XmlWriter): void {
+		new ElementWriter(writer).writeElement(this);
+	}
+
+	saveCore(writer: XmlWriter): void {
+		writer.writeStartDocument();
+		this.writeTo(writer);
+		writer.writeEndDocument();
+	}
+
+	save(textWriter: TextWriter, options = SaveOptions.None): void {
+		const ws = XNode.getXmlWriterSettings(options);
+		return using(XmlWriter.create(textWriter, ws), (w) => {
+			this.saveCore(w);
+		});
 	}
 }

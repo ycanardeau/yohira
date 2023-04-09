@@ -1,13 +1,12 @@
 import { XAttribute } from './XAttribute';
-import { XCData } from './XCData';
 import { XComment } from './XComment';
 import { XElement } from './XElement';
 import { LoadOptions, NamespaceCache } from './XLinq';
 import { XName } from './XName';
 import { XNode } from './XNode';
-import { XText } from './XText';
 import { XmlNodeType } from './XmlNodeType';
 import { ReadState, XmlReader } from './XmlReader';
+import { XmlWriter } from './XmlWriter';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XContainer.cs,3b4836bc20a61acf,references
 class ContentReader {
@@ -220,5 +219,45 @@ export abstract class XContainer extends XNode {
 			} while (n !== this.content);
 		}
 		return undefined;
+	}
+}
+
+// https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XDocument.cs,3354dac0913e417b,references
+export class XDocument extends XContainer {
+	writeTo(writer: XmlWriter): void {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	cloneNode(): XNode {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+}
+
+// https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XText.cs,7dcfc7339b56ed0a,references
+export class XText extends XNode {
+	constructor(/** @internal */ public text: string) {
+		super();
+	}
+
+	writeTo(writer: XmlWriter): void {
+		if (this.parent instanceof XDocument) {
+			writer.writeWhitespace(this.text);
+		} else {
+			writer.writeString(this.text);
+		}
+	}
+
+	cloneNode(): XNode {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+}
+
+// https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XCData.cs,061ab8c0aabbc761,references
+export class XCData extends XText {
+	writeTo(writer: XmlWriter): void {
+		writer.writeCData(this.text);
 	}
 }

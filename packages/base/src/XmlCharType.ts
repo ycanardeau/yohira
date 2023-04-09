@@ -1,5 +1,12 @@
 import { charProperties } from './charProperties';
 
+// Surrogate constants
+export const surHighStart = 0xd800; // 1101 10xx
+export const surHighEnd = 0xdbff;
+export const surLowStart = 0xdc00; // 1101 11xx
+export const surLowEnd = 0xdfff;
+export const surMask = 0xfc00; // 1111 11xx
+
 const whitespace = 1;
 const ncStartNameSC = 4;
 const ncNameSC = 8;
@@ -42,4 +49,18 @@ export function isTextChar(ch: number): boolean {
 // AttrValueChar = CharData - { 0xA, 0xD, 0x9, '<', '>', '&', '\'', '"' }
 export function isAttributeValueChar(ch: number): boolean {
 	return (charProperties[ch] & attrValue) !== 0;
+}
+
+// https://source.dot.net/#System.Private.Xml/System/Xml/XmlCharType.cs,ef9cb4fc6946d35a,references
+// This method tests whether a value is in a given range with just one test; start and end should be constants
+function inRange(value: number, start: number, end: number): boolean {
+	if (start > end) {
+		throw new Error('Assertion failed.');
+	}
+	return value - start <= end - start;
+}
+
+// https://source.dot.net/#System.Private.Xml/System/Xml/XmlCharType.cs,808c344f58e85ca8,references
+export function isSurrogate(ch: number): boolean {
+	return inRange(ch, surHighStart, surLowEnd);
 }

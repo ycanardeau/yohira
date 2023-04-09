@@ -34,6 +34,10 @@ export class XName implements IEquatable<XName> {
 		return this._localName;
 	}
 
+	get namespace(): XNamespace {
+		return this.ns;
+	}
+
 	get namespaceName(): string {
 		return this.ns.namespaceName;
 	}

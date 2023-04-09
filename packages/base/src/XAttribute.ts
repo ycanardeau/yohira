@@ -62,4 +62,12 @@ export class XAttribute extends XObject {
 		this.name = name;
 		this.value = s;
 	}
+
+	get isNamespaceDeclaration(): boolean {
+		const namespaceName = this.name.namespaceName;
+		if (namespaceName.length === 0) {
+			return this.name.localName === 'xmlns';
+		}
+		return namespaceName === XNamespace.xmlnsPrefixNamespace /* REVIEW */;
+	}
 }

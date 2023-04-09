@@ -920,7 +920,7 @@ export class XmlTextReaderImpl extends XmlReader {
 					this.nodes[this.index + i + 1].onBufferInvalidated();
 				}
 
-				const newChars = new Array(this.ps.chars.length * 2);
+				const newChars: number[] = new Array(this.ps.chars.length * 2);
 				XmlTextReaderImpl.blockCopyChars(
 					this.ps.chars,
 					0,
@@ -964,7 +964,9 @@ export class XmlTextReaderImpl extends XmlReader {
 					this.ps.charPos = 0;
 					this.ps.charsUsed = copyCharsCount;
 				} else {
-					const newChars = new Array(this.ps.chars.length * 2);
+					const newChars: number[] = new Array(
+						this.ps.chars.length * 2,
+					);
 					XmlTextReaderImpl.blockCopyChars(
 						this.ps.chars,
 						0,
