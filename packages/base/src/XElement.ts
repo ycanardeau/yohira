@@ -121,4 +121,29 @@ export class XElement extends XContainer {
 	get name(): XName {
 		return this._name;
 	}
+
+	get value(): string {
+		if (this.content === undefined) {
+			return '';
+		}
+		if (typeof this.content === 'string') {
+			return this.content;
+		}
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	attribute(name: XName): XAttribute | undefined {
+		let a: XAttribute | undefined = this.lastAttr;
+		if (a !== undefined) {
+			do {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				a = a.next!;
+				if (a.name.equals(name)) {
+					return a;
+				}
+			} while (a !== this.lastAttr);
+		}
+		return undefined;
+	}
 }

@@ -39,7 +39,6 @@ export class XName implements IEquatable<XName> {
 	}
 
 	equals(other: XName): boolean {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this === other; /* REVIEW */
 	}
 }

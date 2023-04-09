@@ -1,4 +1,4 @@
-import { IReadonlyCollection, XName } from '@yohira/base';
+import { Guid, IReadonlyCollection, XElement, XName } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -7,15 +7,20 @@ import {
 } from '@yohira/extensions.logging.abstractions';
 import { IOptions } from '@yohira/extensions.options';
 
+import { withoutChildNodes } from '../XmlExtensions';
+import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/IAuthenticatedEncryptorDescriptor';
+import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
 import { DefaultKeyStorageDirectories } from '../repositories/DefaultKeyStorageDirectories';
 import { FileSystemXmlRepository } from '../repositories/FileSystemXmlRepository';
 import { IDefaultKeyStorageDirectories } from '../repositories/IDefaultKeyStorageDirectories';
 import { IXmlRepository } from '../repositories/IXmlRepository';
 import { IXmlEncryptor } from '../xml-encryption/IXmlEncryptor';
+import { DeferredKey } from './DeferredKey';
 import { IKey } from './IKey';
 import { IKeyManager } from './IKeyManager';
 import { KeyBase } from './KeyBase';
 import { KeyManagementOptions } from './KeyManagementOptions';
+import { IInternalXmlKeyManager } from './internal/IInternalXmlKeyManager';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,0ed7371967fff387,references
 function logUsingProfileAsKeyRepository(
@@ -50,8 +55,35 @@ function logUnknownElementWithNameFoundInKeyringSkipping(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,89426c88b8787790,references
+function logFoundKey(logger: ILogger, keyId: Guid): void {
+	logger.log(LogLevel.Debug, `Found key ${keyId.toString(/* TODO: :B */)}.`);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,d83ff95647a0a08a,references
+function logExceptionWhileProcessingKeyElement(
+	logger: ILogger,
+	element: XElement,
+): void {
+	logger.log(
+		LogLevel.Error,
+		`An exception occurred while processing the key element '${element}'.`,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,65eb8b5bff03c9da,references
+function logAnExceptionOccurredWhileProcessingElementDebug(
+	logger: ILogger,
+	element: XElement,
+): void {
+	logger.log(
+		LogLevel.Trace,
+		`An exception occurred while processing the key element '${element}'.`,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/XmlKeyManager.cs,eb36a39c3e1e7c02,references
-export class XmlKeyManager implements IKeyManager {
+export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 	// Used for serializing elements to persistent storage
 	/** @internal */ static readonly keyElementName = XName.get('key');
 	/** @internal */ static readonly idAttributeName = XName.get('id');
@@ -74,6 +106,7 @@ export class XmlKeyManager implements IKeyManager {
 	/** @internal */ static readonly reasonElementName = XName.get('reason');
 
 	private readonly logger: ILogger;
+	private readonly encryptorFactories: Iterable<IAuthenticatedEncryptorFactory>;
 	private readonly keyStorageDirectories: IDefaultKeyStorageDirectories =
 		DefaultKeyStorageDirectories.instance /* TODO: inject */;
 
@@ -150,6 +183,87 @@ export class XmlKeyManager implements IKeyManager {
 		this.keyEncryptor = keyEncryptor;
 
 		// TODO
+
+		// TODO
+		this.encryptorFactories =
+			keyManagementOptions.getValue(
+				KeyManagementOptions,
+			).authenticatedEncryptorFactories;
+	}
+
+	private writeKeyDeserializationErrorToLog(
+		error: Error,
+		keyElement: XElement,
+	): void {
+		// Ideally we'd suppress the error since it might contain sensitive information, but it would be too difficult for
+		// an administrator to diagnose the issue if we hide this information. Instead we'll log the error to the error
+		// log and the raw <key> element to the debug log. This works for our out-of-box XML decryptors since they don't
+		// include sensitive information in the exception message.
+
+		// write sanitized <key> element
+		logExceptionWhileProcessingKeyElement(
+			this.logger,
+			withoutChildNodes(keyElement),
+		);
+
+		// write full <key> element
+		logAnExceptionOccurredWhileProcessingElementDebug(
+			this.logger,
+			keyElement,
+		);
+	}
+
+	private processKeyElement(keyElement: XElement): KeyBase | undefined {
+		if (keyElement.name !== XmlKeyManager.keyElementName) {
+			throw new Error('Assertion failed.');
+		}
+
+		try {
+			// Read metadata and prepare the key for deferred instantiation
+			const keyId = Guid.fromString(
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				keyElement.attribute(XmlKeyManager.idAttributeName)!.value,
+			);
+			const creationDate = new Date(
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				keyElement.element(
+					XmlKeyManager.creationDateElementName,
+				)!.value,
+			).getTime();
+			const activationDate = new Date(
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				keyElement.element(
+					XmlKeyManager.activationDateElementName,
+				)!.value,
+			).getTime();
+			const expirationDate = new Date(
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				keyElement.element(
+					XmlKeyManager.expirationDateElementName,
+				)!.value,
+			).getTime();
+
+			logFoundKey(this.logger, keyId);
+
+			return new DeferredKey(
+				keyId,
+				creationDate,
+				activationDate,
+				expirationDate,
+				this,
+				keyElement,
+				this.encryptorFactories,
+			);
+		} catch (error) {
+			if (error instanceof Error) {
+				this.writeKeyDeserializationErrorToLog(error, keyElement);
+
+				// Don't include this key in the key ring
+				return undefined;
+			} else {
+				throw error;
+			}
+		}
 	}
 
 	getAllKeys(): IReadonlyCollection<IKey> {
@@ -162,8 +276,13 @@ export class XmlKeyManager implements IKeyManager {
 
 		for (const element of allElements) {
 			if (element.name.equals(XmlKeyManager.keyElementName)) {
-				// TODO
-				throw new Error('Method not implemented.');
+				// ProcessKeyElement can return null in the case of failure, and if this happens we'll move on.
+				// Still need to throw if we see duplicate keys with the same id.
+				const key = this.processKeyElement(element);
+				if (key !== undefined) {
+					// TODO
+					throw new Error('Method not implemented.');
+				}
 			} else if (
 				element.name.equals(XmlKeyManager.revocationElementName)
 			) {
@@ -185,5 +304,12 @@ export class XmlKeyManager implements IKeyManager {
 	getCacheExpirationToken(): void /* TODO: CancellationToken */ {
 		// TODO
 		//throw new Error('Method not implemented.');
+	}
+
+	deserializeDescriptorFromKeyElement(
+		keyElement: XElement,
+	): IAuthenticatedEncryptorDescriptor {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }

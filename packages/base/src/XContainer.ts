@@ -3,6 +3,7 @@ import { XCData } from './XCData';
 import { XComment } from './XComment';
 import { XElement } from './XElement';
 import { LoadOptions, NamespaceCache } from './XLinq';
+import { XName } from './XName';
 import { XNode } from './XNode';
 import { XText } from './XText';
 import { XmlNodeType } from './XmlNodeType';
@@ -205,5 +206,19 @@ export abstract class XContainer extends XNode {
 
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	element(name: XName): XElement | undefined {
+		let n = this.content;
+		if (n instanceof XNode) {
+			do {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				n = n.next!;
+				if (n instanceof XElement && n.name === name) {
+					return n;
+				}
+			} while (n !== this.content);
+		}
+		return undefined;
 	}
 }
