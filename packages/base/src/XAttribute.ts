@@ -38,8 +38,19 @@ export class XAttribute extends XObject {
 				}
 			}
 		} else if (namespaceName.length === 0 && name.localName === 'xmlns') {
-			// TODO
-			throw new Error('Method not implemented.');
+			if (value === XNamespace.xmlPrefixNamespace) {
+				// 'http://www.w3.org/XML/1998/namespace' can only
+				// be declared by the 'xml' prefix namespace declaration.
+				throw new Error(
+					"The prefix 'xml' is bound to the namespace name 'http://www.w3.org/XML/1998/namespace'. Other prefixes must not be bound to this namespace name, and it must not be declared as the default namespace." /* LOC */,
+				);
+			} else if (value === XNamespace.xmlnsPrefixNamespace) {
+				// 'http://www.w3.org/2000/xmlns/' must not be declared
+				// by any namespace declaration.
+				throw new Error(
+					"The prefix 'xmlns' is bound to the namespace name 'http://www.w3.org/2000/xmlns/'. It must not be declared. Other prefixes must not be bound to this namespace name, and it must not be declared as the default namespace." /* LOC */,
+				);
+			}
 		}
 	}
 

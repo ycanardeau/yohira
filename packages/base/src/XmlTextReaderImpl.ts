@@ -321,14 +321,24 @@ enum XmlSpace {
 
 // https://source.dot.net/#System.Private.Xml/System/Xml/Core/XmlTextReaderImplHelpers.cs,24bae22b54f18036,references
 class XmlContext {
-	/** @internal */ xmlSpace: XmlSpace;
-	/** @internal */ defaultNamespace: string;
-	/** @internal */ previousContext?: XmlContext;
+	private constructor(
+		/** @internal */ public xmlSpace: XmlSpace,
+		/** @internal */ public xmlLang: string,
+		/** @internal */ public defaultNamespace: string,
+		/** @internal */ public previousContext?: XmlContext,
+	) {}
 
-	constructor() {
-		this.xmlSpace = XmlSpace.None;
-		this.defaultNamespace = '';
-		this.previousContext = undefined;
+	static create(): XmlContext {
+		return new XmlContext(XmlSpace.None, '', '', undefined);
+	}
+
+	static fromXmlContext(previousContext: XmlContext): XmlContext {
+		return new XmlContext(
+			previousContext.xmlSpace,
+			previousContext.xmlLang,
+			previousContext.defaultNamespace,
+			previousContext,
+		);
 	}
 }
 
@@ -583,7 +593,7 @@ export class XmlTextReaderImpl extends XmlReader {
 		this.v1Compat = false;
 		// TODO
 
-		this.xmlContext = new XmlContext();
+		this.xmlContext = XmlContext.create();
 
 		// create or get nametable and namespace manager from XmlParserContext
 		let nt = settings.nameTable;
@@ -1022,8 +1032,33 @@ export class XmlTextReaderImpl extends XmlReader {
 						this.onNewLine(pos);
 						continue;
 					case 0xd:
-						// TODO
-						throw new Error('Method not implemented.');
+						if (chars[pos + 1] === 0xa) {
+							const tmp1 = pos - this.ps.charPos;
+							if (sb !== undefined && !this.ps.eolNormalized) {
+								if (tmp1 > 0) {
+									sb.appendChars(
+										chars,
+										this.ps.charPos,
+										tmp1,
+									);
+									wsCount += tmp1;
+								}
+								this.ps.charPos = pos + 1;
+							}
+							pos += 2;
+						} else if (
+							pos + 1 < this.ps.charsUsed ||
+							this.ps.isEof
+						) {
+							if (!this.ps.eolNormalized) {
+								chars[pos] = 0xa; // EOL normalization of 0xD
+							}
+							pos++;
+						} else {
+							// TODO
+							throw new Error('Method not implemented.');
+						}
+						this.onNewLine(pos);
 						continue;
 					case 0x9:
 					case 0x20:
@@ -1580,9 +1615,26 @@ export class XmlTextReaderImpl extends XmlReader {
 		throw new Error('Method not implemented.');
 	}
 
+	private pushXmlContext(): void {
+		this.xmlContext = XmlContext.fromXmlContext(this.xmlContext);
+		this.curNode.xmlContextPushed = true;
+	}
+
 	private onDefaultNamespaceDecl(attr: NodeData): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (!this.supportNamespaces) {
+			return;
+		}
+
+		const ns = this.nameTable.addString(attr.stringValue)!;
+		attr.ns = this.nameTable.addString(XmlReservedNs.NsXmlNs);
+
+		if (!this.curNode.xmlContextPushed) {
+			this.pushXmlContext();
+		}
+
+		this.xmlContext.defaultNamespace = ns;
+
+		this.addNamespace('', ns, attr);
 	}
 
 	private addNamespace(prefix: string, uri: string, attr: NodeData): void {
@@ -2129,8 +2181,8 @@ export class XmlTextReaderImpl extends XmlReader {
 		}
 		const chars = this.ps.chars;
 		let pos = this.ps.charPos;
-		const rcount = 0;
-		const rpos = -1;
+		let rcount = 0;
+		let rpos = -1;
 		let orChars = outOrChars.get();
 		let c = 0;
 
@@ -2154,8 +2206,43 @@ export class XmlTextReaderImpl extends XmlReader {
 						this.onNewLine(pos);
 						continue;
 					case 0xd:
-						// TODO
-						throw new Error('Method not implemented.');
+						if (chars[pos + 1] === 0xa) {
+							if (
+								!this.ps.eolNormalized &&
+								this.parsingMode === ParsingMode.Full
+							) {
+								if (pos - this.ps.charPos > 0) {
+									if (rcount === 0) {
+										rcount = 1;
+										rpos = pos;
+									} else {
+										this.shiftBuffer(
+											rpos + rcount,
+											rpos,
+											pos - rpos - rcount,
+										);
+										rpos = pos - rcount;
+										rcount++;
+									}
+								} else {
+									this.ps.charPos++;
+								}
+							}
+							pos += 2;
+						} else if (
+							pos + 1 < this.ps.charsUsed ||
+							this.ps.isEof
+						) {
+							if (!this.ps.eolNormalized) {
+								chars[pos] = 0xa; // EOL normalization of 0xD
+							}
+							pos++;
+						} else {
+							// TODO
+							throw new Error('Method not implemented.');
+						}
+						this.onNewLine(pos);
+						continue;
 					// some tag
 					case '<'.charCodeAt(0):
 						// HACK: goto
