@@ -22,8 +22,12 @@ export abstract class KeyBase implements IKey {
 	get isRevoked(): boolean {
 		return this._isRevoked;
 	}
-	set isRevoked(value: boolean) {
+	private set isRevoked(value: boolean) {
 		this._isRevoked = value;
+	}
+
+	get descriptor(): IAuthenticatedEncryptorDescriptor {
+		return this.lazyDescriptor.value;
 	}
 
 	createEncryptor(): IAuthenticatedEncryptor | undefined {
