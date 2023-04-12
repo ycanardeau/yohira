@@ -3,6 +3,7 @@ import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IConfigureOptions } from '@yohira/extensions.options';
 
 import { AuthenticatedEncryptorFactory } from '../authenticated-encryption/AuthenticatedEncryptorFactory';
+import { ManagedAuthenticatedEncryptorFactory } from '../authenticated-encryption/ManagedAuthenticatedEncryptorFactory';
 import { AuthenticatedEncryptorConfig } from '../authenticated-encryption/conifg-model/AuthenticatedEncryptorConfig';
 import { KeyManagementOptions } from '../key-management/KeyManagementOptions';
 
@@ -27,6 +28,9 @@ export class KeyManagementOptionsSetup
 		//throw new Error('Method not implemented.');
 
 		// TODO
+		options.authenticatedEncryptorFactories.add(
+			new ManagedAuthenticatedEncryptorFactory(this.loggerFactory),
+		);
 		options.authenticatedEncryptorFactories.add(
 			new AuthenticatedEncryptorFactory(this.loggerFactory),
 		);
