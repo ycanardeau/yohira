@@ -1,8 +1,7 @@
 import { LoadOptions, SaveOptions } from './XLinq';
 import { XObject } from './XObject';
-import { XmlReaderSettings } from './XmlReaderSettings';
-import { XmlWriter } from './XmlWriter';
-import { NamespaceHandling, XmlWriterSettings } from './XmlWriterSettings';
+import { XmlReaderSettings } from './XmlReader';
+import { NamespaceHandling, XmlWriter, XmlWriterSettings } from './XmlWriter';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XNode.cs,2137ed2a1146d569,references
 export abstract class XNode extends XObject {

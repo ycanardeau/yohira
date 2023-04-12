@@ -1,4 +1,4 @@
-import { XElement } from './XElement';
+import { XElement } from './XContainer';
 import { XNamespace } from './XNamespace';
 import { XNode } from './XNode';
 import { XmlWriter } from './XmlWriter';
