@@ -8,6 +8,7 @@ import { IXmlEncryptor } from '../xml-encryption/IXmlEncryptor';
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/KeyManagementOptions.cs,06667162718921af,references
 export class KeyManagementOptions {
 	private static readonly _keyPropagationWindow = 2 * 24 * 60 * 60 * 1000;
+	private static readonly _keyRingRefreshPeriod = 24 * 60 * 60 * 1000;
 	private static readonly _maxServerClockSkew = 5 * 60 * 1000;
 	private _newKeyLifetime = 90 * 24 * 60 * 60 * 1000;
 
@@ -34,6 +35,12 @@ export class KeyManagementOptions {
 		// This value is not settable since there's a complex interaction between
 		// it and the key ring refresh period.
 		return KeyManagementOptions._keyPropagationWindow;
+	}
+
+	/** @internal */ static get keyRingRefreshPeriod(): number {
+		// This value is not settable since there's a complex interaction between
+		// it and the key expiration safety period.
+		return KeyManagementOptions._keyRingRefreshPeriod;
 	}
 
 	/** @internal */ static get maxServerClockSkew(): number {

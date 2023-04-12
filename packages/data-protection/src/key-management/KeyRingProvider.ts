@@ -1,3 +1,4 @@
+import { Guid } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -9,6 +10,7 @@ import { IOptions } from '@yohira/extensions.options';
 import { IKey } from './IKey';
 import { IKeyManager } from './IKeyManager';
 import { KeyManagementOptions } from './KeyManagementOptions';
+import { KeyRing } from './KeyRing';
 import { CacheableKeyRing } from './internal/CacheableKeyRing';
 import { ICacheableKeyRingProvider } from './internal/ICacheableKeyRingProvider';
 import { IDefaultKeyResolver } from './internal/IDefaultKeyResolver';
@@ -30,6 +32,14 @@ function existingCachedKeyRingIsExpired(logger: ILogger): void {
 	logger.log(
 		LogLevel.Debug,
 		'Existing cached key ring is expired. Refreshing.' /* LOC */,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,965866b7812935f1,references
+function logUsingKeyAsDefaultKey(logger: ILogger, keyId: Guid): void {
+	logger.log(
+		LogLevel.Debug,
+		`Using key ${keyId.toString(/* TODO: 'B' */)} as the default key.`,
 	);
 }
 
@@ -111,14 +121,59 @@ export class KeyRingProvider
 		return this.getCurrentKeyRingCore(Date.now(), true);
 	}
 
+	private static getRefreshPeriodWithJitter(refreshPeriod: number): number {
+		// We'll fudge the refresh period up to -20% so that multiple applications don't try to
+		// hit a single repository simultaneously. For instance, if the refresh period is 1 hour,
+		// we'll return a value in the vicinity of 48 - 60 minutes. We use the Random class since
+		// we don't need a secure PRNG for this.
+		const refreshPeriodTicks = refreshPeriod * 10000;
+		return (refreshPeriodTicks * (1.0 - Math.random() / 5)) / 10000;
+	}
+
+	private static min(a: number, b: number): number {
+		return a < b ? a : b;
+	}
+
 	private createCacheableKeyRingCoreStep2(
 		now: number,
 		// TODO: cacheExpirationToken: CancellationToken,
 		defaultKey: IKey,
 		allKeys: Iterable<IKey>,
 	): CacheableKeyRing {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (defaultKey === undefined) {
+			throw new Error('Assertion failed.');
+		}
+
+		// Invariant: our caller ensures that CreateEncryptorInstance succeeded at least once
+		if (defaultKey.createEncryptor() === undefined) {
+			throw new Error('Assertion failed.');
+		}
+
+		logUsingKeyAsDefaultKey(this.logger, defaultKey.keyId);
+
+		const nextAutoRefreshTime =
+			now +
+			KeyRingProvider.getRefreshPeriodWithJitter(
+				KeyManagementOptions.keyRingRefreshPeriod,
+			);
+
+		// The cached keyring should expire at the earliest of (default key expiration, next auto-refresh time).
+		// Since the refresh period and safety window are not user-settable, we can guarantee that there's at
+		// least one auto-refresh between the start of the safety window and the key's expiration date.
+		// This gives us an opportunity to update the key ring before expiration, and it prevents multiple
+		// servers in a cluster from trying to update the key ring simultaneously. Special case: if the default
+		// key's expiration date is in the past, then we know we're using a fallback key and should disregard
+		// its expiration date in favor of the next auto-refresh time.
+		return new CacheableKeyRing(
+			// TODO: cacheExpirationToken,
+			defaultKey.expirationDate <= now
+				? nextAutoRefreshTime
+				: KeyRingProvider.min(
+						defaultKey.expirationDate,
+						nextAutoRefreshTime,
+				  ),
+			new KeyRing(defaultKey, allKeys),
+		);
 	}
 
 	private createCacheableKeyRingCore(

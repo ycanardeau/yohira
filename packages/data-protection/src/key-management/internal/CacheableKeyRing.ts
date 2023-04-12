@@ -4,7 +4,7 @@ import { IKeyRing } from './IKeyRing';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/Internal/CacheableKeyRing.cs,fd46b7a222155a07,references
 export class CacheableKeyRing {
-	private constructor(
+	/** @internal */ constructor(
 		// TODO: expirationToken,
 		readonly expirationTime: number,
 		readonly keyRing: IKeyRing,
