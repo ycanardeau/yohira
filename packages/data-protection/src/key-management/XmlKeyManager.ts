@@ -105,6 +105,7 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		XName.get('revocationDate');
 	/** @internal */ static readonly reasonElementName = XName.get('reason');
 
+	private readonly internalKeyManager: IInternalXmlKeyManager;
 	private readonly logger: ILogger;
 	private readonly encryptorFactories: Iterable<IAuthenticatedEncryptorFactory>;
 	private readonly keyStorageDirectories: IDefaultKeyStorageDirectories =
@@ -185,10 +186,30 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		// TODO
 
 		// TODO
+		this.internalKeyManager = /* TODO: this.internalKeyManager ?? */ this;
 		this.encryptorFactories =
 			keyManagementOptions.getValue(
 				KeyManagementOptions,
 			).authenticatedEncryptorFactories;
+	}
+
+	createNewKeyCore(
+		keyId: Guid,
+		creationDate: number,
+		activationDate: number,
+		expirationDate: number,
+	): IKey {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	createNewKey(activationDate: number, expirationDate: number): IKey {
+		return this.internalKeyManager.createNewKeyCore(
+			Guid.newGuid(),
+			Date.now(),
+			activationDate,
+			expirationDate,
+		);
 	}
 
 	private writeKeyDeserializationErrorToLog(

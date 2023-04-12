@@ -148,8 +148,44 @@ export class KeyRingProvider
 			this.logger,
 		);
 
-		// TODO
-		throw new Error('Method not implemented.');
+		// We shouldn't call CreateKey more than once, else we risk stack diving. This code path shouldn't
+		// get hit unless there was an ineligible key with an activation date slightly later than the one we
+		// just added. If this does happen, then we'll just use whatever key we can instead of creating
+		// new keys endlessly, eventually falling back to the one we just added if all else fails.
+		if (keyJustAdded !== undefined) {
+			const keyToUse =
+				defaultKeyPolicy.defaultKey ??
+				defaultKeyPolicy.fallbackKey ??
+				keyJustAdded;
+			return this.createCacheableKeyRingCoreStep2(
+				now,
+				// TODO: cacheExpirationToken,
+				keyToUse,
+				allKeys,
+			);
+		}
+
+		// At this point, we know we need to generate a new key.
+
+		// We have been asked to generate a new key, but auto-generation of keys has been disabled.
+		// We need to use the fallback key or fail.
+		if (!this.keyManagementOptions.autoGenerateKeys) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		if (defaultKeyPolicy.defaultKey === undefined) {
+			// The case where there's no default key is the easiest scenario, since it
+			// means that we need to create a new key with immediate activation.
+			const newKey = this.keyManager.createNewKey(
+				now,
+				now + this.keyManagementOptions.newKeyLifetime,
+			);
+			return this.createCacheableKeyRingCore(now, newKey); // recursively call
+		} else {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
 	}
 
 	getCacheableKeyRing(now: number): CacheableKeyRing {
