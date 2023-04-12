@@ -266,9 +266,10 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		}
 	}
 
-	getAllKeys(): IReadonlyCollection<IKey> {
+	getAllKeys(): readonly IKey[] {
 		const allElements = this.keyRepository.getAllElements();
-		const revokedKeyIds = new Set<string /* TODO: Guid */>();
+		const revokedKeyIds: Set<string /* TODO: Guid */> | undefined =
+			undefined;
 		const mostRecentMassRevocationDate: number | undefined = undefined;
 
 		// We aggregate all the information we read into three buckets
@@ -280,8 +281,14 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 				// Still need to throw if we see duplicate keys with the same id.
 				const key = this.processKeyElement(element);
 				if (key !== undefined) {
-					// TODO
-					throw new Error('Method not implemented.');
+					if (keyIdToKeyMap.has(key.keyId.toString())) {
+						throw new Error(
+							`The key ${
+								key.toString(/* TODO: 'B' */)
+							} already exists in the keyring.` /* LOC */,
+						);
+					}
+					keyIdToKeyMap.set(key.keyId.toString(), key);
 				}
 			} else if (
 				element.name.equals(XmlKeyManager.revocationElementName)
@@ -297,8 +304,20 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 			}
 		}
 
-		// TODO
-		throw new Error('Method not implemented.');
+		// Apply individual revocations
+		if (revokedKeyIds !== undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		// Apply mass revocations
+		if (mostRecentMassRevocationDate !== undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		// And we're finished!
+		return Array.from(keyIdToKeyMap.values());
 	}
 
 	getCacheExpirationToken(): void /* TODO: CancellationToken */ {
