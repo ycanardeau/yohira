@@ -4,6 +4,7 @@ import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
 import {
 	IHttpRequestFeature,
 	IHttpResponseBodyFeature,
+	IHttpResponseFeature,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 import {
@@ -13,15 +14,19 @@ import {
 } from 'node:http';
 import { Stream } from 'node:stream';
 
+import { RequestProcessingStatus } from './RequestProcessingStatus';
+
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/Http/Http1Connection.cs,9a7555a5b425c5dc,references
 export class Http1Connection
 	implements
 		IFeatureCollection,
 		IHttpRequestFeature,
+		IHttpResponseFeature,
 		IHttpResponseBodyFeature,
 		IEndpointFeature
 {
 	private currentIHttpRequestFeature?: IHttpRequestFeature;
+	private currentIHttpResponseFeature?: IHttpResponseFeature;
 	private currentIHttpResponseBodyFeature?: IHttpResponseBodyFeature;
 	private currentIEndpointFeature?: IEndpointFeature;
 
@@ -29,6 +34,7 @@ export class Http1Connection
 
 	private fastReset(): void {
 		this.currentIHttpRequestFeature = this;
+		this.currentIHttpResponseFeature = this;
 		this.currentIHttpResponseBodyFeature = this;
 		this.currentIEndpointFeature = this;
 
@@ -42,11 +48,20 @@ export class Http1Connection
 		this.featureRevision++;
 	}
 
+	private _onStarting?: [(state: object) => Promise<void>, object][];
+
+	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
+
 	private _path?: string;
 	private _queryString?: string;
 	private _rawBody?: string;
 
 	reset(): void {
+		this._onStarting?.splice(0, this._onStarting.length) /* TODO: clear */;
+		// TODO
+
+		this.requestProcessingStatus = RequestProcessingStatus.RequestPending;
+
 		// TODO
 
 		this.resetFeatureCollection();
@@ -73,10 +88,45 @@ export class Http1Connection
 		this.initialize();
 	}
 
+	get hasResponseStarted(): boolean {
+		return (
+			this.requestProcessingStatus >=
+			RequestProcessingStatus.HeadersCommitted
+		);
+	}
+
 	protected beginRequestProcessing(): void {
 		// Reset the features and timeout.
 		this.reset();
 		// TODO
+	}
+
+	protected fireOnStarting(): Promise<void> {
+		async function processEvents(
+			protocol: Http1Connection,
+			events: [(state: object) => Promise<void>, object][],
+		): Promise<void> {
+			// Try/Catch is outside the loop as any error that occurs is before the request starts.
+			// So we want to report it as an ApplicationError to fail the request and not process more events.
+			try {
+				let entry:
+					| [(state: object) => Promise<void>, object]
+					| undefined;
+				while ((entry = events.pop())) {
+					await entry[0](entry[1]);
+				}
+			} catch (error) {
+				// TODO
+				throw new Error('Method not implemented.');
+			}
+		}
+
+		const onStarting = this._onStarting;
+		if (onStarting !== undefined && onStarting.length > 0) {
+			return processEvents(this, onStarting);
+		}
+
+		return Promise.resolve();
 	}
 
 	private async processRequestsCore<TContext>(
@@ -102,7 +152,25 @@ export class Http1Connection
 		const context = app.createContext(this);
 
 		// TODO: try
+		// TODO: log
+
+		// Run the application code for this request
 		await app.processRequest(context);
+
+		// Trigger OnStarting if it hasn't been called yet and the app hasn't
+		// already failed. If an OnStarting callback throws we can go through
+		// our normal error handling in ProduceEnd.
+		// https://github.com/aspnet/KestrelHttpServer/issues/43
+		if (
+			!this.hasResponseStarted &&
+			// TODO: this.applicationError === undefined &&
+			this._onStarting !== undefined &&
+			this._onStarting.length > 0
+		) {
+			await this.fireOnStarting();
+		}
+
+		// TODO
 		// TODO: catch
 	}
 
@@ -165,6 +233,8 @@ export class Http1Connection
 		let feature: T | undefined;
 		if (key === IHttpRequestFeature) {
 			feature = this.currentIHttpRequestFeature as T;
+		} else if (key === IHttpResponseFeature) {
+			feature = this.currentIHttpResponseFeature as T;
 		} else if (key === IHttpResponseBodyFeature) {
 			feature = this.currentIHttpResponseBodyFeature as T;
 		} else if (key === IEndpointFeature) {
@@ -182,6 +252,8 @@ export class Http1Connection
 		this.featureRevision++;
 		if (key === IHttpRequestFeature) {
 			this.currentIHttpRequestFeature = instance as IHttpRequestFeature;
+		} else if (key === IHttpResponseFeature) {
+			this.currentIHttpResponseFeature = instance as IHttpResponseFeature;
 		} else if (key === IHttpResponseBodyFeature) {
 			this.currentIHttpResponseBodyFeature =
 				instance as IHttpResponseBodyFeature;
@@ -193,5 +265,21 @@ export class Http1Connection
 		}
 
 		// TODO
+	}
+
+	onStarting(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void {
+		if (this.hasResponseStarted) {
+			throw new Error(
+				'onStarting cannot be set because the response has already started.' /* LOC */,
+			);
+		}
+
+		if (this._onStarting === undefined) {
+			this._onStarting = [];
+		}
+		this._onStarting.push([callback, state]);
 	}
 }

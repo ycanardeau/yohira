@@ -7,22 +7,25 @@ import {
 import {
 	IHeaderDictionary,
 	IHttpResponseBodyFeature,
+	IHttpResponseFeature,
 	IResponseCookies,
 } from '@yohira/http.features';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
 class FeatureInterfaces {
+	response?: IHttpResponseFeature;
 	responseBody?: IHttpResponseBodyFeature;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,d36a5786d91e7a26,references
 export class HttpResponse implements IHttpResponse {
+	private static readonly nullResponseFeature = ():
+		| IHttpResponseFeature
+		| undefined => undefined;
 	private static readonly nullResponseBodyFeature = ():
 		| IHttpResponseBodyFeature
-		| undefined => {
-		return undefined;
-	};
+		| undefined => undefined;
 
 	private readonly features = new FeatureReferences<FeatureInterfaces>(
 		() => new FeatureInterfaces(),
@@ -30,6 +33,19 @@ export class HttpResponse implements IHttpResponse {
 
 	constructor(readonly httpContext: IHttpContext) {
 		this.features.initialize(httpContext.features);
+	}
+
+	private get httpResponseFeature(): IHttpResponseFeature {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this.features.fetch(
+			IHttpResponseFeature,
+			{
+				get: () => this.features.cache.response,
+				set: (value) => (this.features.cache.response = value),
+			},
+			this.features.collection,
+			HttpResponse.nullResponseFeature,
+		)!;
 	}
 
 	private get httpResponseBodyFeature(): IHttpResponseBodyFeature {
@@ -86,7 +102,6 @@ export class HttpResponse implements IHttpResponse {
 		callback: (state: object) => Promise<void>,
 		state: object,
 	): void {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.httpResponseFeature.onStarting(callback, state);
 	}
 }
