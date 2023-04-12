@@ -325,7 +325,8 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 		Buffer.alloc(0),
 	);
 
-	const mockDescriptor: IAuthenticatedEncryptorDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => ({
 			decrypt: () => Buffer.alloc(0),
@@ -395,7 +396,8 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 		Buffer.alloc(0),
 	);
 
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => ({
 			decrypt: () => Buffer.alloc(0),
@@ -450,7 +452,8 @@ test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
 		Buffer.alloc(0),
 	);
 
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => ({
 			decrypt: () => Buffer.alloc(0),
@@ -522,7 +525,8 @@ test('Unprotect_KeyNotFound_RefreshOnce_CanFindKey', () => {
 		Buffer.alloc(0),
 	);
 
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => ({
 			decrypt: () => Buffer.alloc(0),
@@ -588,7 +592,8 @@ test('Unprotect_KeyRevoked_RevocationDisallowed_ThrowsKeyRevoked', () => {
 		Buffer.alloc(0),
 	);
 
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => ({
 			decrypt: () => Buffer.alloc(0),
@@ -650,7 +655,8 @@ test('Unprotect_KeyRevoked_RevocationAllowed_ReturnsOriginalData_SetsRevokedAndM
 		},
 		encrypt: () => Buffer.alloc(0),
 	};
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => mockEncryptor,
 	};
@@ -713,7 +719,8 @@ test('Unprotect_IsAlsoDefaultKey_Success_NoMigrationRequired', () => {
 		},
 		encrypt: () => Buffer.alloc(0),
 	};
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => mockEncryptor,
 	};
@@ -780,7 +787,8 @@ test('Unprotect_IsNotDefaultKey_Success_RequiresMigration', () => {
 		},
 		encrypt: () => Buffer.alloc(0),
 	};
-	const mockDescriptor = {};
+	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
+		{} as IAuthenticatedEncryptorDescriptor;
 	const mockEncryptorFactory: IAuthenticatedEncryptorFactory = {
 		createEncryptorInstance: () => mockEncryptor,
 	};

@@ -1,6 +1,7 @@
 import { IList, List } from '@yohira/base';
 
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
+import { AlgorithmConfig } from '../authenticated-encryption/conifg-model/AlgorithmConfig';
 import { IXmlRepository } from '../repositories/IXmlRepository';
 import { IXmlEncryptor } from '../xml-encryption/IXmlEncryptor';
 
@@ -10,6 +11,7 @@ export class KeyManagementOptions {
 	private static readonly _maxServerClockSkew = 5 * 60 * 1000;
 	private _newKeyLifetime = 90 * 24 * 60 * 60 * 1000;
 
+	authenticatedEncryptorConfig?: AlgorithmConfig;
 	xmlRepository?: IXmlRepository;
 	xmlEncryptor?: IXmlEncryptor;
 

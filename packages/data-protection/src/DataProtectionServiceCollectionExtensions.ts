@@ -5,6 +5,7 @@ import {
 	ServiceLifetime,
 	getRequiredService,
 	tryAddServiceDescriptor,
+	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILoggerFactory,
@@ -15,6 +16,7 @@ import { IOptions, addOptions } from '@yohira/extensions.options';
 import { DataProtectionOptions } from './DataProtectionOptions';
 import { IDataProtectionBuilder } from './IDataProtectionBuilder';
 import { DataProtectionBuilder } from './internal/DataProtectionBuilder';
+import { KeyManagementOptionsSetup } from './internal/KeyManagementOptions';
 import { DefaultKeyResolver } from './key-management/DefaultKeyResolver';
 import { IKeyManager } from './key-management/IKeyManager';
 import { KeyRingBasedDataProtectionProvider } from './key-management/KeyRingBasedDataProtectionProvider';
@@ -25,6 +27,16 @@ import { IKeyRingProvider } from './key-management/internal/IKeyRingProvider';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/DataProtectionServiceCollectionExtensions.cs,fa9d3c53032971e2,references
 function addDataProtectionServices(services: IServiceCollection): void {
+	// TODO
+
+	tryAddServiceDescriptorIterable(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			Symbol.for('IConfigureOptions<KeyManagementOptions>'),
+			KeyManagementOptionsSetup,
+		),
+	);
 	// TODO
 
 	tryAddServiceDescriptor(

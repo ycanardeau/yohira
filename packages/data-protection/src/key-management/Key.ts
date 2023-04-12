@@ -1,7 +1,7 @@
 import { Guid, Lazy } from '@yohira/base';
 
-import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/IAuthenticatedEncryptorDescriptor';
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
+import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';
 import { KeyBase } from './KeyBase';
 
 export class Key extends KeyBase {

@@ -1,6 +1,6 @@
 import { Guid, XElement } from '@yohira/base';
 
-import { IAuthenticatedEncryptorDescriptor } from '../../authenticated-encryption/IAuthenticatedEncryptorDescriptor';
+import { IAuthenticatedEncryptorDescriptor } from '../../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';
 import { IKey } from '../IKey';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/Internal/IInternalXmlKeyManager.cs,319d176791687e24,references

@@ -30,5 +30,6 @@ export * from './StringExtensions';
 export * from './StringWriter';
 export * from './Type';
 export * from './typedef';
+export * from './XAttribute';
 export * from './XElement';
 export * from './XName';

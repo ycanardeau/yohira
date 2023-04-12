@@ -1,4 +1,4 @@
-import { Guid, IReadonlyCollection, XElement, XName } from '@yohira/base';
+import { Guid, XElement, XName } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -8,8 +8,9 @@ import {
 import { IOptions } from '@yohira/extensions.options';
 
 import { withoutChildNodes } from '../XmlExtensions';
-import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/IAuthenticatedEncryptorDescriptor';
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
+import { AlgorithmConfig } from '../authenticated-encryption/conifg-model/AlgorithmConfig';
+import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';
 import { DefaultKeyStorageDirectories } from '../repositories/DefaultKeyStorageDirectories';
 import { FileSystemXmlRepository } from '../repositories/FileSystemXmlRepository';
 import { IDefaultKeyStorageDirectories } from '../repositories/IDefaultKeyStorageDirectories';
@@ -18,6 +19,7 @@ import { IXmlEncryptor } from '../xml-encryption/IXmlEncryptor';
 import { DeferredKey } from './DeferredKey';
 import { IKey } from './IKey';
 import { IKeyManager } from './IKeyManager';
+import { Key } from './Key';
 import { KeyBase } from './KeyBase';
 import { KeyManagementOptions } from './KeyManagementOptions';
 import { IInternalXmlKeyManager } from './internal/IInternalXmlKeyManager';
@@ -82,6 +84,53 @@ function logAnExceptionOccurredWhileProcessingElementDebug(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,889ec4cf31031799,references
+function logCreatingKey(
+	logger: ILogger,
+	keyId: Guid,
+	creationDate: number,
+	activationDate: number,
+	expirationDate: number,
+): void {
+	logger.log(
+		LogLevel.Information,
+		`Creating key ${keyId.toString(/* TODO: 'B' */)} with creation date ${
+			creationDate.toString(/* TODO: 'u' */)
+		}, activation date ${
+			activationDate.toString(/* TODO: 'u' */)
+		}, and expiration date ${
+			expirationDate.toString(/* TODO: 'u' */)
+		}.` /* LOC */,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,75707092475e80bc
+function logDescriptorDeserializerTypeForKeyIs(
+	logger: ILogger,
+	keyId: Guid,
+	assemblyQualifiedName: string,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		`Descriptor deserializer type for key ${
+			keyId.toString(/* TODO: 'B' */)
+		} is '${assemblyQualifiedName}'.`,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,16614c02b5da9330,references
+function logNoXMLEncryptorConfiguredKeyMayBePersistedToStorageInUnencryptedForm(
+	logger: ILogger,
+	keyId: Guid,
+): void {
+	logger.log(
+		LogLevel.Warning,
+		`No XML encryptor configured. Key ${
+			keyId.toString(/* TODO: 'B' */)
+		} may be persisted to storage in unencrypted form.`,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/XmlKeyManager.cs,eb36a39c3e1e7c02,references
 export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 	// Used for serializing elements to persistent storage
@@ -105,6 +154,7 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		XName.get('revocationDate');
 	/** @internal */ static readonly reasonElementName = XName.get('reason');
 
+	private readonly authenticatedEncryptorConfig: AlgorithmConfig;
 	private readonly internalKeyManager: IInternalXmlKeyManager;
 	private readonly logger: ILogger;
 	private readonly encryptorFactories: Iterable<IAuthenticatedEncryptorFactory>;
@@ -183,6 +233,12 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		this.keyRepository = keyRepository;
 		this.keyEncryptor = keyEncryptor;
 
+		this.authenticatedEncryptorConfig =
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			keyManagementOptions.getValue(
+				KeyManagementOptions,
+			).authenticatedEncryptorConfig!;
+
 		// TODO
 
 		// TODO
@@ -199,8 +255,88 @@ export class XmlKeyManager implements IKeyManager, IInternalXmlKeyManager {
 		activationDate: number,
 		expirationDate: number,
 	): IKey {
+		// <key id="{guid}" version="1">
+		//   <creationDate>...</creationDate>
+		//   <activationDate>...</activationDate>
+		//   <expirationDate>...</expirationDate>
+		//   <descriptor deserializerType="{typeName}">
+		//     ...
+		//   </descriptor>
+		// </key>
+
+		logCreatingKey(
+			this.logger,
+			keyId,
+			creationDate,
+			activationDate,
+			expirationDate,
+		);
+
+		const newDescriptor =
+			this.authenticatedEncryptorConfig.createNewDescriptor();
+		if (newDescriptor === undefined) {
+			throw new Error('createNewDescriptor returned undefined.');
+		}
+		const descriptorXmlInfo = newDescriptor.exportToXml();
+
+		logDescriptorDeserializerTypeForKeyIs(
+			this.logger,
+			keyId,
+			'' /* TODO */,
+		);
+
+		// build the <key> element
+		const keyElement = XElement.fromName(XmlKeyManager.keyElementName);
+		/* TODO: keyElement.content = [
+			new XAttribute(XmlKeyManager.idAttributeName, keyId.toString()),
+			new XAttribute(XmlKeyManager.versionAttributeName, 1),
+			new XElement(XmlKeyManager.creationDateElementName, creationDate),
+			new XElement(
+				XmlKeyManager.activationDateElementName,
+				activationDate,
+			),
+			new XElement(
+				XmlKeyManager.expirationDateElementName,
+				expirationDate,
+			),
+			((): XElement => {
+				const element = XElement.fromName(
+					XmlKeyManager.descriptorElementName,
+				);
+				element.content = [
+					new XAttribute(
+						XmlKeyManager.deserializerTypeAttributeName,
+						,
+					),
+					descriptorXmlInfo.serializedDescriptorElement,
+				];
+				return element;
+			})(),
+		]; */
+
+		// If key escrow policy is in effect, write the *unencrypted* key now.
 		// TODO
-		throw new Error('Method not implemented.');
+		//throw new Error('Method not implemented.');
+
+		// If an XML encryptor has been configured, protect secret key material now.
+		if (this.keyEncryptor === undefined) {
+			logNoXMLEncryptorConfiguredKeyMayBePersistedToStorageInUnencryptedForm(
+				this.logger,
+				keyId,
+			);
+		}
+		// TODO
+
+		// TODO
+
+		return new Key(
+			keyId,
+			creationDate,
+			activationDate,
+			expirationDate,
+			newDescriptor,
+			this.encryptorFactories,
+		);
 	}
 
 	createNewKey(activationDate: number, expirationDate: number): IKey {

@@ -1,8 +1,8 @@
 import { Guid, Lazy } from '@yohira/base';
 
 import { IAuthenticatedEncryptor } from '../authenticated-encryption/IAuthenticatedEncryptor';
-import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/IAuthenticatedEncryptorDescriptor';
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
+import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';
 import { IKey } from './IKey';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/KeyBase.cs,5ec1c24aae0ef7c2,references
