@@ -7,6 +7,7 @@ export * from './key-management/internal/ICacheableKeyRingProvider';
 export * from './key-management/internal/IKeyRing';
 export * from './key-management/internal/IKeyRingProvider';
 export * from './key-management/CryptographicError';
+export * from './key-management/IKey';
 export * from './key-management/Key';
 export * from './key-management/KeyManagementOptions';
 export * from './key-management/KeyRing';
