@@ -408,6 +408,23 @@ export class XElement extends XContainer {
 		return undefined;
 	}
 
+	private *getAttributes(name: XName | undefined): Generator<XAttribute> {
+		let a = this.lastAttr;
+		if (a !== undefined) {
+			do {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				a = a.next!;
+				if (name === undefined || a.name === name) {
+					yield a;
+				}
+			} while (a.parent === this && a !== this.lastAttr);
+		}
+	}
+
+	attributes(): Iterable<XAttribute> {
+		return this.getAttributes(undefined);
+	}
+
 	writeTo(writer: XmlWriter): void {
 		new ElementWriter(writer).writeElement(this);
 	}
@@ -423,5 +440,41 @@ export class XElement extends XContainer {
 		return using(XmlWriter.create(textWriter, ws), (w) => {
 			this.saveCore(w);
 		});
+	}
+
+	/** @internal */ appendAttribute(a: XAttribute): void {
+		// TODO: const notify = this.notifyChanging(a, XObjectChangeEventArgs.Add);
+		if (a.parent !== undefined) {
+			throw new Error(
+				'This operation was corrupted by external code.' /* LOC */,
+			);
+		}
+		this.appendAttributeSkipNotify(a);
+		/* TODO: if (notify) {
+			this.notifyChanged(a, XObjectChangeEventArgs.Add);
+		} */
+	}
+
+	/** @internal */ removeAttribute(a: XAttribute): void {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	setAttributeValue(
+		name: XName,
+		value: string /* TODO: object */ | undefined,
+	): void {
+		const a = this.attribute(name);
+		if (value === undefined) {
+			if (a !== undefined) {
+				this.removeAttribute(a);
+			}
+		} else {
+			if (a !== undefined) {
+				a.value = XContainer.getStringValue(value);
+			} else {
+				this.appendAttribute(new XAttribute(name, value));
+			}
+		}
 	}
 }
