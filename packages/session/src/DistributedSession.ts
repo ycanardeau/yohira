@@ -8,6 +8,7 @@ import { ISession } from '@yohira/http.features';
 // https://source.dot.net/#Microsoft.AspNetCore.Session/DistributedSession.cs,eb1af54dc0729609,references
 export class DistributedSession implements ISession {
 	private readonly logger: ILogger;
+	private isModified = false;
 
 	constructor(
 		private readonly cache: IDistributedCache,
@@ -27,8 +28,21 @@ export class DistributedSession implements ISession {
 		this.logger = loggerFactory.createLogger(DistributedSession.name);
 	}
 
-	commit(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+	async commit(/* TODO: cancellationToken */): Promise<void> {
+		// TODO: timeout
+		// TODO: cts =
+		if (this.isModified) {
+			// TODO
+			throw new Error('Method not implemented.');
+		} else {
+			try {
+				await this.cache.refresh(
+					this.sessionKey /* TODO: , cts.token */,
+				);
+			} catch (error) {
+				// TODO
+				throw error;
+			}
+		}
 	}
 }
