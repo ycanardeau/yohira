@@ -771,6 +771,8 @@ export class XmlTextReaderImpl extends XmlReader {
 	// TODO
 	private _readState = ReadState.Initial;
 	// TODO
+	private afterResetState = false;
+	// TODO
 
 	//
 	// Atomized string constants
@@ -1668,8 +1670,14 @@ export class XmlTextReaderImpl extends XmlReader {
 				if (!isTextDecl) {
 					this.parsingFunction = this.nextParsingFunction;
 				}
+				if (this.afterResetState) {
+					// TODO
+					//throw new Error('Method not implemented.');
+				}
 				// TODO
-				throw new Error('Method not implemented.');
+				//throw new Error('Method not implemented.');
+				this.ps.appendMode = false;
+				return false;
 			} else {
 				throw error;
 			}
