@@ -18,3 +18,4 @@ export * from './key-management/KeyRing';
 export * from './key-management/KeyRingBasedDataProtector';
 export * from './key-management/KeyRingProvider';
 export * from './DataProtectionServiceCollectionExtensions';
+export * from './Secret';
