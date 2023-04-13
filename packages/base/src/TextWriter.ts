@@ -4,7 +4,7 @@ import { IDisposable } from './IDisposable';
 export abstract class TextWriter implements IDisposable {
 	dispose(): void {
 		// TODO
-		throw new Error('Method not implemented.');
+		//throw new Error('Method not implemented.');
 	}
 
 	flush(): void {}

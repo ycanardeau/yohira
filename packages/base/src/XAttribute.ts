@@ -1,6 +1,6 @@
-import { XContainer } from './XContainer';
 import { XName } from './XName';
 import { XNamespace } from './XNamespace';
+import { XContainer } from './XNode';
 import { XObject } from './XObject';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XAttribute.cs,4ca7337be72c47a4,references

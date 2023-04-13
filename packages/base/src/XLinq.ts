@@ -1,6 +1,5 @@
-import { XElement } from './XContainer';
 import { XNamespace } from './XNamespace';
-import { XNode } from './XNode';
+import { XElement, XNode } from './XNode';
 import { XmlWriter } from './XmlWriter';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XLinq.cs,134810eae687636a,references

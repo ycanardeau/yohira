@@ -2166,8 +2166,9 @@ export class XmlWellFormedWriter extends XmlWriter {
 						throw new Error('Method not implemented.');
 
 					case State.StartDocEle:
-						// TODO
-						throw new Error('Method not implemented.');
+						this.writeStartDocument();
+						newState = State.Element;
+						break;
 
 					case State.EndAttrSEle:
 						// TODO
@@ -2398,9 +2399,32 @@ export class XmlWellFormedWriter extends XmlWriter {
 							: NamespaceKind.NeedToWrite;
 				}
 			}
-		} else {
-			// TODO
-			throw new Error('Method not implemented.');
+		}
+		// No existing declaration found in the namespace stack
+		else {
+			// validate special declaration (xml, xmlns)
+			if (
+				(ns === XmlReservedNs.NsXml && prefix === 'xml') ||
+				(ns === XmlReservedNs.NsXmlNs && prefix !== 'xmlns')
+			) {
+				throw new Error(
+					`Prefix '${prefix}' cannot be mapped to namespace name reserved for "xml" or "xmlns".` /* LOC */,
+				);
+			}
+
+			// check if it can be found in the predefinedNamespaces (which are provided by the user)
+			if (this.predefinedNamespaces !== undefined) {
+				const definedNs =
+					this.predefinedNamespaces.lookupNamespace(prefix);
+				// compare the namespace Uri to decide if the prefix is redefined
+				kind =
+					definedNs === ns
+						? NamespaceKind.Implied
+						: NamespaceKind.NeedToWrite;
+			} else {
+				// Namespace not declared anywhere yet, we need to write it out
+				kind = NamespaceKind.NeedToWrite;
+			}
 		}
 
 		this.addNamespace(prefix, ns, kind);
@@ -2692,8 +2716,42 @@ export class XmlWellFormedWriter extends XmlWriter {
 					}
 				} else {
 					if (prefix[0] === 'x') {
-						// TODO
-						throw new Error('Method not implemented.');
+						if (prefix === 'xmlns') {
+							if (
+								namespaceName.length > 0 &&
+								namespaceName !== XmlReservedNs.NsXmlNs
+							) {
+								throw new Error(
+									'Prefix "xmlns" is reserved for use by XML.' /* LOC */,
+								);
+							}
+							this.curDeclPrefix = localName;
+							this.setSpecialAttribute(
+								SpecialAttribute.PrefixedXmlns,
+							);
+							break SkipPushAndWrite;
+						} else if (prefix === 'xml') {
+							if (
+								namespaceName.length > 0 &&
+								namespaceName !== XmlReservedNs.NsXml
+							) {
+								throw new Error(
+									'Prefix "xml" is reserved for use by XML and can be mapped only to namespace name "http://www.w3.org/XML/1998/namespace".' /* LOC */,
+								);
+							}
+							switch (localName) {
+								case 'space':
+									this.setSpecialAttribute(
+										SpecialAttribute.XmlSpace,
+									);
+									break SkipPushAndWrite;
+								case 'lang':
+									this.setSpecialAttribute(
+										SpecialAttribute.XmlLang,
+									);
+									break SkipPushAndWrite;
+							}
+						}
 					}
 
 					XmlWellFormedWriter.checkNCName(prefix);
@@ -2847,8 +2905,53 @@ export class XmlWellFormedWriter extends XmlWriter {
 						this.curDeclPrefix = undefined;
 						break;
 					case SpecialAttribute.PrefixedXmlns:
-						// TODO
-						throw new Error('Method not implemented.');
+						value = this.attrValueCache.stringValue;
+						if (value.length === 0) {
+							throw new Error(
+								'Cannot use a prefix with an empty namespace.' /* LOC */,
+							);
+						}
+						if (
+							value === XmlReservedNs.NsXmlNs ||
+							(value === XmlReservedNs.NsXml &&
+								this.curDeclPrefix !== 'xml')
+						) {
+							throw new Error(
+								'Cannot bind to the reserved namespace.' /* LOC */,
+							);
+						}
+
+						if (this.curDeclPrefix === undefined) {
+							throw new Error('Assertion failed.');
+						}
+
+						if (
+							this.pushNamespaceExplicit(
+								this.curDeclPrefix,
+								value,
+							)
+						) {
+							// returns true if the namespace declaration should be written out
+							if (this.rawWriter !== undefined) {
+								if (
+									this.rawWriter
+										.supportsNamespaceDeclarationInChunks
+								) {
+									// TODO
+									throw new Error('Method not implemented.');
+								} else {
+									this.rawWriter.writeNamespaceDeclaration(
+										this.curDeclPrefix,
+										value,
+									);
+								}
+							} else {
+								// TODO
+								throw new Error('Method not implemented.');
+							}
+						}
+						this.curDeclPrefix = undefined;
+						break;
 					case SpecialAttribute.XmlSpace:
 						// TODO
 						throw new Error('Method not implemented.');
