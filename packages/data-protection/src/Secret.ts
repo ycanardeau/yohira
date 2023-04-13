@@ -30,6 +30,16 @@ export class Secret implements IDisposable, ISecret {
 		this.plaintextLength = value.length;
 	}
 
+	static fromSecret(secret: ISecret): Secret {
+		if (secret === undefined) {
+			throw new Error('Value cannot be undefined.' /* LOC */);
+		}
+
+		const buffer = Buffer.alloc(secret.length);
+		secret.writeSecretIntoBuffer(buffer);
+		return new Secret(buffer);
+	}
+
 	static random(numBytes: number): Secret {
 		if (numBytes < 0) {
 			throw new Error('Value must be non-negative.' /* LOC */);
