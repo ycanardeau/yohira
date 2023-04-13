@@ -4,10 +4,12 @@ export * from './authenticated-encryption/conifg-model/IAuthenticatedEncryptorDe
 export * from './authenticated-encryption/IAuthenticatedEncryptorFactory';
 export * from './key-management/internal/CacheableKeyRing';
 export * from './key-management/internal/ICacheableKeyRingProvider';
+export * from './key-management/internal/IDefaultKeyResolver';
 export * from './key-management/internal/IInternalXmlKeyManager';
 export * from './key-management/internal/IKeyRing';
 export * from './key-management/internal/IKeyRingProvider';
 export * from './key-management/CryptographicError';
+export * from './key-management/DefaultKeyResolver';
 export * from './key-management/DeferredKey';
 export * from './key-management/IKey';
 export * from './key-management/Key';
