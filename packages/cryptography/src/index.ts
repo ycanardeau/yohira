@@ -1,4 +1,7 @@
 export * from './Aes';
+export * from './CryptoStream';
+export * from './CryptoStreamMode';
+export * from './HashAlgorithm';
 export * from './HMACSHA256';
 export * from './HMACSHA512';
 export * from './ICryptoTransform';

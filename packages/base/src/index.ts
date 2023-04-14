@@ -26,6 +26,7 @@ export * from './MemoryStream';
 export * from './Path';
 export * from './Ref';
 export * from './SeekOrigin';
+export * from './Stream';
 export * from './StringBuilder';
 export * from './StringExtensions';
 export * from './StringReader';

@@ -2,9 +2,10 @@ import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
 import { IDisposable } from './IDisposable';
 import { SeekOrigin } from './SeekOrigin';
+import { Stream } from './Stream';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/MemoryStream.cs,044ce0129bdbdc11
-export class MemoryStream implements IDisposable {
+export class MemoryStream extends Stream implements IDisposable {
 	private constructor(
 		private _buffer: Buffer,
 		private readonly _origin: number,
@@ -15,7 +16,9 @@ export class MemoryStream implements IDisposable {
 		private _writable: boolean,
 		private readonly _exposable: boolean,
 		private _isOpen: boolean,
-	) {}
+	) {
+		super();
+	}
 
 	static alloc(capacity = 0): MemoryStream {
 		if (capacity < 0) {
@@ -177,26 +180,8 @@ export class MemoryStream implements IDisposable {
 		}
 	}
 
-	protected static validateBufferArguments(
-		buffer: Buffer,
-		offset: number,
-		count: number,
-	): void {
-		if (buffer === undefined) {
-			throw new Error('Value cannot be null.' /* LOC */);
-		}
-
-		if (offset < 0) {
-			throw new Error(/* TODO: message */);
-		}
-
-		if (count > buffer.length - offset) {
-			throw new Error(/* TODO: message */);
-		}
-	}
-
 	read(buffer: Buffer, offset: number, count: number): number {
-		MemoryStream.validateBufferArguments(buffer, offset, count);
+		Stream.validateBufferArguments(buffer, offset, count);
 		this.ensureNotClosed();
 
 		let n = this._length - this._position;
@@ -313,7 +298,7 @@ export class MemoryStream implements IDisposable {
 	}
 
 	write(buffer: Buffer, offset: number, count: number): void {
-		MemoryStream.validateBufferArguments(buffer, offset, count);
+		Stream.validateBufferArguments(buffer, offset, count);
 		this.ensureNotClosed();
 		this.ensureWritable();
 
@@ -349,6 +334,7 @@ export class MemoryStream implements IDisposable {
 	}
 
 	writeByte(value: number): void {
-		this.write(Buffer.from([value]), 0, 1);
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }
