@@ -1,9 +1,10 @@
-import { DirectoryInfo, XElement, combinePaths } from '@yohira/base';
+import { DirectoryInfo, combinePaths } from '@yohira/base';
 import {
 	ILogger,
 	ILoggerFactory,
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
+import { XElement } from '@yohira/xml';
 import { readFileSync, readdirSync } from 'node:fs';
 
 import { IXmlRepository } from './IXmlRepository';

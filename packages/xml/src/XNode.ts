@@ -1,7 +1,5 @@
-import { using } from './IDisposable';
-import { StringReader } from './StringReader';
-import { StringWriter } from './StringWriter';
-import { TextWriter } from './TextWriter';
+import { StringReader, StringWriter, TextWriter, using } from '@yohira/base';
+
 import { XAttribute } from './XAttribute';
 import {
 	ElementWriter,

@@ -1,4 +1,4 @@
-import { Guid, XElement, XName } from '@yohira/base';
+import { Guid } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -6,6 +6,7 @@ import {
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
 import { IOptions } from '@yohira/extensions.options';
+import { XElement, XName } from '@yohira/xml';
 
 import { withoutChildNodes } from '../XmlExtensions';
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';

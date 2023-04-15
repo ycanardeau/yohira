@@ -99,7 +99,8 @@
 			],
 			"@yohira/third-party.ts-results": [
 				"packages/third-party.ts-results/src"
-			]
+			],
+			"@yohira/xml": ["packages/xml/src"]
 		}
 	},
 	"include": ["packages/**/*"]

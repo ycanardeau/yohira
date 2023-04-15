@@ -1,6 +1,5 @@
-import { IDisposable } from './IDisposable';
-import { StringBuilder } from './StringBuilder';
-import { TextWriter } from './TextWriter';
+import { IDisposable, StringBuilder, TextWriter } from '@yohira/base';
+
 import {
 	isAttributeValueChar,
 	isNCNameSingleChar,

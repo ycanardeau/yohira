@@ -1,5 +1,5 @@
-import { tryGetValue } from './MapExtensions';
-import { getStringHashCode } from './StringExtensions';
+import { getStringHashCode, tryGetValue } from '@yohira/base';
+
 import { XName } from './XName';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XNamespace.cs,b7fd36022953a5be,references

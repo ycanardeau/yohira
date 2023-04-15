@@ -1,8 +1,12 @@
-import { IDisposable } from './IDisposable';
-import { Out, Ref } from './Ref';
-import { StringBuilder } from './StringBuilder';
-import { getStringHashCode } from './StringExtensions';
-import { TextReader } from './TextReader';
+import {
+	IDisposable,
+	Out,
+	Ref,
+	StringBuilder,
+	TextReader,
+	getStringHashCode,
+} from '@yohira/base';
+
 import {
 	isAttributeValueChar,
 	isCharData,

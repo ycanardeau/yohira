@@ -1,5 +1,5 @@
-import { IEquatable } from './IEquatable';
-import { getStringHashCode } from './StringExtensions';
+import { IEquatable, getStringHashCode } from '@yohira/base';
+
 import { XNamespace } from './XNamespace';
 import { verifyNCName } from './XmlConvert';
 

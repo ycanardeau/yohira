@@ -1,4 +1,5 @@
-import { Guid, Lazy, XElement } from '@yohira/base';
+import { Guid, Lazy } from '@yohira/base';
+import { XElement } from '@yohira/xml';
 
 import { IAuthenticatedEncryptorFactory } from '../authenticated-encryption/IAuthenticatedEncryptorFactory';
 import { IAuthenticatedEncryptorDescriptor } from '../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';

@@ -1,10 +1,11 @@
-import { Guid, XElement } from '@yohira/base';
+import { Guid } from '@yohira/base';
 import {
 	DeferredKey,
 	IAuthenticatedEncryptorDescriptor,
 	IAuthenticatedEncryptorFactory,
 	IInternalXmlKeyManager,
 } from '@yohira/data-protection';
+import { XElement } from '@yohira/xml';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/aspnetcore/blob/2745e0b1e0b8bdfe428d8d115cae0d0f42bcea7b/src/DataProtection/DataProtection/test/KeyManagement/DeferredKeyTests.cs#L16

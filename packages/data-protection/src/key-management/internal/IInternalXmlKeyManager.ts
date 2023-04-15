@@ -1,4 +1,5 @@
-import { Guid, XElement } from '@yohira/base';
+import { Guid } from '@yohira/base';
+import { XElement } from '@yohira/xml';
 
 import { IAuthenticatedEncryptorDescriptor } from '../../authenticated-encryption/conifg-model/IAuthenticatedEncryptorDescriptor';
 import { IKey } from '../IKey';

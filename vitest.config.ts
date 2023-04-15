@@ -101,6 +101,7 @@ export default defineConfig({
 				__dirname,
 				'./packages/third-party.ts-results/src',
 			),
+			'@yohira/xml': resolve(__dirname, './packages/xml/src'),
 		},
 	},
 });

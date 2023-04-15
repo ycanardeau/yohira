@@ -1,4 +1,5 @@
-import { StringWriter, XElement } from '@yohira/base';
+import { StringWriter } from '@yohira/base';
+import { XElement } from '@yohira/xml';
 
 import { Secret } from '../Secret';
 
