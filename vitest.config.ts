@@ -5,6 +5,10 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@yohira/base': resolve(__dirname, './packages/base/src'),
+			'@yohira/cryptography': resolve(
+				__dirname,
+				'./packages/cryptography/src',
+			),
 			'@yohira/data-protection': resolve(
 				__dirname,
 				'./packages/data-protection/src',

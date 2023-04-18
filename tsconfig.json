@@ -20,6 +20,7 @@
 			],
 			"@yohira/base": ["packages/base/src"],
 			"@yohira/core": ["packages/core/src"],
+			"@yohira/cryptography": ["packages/cryptography/src"],
 			"@yohira/data-protection": ["packages/data-protection/src"],
 			"@yohira/data-protection.abstractions": [
 				"packages/data-protection.abstractions/src"
