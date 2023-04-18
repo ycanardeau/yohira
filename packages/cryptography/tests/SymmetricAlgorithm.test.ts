@@ -72,7 +72,16 @@ class AnySizeAlgorithm extends SymmetricAlgorithm {
 		this.blockSizeValue = value;
 	}
 
+	createDecryptorCore(): ICryptoTransform {
+		throw new Error('Method not implemented.');
+	}
 	createEncryptorCore(): ICryptoTransform {
+		throw new Error('Method not implemented.');
+	}
+	generateIV(): void {
+		throw new Error('Method not implemented.');
+	}
+	generateKey(): void {
 		throw new Error('Method not implemented.');
 	}
 }

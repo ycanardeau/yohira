@@ -7,4 +7,8 @@ export class KeySizes {
 		readonly maxSize: number,
 		readonly skipSize: number,
 	) {}
+
+	clone(): KeySizes {
+		return new KeySizes(this.minSize, this.maxSize, this.skipSize);
+	}
 }

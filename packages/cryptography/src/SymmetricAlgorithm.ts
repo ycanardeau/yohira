@@ -16,6 +16,8 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 	protected feedbackSizeValue = 0;
 	protected keySizeValue = 0;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+	protected legalBLockSizesValue: KeySizes[] = undefined!;
+	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	protected legalKeySizesValue: KeySizes[] = undefined!;
 
 	protected constructor() {
@@ -43,28 +45,28 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 		throw new Error('Method not implemented.');
 	}
 
+	abstract generateIV(): void;
+
 	get iv(): Buffer {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (this.ivValue === undefined) {
+			this.generateIV();
+		}
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return Buffer.from(this.ivValue!);
 	}
 	set iv(value: Buffer) {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (value === undefined) {
+			throw new Error('Value cannot be undefined.' /* LOC */);
+		}
+		if (value.length !== this.blockSize / 8) {
+			throw new Error(
+				'Specified initialization vector (IV) does not match the block size for this algorithm.' /* LOC */,
+			);
+		}
+		this.ivValue = Buffer.from(value);
 	}
 
-	get key(): Buffer {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-	set key(value: Buffer) {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-
-	get legalKeySizes(): KeySizes[] {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return Array.from(this.legalKeySizesValue!);
-	}
+	abstract generateKey(): void;
 
 	validKeySize(bitLength: number): boolean {
 		const validSizes = this.legalKeySizes;
@@ -72,6 +74,35 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 			return false;
 		}
 		return isLegalSize(bitLength, validSizes, { set: () => {} });
+	}
+
+	get key(): Buffer {
+		if (this.keyValue === undefined) {
+			this.generateKey();
+		}
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return Buffer.from(this.keyValue!);
+	}
+	set key(value: Buffer) {
+		if (value === undefined) {
+			throw new Error('Value cannot be undefined.' /* LOC */);
+		}
+
+		const bitLength = value.length * 8;
+		if (false /* TODO */ || !this.validKeySize(bitLength)) {
+			throw new Error(
+				'Specified key is not a valid size for this algorithm.' /* LOC */,
+			);
+		}
+
+		// must convert bytes to bits
+		this.keySize = bitLength;
+		this.keyValue = Buffer.from(value);
+	}
+
+	get legalKeySizes(): KeySizes[] {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return Array.from(this.legalKeySizesValue!);
 	}
 
 	get keySize(): number {
@@ -111,6 +142,15 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 			);
 		}
 		this.paddingValue = value;
+	}
+
+	abstract createDecryptorCore(
+		rgbKey: Buffer,
+		rgbIV: Buffer | undefined,
+	): ICryptoTransform;
+
+	createDecryptor(): ICryptoTransform {
+		return this.createDecryptorCore(this.key, this.iv);
 	}
 
 	abstract createEncryptorCore(
