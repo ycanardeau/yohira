@@ -8,6 +8,7 @@ import { Rfc4231HmacTests } from './Rfc4231HmacTests';
 // https://github.com/dotnet/runtime/blob/ab2b80d06dd4d997df5ffa72a3c4a99cb36ccbff/src/libraries/System.Security.Cryptography/tests/HmacSha256Tests.cs#L12
 class HmacSha256Tests extends Rfc4231HmacTests {
 	private static readonly s_testMacs4231: Buffer[] = [
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		undefined!,
 		Buffer.from(
 			'b0344c61d8db38535ca8afceaf0bf12b881dc200c9833da726e9376c2e32cff7',

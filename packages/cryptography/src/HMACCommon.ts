@@ -2,6 +2,7 @@ import { HashAlgorithmNames } from './HashAlgorithmNames';
 import { HashProvider } from './HashProvider';
 import { createMacProvider } from './HashProviderDispenser';
 import { SHA256 } from './SHA256';
+import { SHA512 } from './SHA512';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/HMACCommon.cs,476a4b33de497f59,references
 export class HMACCommon {
@@ -39,8 +40,7 @@ export class HMACCommon {
 						// TODO
 						throw new Error('Method not implemented.');
 					case HashAlgorithmNames.SHA512:
-						// TODO
-						throw new Error('Method not implemented.');
+						return SHA512.hashData(key);
 					case HashAlgorithmNames.SHA1:
 						// TODO
 						throw new Error('Method not implemented.');

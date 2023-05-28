@@ -8,25 +8,25 @@ import {
 	createHashProvider,
 } from './HashProviderDispenser';
 
-// https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/SHA256.cs,b87ea7e64312d482,references
-export abstract class SHA256 extends HashAlgorithm {
+// https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/SHA512.cs,f9600b0d781d55e8,references
+export abstract class SHA512 extends HashAlgorithm {
 	/**
-	 * The hash size produced by the SHA256 algorithm, in bits.
+	 * The hash size produced by the SHA512 algorithm, in bits.
 	 */
-	static readonly hashSizeInBits = 256;
+	static readonly hashSizeInBits = 512;
 
 	/**
-	 * The hash size produced by the SHA256 algorithm, in bytes.
+	 * The hash size produced by the SHA512 algorithm, in bytes.
 	 */
-	static readonly hashSizeInBytes = SHA256.hashSizeInBits / 8;
+	static readonly hashSizeInBytes = SHA512.hashSizeInBits / 8;
 
 	protected constructor() {
 		super();
 
-		this.hashSizeValue = SHA256.hashSizeInBits;
+		this.hashSizeValue = SHA512.hashSizeInBits;
 	}
 
-	static create(): SHA256 {
+	static create(): SHA512 {
 		return new Impl();
 	}
 
@@ -34,16 +34,16 @@ export abstract class SHA256 extends HashAlgorithm {
 		source: Buffer,
 		destination: Buffer,
 	): Result<number, number> {
-		if (destination.length < SHA256.hashSizeInBytes) {
+		if (destination.length < SHA512.hashSizeInBytes) {
 			return new Err(0);
 		}
 
 		const bytesWritten = OneShotHashProvider.hashData(
-			HashAlgorithmNames.SHA256,
+			HashAlgorithmNames.SHA512,
 			source,
 			destination,
 		);
-		if (bytesWritten !== SHA256.hashSizeInBytes) {
+		if (bytesWritten !== SHA512.hashSizeInBytes) {
 			throw new Error('Assertion failed');
 		}
 
@@ -51,7 +51,7 @@ export abstract class SHA256 extends HashAlgorithm {
 	}
 
 	static hashDataCore(source: Buffer, destination: Buffer): number {
-		const tryHashDataResult = SHA256.tryHashData(source, destination);
+		const tryHashDataResult = SHA512.tryHashData(source, destination);
 		if (!tryHashDataResult.ok) {
 			throw new Error('Destination is too short.' /* LOC */);
 		}
@@ -60,9 +60,9 @@ export abstract class SHA256 extends HashAlgorithm {
 	}
 
 	static hashData(source: Buffer): Buffer {
-		const buffer = Buffer.alloc(SHA256.hashSizeInBytes);
+		const buffer = Buffer.alloc(SHA512.hashSizeInBytes);
 
-		const written = SHA256.hashDataCore(source, buffer);
+		const written = SHA512.hashDataCore(source, buffer);
 		if (written !== buffer.length) {
 			throw new Error('Assertion failed.');
 		}
@@ -71,14 +71,14 @@ export abstract class SHA256 extends HashAlgorithm {
 	}
 }
 
-// https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/SHA256.cs,4fcaa40f09f5d3be
-class Impl extends SHA256 {
+// https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/SHA512.cs,5ff684f06a138967,references
+class Impl extends SHA512 {
 	private readonly hashProvider: HashProvider;
 
 	constructor() {
 		super();
 
-		this.hashProvider = createHashProvider(HashAlgorithmNames.SHA256);
+		this.hashProvider = createHashProvider(HashAlgorithmNames.SHA512);
 		this.hashSizeValue = this.hashProvider.hashSizeInBytes * 8;
 	}
 

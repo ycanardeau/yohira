@@ -10,4 +10,5 @@ export * from './ICryptoTransform';
 export * from './KeyedHashAlgorithm';
 export * from './PaddingMode';
 export * from './SHA256';
+export * from './SHA512';
 export * from './SymmetricAlgorithm';
