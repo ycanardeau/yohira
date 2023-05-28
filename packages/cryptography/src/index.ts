@@ -8,6 +8,7 @@ export * from './HMACSHA256';
 export * from './HMACSHA512';
 export * from './ICryptoTransform';
 export * from './KeyedHashAlgorithm';
+export * from './KeySizes';
 export * from './PaddingMode';
 export * from './SHA256';
 export * from './SHA512';

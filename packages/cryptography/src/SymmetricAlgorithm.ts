@@ -16,7 +16,7 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 	protected feedbackSizeValue = 0;
 	protected keySizeValue = 0;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	protected legalBLockSizesValue: KeySizes[] = undefined!;
+	protected legalBlockSizesValue: KeySizes[] = undefined!;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	protected legalKeySizesValue: KeySizes[] = undefined!;
 
@@ -100,9 +100,12 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 		this.keyValue = Buffer.from(value);
 	}
 
+	get legalBlockSizes(): KeySizes[] {
+		return Array.from(this.legalBlockSizesValue);
+	}
+
 	get legalKeySizes(): KeySizes[] {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return Array.from(this.legalKeySizesValue!);
+		return Array.from(this.legalKeySizesValue);
 	}
 
 	get keySize(): number {

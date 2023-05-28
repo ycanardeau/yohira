@@ -16,7 +16,7 @@ export abstract class Aes extends SymmetricAlgorithm {
 	protected constructor() {
 		super();
 
-		this.legalBLockSizesValue = cloneKeySizesArray(Aes.legalBlockSizes);
+		this.legalBlockSizesValue = cloneKeySizesArray(Aes.legalBlockSizes);
 		this.legalKeySizesValue = cloneKeySizesArray(Aes.legalKeySizes);
 
 		this.blockSizeValue = 128;
