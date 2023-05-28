@@ -26,7 +26,7 @@ export abstract class Aes extends SymmetricAlgorithm {
 	}
 
 	static create(): Aes {
-		return new AesImplementation();
+		return new AesImpl();
 	}
 }
 
@@ -40,7 +40,7 @@ function getPaddingSize(
 }
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/AesImplementation.cs,5082aa2bd9ae096d,references
-class AesImplementation extends Aes {
+class AesImpl extends Aes {
 	private static readonly bitsPerByte = 8;
 
 	private static getAlgorithm(
@@ -137,7 +137,7 @@ class AesImplementation extends Aes {
 		feedback: number,
 		encrypting: boolean,
 	): UniversalCryptoTransform {
-		const algorithm = AesImplementation.getAlgorithm(
+		const algorithm = AesImpl.getAlgorithm(
 			key.length * 8,
 			feedback * 8,
 			cipherMode,
@@ -162,11 +162,11 @@ class AesImplementation extends Aes {
 	): UniversalCryptoTransform {
 		// note: rbgIV is guaranteed to be cloned before this method, so no need to clone it again
 
-		const keySize = rgbKey.length * AesImplementation.bitsPerByte;
+		const keySize = rgbKey.length * AesImpl.bitsPerByte;
 		// TODO
 
 		if (rgbIV !== undefined) {
-			const ivSize = rgbIV.length * AesImplementation.bitsPerByte;
+			const ivSize = rgbIV.length * AesImpl.bitsPerByte;
 			if (ivSize !== this.blockSize) {
 				throw new Error(
 					'Specified initialization vector (IV) does not match the block size for this algorithm.' /* LOC */,
@@ -184,9 +184,9 @@ class AesImplementation extends Aes {
 			this.padding,
 			rgbKey,
 			rgbIV,
-			this.blockSize / AesImplementation.bitsPerByte,
+			this.blockSize / AesImpl.bitsPerByte,
 			getPaddingSize(this, this.mode, this.feedbackSize),
-			this.feedbackSize / AesImplementation.bitsPerByte,
+			this.feedbackSize / AesImpl.bitsPerByte,
 			encrypting,
 		);
 	}
@@ -222,10 +222,10 @@ class AesImplementation extends Aes {
 	}
 
 	generateIV(): void {
-		this.iv = randomBytes(this.blockSize / AesImplementation.bitsPerByte);
+		this.iv = randomBytes(this.blockSize / AesImpl.bitsPerByte);
 	}
 
 	generateKey(): void {
-		this.key = randomBytes(this.keySize / AesImplementation.bitsPerByte);
+		this.key = randomBytes(this.keySize / AesImpl.bitsPerByte);
 	}
 }
