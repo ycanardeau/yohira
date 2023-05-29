@@ -4,6 +4,12 @@ import { IDisposable } from '@yohira/base';
 export interface ICryptoTransform extends IDisposable {
 	readonly inputBlockSize: number;
 	readonly outputBlockSize: number;
+	/**
+	 * canTransformMultipleBlocks === true implies that transformBlock() can accept any number
+	 * of whole blocks, not just a single block.  If canTransformMultipleBlocks is false, you have
+	 * to feed blocks one at a time.
+	 */
+	readonly canTransformMultipleBlocks: boolean;
 
 	// The return value of transformBlock is the number of bytes returned to outputBuffer and is
 	// always <= outputBlockSize.  If canTransformMultipleBlocks is true, then inputCount may be

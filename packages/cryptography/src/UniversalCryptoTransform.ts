@@ -10,6 +10,10 @@ import {
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/UniversalCryptoTransform.cs,8ebb14d8760ff0cb,references
 export abstract class UniversalCryptoTransform implements ICryptoTransform {
+	get canTransformMultipleBlocks(): boolean {
+		return true;
+	}
+
 	protected _paddingMode: PaddingMode;
 	protected get paddingMode(): PaddingMode {
 		return this._paddingMode;
@@ -292,8 +296,32 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 		//
 		let decryptedBytes = 0;
 		if (depaddingRequired(this.paddingMode)) {
-			// TODO
-			throw new Error('Method not implemented.');
+			// If we have data saved from a previous call, decrypt that into the output first
+			if (this.heldoverCipher !== undefined) {
+				const depadDecryptLength = this.basicSymmetricCipher.transform(
+					this.heldoverCipher,
+					outputBuffer,
+				);
+				outputBuffer = outputBuffer.subarray(depadDecryptLength);
+				decryptedBytes += depadDecryptLength;
+			} else {
+				this.heldoverCipher = Buffer.alloc(this.inputBlockSize);
+			}
+
+			// Postpone the last block to the next round.
+			if (inputBuffer.length < this.heldoverCipher.length) {
+				throw new Error('inputBuffer.Length >= _heldoverCipher.Length');
+			}
+			inputBuffer
+				.subarray(inputBuffer.length - this.heldoverCipher.length)
+				.copy(this.heldoverCipher);
+			inputBuffer = inputBuffer.subarray(
+				0,
+				inputBuffer.length - this.heldoverCipher.length,
+			);
+			if (inputBuffer.length % this.inputBlockSize !== 0) {
+				throw new Error('Did not remove whole blocks for depadding');
+			}
 		}
 
 		if (inputBuffer.length > 0) {

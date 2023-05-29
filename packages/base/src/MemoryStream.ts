@@ -6,7 +6,7 @@ import { Stream } from './Stream';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/MemoryStream.cs,044ce0129bdbdc11
 export class MemoryStream extends Stream implements IDisposable {
-	private constructor(
+	protected constructor(
 		private _buffer: Buffer,
 		private readonly _origin: number,
 		private _position: number,
@@ -97,15 +97,18 @@ export class MemoryStream extends Stream implements IDisposable {
 	}
 
 	private ensureWritable(): void {
-		if (!this._isOpen) {
+		if (!this.canWrite) {
 			throw new Error('Stream does not support writing.' /* LOC */);
 		}
 	}
 
-	dispose(): void {
-		this._isOpen = false;
-		this._writable = false;
-		this._expandable = false;
+	protected disposeCore(disposing: boolean): void {
+		if (disposing) {
+			this._isOpen = false;
+			this._writable = false;
+			this._expandable = false;
+			// TODO
+		}
 	}
 
 	getBuffer(): Buffer {
@@ -170,7 +173,7 @@ export class MemoryStream extends Stream implements IDisposable {
 			if (value > 0) {
 				const newBuffer = Buffer.alloc(value);
 				if (this._length > 0) {
-					this._buffer.copy(newBuffer, 0, this._length);
+					this._buffer.copy(newBuffer, 0, 0, this._length);
 				}
 				this._buffer = newBuffer;
 			} else {
@@ -193,7 +196,7 @@ export class MemoryStream extends Stream implements IDisposable {
 		}
 
 		if (this._position + n < 0) {
-			throw new Error('Assertion failed.');
+			throw new Error('_position + n >= 0'); // len is less than 2^31 -1.
 		}
 
 		if (n <= 8) {
@@ -270,7 +273,9 @@ export class MemoryStream extends Stream implements IDisposable {
 		if (count === 0) {
 			return Buffer.alloc(0); /* TODO */
 		}
-		return this._buffer.subarray(this._origin, this._origin + count);
+		const copy = Buffer.alloc(count);
+		this._buffer.subarray(this._origin, this._origin + count).copy(copy);
+		return copy;
 	}
 
 	flush(): void {}
@@ -336,5 +341,16 @@ export class MemoryStream extends Stream implements IDisposable {
 	writeByte(value: number): void {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	// Writes this MemoryStream to another stream.
+	writeTo(stream: Stream): void {
+		if (stream === undefined) {
+			throw new Error('Value cannot be undefined.' /* LOC */);
+		}
+
+		this.ensureNotClosed();
+
+		stream.write(this._buffer, this._origin, this._length - this._origin);
 	}
 }

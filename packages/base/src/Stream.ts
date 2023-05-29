@@ -28,8 +28,23 @@ export abstract class Stream implements IDisposable {
 		}
 	}
 
-	dispose(): void {
+	protected disposeCore(disposing: boolean): void {}
+
+	close(): void {
+		this.disposeCore(true);
 		// TODO
+	}
+
+	dispose(): void {
+		this.close();
+	}
+
+	abstract read(buffer: Buffer, offset: number, count: number): number;
+
+	readByte(): number {
+		const oneByteArray = Buffer.alloc(1);
+		const r = this.read(oneByteArray, 0, 1);
+		return r == 0 ? -1 : oneByteArray[0];
 	}
 
 	abstract flush(): void;
