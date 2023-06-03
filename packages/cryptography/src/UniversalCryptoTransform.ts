@@ -354,16 +354,27 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 
 		let inputCiphertext: Buffer;
 		let ciphertext: Buffer;
-		// TODO
+		let rentedCiphertext: Buffer | undefined;
+		let rentedCipherTextSize = 0;
 
 		try {
 			if (this.heldoverCipher === undefined) {
-				// TODO
-				ciphertext = Buffer.alloc(inputBuffer.length);
+				rentedCipherTextSize = inputBuffer.length;
+				rentedCiphertext = Buffer.alloc(inputBuffer.length);
+				ciphertext = rentedCiphertext.subarray(0, inputBuffer.length);
 				inputCiphertext = inputBuffer;
 			} else {
-				// TODO
-				throw new Error('Method not implemented.');
+				rentedCipherTextSize =
+					this.heldoverCipher.length + inputBuffer.length;
+				rentedCiphertext = Buffer.alloc(rentedCipherTextSize);
+				ciphertext = rentedCiphertext.subarray(0, rentedCipherTextSize);
+				this.heldoverCipher.subarray().copy(ciphertext);
+				inputBuffer.copy(
+					ciphertext.subarray(this.heldoverCipher.length),
+				);
+
+				// Decrypt in-place
+				inputCiphertext = ciphertext;
 			}
 
 			let unpaddedLength = 0;
@@ -389,7 +400,10 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 			this.reset();
 			return unpaddedLength;
 		} finally {
-			// TODO
+			if (rentedCiphertext !== undefined) {
+				rentedCiphertext.fill(0, 0, rentedCipherTextSize);
+				rentedCiphertext = undefined;
+			}
 		}
 	}
 
@@ -399,8 +413,21 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 		inputCount: number,
 	): Buffer {
 		if (depaddingRequired(this.paddingMode)) {
-			// TODO
-			throw new Error('Method not implemented.');
+			let rented: Buffer | undefined = Buffer.alloc(
+				inputCount + this.inputBlockSize,
+			);
+			let written = 0;
+
+			try {
+				written = this.uncheckedTransformFinalBlockCore(
+					inputBuffer.subarray(inputOffset, inputOffset + inputCount),
+					rented,
+				);
+				return Buffer.from(rented.subarray(0, written));
+			} finally {
+				rented.fill(0);
+				rented = undefined;
+			}
 		} else {
 			const buffer = Buffer.alloc(inputCount);
 			const written = this.uncheckedTransformFinalBlockCore(

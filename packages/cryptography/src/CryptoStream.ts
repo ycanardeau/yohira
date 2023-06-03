@@ -412,6 +412,31 @@ export class CryptoStream extends Stream implements IDisposable {
 		}
 	}
 
+	private checkCopyToArguments(
+		destination: Stream,
+		bufferSize: number,
+	): void {}
+
+	copyTo(destination: Stream, bufferSize?: number): void {
+		if (bufferSize === undefined) {
+			bufferSize = this.getCopyBufferSize();
+		}
+
+		this.checkCopyToArguments(destination, bufferSize);
+
+		let rentedBuffer: Buffer | undefined = Buffer.alloc(bufferSize);
+		try {
+			let bytesRead: number;
+			do {
+				bytesRead = this.read(rentedBuffer, 0, bufferSize);
+				destination.write(rentedBuffer, 0, bytesRead);
+			} while (bytesRead > 0);
+		} finally {
+			rentedBuffer.subarray(0, bufferSize).fill(0);
+			rentedBuffer = undefined;
+		}
+	}
+
 	private writeCore(buffer: Buffer, useAsync: boolean): void {
 		// write <= count bytes to the output stream, transforming as we go.
 		// Basic idea: using bytes in the inputBuffer first, make whole blocks,

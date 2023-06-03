@@ -155,6 +155,15 @@ class AesImpl extends Aes {
 		return UniversalCryptoTransform.create(paddingMode, cipher, encrypting);
 	}
 
+	private static validateCFBFeedbackSize(feedback: number): void {
+		// only 8bits/128bits feedback would be valid.
+		if (feedback !== 8 && feedback !== 128) {
+			throw new Error(
+				`The specified feedback size '${feedback}' for CipherMode 'cfb' is not supported.` /* LOC */,
+			);
+		}
+	}
+
 	private createTransform(
 		rgbKey: Buffer,
 		rgbIV: Buffer | undefined,
@@ -175,8 +184,7 @@ class AesImpl extends Aes {
 		}
 
 		if (this.mode === 'cfb') {
-			// TODO
-			throw new Error('Method not implemented.');
+			AesImpl.validateCFBFeedbackSize(this.feedbackSize);
 		}
 
 		return this.createTransformCore(

@@ -59,8 +59,12 @@ export function padBlock(
 					'The input data is not a complete block.' /* LOC */,
 				);
 			} else {
-				// TODO
-				throw new Error('Method not implemented.');
+				if (destination.length < count) {
+					throw new Error('Destination is too short.' /* LOC */);
+				}
+
+				block.copy(destination);
+				return count;
 			}
 
 		// ANSI padding fills the blocks with zeros and adds the total number of padding bytes as
