@@ -35,6 +35,9 @@ export abstract class HashAlgorithm implements IDisposable, ICryptoTransform {
 	get outputBlockSize(): number {
 		return 1;
 	}
+	get canTransformMultipleBlocks(): boolean {
+		return true;
+	}
 
 	protected abstract hashCore(
 		buffer: Buffer,
