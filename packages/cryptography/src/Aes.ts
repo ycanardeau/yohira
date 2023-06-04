@@ -169,6 +169,10 @@ class AesImpl extends Aes {
 		rgbIV: Buffer | undefined,
 		encrypting: boolean,
 	): UniversalCryptoTransform {
+		if (rgbKey === undefined) {
+			throw new Error('Value cannot be undefined.' /* LOC */);
+		}
+
 		// note: rbgIV is guaranteed to be cloned before this method, so no need to clone it again
 
 		const keySize = rgbKey.length * AesImpl.bitsPerByte;
