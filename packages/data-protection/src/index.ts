@@ -17,5 +17,7 @@ export * from './key-management/KeyManagementOptions';
 export * from './key-management/KeyRing';
 export * from './key-management/KeyRingBasedDataProtector';
 export * from './key-management/KeyRingProvider';
+export * from './managed/ManagedAuthenticatedEncryptor';
+export * from './sp800_108/ManagedSP800_108_CTR_HMACSHA512';
 export * from './DataProtectionServiceCollectionExtensions';
 export * from './Secret';
