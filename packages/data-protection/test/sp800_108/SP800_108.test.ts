@@ -10,11 +10,20 @@ function testManagedKeyDerivation(
 	numDerivedBytes: number,
 	expectedDerivedSubkeyAsBase64: string,
 ): void {
-	const labelSegment = Buffer.alloc(label.length);
+	const labelSegment = Buffer.alloc(label.length + 10).subarray(
+		3,
+		3 + label.length,
+	);
 	label.copy(labelSegment);
-	const contextSegment = Buffer.alloc(context.length);
+	const contextSegment = Buffer.alloc(context.length + 10).subarray(
+		5,
+		5 + context.length,
+	);
 	context.copy(contextSegment);
-	const derivedSubkeySegment = Buffer.alloc(numDerivedBytes);
+	const derivedSubkeySegment = Buffer.alloc(numDerivedBytes + 10).subarray(
+		4,
+		4 + numDerivedBytes,
+	);
 
 	deriveKeysWithContextHeader(
 		kdk,

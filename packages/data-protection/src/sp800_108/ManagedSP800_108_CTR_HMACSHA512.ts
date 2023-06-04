@@ -14,7 +14,7 @@ export function deriveKeys(
 	output: Buffer,
 ): void {
 	// make copies so we can mutate these local vars
-	let outputOffset = output.byteOffset;
+	let outputOffset = 0;
 	let outputCount = output.length;
 
 	using(prfFactory(kdk), (prf) => {
@@ -32,8 +32,13 @@ export function deriveKeys(
 		prfInput.writeUint32BE(outputSizeInBits, prfInput.length - 4);
 
 		// Copy label and context to prfInput since they're stable over all iterations
-		label.copy(prfInput, sizeofUint32);
-		context.copy(prfInput, sizeofUint32 + label.length + 1);
+		label.copy(prfInput, sizeofUint32, 0, label.length);
+		context.copy(
+			prfInput,
+			sizeofUint32 + label.length + 1,
+			0,
+			context.length,
+		);
 
 		const prfOutputSizeInBytes = getDigestSizeInBytes(prf);
 		for (let i = 1; outputCount > 0; i++) {
@@ -55,7 +60,7 @@ export function deriveKeys(
 				0,
 				numBytesToCopyThisIteration,
 			);
-			prfOutput.fill(0); // contains key material, so delete it
+			prfOutput.fill(0, 0, prfOutput.length); // contains key material, so delete it
 
 			// adjust offsets
 			outputOffset += numBytesToCopyThisIteration;
@@ -74,8 +79,8 @@ export function deriveKeysWithContextHeader(
 	output: Buffer,
 ): void {
 	const combinedContext = Buffer.alloc(contextHeader.length + context.length);
-	contextHeader.copy(combinedContext, 0);
-	context.copy(combinedContext, contextHeader.length);
+	contextHeader.copy(combinedContext, 0, 0, contextHeader.length);
+	context.copy(combinedContext, contextHeader.length, 0, context.length);
 	deriveKeys(
 		kdk,
 		label,
