@@ -8,7 +8,7 @@
 		"@types/node": "^18.11.11",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
-		"@vitest/coverage-c8": "^0.29.3",
+		"@vitest/coverage-c8": "^0.29.8",
 		"concurrently": "^7.6.0",
 		"conditional-type-checks": "^1.0.6",
 		"eslint": "^8.27.0",
@@ -20,7 +20,7 @@
 		"rimraf": "^3.0.2",
 		"tsc-alias": "^1.7.1",
 		"typescript": "^5.0.2",
-		"vitest": "^0.29.3"
+		"vitest": "^0.29.8"
 	},
 	"scripts": {
 		"clean": "rimraf ./dist",
