@@ -11,5 +11,6 @@
 		"classProperties",
 		"decorators-legacy",
 		"importAssertions"
-	]
+	],
+	"plugins": ["@trivago/prettier-plugin-sort-imports"]
 }
