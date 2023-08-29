@@ -8,6 +8,7 @@ import { PathString } from './PathString';
 export interface IHttpRequest {
 	readonly httpContext: IHttpContext;
 	method: string;
+	pathBase: PathString;
 	path: PathString;
 	queryString: string;
 	readonly headers: IncomingHttpHeaders;

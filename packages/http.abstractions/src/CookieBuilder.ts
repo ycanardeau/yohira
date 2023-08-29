@@ -3,6 +3,10 @@ import { CookieOptions, SameSiteMode } from '@yohira/http.features';
 import { CookieSecurePolicy } from './CookieSecurePolicy';
 import { IHttpContext } from './IHttpContext';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/CookieBuilder.cs,5b5d0a5eed7b3250,references
+/**
+ * Defines settings used to create a cookie.
+ */
 export class CookieBuilder {
 	private _name?: string;
 
@@ -22,8 +26,8 @@ export class CookieBuilder {
 	httpOnly = false;
 	sameSite = SameSiteMode.Unspecified;
 	securePolicy = CookieSecurePolicy.SameAsRequest;
-	// TODO: expiration;
-	// TODO: maxAge;
+	expiration?: number /* TODO: TimeSpan */;
+	maxAge?: number /* TODO: TimeSpan */;
 	isEssential = false;
 
 	build(context: IHttpContext, expiresFrom = new Date()): CookieOptions {

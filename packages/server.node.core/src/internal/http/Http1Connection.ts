@@ -52,6 +52,7 @@ export class Http1Connection
 
 	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
 
+	private _pathBase?: string;
 	private _path?: string;
 	private _queryString?: string;
 	private _rawBody?: string;
@@ -67,6 +68,7 @@ export class Http1Connection
 		this.resetFeatureCollection();
 
 		// TODO
+		this._pathBase = undefined;
 		this._path = undefined;
 		this._queryString = undefined;
 		this._rawBody = undefined;
@@ -187,6 +189,10 @@ export class Http1Connection
 
 	get method(): string {
 		return this.request.method ?? '';
+	}
+
+	get pathBase(): string {
+		return this._pathBase ?? '';
 	}
 
 	get path(): string {

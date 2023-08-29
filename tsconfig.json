@@ -15,9 +15,14 @@
 		"declaration": true,
 		"baseUrl": "./",
 		"paths": {
+			"@yohira/authentication": ["packages/authentication/src"],
 			"@yohira/authentication.abstractions": [
 				"packages/authentication.abstractions/src"
 			],
+			"@yohira/authentication.cookies": [
+				"packages/authentication.cookies/src"
+			],
+			"@yohira/authentication.core": ["packages/authentication.core/src"],
 			"@yohira/base": ["packages/base/src"],
 			"@yohira/core": ["packages/core/src"],
 			"@yohira/cryptography": ["packages/cryptography/src"],
@@ -74,6 +79,9 @@
 			],
 			"@yohira/extensions.primitives": [
 				"packages/extensions.primitives/src"
+			],
+			"@yohira/extensions.web-encoders": [
+				"packages/extensions.web-encoders/src"
 			],
 			"@yohira/features": ["packages/features/src"],
 			"@yohira/hosting": ["packages/hosting/src"],

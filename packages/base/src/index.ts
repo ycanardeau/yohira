@@ -34,5 +34,6 @@ export * from './StringReader';
 export * from './StringWriter';
 export * from './TextReader';
 export * from './TextWriter';
+export * from './TimeProvider';
 export * from './Type';
 export * from './typedef';

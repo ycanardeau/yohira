@@ -208,3 +208,4 @@ await runApp(host);
 -   [Session in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/app-state)
 -   [Key storage format in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/implementation/key-storage-format)
 -   [Key management extensibility in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/extensibility/key-management)
+-   [Use cookie authentication without ASP.NET Core Identity | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-7.0)

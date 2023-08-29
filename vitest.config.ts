@@ -4,6 +4,22 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	resolve: {
 		alias: {
+			'@yohira/authentication': resolve(
+				__dirname,
+				'./packages/authentication/src',
+			),
+			'@yohira/authentication.abstractions': resolve(
+				__dirname,
+				'./packages/authentication.abstractions/src',
+			),
+			'@yohira/authentication.cookies': resolve(
+				__dirname,
+				'./packages/authentication.cookies/src',
+			),
+			'@yohira/authentication.core': resolve(
+				__dirname,
+				'./packages/authentication.core/src',
+			),
 			'@yohira/base': resolve(__dirname, './packages/base/src'),
 			'@yohira/cryptography': resolve(
 				__dirname,
@@ -81,6 +97,10 @@ export default defineConfig({
 			'@yohira/extensions.primitives': resolve(
 				__dirname,
 				'./packages/extensions.primitives/src',
+			),
+			'@yohira/extensions.web-encoders': resolve(
+				__dirname,
+				'./packages/extensions.web-encoders/src',
 			),
 			'@yohira/http': resolve(__dirname, './packages/http/src'),
 			'@yohira/http.abstractions': resolve(

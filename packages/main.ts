@@ -1,3 +1,8 @@
+import { addAuthentication } from '@yohira/authentication';
+import {
+	CookieAuthenticationDefaults,
+	addCookie,
+} from '@yohira/authentication.cookies';
 import { createWebAppBuilder } from '@yohira/core';
 import { addDistributedMemoryCache } from '@yohira/extensions.caching.memory';
 import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
@@ -23,6 +28,13 @@ export async function main(): Promise<void> {
 		options.cookie.httpOnly = true;
 		options.cookie.isEssential = true;
 	});
+
+	addCookie(
+		addAuthentication(
+			builder.services,
+			CookieAuthenticationDefaults.authenticationScheme,
+		),
+	);
 
 	// TODO
 

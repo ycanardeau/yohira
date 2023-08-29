@@ -5,6 +5,7 @@ export * from './IOptions';
 export * from './IOptionsFactory';
 export * from './IOptionsMonitor';
 export * from './IOptionsMonitorCache';
+export * from './IPostConfigureOptions';
 export * from './Options';
 export * from './OptionsCache';
 export * from './OptionsFactory';

@@ -9,6 +9,7 @@ import {
 
 import { ConfigureNamedOptions } from './ConfigureNamedOptions';
 import { Options } from './Options';
+import { OptionsBuilder } from './OptionsBuilder';
 import { OptionsCache } from './OptionsCache';
 import { OptionsFactory } from './OptionsFactory';
 import { OptionsMonitor } from './OptionsMonitor';
@@ -80,4 +81,12 @@ export function configureOptionsServices<TOptions>(
 		Options.defaultName,
 		configureOptions,
 	);
+}
+
+export function addOptionsWithName<TOptions>(
+	services: IServiceCollection,
+	name: string | undefined,
+): OptionsBuilder<TOptions> {
+	addOptions(services);
+	return new OptionsBuilder<TOptions>(services, name);
 }
