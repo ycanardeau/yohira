@@ -1,4 +1,4 @@
-import { addAuthentication } from '@yohira/authentication';
+import { addAuthentication, useAuthentication } from '@yohira/authentication';
 import {
 	CookieAuthenticationDefaults,
 	addCookie,
@@ -43,6 +43,9 @@ export async function main(): Promise<void> {
 	useStaticFiles(app);
 
 	useHttpLogging(app);
+
+	useAuthentication(app);
+	//useAuthorization(app);
 
 	use(app, async (context, next) => {
 		console.log(

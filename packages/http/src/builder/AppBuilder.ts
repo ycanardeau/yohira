@@ -44,6 +44,11 @@ export class AppBuilder implements IAppBuilder {
 		return this;
 	}
 
+	create(): IAppBuilder {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	// https://source.dot.net/#Microsoft.AspNetCore.Http/Builder/ApplicationBuilder.cs,4bdd7f36d734b764,references
 	build(): RequestDelegate {
 		let app: RequestDelegate = () => {

@@ -7,5 +7,6 @@ export interface IAppBuilder {
 	appServices: IServiceProvider;
 	readonly properties: Map<string, unknown>;
 	use(middleware: (next: RequestDelegate) => RequestDelegate): this;
+	create(): IAppBuilder;
 	build(): RequestDelegate;
 }

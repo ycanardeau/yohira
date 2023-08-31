@@ -98,6 +98,13 @@ export class WebApp
 		return this.appBuilder.build();
 	}
 
+	create(): IAppBuilder {
+		const newBuilder = this.appBuilder.create();
+		// Remove the route builder so branched pipelines have their own routing world
+		newBuilder.properties.delete(globalEndpointRouteBuilderKey);
+		return newBuilder;
+	}
+
 	listen(): void {}
 
 	/**
