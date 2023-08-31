@@ -1,4 +1,3 @@
-// https://source.dot.net/#Microsoft.AspNetCore.Authentication/AuthenticationHandler.cs,eda9767974277610,references
 import {
 	AuthenticateResult,
 	AuthenticationProperties,
@@ -9,6 +8,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication/AuthenticationHandler.cs,eda9767974277610,references
 /**
  * An opinionated abstraction for implementing <see cref="IAuthenticationHandler"/>.
  */

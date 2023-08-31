@@ -7,6 +7,7 @@ export * from './IAuthenticationConfigProvider';
 export * from './IAuthenticationFeature';
 export * from './IAuthenticationHandler';
 export * from './IAuthenticationHandlerProvider';
+export * from './IAuthenticationRequestHandler';
 export * from './IAuthenticationSchemeProvider';
 export * from './IAuthenticationSignInHandler';
 export * from './IAuthenticationSignOutHandler';

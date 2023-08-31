@@ -28,9 +28,8 @@ export function useAuthentication(app: IAppBuilder): IAppBuilder {
 					IAuthenticationSchemeProvider,
 				);
 			return new AuthenticationMiddleware(
-				newNext,
 				authenticationSchemeProvider,
-			).invoke(context, next);
+			).invoke(context, newNext);
 		});
 	}
 
