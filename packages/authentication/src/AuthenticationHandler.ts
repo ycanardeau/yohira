@@ -17,6 +17,28 @@ import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication/LoggingExtensions.cs,4442b0c31dcf129c,references
+function logAuthenticationSchemeAuthenticated(
+	logger: ILogger,
+	authenticationScheme: string,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		`AuthenticationScheme: ${authenticationScheme} was successfully authenticated.`,
+	);
+}
+
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication/LoggingExtensions.cs,a298747090e46a0d,references
+function logAuthenticationSchemeNotAuthenticated(
+	logger: ILogger,
+	authenticationScheme: string,
+): void {
+	logger.log(
+		LogLevel.Debug,
+		`AuthenticationScheme: ${authenticationScheme} was not authenticated.`,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/LoggingExtensions.cs,15ca745c76646749,references
 function logAuthenticationSchemeNotAuthenticatedWithFailure(
 	logger: ILogger,
@@ -204,8 +226,18 @@ export abstract class AuthenticationHandler<
 			(await this.handleAuthenticateOnce()) ??
 			AuthenticateResult.noResult();
 		if (result.failure === undefined) {
-			// TODO
-			throw new Error('Method not implemented.');
+			const ticket = result.ticket;
+			if (ticket?.principal !== undefined) {
+				logAuthenticationSchemeAuthenticated(
+					this.logger,
+					this.scheme.name,
+				);
+			} else {
+				logAuthenticationSchemeNotAuthenticated(
+					this.logger,
+					this.scheme.name,
+				);
+			}
 		} else {
 			logAuthenticationSchemeNotAuthenticatedWithFailure(
 				this.logger,
