@@ -3,7 +3,11 @@
  * Provides an abstraction for time.
  */
 export abstract class TimeProvider {
-	protected TimeProvider() {}
+	protected constructor() {}
+
+	getUtcNow(): number /* REVIEW */ {
+		return new Date().getTime();
+	}
 }
 
 class SystemTimeProvider extends TimeProvider {

@@ -21,4 +21,13 @@ export class AuthenticationProperties {
 		this.items = items ?? new Map();
 		this.parameters = parameters ?? new Map();
 	}
+
+	get expiresUtc(): number /* REVIEW */ | undefined {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+	set expiresUtc(value: number /* REVIEW */ | undefined) {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
 }

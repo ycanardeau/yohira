@@ -7,6 +7,7 @@ import {
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
+import { ITlsTokenBindingFeature } from '@yohira/http.features';
 
 import { AuthenticateResults } from './AuthenticateResults';
 import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
@@ -35,9 +36,47 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		super.events = value;
 	}
 
-	private readCookieTicket(): Promise<AuthenticateResult> {
-		// TODO
-		throw new Error('Method not implemented.');
+	private getTlsTokenBinding(): string | undefined {
+		const binding = this.context.features
+			.get<ITlsTokenBindingFeature>(ITlsTokenBindingFeature)
+			?.getProvidedTokenBindingId();
+		return binding === undefined
+			? undefined
+			: Buffer.from(binding).toString('base64');
+	}
+
+	private async readCookieTicket(): Promise<AuthenticateResult> {
+		const cookie = this.options.cookieManager.getRequestCookie(
+			this.context,
+			this.options.cookie.name!,
+		);
+		if (!cookie) {
+			return AuthenticateResult.noResult();
+		}
+
+		const ticket = this.options.ticketDataFormat.unprotect(
+			cookie,
+			this.getTlsTokenBinding(),
+		);
+		if (ticket === undefined) {
+			return AuthenticateResults.failedUnprotectingTicket;
+		}
+
+		if (this.options.sessionStore !== undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		const currentUtc = this.timeProvider.getUtcNow();
+		const expiresUtc = ticket.properties.expiresUtc;
+
+		if (expiresUtc !== undefined && expiresUtc < currentUtc) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		// Finally we have a valid ticket
+		return AuthenticateResult.success(ticket);
 	}
 
 	private ensureCookieTicket(): Promise<AuthenticateResult> {

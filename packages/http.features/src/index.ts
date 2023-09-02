@@ -10,4 +10,5 @@ export * from './IResponseCookies';
 export * from './IServiceProvidersFeature';
 export * from './ISession';
 export * from './ISessionFeature';
+export * from './ITlsTokenBindingFeature';
 export * from './SameSiteMode';
