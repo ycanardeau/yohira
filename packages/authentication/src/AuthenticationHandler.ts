@@ -3,13 +3,31 @@ import {
 	AuthenticationProperties,
 	AuthenticationScheme,
 	IAuthenticationHandler,
+	authenticate,
 } from '@yohira/authentication.abstractions';
 import { Ctor, TimeProvider, systemTimeProvider } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
+import {
+	ILogger,
+	ILoggerFactory,
+	LogLevel,
+} from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
+
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication/LoggingExtensions.cs,15ca745c76646749,references
+function logAuthenticationSchemeNotAuthenticatedWithFailure(
+	logger: ILogger,
+	authenticationScheme: string,
+	failureMessage: string,
+): void {
+	logger.log(
+		LogLevel.Information,
+		`${authenticationScheme} was not authenticated. Failure message: ${failureMessage}`,
+	);
+}
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/AuthenticationHandler.cs,eda9767974277610,references
 /**
@@ -19,6 +37,8 @@ export abstract class AuthenticationHandler<
 	TOptions extends AuthenticationSchemeOptions,
 > implements IAuthenticationHandler
 {
+	private authenticatePromise: Promise<AuthenticateResult> | undefined;
+
 	private _scheme!: AuthenticationScheme;
 	/**
 	 * Gets or sets the {@link AuthenticationScheme} associated with this authentication handler.
@@ -52,6 +72,11 @@ export abstract class AuthenticationHandler<
 		this._context = value;
 	}
 
+	/**
+	 * Gets the {@link ILogger}.
+	 */
+	protected readonly logger: ILogger;
+
 	private _timeProvider = systemTimeProvider;
 	/**
 	 * Gets the current time, primarily for unit testing.
@@ -75,7 +100,10 @@ export abstract class AuthenticationHandler<
 		 * Gets the {@link IOptionsMonitor{TOptions}} to detect changes to options.
 		 */
 		protected readonly optionsMonitor: IOptionsMonitor<TOptions>,
-	) {}
+		logger: ILoggerFactory,
+	) {
+		this.logger = logger.createLogger(AuthenticationHandler.name);
+	}
 
 	/**
 	 * Creates a new instance of the events instance.
@@ -126,9 +154,60 @@ export abstract class AuthenticationHandler<
 		await this.initializeHandler();
 	}
 
-	authenticate(): Promise<AuthenticateResult> {
-		// TODO
-		throw new Error('Method not implemented.');
+	/**
+	 * Resolves the scheme that this authentication operation is forwarded to.
+	 * @param scheme The scheme to forward. One of ForwardAuthenticate, ForwardChallenge, ForwardForbid, ForwardSignIn, or ForwardSignOut.
+	 * @returns The forwarded scheme or undefined.
+	 */
+	protected resolveTarget(scheme: string | undefined): string | undefined {
+		const target =
+			scheme ??
+			this.options.forwardDefaultSelector?.(this.context) ??
+			this.options.forwardDefault;
+
+		// Prevent self targetting
+		return target === this.scheme.name /* REVIEW */ ? undefined : target;
+	}
+
+	/**
+	 * Allows derived types to handle authentication.
+	 * @returns The {@link AuthenticateResult}.
+	 */
+	protected abstract handleAuthenticate(): Promise<AuthenticateResult>;
+
+	/**
+	 * Used to ensure HandleAuthenticateAsync is only invoked once. The subsequent calls
+	 * will return the same authenticate result.
+	 */
+	protected handleAuthenticateOnce(): Promise<AuthenticateResult> {
+		if (this.authenticatePromise === undefined) {
+			this.authenticatePromise = this.handleAuthenticate();
+		}
+
+		return this.authenticatePromise;
+	}
+
+	async authenticate(): Promise<AuthenticateResult> {
+		const target = this.resolveTarget(this.options.forwardAuthenticate);
+		if (target !== undefined) {
+			return await authenticate(this.context, target);
+		}
+
+		// Calling Authenticate more than once should always return the original value.
+		const result =
+			(await this.handleAuthenticateOnce()) ??
+			AuthenticateResult.noResult();
+		if (result.failure === undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		} else {
+			logAuthenticationSchemeNotAuthenticatedWithFailure(
+				this.logger,
+				this.scheme.name,
+				result.failure.message,
+			);
+		}
+		return result;
 	}
 
 	challenge(properties: AuthenticationProperties | undefined): Promise<void> {

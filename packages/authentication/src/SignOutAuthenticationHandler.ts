@@ -3,6 +3,7 @@ import {
 	IAuthenticationSignOutHandler,
 } from '@yohira/authentication.abstractions';
 import { Ctor } from '@yohira/base';
+import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 
 import { AuthenticationHandler } from './AuthenticationHandler';
@@ -12,7 +13,7 @@ import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 /**
  * Adds support for signOut
  */
-export class SignOutAuthenticationHandler<
+export abstract class SignOutAuthenticationHandler<
 		TOptions extends AuthenticationSchemeOptions,
 	>
 	extends AuthenticationHandler<TOptions>
@@ -21,8 +22,9 @@ export class SignOutAuthenticationHandler<
 	constructor(
 		optionsCtor: Ctor<TOptions>,
 		optionsMonitor: IOptionsMonitor<TOptions>,
+		logger: ILoggerFactory,
 	) {
-		super(optionsCtor, optionsMonitor);
+		super(optionsCtor, optionsMonitor, logger);
 	}
 
 	signOut(properties: AuthenticationProperties | undefined): Promise<void> {

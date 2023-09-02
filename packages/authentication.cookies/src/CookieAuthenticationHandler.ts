@@ -1,5 +1,7 @@
 import { SignInAuthenticationHandler } from '@yohira/authentication';
+import { AuthenticateResult } from '@yohira/authentication.abstractions';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
+import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
@@ -12,7 +14,13 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 	constructor(
 		@inject(Symbol.for(`IOptionsMonitor<CookieAuthenticationOptions>`))
 		optionsMonitor: IOptionsMonitor<CookieAuthenticationOptions>,
+		@inject(ILoggerFactory) logger: ILoggerFactory,
 	) {
-		super(CookieAuthenticationOptions, optionsMonitor);
+		super(CookieAuthenticationOptions, optionsMonitor, logger);
+	}
+
+	protected handleAuthenticate(): Promise<AuthenticateResult> {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }

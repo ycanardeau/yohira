@@ -1,6 +1,7 @@
 import { Ctor } from '@yohira/base';
 
 import { AuthenticationScheme } from './AuthenticationScheme';
+import { IAuthenticationHandler } from './IAuthenticationHandler';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationSchemeBuilder.cs,e25530a4465ba9e9,references
 /**
@@ -15,7 +16,7 @@ export class AuthenticationSchemeBuilder {
 	/**
 	 * Gets or sets the {@link IAuthenticationHandler} type responsible for this scheme.
 	 */
-	handlerCtor?: Ctor;
+	handlerCtor?: Ctor<IAuthenticationHandler>;
 
 	constructor(
 		/**

@@ -1,10 +1,10 @@
-// https://source.dot.net/#Microsoft.AspNetCore.Authentication/SignInAuthenticationHandler.cs,77748843e5c93c81,references
 import {
 	AuthenticationProperties,
 	ClaimsPrincipal,
 	IAuthenticationSignInHandler,
 } from '@yohira/authentication.abstractions';
 import { Ctor } from '@yohira/base';
+import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
@@ -23,8 +23,9 @@ export abstract class SignInAuthenticationHandler<
 	constructor(
 		optionsCtor: Ctor<TOptions>,
 		optionsMonitor: IOptionsMonitor<TOptions>,
+		logger: ILoggerFactory,
 	) {
-		super(optionsCtor, optionsMonitor);
+		super(optionsCtor, optionsMonitor, logger);
 	}
 
 	signIn(

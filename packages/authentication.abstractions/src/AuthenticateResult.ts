@@ -7,6 +7,12 @@ import { ClaimsPrincipal } from './ClaimsPrincipal';
  * Contains the result of an Authenticate call
  */
 export class AuthenticateResult {
+	private static readonly _noResult = ((): AuthenticateResult => {
+		const result = new AuthenticateResult();
+		result.none = true;
+		return result;
+	})();
+
 	private _ticket: AuthenticationTicket | undefined;
 	get ticket(): AuthenticationTicket | undefined {
 		return this._ticket;
@@ -34,6 +40,28 @@ export class AuthenticateResult {
 	 */
 	properties?: AuthenticationProperties;
 
+	private _failure: Error | undefined;
+	/**
+	 * Holds failure information from the authentication.
+	 */
+	get failure(): Error | undefined {
+		return this._failure;
+	}
+	protected set failure(value: Error | undefined) {
+		this._failure = value;
+	}
+
+	private _none = false;
+	/**
+	 * Indicates that there was no information returned for this authentication scheme.
+	 */
+	get none(): boolean {
+		return this._none;
+	}
+	protected set none(value: boolean) {
+		this._none = value;
+	}
+
 	/**
 	 * Indicates that authentication was successful.
 	 * @param ticket The ticket representing the authentication result.
@@ -44,5 +72,13 @@ export class AuthenticateResult {
 		result.ticket = ticket;
 		result.properties = ticket.properties;
 		return result;
+	}
+
+	/**
+	 * Indicates that there was no information returned for this authentication scheme.
+	 * @returns The result.
+	 */
+	static noResult(): AuthenticateResult {
+		return AuthenticateResult._noResult;
 	}
 }
