@@ -1,3 +1,7 @@
+import {
+	ClaimsIdentity,
+	ClaimsPrincipal,
+} from '@yohira/authentication.abstractions';
 import { IServiceProvider } from '@yohira/base';
 import { IServiceScopeFactory } from '@yohira/extensions.dependency-injection.abstractions';
 import {
@@ -10,22 +14,29 @@ import {
 	IHttpRequest,
 	IHttpResponse,
 } from '@yohira/http.abstractions';
-import { IServiceProvidersFeature } from '@yohira/http.features';
+import {
+	IHttpAuthenticationFeature,
+	IServiceProvidersFeature,
+} from '@yohira/http.features';
 
+import { HttpAuthenticationFeature } from './features/authentication/HttpAuthenticationFeature';
 import { HttpRequest } from './internal/HttpRequest';
 import { HttpResponse } from './internal/HttpResponse';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,6cd3f52cf0ced363,references
 class FeatureInterfaces {
 	serviceProviders?: IServiceProvidersFeature;
+	authentication?: IHttpAuthenticationFeature;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references
 export class HttpContext implements IHttpContext {
 	private static readonly newServiceProvidersFeature = (
 		context: HttpContext,
-	): RequestServicesFeature =>
+	): IServiceProvidersFeature =>
 		new RequestServicesFeature(context, context.serviceScopeFactory);
+	private static readonly newHttpAuthenticationFeature =
+		(): IHttpAuthenticationFeature => new HttpAuthenticationFeature();
 
 	private _features = new FeatureReferences<FeatureInterfaces>(
 		() => new FeatureInterfaces(),
@@ -55,12 +66,36 @@ export class HttpContext implements IHttpContext {
 		)!;
 	}
 
+	private get httpAuthenticationFeature(): IHttpAuthenticationFeature {
+		return this._features.fetch(
+			IHttpAuthenticationFeature,
+			{
+				get: () => this._features.cache.authentication,
+				set: (value) => (this._features.cache.authentication = value),
+			},
+			this,
+			HttpContext.newHttpAuthenticationFeature,
+		)!;
+	}
+
 	get features(): IFeatureCollection {
 		if (this._features === undefined) {
 			throw new Error('Request has finished and IHttpContext disposed.');
 		}
 
 		return this._features.collection;
+	}
+
+	get user(): ClaimsPrincipal {
+		let user = this.httpAuthenticationFeature.user;
+		if (user === undefined) {
+			user = ClaimsPrincipal.fromIdentity(new ClaimsIdentity());
+			this.httpAuthenticationFeature.user = user;
+		}
+		return user;
+	}
+	set user(value: ClaimsPrincipal) {
+		this.httpAuthenticationFeature.user = value;
 	}
 
 	get requestServices(): IServiceProvider {

@@ -14,23 +14,23 @@ export class AuthenticationOptions {
 	 */
 	defaultScheme?: string;
 	/**
-	 * Used as the default scheme by {@link IAuthenticationService.authenticateAsync}.
+	 * Used as the default scheme by {@link IAuthenticationService.authenticate}.
 	 */
 	defaultAuthenticateScheme?: string;
 	/**
-	 * Used as the default scheme by {@link IAuthenticationService.signInAsync}.
+	 * Used as the default scheme by {@link IAuthenticationService.signIn}.
 	 */
 	defaultSignInScheme?: string;
 	/**
-	 * Used as the default scheme by {@link IAuthenticationService.signOutAsync}.
+	 * Used as the default scheme by {@link IAuthenticationService.signOut}.
 	 */
 	defaultSignOutScheme?: string;
 	/**
-	 * Used as the default scheme by {@link IAuthenticationService.challengeAsync}.
+	 * Used as the default scheme by {@link IAuthenticationService.challenge}.
 	 */
 	defaultChallengeScheme?: string;
 	/**
-	 * Used as the default scheme by {@link IAuthenticationService.forbidAsync}.
+	 * Used as the default scheme by {@link IAuthenticationService.forbid}.
 	 */
 	defaultForbidScheme?: string;
 	/**

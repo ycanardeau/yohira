@@ -3,7 +3,7 @@ import { Endpoint } from '../routing/Endpoint';
 import { IEndpointFeature } from './IEndpointFeature';
 
 class EndpointFeature implements IEndpointFeature {
-	endpoint?: Endpoint;
+	endpoint: Endpoint | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Routing/EndpointHttpContextExtensions.cs,ea7f441e3031e7ce,references

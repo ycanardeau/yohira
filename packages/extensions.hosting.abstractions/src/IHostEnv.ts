@@ -9,7 +9,7 @@ export interface IHostEnv {
 	 * Gets or sets the name of the application. This property is automatically set by the host to the assembly containing
 	 * the application entry point.
 	 */
-	appName?: string;
+	appName: string | undefined;
 	/**
 	 * Gets or sets the absolute path to the directory that contains the application content files.
 	 */

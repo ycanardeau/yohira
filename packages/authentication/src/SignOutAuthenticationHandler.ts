@@ -8,7 +8,7 @@ import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/SignOutAuthenticationHandler.cs,4a9f0e7cda5cb3c9,references
 /**
- * Adds support for SignOutAsync
+ * Adds support for signOut
  */
 export class SignOutAuthenticationHandler<
 		TOptions extends AuthenticationSchemeOptions,

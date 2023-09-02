@@ -1,9 +1,11 @@
 import {
+	IAuthenticateResultFeature,
 	IAuthenticationFeature,
 	IAuthenticationHandler,
 	IAuthenticationHandlerProvider,
 	IAuthenticationRequestHandler,
 	IAuthenticationSchemeProvider,
+	authenticate,
 } from '@yohira/authentication.abstractions';
 import { AuthenticationFeature } from '@yohira/authentication.core';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
@@ -12,6 +14,9 @@ import {
 	IMiddleware,
 	RequestDelegate,
 } from '@yohira/http.abstractions';
+import { IHttpAuthenticationFeature } from '@yohira/http.features';
+
+import { AuthenticationFeatures } from './AuthenticationFeatures';
 
 function isIAuthenticationRequestHandler(
 	handler: IAuthenticationHandler,
@@ -56,8 +61,24 @@ export class AuthenticationMiddleware implements IMiddleware {
 		const defaultAuthenticate =
 			await this.schemes.getDefaultAuthenticateScheme();
 		if (defaultAuthenticate !== undefined) {
-			// TODO
-			throw new Error('Method not implemented.');
+			const result = await authenticate(
+				context,
+				defaultAuthenticate.name,
+			);
+			if (result.principal !== undefined) {
+				context.user = result.principal;
+			}
+			if (result?.succeeded) {
+				const authFeatures = new AuthenticationFeatures(result);
+				context.features.set<IHttpAuthenticationFeature>(
+					IHttpAuthenticationFeature,
+					authFeatures,
+				);
+				context.features.set<IAuthenticateResultFeature>(
+					IAuthenticateResultFeature,
+					authFeatures,
+				);
+			}
 		}
 
 		await next(context);

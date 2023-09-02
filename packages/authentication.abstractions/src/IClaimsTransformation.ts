@@ -8,7 +8,7 @@ export const IClaimsTransformation = Symbol.for('IClaimsTransformation');
 export interface IClaimsTransformation {
 	/**
 	 * Provides a central transformation point to change the specified principal.
-	 * Note: this will be run on each AuthenticateAsync call, so its safer to
+	 * Note: this will be run on each authenticate call, so its safer to
 	 * return a new ClaimsPrincipal if your transformation is not idempotent.
 	 * @param principal The {@link ClaimsPrincipal} to transform.
 	 * @returns The transformed principal.

@@ -26,13 +26,13 @@ export function getTokenValue(
  * @param tokenName The name of the token.
  * @returns The value of the token if present.
  */
-export async function getTokenAsync(
+export async function getToken(
 	auth: IAuthenticationService,
 	context: IHttpContext,
 	scheme: string | undefined,
 	tokenName: string,
 ): Promise<string | undefined> {
-	const result = await auth.authenticateAsync(context, scheme);
+	const result = await auth.authenticate(context, scheme);
 	return result?.properties !== undefined
 		? getTokenValue(result.properties, tokenName)
 		: undefined;

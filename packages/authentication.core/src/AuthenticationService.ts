@@ -11,7 +11,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
  * Implements {@link IAuthenticationService}.
  */
 export class AuthenticationService implements IAuthenticationService {
-	authenticateAsync(
+	authenticate(
 		context: IHttpContext,
 		scheme: string | undefined,
 	): Promise<AuthenticateResult> {
@@ -19,7 +19,7 @@ export class AuthenticationService implements IAuthenticationService {
 		throw new Error('Method not implemented.');
 	}
 
-	challengeAsync(
+	challenge(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,
@@ -28,7 +28,7 @@ export class AuthenticationService implements IAuthenticationService {
 		throw new Error('Method not implemented.');
 	}
 
-	forbidAsync(
+	forbid(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,
@@ -37,7 +37,7 @@ export class AuthenticationService implements IAuthenticationService {
 		throw new Error('Method not implemented.');
 	}
 
-	signInAsync(
+	signIn(
 		context: IHttpContext,
 		scheme: string | undefined,
 		principal: ClaimsPrincipal,
@@ -47,7 +47,7 @@ export class AuthenticationService implements IAuthenticationService {
 		throw new Error('Method not implemented.');
 	}
 
-	signOutAsync(
+	signOut(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,

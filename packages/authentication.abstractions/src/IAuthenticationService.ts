@@ -16,7 +16,7 @@ export interface IAuthenticationService {
 	 * @param scheme The name of the authentication scheme.
 	 * @returns The result.
 	 */
-	authenticateAsync(
+	authenticate(
 		context: IHttpContext,
 		scheme: string | undefined,
 	): Promise<AuthenticateResult>;
@@ -28,7 +28,7 @@ export interface IAuthenticationService {
 	 * @param properties The {@link AuthenticationProperties}.
 	 * @returns A promise.
 	 */
-	challengeAsync(
+	challenge(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,
@@ -41,7 +41,7 @@ export interface IAuthenticationService {
 	 * @param properties The {@link AuthenticationProperties}.
 	 * @returns A promise.
 	 */
-	forbidAsync(
+	forbid(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,
@@ -54,7 +54,7 @@ export interface IAuthenticationService {
 	 * @param properties The {@link AuthenticationProperties}.
 	 * @returns A promise.
 	 */
-	signInAsync(
+	signIn(
 		context: IHttpContext,
 		scheme: string | undefined,
 		principal: ClaimsPrincipal,
@@ -67,7 +67,7 @@ export interface IAuthenticationService {
 	 * @param properties The {@link AuthenticationProperties}.
 	 * @returns A promise.
 	 */
-	signOutAsync(
+	signOut(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,

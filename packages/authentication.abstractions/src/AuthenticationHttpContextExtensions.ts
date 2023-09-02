@@ -4,7 +4,7 @@ import { AuthenticateResult } from './AuthenticateResult';
 import { AuthenticationProperties } from './AuthenticationProperties';
 import { ClaimsPrincipal } from './ClaimsPrincipal';
 import { IAuthenticationService } from './IAuthenticationService';
-import { getTokenAsync as getTokenAsyncCore } from './TokenExtensions';
+import { getToken as getTokenCore } from './TokenExtensions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationHttpContextExtensions.cs,a8b113fdfa0186ad,references
 export function getAuthenticationService(
@@ -29,11 +29,11 @@ export function getAuthenticationService(
  * @param scheme The name of the authentication scheme.
  * @returns The {@link AuthenticateResult}.
  */
-export function authenticateAsync(
+export function authenticate(
 	context: IHttpContext,
 	scheme: string | undefined,
 ): Promise<AuthenticateResult> {
-	return getAuthenticationService(context).authenticateAsync(context, scheme);
+	return getAuthenticationService(context).authenticate(context, scheme);
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationHttpContextExtensions.cs,c79499913448b520,references
@@ -45,12 +45,12 @@ export function authenticateAsync(
  * @param properties The {@link AuthenticationProperties} properties.
  * @returns The promise.
  */
-export function challengeAsync(
+export function challenge(
 	context: IHttpContext,
 	scheme: string | undefined,
 	properties: AuthenticationProperties | undefined,
 ): Promise<void> {
-	return getAuthenticationService(context).challengeAsync(
+	return getAuthenticationService(context).challenge(
 		context,
 		scheme,
 		properties,
@@ -66,12 +66,12 @@ export function challengeAsync(
  * @param properties The {@link AuthenticationProperties} properties.
  * @returns The promise.
  */
-export function forbidAsync(
+export function forbid(
 	context: IHttpContext,
 	scheme: string | undefined,
 	properties: AuthenticationProperties | undefined,
 ): Promise<void> {
-	return getAuthenticationService(context).forbidAsync(
+	return getAuthenticationService(context).forbid(
 		context,
 		scheme,
 		properties,
@@ -87,13 +87,13 @@ export function forbidAsync(
  * @param properties The {@link AuthenticationProperties} properties.
  * @returns The promise.
  */
-export function signInAsync(
+export function signIn(
 	context: IHttpContext,
 	scheme: string | undefined,
 	principal: ClaimsPrincipal,
 	properties: AuthenticationProperties | undefined,
 ): Promise<void> {
-	return getAuthenticationService(context).signInAsync(
+	return getAuthenticationService(context).signIn(
 		context,
 		scheme,
 		principal,
@@ -109,12 +109,12 @@ export function signInAsync(
  * @param properties The {@link AuthenticationProperties} properties.
  * @returns The promise.
  */
-export function signOutAsync(
+export function signOut(
 	context: IHttpContext,
 	scheme: string | undefined,
 	properties: AuthenticationProperties | undefined,
 ): Promise<void> {
-	return getAuthenticationService(context).signOutAsync(
+	return getAuthenticationService(context).signOut(
 		context,
 		scheme,
 		properties,
@@ -129,12 +129,12 @@ export function signOutAsync(
  * @param tokenName The name of the token.
  * @returns The value of the token if present.
  */
-export function getTokenAsync(
+export function getToken(
 	context: IHttpContext,
 	scheme: string | undefined,
 	tokenName: string,
 ): Promise<string | undefined> {
-	return getTokenAsyncCore(
+	return getTokenCore(
 		getAuthenticationService(context),
 		context,
 		scheme,

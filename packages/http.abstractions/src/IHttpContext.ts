@@ -1,3 +1,4 @@
+import { ClaimsPrincipal } from '@yohira/authentication.abstractions';
 import { IServiceProvider } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 
@@ -18,6 +19,10 @@ export interface IHttpContext {
 	 * Gets the {@link IHttpResponse} object for this request.
 	 */
 	readonly response: IHttpResponse;
+	/**
+	 * Gets or sets the user for this request.
+	 */
+	user: ClaimsPrincipal;
 	/**
 	 * Gets or sets the {@link IServiceProvider} that provides access to the request's service container.
 	 */

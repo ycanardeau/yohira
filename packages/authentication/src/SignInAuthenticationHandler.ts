@@ -10,7 +10,7 @@ import { SignOutAuthenticationHandler } from './SignOutAuthenticationHandler';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/SignInAuthenticationHandler.cs,77748843e5c93c81,references
 /**
- * Adds support for SignInAsync
+ * Adds support for signIn
  */
 export abstract class SignInAuthenticationHandler<
 		TOptions extends AuthenticationSchemeOptions,
