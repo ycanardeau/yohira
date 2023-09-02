@@ -1,3 +1,4 @@
+import { AuthenticationFailureError } from './AuthenticationFailureError';
 import { AuthenticationProperties } from './AuthenticationProperties';
 import { AuthenticationTicket } from './AuthenticationTicket';
 import { ClaimsPrincipal } from './ClaimsPrincipal';
@@ -80,5 +81,50 @@ export class AuthenticateResult {
 	 */
 	static noResult(): AuthenticateResult {
 		return AuthenticateResult._noResult;
+	}
+
+	private static failWithFailure(
+		failure: Error,
+		properties?: AuthenticationProperties,
+	): AuthenticateResult {
+		const result = new AuthenticateResult();
+		result.failure = failure;
+		result.properties = properties;
+		return result;
+	}
+
+	private static failWithFailureMessage(
+		failureMessage: string,
+		properties?: AuthenticationProperties,
+	): AuthenticateResult {
+		return AuthenticateResult.failWithFailure(
+			new AuthenticationFailureError(failureMessage),
+			properties,
+		);
+	}
+
+	static fail(
+		failure: Error,
+		properties?: AuthenticationProperties,
+	): AuthenticateResult;
+	static fail(
+		failureMessage: string,
+		properties?: AuthenticationProperties,
+	): AuthenticateResult;
+	static fail(
+		failureOrFailureMessage: Error | string,
+		properties?: AuthenticationProperties,
+	): AuthenticateResult {
+		if (typeof failureOrFailureMessage === 'string') {
+			return AuthenticateResult.failWithFailureMessage(
+				failureOrFailureMessage,
+				properties,
+			);
+		} else {
+			return AuthenticateResult.failWithFailure(
+				failureOrFailureMessage,
+				properties,
+			);
+		}
 	}
 }

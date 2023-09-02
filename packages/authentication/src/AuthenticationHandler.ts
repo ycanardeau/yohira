@@ -92,7 +92,13 @@ export abstract class AuthenticationHandler<
 	 * The handler calls methods on the events which give the application control at certain points where processing is occurring.
 	 * If it is not provided a default instance is supplied which does nothing when the methods are called.
 	 */
-	protected events: object | undefined;
+	protected _events: object | undefined;
+	protected get events(): object | undefined {
+		return this._events;
+	}
+	protected set events(value: object | undefined) {
+		this._events = value;
+	}
 
 	protected constructor(
 		private readonly optionsCtor: Ctor<TOptions>,
