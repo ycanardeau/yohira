@@ -6,3 +6,4 @@ export * from './ISecureDataFormat';
 export * from './PrincipalContext';
 export * from './RequestPathBaseCookieBuilder';
 export * from './SignInAuthenticationHandler';
+export * from './TicketDataFormat';

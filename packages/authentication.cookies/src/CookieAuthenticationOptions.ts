@@ -4,6 +4,7 @@ import {
 	RequestPathBaseCookieBuilder,
 } from '@yohira/authentication';
 import { AuthenticationTicket } from '@yohira/authentication.abstractions';
+import { IDataProtectionProvider } from '@yohira/data-protection.abstractions';
 import { CookieBuilder, CookieSecurePolicy } from '@yohira/http.abstractions';
 import { SameSiteMode } from '@yohira/http.features';
 
@@ -34,6 +35,11 @@ export class CookieAuthenticationOptions extends AuthenticationSchemeOptions {
 	set cookie(value: CookieBuilder) {
 		this.cookieBuilder = value;
 	}
+
+	/**
+	 * If set this will be used by the CookieAuthenticationHandler for data protection.
+	 */
+	dataProtectionProvider: IDataProtectionProvider | undefined;
 
 	/**
 	 * The TicketDataFormat is used to protect and unprotect the identity and other properties which are stored in the
