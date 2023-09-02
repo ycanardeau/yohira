@@ -9,6 +9,12 @@ export const IAuthenticationSchemeProvider = Symbol.for(
  */
 export interface IAuthenticationSchemeProvider {
 	/**
+	 * Returns all currently registered {@link AuthenticationScheme}s.
+	 * @returns All currently registered {@link AuthenticationScheme}s.
+	 */
+	getAllSchemes(): Promise<Iterable<AuthenticationScheme>>;
+
+	/**
 	 * Returns the scheme that will be used by default for {@link IAuthenticationService.authenticate}.
 	 * This is typically specified via {@link AuthenticationOptions.defaultAuthenticateScheme}.
 	 * Otherwise, this will fallback to {@link AuthenticationOptions.defaultScheme}.

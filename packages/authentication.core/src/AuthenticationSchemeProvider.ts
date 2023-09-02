@@ -40,6 +40,11 @@ export class AuthenticationSchemeProvider
 		}
 	}
 
+	getAllSchemes(): Promise<Iterable<AuthenticationScheme>> {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	getScheme(name: string): Promise<AuthenticationScheme | undefined> {
 		const tryGetValueResult = tryGetValue(this.schemes, name);
 		return Promise.resolve(

@@ -3,6 +3,7 @@ export * from './AuthenticationOptions';
 export * from './AuthenticationHttpContextExtensions';
 export * from './AuthenticationProperties';
 export * from './AuthenticationScheme';
+export * from './AuthenticationTicket';
 export * from './ClaimsIdentity';
 export * from './ClaimsPrincipal';
 export * from './IAuthenticateResultFeature';
