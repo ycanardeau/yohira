@@ -5,6 +5,7 @@ import {
 	IAuthenticationHandler,
 } from '@yohira/authentication.abstractions';
 import { Ctor, TimeProvider, systemTimeProvider } from '@yohira/base';
+import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 import { IHttpContext } from '@yohira/http.abstractions';
 
@@ -62,6 +63,12 @@ export abstract class AuthenticationHandler<
 		this._timeProvider = value;
 	}
 
+	/**
+	 * The handler calls methods on the events which give the application control at certain points where processing is occurring.
+	 * If it is not provided a default instance is supplied which does nothing when the methods are called.
+	 */
+	protected events: object | undefined;
+
 	protected constructor(
 		private readonly optionsCtor: Ctor<TOptions>,
 		/**
@@ -71,11 +78,25 @@ export abstract class AuthenticationHandler<
 	) {}
 
 	/**
+	 * Creates a new instance of the events instance.
+	 * @returns A new instance of the events instance.
+	 */
+	protected createEvents(): Promise<object> {
+		return Promise.resolve({});
+	}
+
+	/**
 	 * Initializes the events object, called once per request by {@link initialize}.
 	 */
-	protected initializeEvents(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+	protected async initializeEvents(): Promise<void> {
+		this.events = this.options.events;
+		if (this.options.eventsCtor !== undefined) {
+			this.events = getRequiredService(
+				this.context.requestServices,
+				Symbol.for(this.options.eventsCtor.name),
+			);
+		}
+		this.events ??= await this.createEvents();
 	}
 
 	/**
