@@ -4,6 +4,8 @@ import {
 	AuthenticationScheme,
 	IAuthenticationHandler,
 } from '@yohira/authentication.abstractions';
+import { Ctor, TimeProvider, systemTimeProvider } from '@yohira/base';
+import { IOptionsMonitor } from '@yohira/extensions.options';
 import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
@@ -16,12 +18,91 @@ export abstract class AuthenticationHandler<
 	TOptions extends AuthenticationSchemeOptions,
 > implements IAuthenticationHandler
 {
-	initialize(
+	private _scheme!: AuthenticationScheme;
+	/**
+	 * Gets or sets the {@link AuthenticationScheme} associated with this authentication handler.
+	 */
+	get scheme(): AuthenticationScheme {
+		return this._scheme;
+	}
+	private set scheme(value: AuthenticationScheme) {
+		this._scheme = value;
+	}
+
+	private _options!: TOptions;
+	/**
+	 * Gets or sets the options associated with this authentication handler.
+	 */
+	get options(): TOptions {
+		return this._options;
+	}
+	private set options(value: TOptions) {
+		this._options = value;
+	}
+
+	private _context!: IHttpContext;
+	/**
+	 * Gets or sets the {@link IHttpContext}.
+	 */
+	protected get context(): IHttpContext {
+		return this._context;
+	}
+	private set context(value: IHttpContext) {
+		this._context = value;
+	}
+
+	private _timeProvider = systemTimeProvider;
+	/**
+	 * Gets the current time, primarily for unit testing.
+	 */
+	protected get timeProvider(): TimeProvider {
+		return this._timeProvider;
+	}
+	private set timeProvider(value: TimeProvider) {
+		this._timeProvider = value;
+	}
+
+	protected constructor(
+		private readonly optionsCtor: Ctor<TOptions>,
+		/**
+		 * Gets the {@link IOptionsMonitor{TOptions}} to detect changes to options.
+		 */
+		protected readonly optionsMonitor: IOptionsMonitor<TOptions>,
+	) {}
+
+	/**
+	 * Initializes the events object, called once per request by {@link initialize}.
+	 */
+	protected initializeEvents(): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	/**
+	 * Called after options/events have been initialized for the handler to finish initializing itself.
+	 * @returns A promise
+	 */
+	protected initializeHandler(): Promise<void> {
+		return Promise.resolve();
+	}
+
+	async initialize(
 		scheme: AuthenticationScheme,
 		context: IHttpContext,
 	): Promise<void> {
+		this.scheme = scheme;
+		this.context = context;
+
+		this.options = this.optionsMonitor.get(
+			this.optionsCtor,
+			this.scheme.name,
+		);
+
+		this.timeProvider = this.options.timeProvider ?? systemTimeProvider;
 		// TODO
-		throw new Error('Method not implemented.');
+
+		await this.initializeEvents();
+		await this.initializeHandler();
 	}
 
 	authenticate(): Promise<AuthenticateResult> {

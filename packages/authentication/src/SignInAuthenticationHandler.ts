@@ -4,6 +4,8 @@ import {
 	ClaimsPrincipal,
 	IAuthenticationSignInHandler,
 } from '@yohira/authentication.abstractions';
+import { Ctor } from '@yohira/base';
+import { IOptionsMonitor } from '@yohira/extensions.options';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 import { SignOutAuthenticationHandler } from './SignOutAuthenticationHandler';
@@ -18,6 +20,13 @@ export abstract class SignInAuthenticationHandler<
 	extends SignOutAuthenticationHandler<TOptions>
 	implements IAuthenticationSignInHandler
 {
+	constructor(
+		optionsCtor: Ctor<TOptions>,
+		optionsMonitor: IOptionsMonitor<TOptions>,
+	) {
+		super(optionsCtor, optionsMonitor);
+	}
+
 	signIn(
 		user: ClaimsPrincipal,
 		properties: AuthenticationProperties | undefined,

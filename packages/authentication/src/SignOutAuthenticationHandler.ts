@@ -2,6 +2,8 @@ import {
 	AuthenticationProperties,
 	IAuthenticationSignOutHandler,
 } from '@yohira/authentication.abstractions';
+import { Ctor } from '@yohira/base';
+import { IOptionsMonitor } from '@yohira/extensions.options';
 
 import { AuthenticationHandler } from './AuthenticationHandler';
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
@@ -16,6 +18,13 @@ export class SignOutAuthenticationHandler<
 	extends AuthenticationHandler<TOptions>
 	implements IAuthenticationSignOutHandler
 {
+	constructor(
+		optionsCtor: Ctor<TOptions>,
+		optionsMonitor: IOptionsMonitor<TOptions>,
+	) {
+		super(optionsCtor, optionsMonitor);
+	}
+
 	signOut(properties: AuthenticationProperties | undefined): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
