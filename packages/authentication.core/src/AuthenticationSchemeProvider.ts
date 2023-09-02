@@ -34,7 +34,10 @@ export class AuthenticationSchemeProvider
 		this.schemes = new Map();
 		// TODO
 
-		// TODO
+		for (const builder of this.options.schemes) {
+			const scheme = builder.build();
+			this.addScheme(scheme);
+		}
 	}
 
 	getScheme(name: string): Promise<AuthenticationScheme | undefined> {
@@ -58,5 +61,34 @@ export class AuthenticationSchemeProvider
 
 	getRequestHandlerSchemes(): Promise<Iterable<AuthenticationScheme>> {
 		return Promise.resolve(this.requestHandlersCopy);
+	}
+
+	tryAddScheme(scheme: AuthenticationScheme): boolean {
+		if (this.schemes.has(scheme.name)) {
+			return false;
+		}
+		// REVIEW: lock
+		{
+			if (this.schemes.has(scheme.name)) {
+				return false;
+			}
+			// TODO
+			this.schemes.set(scheme.name, scheme);
+			// TODO
+
+			return true;
+		}
+	}
+
+	addScheme(scheme: AuthenticationScheme): void {
+		if (this.schemes.has(scheme.name)) {
+			throw new Error(`Scheme already exists: ${scheme.name}`);
+		}
+		// REVIEW: lock
+		{
+			if (!this.tryAddScheme(scheme)) {
+				throw new Error(`Scheme already exists: ${scheme.name}`);
+			}
+		}
 	}
 }
