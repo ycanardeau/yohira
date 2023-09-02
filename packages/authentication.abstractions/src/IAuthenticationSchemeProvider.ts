@@ -15,6 +15,13 @@ export interface IAuthenticationSchemeProvider {
 	getAllSchemes(): Promise<Iterable<AuthenticationScheme>>;
 
 	/**
+	 * Returns the {@link AuthenticationScheme} matching the name, or undefined.
+	 * @param name The name of the authenticationScheme.
+	 * @returns The scheme or null if not found.
+	 */
+	getScheme(name: string): Promise<AuthenticationScheme | undefined>;
+
+	/**
 	 * Returns the scheme that will be used by default for {@link IAuthenticationService.authenticate}.
 	 * This is typically specified via {@link AuthenticationOptions.defaultAuthenticateScheme}.
 	 * Otherwise, this will fallback to {@link AuthenticationOptions.defaultScheme}.

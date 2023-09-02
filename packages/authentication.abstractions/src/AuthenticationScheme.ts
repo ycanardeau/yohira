@@ -1,6 +1,9 @@
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationScheme.cs,b7f780c85326c513,references
 import { Ctor } from '@yohira/base';
 
+import { IAuthenticationHandler } from './IAuthenticationHandler';
+
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationScheme.cs,b7f780c85326c513,references
 /**
  * AuthenticationSchemes assign a name to a specific {@link IAuthenticationHandler}
  */
@@ -19,7 +22,7 @@ export class AuthenticationScheme {
 		 * The display name for the scheme. Undefined is valid and used for non user facing schemes.
 		 */
 		readonly displayName: string | undefined /* TODO: handlerType */,
-		readonly handlerCtor: Ctor,
+		readonly handlerCtor: Ctor<IAuthenticationHandler>,
 	) {
 		// TODO
 	}
