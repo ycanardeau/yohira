@@ -89,7 +89,15 @@ export class HttpContext implements IHttpContext {
 	get user(): ClaimsPrincipal {
 		let user = this.httpAuthenticationFeature.user;
 		if (user === undefined) {
-			user = ClaimsPrincipal.fromIdentity(new ClaimsIdentity());
+			user = ClaimsPrincipal.fromIdentity(
+				new ClaimsIdentity(
+					undefined,
+					undefined,
+					undefined,
+					undefined,
+					undefined,
+				),
+			);
 			this.httpAuthenticationFeature.user = user;
 		}
 		return user;

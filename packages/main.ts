@@ -1,5 +1,13 @@
 import { addAuthentication, useAuthentication } from '@yohira/authentication';
 import {
+	AuthenticationProperties,
+	Claim,
+	ClaimTypes,
+	ClaimsIdentity,
+	ClaimsPrincipal,
+	signIn,
+} from '@yohira/authentication.abstractions';
+import {
 	CookieAuthenticationDefaults,
 	addCookie,
 } from '@yohira/authentication.cookies';
@@ -76,6 +84,34 @@ export async function main(): Promise<void> {
 			}`,
 		);
 		await write(context.response, 'Hello World!');
+	});
+
+	mapGet(app, '/signIn', async (context) => {
+		const claims: Claim[] = [
+			new Claim(ClaimTypes.name, 'Name'),
+			new Claim('FullName', 'FullName'),
+			new Claim(ClaimTypes.role, 'Administrator'),
+		];
+
+		const claimsIdentity = new ClaimsIdentity(
+			undefined,
+			claims,
+			CookieAuthenticationDefaults.authenticationScheme,
+			undefined,
+			undefined,
+		);
+
+		const authProperties = new AuthenticationProperties(
+			undefined,
+			undefined,
+		);
+
+		await signIn(
+			context,
+			CookieAuthenticationDefaults.authenticationScheme,
+			ClaimsPrincipal.fromIdentity(claimsIdentity),
+			authProperties,
+		);
 	});
 
 	useEndpoints(app, () => {});
