@@ -6,20 +6,39 @@ import {
 	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
-import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
+import {
+	ILogger,
+	ILoggerFactory,
+	LogLevel,
+} from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
-import { ITlsTokenBindingFeature } from '@yohira/http.features';
+import { CookieOptions, ITlsTokenBindingFeature } from '@yohira/http.features';
 
 import { AuthenticateResults } from './AuthenticateResults';
 import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
+import { CookieSignedInContext } from './CookieSignedInContext';
+import { CookieSigningInContext } from './CookieSigningInContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
+
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/LoggingExtensions.cs,9a9b6924411cb67e,references
+function logAuthenticationSchemeSignedIn(
+	logger: ILogger,
+	authenticationScheme: string,
+): void {
+	logger.log(
+		LogLevel.Information,
+		`AuthenticationScheme: ${authenticationScheme} signed in.`,
+	);
+}
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/CookieAuthenticationHandler.cs,54c4e5158289a976,references
 /**
  * Implementation for the cookie-based authentication handler.
  */
 export class CookieAuthenticationHandler extends SignInAuthenticationHandler<CookieAuthenticationOptions> {
+	private signInCalled = false;
+
 	private readCookiePromise: Promise<AuthenticateResult> | undefined;
 
 	constructor(
@@ -49,6 +68,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 	private async readCookieTicket(): Promise<AuthenticateResult> {
 		const cookie = this.options.cookieManager.getRequestCookie(
 			this.context,
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			this.options.cookie.name!,
 		);
 		if (!cookie) {
@@ -140,11 +160,113 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		);
 	}
 
-	protected handleSignIn(
-		user: ClaimsPrincipal,
-		properties: AuthenticationProperties | undefined,
+	private buildCookieOptions(): CookieOptions {
+		const cookieOptions = this.options.cookie.build(this.context);
+		// ignore the 'Expires' value as this will be computed elsewhere
+		cookieOptions.expires = undefined;
+
+		return cookieOptions;
+	}
+
+	private applyHeaders(
+		shouldRedirect: boolean,
+		shouldHonorReturnUrlParameter: boolean,
+		properties: AuthenticationProperties,
 	): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	protected async handleSignIn(
+		user: ClaimsPrincipal,
+		properties: AuthenticationProperties = new AuthenticationProperties(
+			undefined,
+			undefined,
+		),
+	): Promise<void> {
+		this.signInCalled = true;
+
+		// Process the request cookie to initialize members like _sessionKey.
+		await this.ensureCookieTicket();
+		const cookieOptions = this.buildCookieOptions();
+
+		const signInContext = new CookieSigningInContext(
+			this.context,
+			this.scheme,
+			this.options,
+			user,
+			properties,
+			cookieOptions,
+		);
+
+		let issuedUtc: number; /* REVIEW */
+		if (signInContext.properties.issuedUtc !== undefined) {
+			issuedUtc = signInContext.properties.issuedUtc;
+		} else {
+			issuedUtc = this.timeProvider.getUtcNow();
+			signInContext.properties.issuedUtc = issuedUtc;
+		}
+
+		if (signInContext.properties.expiresUtc === undefined) {
+			signInContext.properties.expiresUtc =
+				issuedUtc + this.options.expireTimeSpan;
+		}
+
+		await this.events.signingIn(signInContext);
+
+		if (signInContext.properties.isPersistent) {
+			const expiresUtc =
+				signInContext.properties.expiresUtc ??
+				issuedUtc + this.options.expireTimeSpan;
+			signInContext.cookieOptions.expires = expiresUtc;
+		}
+
+		const ticket = new AuthenticationTicket(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			signInContext.principal!,
+			signInContext.properties,
+			signInContext.scheme.name,
+		);
+
+		if (this.options.sessionStore !== undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
+
+		const cookieValue = this.options.ticketDataFormat.protect(
+			ticket,
+			this.getTlsTokenBinding(),
+		);
+
+		this.options.cookieManager.appendResponseCookie(
+			this.context,
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			this.options.cookie.name!,
+			cookieValue,
+			signInContext.cookieOptions,
+		);
+
+		const signedInContext = new CookieSignedInContext(
+			this.context,
+			this.scheme,
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			signInContext.principal!,
+			signInContext.properties,
+			this.options,
+		);
+
+		await this.events.signedIn(signedInContext);
+
+		// Only honor the ReturnUrl query string parameter on the login path
+		const shouldHonorReturnUrlParameter =
+			this.options.loginPath !== undefined &&
+			this.originalPath.equals(this.options.loginPath);
+		await this.applyHeaders(
+			true,
+			shouldHonorReturnUrlParameter,
+			signedInContext.properties,
+		);
+
+		logAuthenticationSchemeSignedIn(this.logger, this.scheme.name);
 	}
 }

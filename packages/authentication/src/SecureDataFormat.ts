@@ -13,6 +13,11 @@ export class SecureDataFormat<TData> implements ISecureDataFormat<TData> {
 		private readonly protector: IDataProtector,
 	) {}
 
+	protect(data: TData, purpose?: string | undefined): string {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	unprotect(
 		protectedText: string | undefined,
 		purpose?: string | undefined,

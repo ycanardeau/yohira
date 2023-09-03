@@ -1,4 +1,5 @@
 import { IHttpContext } from '@yohira/http.abstractions';
+import { CookieOptions } from '@yohira/http.features';
 
 import { ICookieManager } from './ICookieManager';
 
@@ -42,5 +43,15 @@ export class ChunkingCookieManager implements ICookieManager {
 			throw new Error('Method not implemented.');
 		}
 		return value;
+	}
+
+	appendResponseCookie(
+		context: IHttpContext,
+		key: string,
+		value: string | undefined,
+		options: CookieOptions,
+	): void {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }

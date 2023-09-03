@@ -4,7 +4,7 @@ import { SameSiteMode } from './SameSiteMode';
 export class CookieOptions {
 	domain?: string;
 	path?: string;
-	expires?: Date /* REVIEW */;
+	expires?: number /* REVIEW */;
 	secure = false;
 	sameSite = SameSiteMode.Unspecified;
 	httpOnly = false;

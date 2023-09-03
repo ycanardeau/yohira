@@ -22,6 +22,33 @@ export class AuthenticationProperties {
 		this.parameters = parameters ?? new Map();
 	}
 
+	/**
+	 * Gets or sets whether the authentication session is persisted across multiple requests.
+	 */
+	get isPersistent(): boolean {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+	set isPersistent(value: boolean) {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	/**
+	 * Gets or sets the time at which the authentication ticket was issued.
+	 */
+	get issuedUtc(): number /* REVIEW */ | undefined {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+	set issuedUtc(value: number /* REVIEW */ | undefined) {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
+	/**
+	 * Gets or sets the time at which the authentication ticket expires.
+	 */
 	get expiresUtc(): number /* REVIEW */ | undefined {
 		// TODO
 		throw new Error('Method not implemented.');

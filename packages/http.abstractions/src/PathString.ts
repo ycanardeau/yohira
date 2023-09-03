@@ -1,4 +1,7 @@
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/PathString.cs,ff3b073b1591ea45,references
+/**
+ * Provides correct escaping for Path and PathBase values when needed to reconstruct a request or redirect URI string
+ */
 export class PathString {
 	readonly value: string | undefined;
 
@@ -10,6 +13,10 @@ export class PathString {
 	}
 
 	static readonly empty = new PathString('');
+
+	get hasValue(): boolean {
+		return !!this.value;
+	}
 
 	toString(): string {
 		return this.value ?? '' /* TODO */;
@@ -37,5 +44,13 @@ export class PathString {
 			};
 		}
 		return { ret: false, remaining: PathString.empty };
+	}
+
+	equals(other: PathString): boolean {
+		if (!this.hasValue && other.hasValue) {
+			return true;
+		}
+
+		return this.value === other.value;
 	}
 }

@@ -2,6 +2,7 @@ import {
 	AuthenticateResult,
 	AuthenticationProperties,
 	AuthenticationScheme,
+	IAuthenticationFeature,
 	IAuthenticationHandler,
 	authenticate,
 } from '@yohira/authentication.abstractions';
@@ -13,7 +14,12 @@ import {
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
-import { IHttpContext } from '@yohira/http.abstractions';
+import {
+	IHttpContext,
+	IHttpRequest,
+	IHttpResponse,
+	PathString,
+} from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';
 
@@ -131,6 +137,31 @@ export abstract class AuthenticationHandler<
 		logger: ILoggerFactory,
 	) {
 		this.logger = logger.createLogger(AuthenticationHandler.name);
+	}
+
+	/**
+	 * Gets the {@link IHttpRequest} associated with the current request.
+	 */
+	protected get request(): IHttpRequest {
+		return this.context.request;
+	}
+
+	/**
+	 * Gets the {@link IHttpResponse} associated with the current request.
+	 */
+	protected get response(): IHttpResponse {
+		return this.context.response;
+	}
+
+	/**
+	 * Gets the path as seen by the authentication middleware.
+	 */
+	get originalPath(): PathString {
+		return (
+			this.context.features.get<IAuthenticationFeature>(
+				IAuthenticationFeature,
+			)?.originalPath ?? this.request.path
+		);
 	}
 
 	/**

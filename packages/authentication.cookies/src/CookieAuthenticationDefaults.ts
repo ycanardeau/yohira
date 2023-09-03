@@ -12,4 +12,8 @@ export const CookieAuthenticationDefaults = {
 	 */
 	cookiePrefix: '.yohira.',
 	// TODO
+	/**
+	 * The default value of the CookieAuthenticationOptions.returnUrlParameter
+	 */
+	returnUrlParameter: 'ReturnUrl',
 } as const;
