@@ -24,6 +24,9 @@ class FeatureInterfaces {
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpRequest.cs,7c96c43ce8999806,references
 export class HttpRequest implements IHttpRequest {
+	private static readonly http = 'http';
+	private static readonly https = 'https';
+
 	private static readonly nullRequestFeature = ():
 		| IHttpRequestFeature
 		| undefined => {
@@ -76,6 +79,20 @@ export class HttpRequest implements IHttpRequest {
 	}
 	set method(value: string) {
 		this.httpRequestFeature.method = value;
+	}
+
+	get scheme(): string {
+		return this.httpRequestFeature.scheme;
+	}
+	set scheme(value: string) {
+		this.httpRequestFeature.scheme = value;
+	}
+
+	get isHttps(): boolean {
+		return HttpRequest.https === this.scheme.toLowerCase();
+	}
+	set isHttps(value: boolean) {
+		this.scheme = value ? HttpRequest.https : HttpRequest.http;
 	}
 
 	get pathBase(): PathString {

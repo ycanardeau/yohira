@@ -8,6 +8,16 @@ import { PathString } from './PathString';
 export interface IHttpRequest {
 	readonly httpContext: IHttpContext;
 	method: string;
+	/**
+	 * Gets or sets the HTTP request scheme.
+	 * @returns The HTTP request scheme.
+	 */
+	scheme: string;
+	/**
+	 * Returns true if the RequestScheme is https.
+	 * @returns true if this request is using https; otherwise, false.
+	 */
+	isHttps: boolean;
 	pathBase: PathString;
 	path: PathString;
 	queryString: string;

@@ -191,6 +191,11 @@ export class Http1Connection
 		return this.request.method ?? '';
 	}
 
+	get scheme(): string {
+		// TODO
+		throw new Error('Method not implemented.');
+	}
+
 	get pathBase(): string {
 		return this._pathBase ?? '';
 	}

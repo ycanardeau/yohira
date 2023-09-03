@@ -9,7 +9,11 @@ import { IHttpContext } from './IHttpContext';
  */
 export class CookieBuilder {
 	private _name?: string;
+	private extensions: string[] | undefined;
 
+	/**
+	 * The name of the cookie.
+	 */
 	get name(): string | undefined {
 		return this._name;
 	}
@@ -30,8 +34,31 @@ export class CookieBuilder {
 	maxAge?: number /* TODO: TimeSpan */;
 	isEssential = false;
 
-	build(context: IHttpContext, expiresFrom = new Date()): CookieOptions {
-		// TODO
-		throw new Error('Method not implemented.');
+	build(
+		context: IHttpContext,
+		expiresFrom = new Date().getTime(),
+	): CookieOptions {
+		const options = new CookieOptions();
+		options.path = this.path ?? '/';
+		options.sameSite = this.sameSite;
+		options.httpOnly = this.httpOnly;
+		options.maxAge = this.maxAge;
+		options.domain = this.domain;
+		options.isEssential = this.isEssential;
+		options.secure =
+			this.securePolicy === CookieSecurePolicy.Always ||
+			(this.securePolicy === CookieSecurePolicy.SameAsRequest &&
+				context.request.isHttps);
+		options.expires =
+			this.expiration !== undefined
+				? expiresFrom + this.expiration
+				: undefined;
+
+		if (this.extensions !== undefined && this.extensions.length > 0) {
+			for (const extension of this.extensions) {
+				options.extensions.push(extension);
+			}
+		}
+		return options;
 	}
 }
