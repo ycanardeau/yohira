@@ -6,6 +6,10 @@ import { IPrincipal } from './IPrincipal';
 export class ClaimsPrincipal implements IPrincipal {
 	private readonly identities: ClaimsIdentity[] = [];
 
+	private static identitySelector: (
+		identities: Iterable<ClaimsIdentity>,
+	) => ClaimsIdentity | undefined = ClaimsPrincipal.selectPrimaryIdentity;
+
 	private constructor() {}
 
 	static fromIdentity(identity: IIdentity): ClaimsPrincipal {
@@ -21,9 +25,24 @@ export class ClaimsPrincipal implements IPrincipal {
 		return principal;
 	}
 
+	private static selectPrimaryIdentity(
+		identities: Iterable<ClaimsIdentity>,
+	): ClaimsIdentity | undefined {
+		for (const identity of identities) {
+			if (identity !== undefined) {
+				return identity;
+			}
+		}
+
+		return undefined;
+	}
+
 	get identity(): IIdentity | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (ClaimsPrincipal.identitySelector !== undefined) {
+			return ClaimsPrincipal.identitySelector(this.identities);
+		} else {
+			return ClaimsPrincipal.selectPrimaryIdentity(this.identities);
+		}
 	}
 
 	isInRole(role: string): boolean {

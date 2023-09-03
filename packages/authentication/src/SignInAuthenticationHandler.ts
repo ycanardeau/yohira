@@ -2,6 +2,7 @@ import {
 	AuthenticationProperties,
 	ClaimsPrincipal,
 	IAuthenticationSignInHandler,
+	signIn,
 } from '@yohira/authentication.abstractions';
 import { Ctor } from '@yohira/base';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
@@ -28,11 +29,28 @@ export abstract class SignInAuthenticationHandler<
 		super(optionsCtor, optionsMonitor, logger);
 	}
 
+	/**
+	 * Override this method to handle signIn.
+	 * @param user
+	 * @param properties
+	 * @returns A promise.
+	 */
+	protected abstract handleSignIn(
+		user: ClaimsPrincipal,
+		properties: AuthenticationProperties | undefined,
+	): Promise<void>;
+
 	signIn(
 		user: ClaimsPrincipal,
 		properties: AuthenticationProperties | undefined,
 	): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		const target = this.resolveTarget(this.options.forwardSignIn);
+		return target !== undefined
+			? signIn(this.context, target, user, properties)
+			: this.handleSignIn(
+					user,
+					properties ??
+						new AuthenticationProperties(undefined, undefined),
+			  );
 	}
 }

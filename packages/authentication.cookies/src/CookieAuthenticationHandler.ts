@@ -1,6 +1,7 @@
 import { SignInAuthenticationHandler } from '@yohira/authentication';
 import {
 	AuthenticateResult,
+	AuthenticationProperties,
 	AuthenticationTicket,
 	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
@@ -108,6 +109,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 
 		// We check this before the ValidatePrincipal event because we want to make sure we capture a clean clone
 		// without picking up any per-request modifications to the principal.
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		await this.checkForRefresh(result.ticket!);
 
 		if (result.ticket === undefined) {
@@ -136,5 +138,13 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 				this.scheme.name,
 			),
 		);
+	}
+
+	protected handleSignIn(
+		user: ClaimsPrincipal,
+		properties: AuthenticationProperties | undefined,
+	): Promise<void> {
+		// TODO
+		throw new Error('Method not implemented.');
 	}
 }

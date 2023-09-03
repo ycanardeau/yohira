@@ -22,16 +22,23 @@ export class AuthenticationSchemeOptions {
 	forwardDefault: string | undefined;
 
 	/**
-	 * Used for testing.
-	 */
-	timeProvider: TimeProvider | undefined;
-
-	/**
 	 * If set, this specifies the target scheme that this scheme should forward AuthenticateAsync calls to.
 	 * For example Context.AuthenticateAsync("ThisScheme") => Context.AuthenticateAsync("ForwardAuthenticateValue");
 	 * Set the target to the current scheme to disable forwarding and allow normal processing.
 	 */
 	forwardAuthenticate: string | undefined;
+
+	/**
+	 * If set, this specifies the target scheme that this scheme should forward SignInAsync calls to.
+	 * For example Context.SignInAsync("ThisScheme") => Context.SignInAsync("ForwardSignInValue");
+	 * Set the target to the current scheme to disable forwarding and allow normal processing.
+	 */
+	forwardSignIn: string | undefined;
+
+	/**
+	 * Used for testing.
+	 */
+	timeProvider: TimeProvider | undefined;
 
 	/**
 	 * Used to select a default scheme for the current request that authentication handlers should forward all authentication operations to
