@@ -12,6 +12,16 @@ export class ClaimsPrincipal implements IPrincipal {
 
 	private constructor() {}
 
+	static fromIdentities(
+		identities: Iterable<ClaimsIdentity>,
+	): ClaimsPrincipal {
+		const principal = new ClaimsPrincipal();
+
+		principal.identities.push(...identities);
+
+		return principal;
+	}
+
 	static fromIdentity(identity: IIdentity): ClaimsPrincipal {
 		const principal = new ClaimsPrincipal();
 
