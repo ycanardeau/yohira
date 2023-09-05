@@ -12,7 +12,7 @@ export class Claim {
 
 	readonly issuer: string;
 	readonly originalIssuer: string;
-	private readonly properties: Map<string, string> | undefined;
+	private _properties: Map<string, string> | undefined;
 
 	readonly valueType: string;
 
@@ -31,9 +31,9 @@ export class Claim {
 		this.originalIssuer = !originalIssuer ? this.issuer : originalIssuer;
 
 		if (propertyKey !== undefined) {
-			this.properties = new Map();
+			this._properties = new Map();
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			this.properties.set(propertyKey, propertyValue!);
+			this._properties.set(propertyKey, propertyValue!);
 		}
 	}
 
@@ -51,9 +51,8 @@ export class Claim {
 			undefined,
 			undefined,
 		);
-		if (other.properties !== undefined) {
-			// TODO
-			throw new Error('Method not implemented.');
+		if (other._properties !== undefined) {
+			claim._properties = new Map(other._properties);
 		}
 		if (other.userSerializationData !== undefined) {
 			// TODO
@@ -61,6 +60,10 @@ export class Claim {
 		}
 
 		return claim;
+	}
+
+	get properties(): Map<string, string> {
+		return (this._properties ??= new Map());
 	}
 
 	clone(identity?: ClaimsIdentity): Claim {

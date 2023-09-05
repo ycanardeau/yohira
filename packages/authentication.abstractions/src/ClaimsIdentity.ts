@@ -7,14 +7,35 @@ import { IIdentity } from './IIdentity';
  * An Identity that is represented by a set of claims.
  */
 export class ClaimsIdentity implements IIdentity {
+	isCircular(subject: ClaimsIdentity): boolean {
+		if (this === subject) {
+			return true;
+		}
+
+		let currSubject = subject;
+
+		while (currSubject.actor !== undefined) {
+			if (this === currSubject.actor) {
+				return true;
+			}
+
+			currSubject = currSubject.actor;
+		}
+
+		return false;
+	}
+
 	private _actor: ClaimsIdentity | undefined;
 	get actor(): ClaimsIdentity | undefined {
 		return this._actor;
 	}
 	set actor(value: ClaimsIdentity | undefined) {
 		if (value !== undefined) {
-			// TODO
-			throw new Error('Method not implemented.');
+			if (this.isCircular(value)) {
+				throw new Error(
+					'An Actor must not create a circular reference between itself (or one of its child Actors) and one of its parents.' /* LOC */,
+				);
+			}
 		}
 		this._actor = value;
 	}
@@ -23,9 +44,11 @@ export class ClaimsIdentity implements IIdentity {
 	get authenticationType(): string | undefined {
 		return this._authenticationType;
 	}
-	private readonly instanceClaims: Claim[] = [];
-
 	bootstrapContext: unknown /* TODO */ | undefined;
+	private externalClaims: Claim[][] | undefined;
+	private readonly instanceClaims: Claim[] = [];
+	readonly nameClaimType = ClaimsIdentity.defaultNameClaimType;
+	readonly roleClaimType = ClaimsIdentity.defaultRoleClaimType;
 
 	static readonly defaultIssuer = 'LOCAL AUTHORITY';
 	static readonly defaultNameClaimType = ClaimTypes.name;
@@ -67,6 +90,29 @@ export class ClaimsIdentity implements IIdentity {
 		}
 	}
 
+	private *combinedClaimsIterator(): Generator<Claim> {
+		for (let i = 0; i < this.instanceClaims.length; i++) {
+			yield this.instanceClaims[i];
+		}
+
+		const externalClaims = this.externalClaims!;
+		for (let j = 0; j < externalClaims.length; j++) {
+			if (externalClaims[j] !== undefined) {
+				for (const claim of externalClaims[j]) {
+					yield claim;
+				}
+			}
+		}
+	}
+
+	get claims(): Iterable<Claim> {
+		if (this.externalClaims === undefined) {
+			return this.instanceClaims;
+		}
+
+		return this.combinedClaimsIterator();
+	}
+
 	addClaim(claim: Claim): void {
 		if (claim.subject === this) {
 			this.instanceClaims.push(claim);
@@ -99,5 +145,17 @@ export class ClaimsIdentity implements IIdentity {
 	get name(): string | undefined {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	findFirst(type: string): Claim | undefined {
+		for (const claim of this.claims) {
+			if (claim !== undefined) {
+				if (claim.type.toLowerCase() === type.toLowerCase()) {
+					return claim;
+				}
+			}
+		}
+
+		return undefined;
 	}
 }

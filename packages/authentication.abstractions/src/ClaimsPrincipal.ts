@@ -1,16 +1,17 @@
+import { Claim } from './Claim';
 import { ClaimsIdentity } from './ClaimsIdentity';
 import { IIdentity } from './IIdentity';
 import { IPrincipal } from './IPrincipal';
 
 // https://source.dot.net/#System.Security.Claims/System/Security/Claims/ClaimsPrincipal.cs,8193f72fd7c38c41,references
 export class ClaimsPrincipal implements IPrincipal {
-	private readonly identities: ClaimsIdentity[] = [];
+	readonly identities: ClaimsIdentity[] = [];
 
 	private static identitySelector: (
 		identities: Iterable<ClaimsIdentity>,
 	) => ClaimsIdentity | undefined = ClaimsPrincipal.selectPrimaryIdentity;
 
-	private constructor() {}
+	constructor() {}
 
 	static fromIdentities(
 		identities: Iterable<ClaimsIdentity>,
@@ -53,6 +54,25 @@ export class ClaimsPrincipal implements IPrincipal {
 		} else {
 			return ClaimsPrincipal.selectPrimaryIdentity(this.identities);
 		}
+	}
+
+	addIdentity(identity: ClaimsIdentity): void {
+		this.identities.push(identity);
+	}
+
+	findFirst(type: string): Claim | undefined {
+		let claim: Claim | undefined = undefined;
+
+		for (let i = 0; i < this.identities.length; i++) {
+			if (this.identities[i] !== undefined) {
+				claim = this.identities[i].findFirst(type);
+				if (claim !== undefined) {
+					return claim;
+				}
+			}
+		}
+
+		return claim;
 	}
 
 	isInRole(role: string): boolean {

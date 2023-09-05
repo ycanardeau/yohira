@@ -8,6 +8,7 @@ export * from './Claim';
 export * from './ClaimsIdentity';
 export * from './ClaimsPrincipal';
 export * from './ClaimTypes';
+export * from './ClaimValueTypes';
 export * from './IAuthenticateResultFeature';
 export * from './IAuthenticationConfigProvider';
 export * from './IAuthenticationFeature';

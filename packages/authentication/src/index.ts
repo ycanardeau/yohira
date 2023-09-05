@@ -9,3 +9,4 @@ export * from './RequestPathBaseCookieBuilder';
 export * from './SecureDataFormat';
 export * from './SignInAuthenticationHandler';
 export * from './TicketDataFormat';
+export * from './TicketSerializer';

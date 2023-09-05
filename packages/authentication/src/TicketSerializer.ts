@@ -1,11 +1,14 @@
 import {
 	AuthenticationTicket,
+	Claim,
+	ClaimValueTypes,
 	ClaimsIdentity,
 	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
 import { BinaryReader, BinaryWriter, MemoryStream, using } from '@yohira/base';
 
 import { IDataSerializer } from './IDataSerializer';
+import { PropertiesSerializer } from './PropertiesSerializer';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/TicketSerializer.cs,a06d70173f9793df,references
 // This MUST be kept in sync with Microsoft.Owin.Security.Interop.AspNetTicketSerializer
@@ -18,9 +21,104 @@ export class TicketSerializer implements IDataSerializer<AuthenticationTicket> {
 
 	static readonly default = new TicketSerializer();
 
+	private static writeWithDefault(
+		writer: BinaryWriter,
+		value: string,
+		defaultValue: string,
+	): void {
+		if (value === defaultValue) {
+			writer.writeString(TicketSerializer.defaultStringPlaceholder);
+		} else {
+			writer.writeString(value);
+		}
+	}
+
+	protected writeClaim(writer: BinaryWriter, claim: Claim): void {
+		TicketSerializer.writeWithDefault(
+			writer,
+			claim.type,
+			claim.subject?.nameClaimType ?? ClaimsIdentity.defaultNameClaimType,
+		);
+		writer.writeString(claim.value);
+		TicketSerializer.writeWithDefault(
+			writer,
+			claim.valueType,
+			ClaimValueTypes.string,
+		);
+		TicketSerializer.writeWithDefault(
+			writer,
+			claim.issuer,
+			ClaimsIdentity.defaultIssuer,
+		);
+		TicketSerializer.writeWithDefault(
+			writer,
+			claim.originalIssuer,
+			claim.issuer,
+		);
+
+		// Write the number of properties contained in the claim.
+		writer.writeInt32LE(claim.properties.size);
+
+		for (const [key, value] of claim.properties) {
+			writer.writeString(key ?? '');
+			writer.writeString(value ?? '');
+		}
+	}
+
+	protected writeIdentity(
+		writer: BinaryWriter,
+		identity: ClaimsIdentity,
+	): void {
+		const authenticationType = identity.authenticationType ?? '';
+
+		writer.writeString(authenticationType);
+		TicketSerializer.writeWithDefault(
+			writer,
+			identity.nameClaimType,
+			ClaimsIdentity.defaultNameClaimType,
+		);
+		TicketSerializer.writeWithDefault(
+			writer,
+			identity.roleClaimType,
+			ClaimsIdentity.defaultRoleClaimType,
+		);
+
+		// Write the number of claims contained in the identity.
+		writer.writeInt32LE(Array.from(identity.claims).length);
+
+		for (const claim of identity.claims) {
+			this.writeClaim(writer, claim);
+		}
+
+		const bootstrap = identity.bootstrapContext as string;
+		if (!!bootstrap) {
+			writer.writeBoolean(true);
+			writer.writeString(bootstrap);
+		} else {
+			writer.writeBoolean(false);
+		}
+
+		if (identity.actor !== undefined) {
+			writer.writeBoolean(true);
+			this.writeIdentity(writer, identity.actor);
+		} else {
+			writer.writeBoolean(false);
+		}
+	}
+
 	write(writer: BinaryWriter, ticket: AuthenticationTicket): void {
 		writer.writeInt32LE(TicketSerializer.formatVersion);
 		writer.writeString(ticket.authenticationScheme);
+
+		// Write the number of identities contained in the principal.
+		const principal = ticket.principal;
+		writer.writeInt32LE(principal.identities.length);
+
+		for (const identity of principal.identities) {
+			this.writeIdentity(writer, identity);
+		}
+
+		PropertiesSerializer.default.write(writer, ticket.properties);
 	}
 
 	serialize(ticket: AuthenticationTicket): Buffer {
@@ -44,8 +142,41 @@ export class TicketSerializer implements IDataSerializer<AuthenticationTicket> {
 	}
 
 	protected readClaim(reader: BinaryReader, identity: ClaimsIdentity): Claim {
-		// TODO
-		throw new Error('Method not implemented.');
+		const type = TicketSerializer.readWithDefault(
+			reader,
+			identity.nameClaimType,
+		);
+		const value = reader.readString();
+		const valueType = TicketSerializer.readWithDefault(
+			reader,
+			ClaimValueTypes.string,
+		);
+		const issuer = TicketSerializer.readWithDefault(
+			reader,
+			ClaimsIdentity.defaultIssuer,
+		);
+		const originalIssuer = TicketSerializer.readWithDefault(reader, issuer);
+
+		const claim = new Claim(
+			type,
+			value,
+			valueType,
+			issuer,
+			originalIssuer,
+			identity,
+		);
+
+		// Read the number of properties stored in the claim.
+		const count = reader.readInt32LE();
+
+		for (let index = 0; index !== count; ++index) {
+			const key = reader.readString();
+			const propertyValue = reader.readString();
+
+			claim.properties.set(key, propertyValue);
+		}
+
+		return claim;
 	}
 
 	protected readIdentity(reader: BinaryReader): ClaimsIdentity {

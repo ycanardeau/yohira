@@ -1,8 +1,12 @@
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationProperties.cs,07bee9fb5619ff86
+import { tryGetValue } from '@yohira/base';
+
 /**
  * Dictionary used to store state values about the authentication session.
  */
 export class AuthenticationProperties {
+	static readonly redirectUriKey = '.redirect';
+
 	/**
 	 * State values about the authentication session.
 	 */
@@ -22,6 +26,19 @@ export class AuthenticationProperties {
 		this.parameters = parameters ?? new Map();
 	}
 
+	getString(key: string): string | undefined {
+		const tryGetValueResult = tryGetValue(this.items, key);
+		return tryGetValueResult.ok ? tryGetValueResult.val : undefined;
+	}
+
+	setString(key: string, value: string | undefined): void {
+		if (value !== undefined) {
+			this.items.set(key, value);
+		} else {
+			this.items.delete(key);
+		}
+	}
+
 	/**
 	 * Gets or sets whether the authentication session is persisted across multiple requests.
 	 */
@@ -32,6 +49,13 @@ export class AuthenticationProperties {
 	set isPersistent(value: boolean) {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	get redirectUri(): string | undefined {
+		return this.getString(AuthenticationProperties.redirectUriKey);
+	}
+	set redirectUri(value: string | undefined) {
+		this.setString(AuthenticationProperties.redirectUriKey, value);
 	}
 
 	/**
