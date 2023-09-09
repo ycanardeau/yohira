@@ -111,6 +111,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/http.features/src',
 			),
+			'@yohira/http.headers': resolve(
+				__dirname,
+				'./packages/http.headers/src',
+			),
 			'@yohira/http.shared': resolve(
 				__dirname,
 				'./packages/http.shared/src',

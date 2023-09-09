@@ -1,4 +1,7 @@
-import { SignInAuthenticationHandler } from '@yohira/authentication';
+import {
+	RedirectContext,
+	SignInAuthenticationHandler,
+} from '@yohira/authentication';
 import {
 	AuthenticateResult,
 	AuthenticationProperties,
@@ -12,6 +15,7 @@ import {
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
+import { StatusCodes } from '@yohira/http.abstractions';
 import { CookieOptions, ITlsTokenBindingFeature } from '@yohira/http.features';
 
 import { AuthenticateResults } from './AuthenticateResults';
@@ -37,6 +41,11 @@ function logAuthenticationSchemeSignedIn(
  * Implementation for the cookie-based authentication handler.
  */
 export class CookieAuthenticationHandler extends SignInAuthenticationHandler<CookieAuthenticationOptions> {
+	private static readonly headerValueNoCache = 'no-cache';
+	private static readonly headerValueNoCacheNoStore = 'no-cache,no-store';
+	private static readonly headerValueEpocDate =
+		'Thu, 01 Jan 1970 00:00:00 GMT';
+
 	private signInCalled = false;
 
 	private readCookiePromise: Promise<AuthenticateResult> | undefined;
@@ -168,13 +177,64 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		return cookieOptions;
 	}
 
-	private applyHeaders(
+	private static isHostRelative(path: string): boolean {
+		if (!path) {
+			return false;
+		}
+		if (path.length === 1) {
+			return path[0] === '/';
+		}
+		return path[0] === '/' && path[1] !== '/' && path[1] !== '\\';
+	}
+
+	private async applyHeaders(
 		shouldRedirect: boolean,
 		shouldHonorReturnUrlParameter: boolean,
 		properties: AuthenticationProperties,
 	): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.response.headers['cache-control'] =
+			CookieAuthenticationHandler.headerValueNoCacheNoStore;
+		this.response.headers.pragma =
+			CookieAuthenticationHandler.headerValueNoCache;
+		this.response.headers.expires =
+			CookieAuthenticationHandler.headerValueEpocDate;
+
+		if (
+			shouldRedirect &&
+			this.response.statusCode === StatusCodes.Status200OK
+		) {
+			// set redirect uri in order:
+			// 1. properties.RedirectUri
+			// 2. query parameter ReturnUrlParameter (if the request path matches the path set in the options)
+			//
+			// Absolute uri is not allowed if it is from query string as query string is not
+			// a trusted source.
+			const redirectUri = properties.redirectUri;
+			if (shouldHonorReturnUrlParameter && !redirectUri) {
+				/* TODO: redirectUri = this.request.query.get(
+					this.options.returnUrlParameter,
+				);
+				if (
+					!redirectUri ||
+					!CookieAuthenticationHandler.isHostRelative(redirectUri)
+				) {
+					redirectUri = undefined;
+				} */
+				throw new Error('Method not implemented.');
+			}
+
+			if (redirectUri !== undefined) {
+				await this.events.redirectToReturnUrl(
+					new RedirectContext<CookieAuthenticationOptions>(
+						this.context,
+						this.scheme,
+						this.options,
+						properties,
+						redirectUri,
+					),
+				);
+			}
+		}
 	}
 
 	protected async handleSignIn(

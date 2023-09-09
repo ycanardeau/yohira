@@ -1,21 +1,27 @@
-import { FeatureReferences } from '@yohira/extensions.features';
+import {
+	FeatureReferences,
+	IFeatureCollection,
+} from '@yohira/extensions.features';
+import { ResponseCookiesFeature } from '@yohira/http';
 import {
 	IHttpContext,
 	IHttpResponse,
 	StatusCodes,
 } from '@yohira/http.abstractions';
 import {
-	IHeaderDictionary,
 	IHttpResponseBodyFeature,
 	IHttpResponseFeature,
 	IResponseCookies,
+	IResponseCookiesFeature,
 } from '@yohira/http.features';
+import { IncomingHttpHeaders } from 'node:http';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
 class FeatureInterfaces {
-	response?: IHttpResponseFeature;
-	responseBody?: IHttpResponseBodyFeature;
+	response: IHttpResponseFeature | undefined;
+	responseBody: IHttpResponseBodyFeature | undefined;
+	cookies: IResponseCookiesFeature | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,d36a5786d91e7a26,references
@@ -26,6 +32,9 @@ export class HttpResponse implements IHttpResponse {
 	private static readonly nullResponseBodyFeature = ():
 		| IHttpResponseBodyFeature
 		| undefined => undefined;
+	private static readonly newResponseCookiesFeature = (
+		f: IFeatureCollection,
+	): IResponseCookiesFeature | undefined => new ResponseCookiesFeature(f);
 
 	private readonly features = new FeatureReferences<FeatureInterfaces>(
 		() => new FeatureInterfaces(),
@@ -61,6 +70,19 @@ export class HttpResponse implements IHttpResponse {
 		)!;
 	}
 
+	private get responseCookiesFeature(): IResponseCookiesFeature {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this.features.fetch(
+			IResponseCookiesFeature,
+			{
+				get: () => this.features.cache.cookies,
+				set: (value) => (this.features.cache.cookies = value),
+			},
+			this.features.collection,
+			HttpResponse.newResponseCookiesFeature,
+		)!;
+	}
+
 	// TODO
 	private _statusCode = StatusCodes.Status200OK;
 	get statusCode(): StatusCodes {
@@ -70,9 +92,8 @@ export class HttpResponse implements IHttpResponse {
 		this._statusCode = value;
 	}
 
-	get headers(): IHeaderDictionary {
-		// TODO: return this.httpResponseFeature.headers;
-		throw new Error('Method not implemented.');
+	get headers(): IncomingHttpHeaders {
+		return this.httpResponseFeature.headers;
 	}
 
 	get body(): Stream {
@@ -89,8 +110,7 @@ export class HttpResponse implements IHttpResponse {
 	}
 
 	get cookies(): IResponseCookies {
-		// TODO: return this.responseCookiesFeature.cookies;
-		throw new Error('Method not implemented.');
+		return this.responseCookiesFeature.cookies;
 	}
 
 	get hasStarted(): boolean {

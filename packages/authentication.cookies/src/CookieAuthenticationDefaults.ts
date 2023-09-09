@@ -6,7 +6,7 @@ export const CookieAuthenticationDefaults = {
 	/**
 	 * The default value used for CookieAuthenticationOptions.authenticationScheme
 	 */
-	authenticationScheme: 'Cookies',
+	authenticationScheme: 'cookies',
 	/**
 	 * The prefix used to provide a default CookieAuthenticationOptions.cookieName
 	 */
@@ -15,5 +15,5 @@ export const CookieAuthenticationDefaults = {
 	/**
 	 * The default value of the CookieAuthenticationOptions.returnUrlParameter
 	 */
-	returnUrlParameter: 'ReturnUrl',
+	returnUrlParameter: 'returnUrl',
 } as const;

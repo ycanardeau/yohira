@@ -1,3 +1,4 @@
+import { TimeSpan } from '@yohira/base';
 import { CookieOptions, SameSiteMode } from '@yohira/http.features';
 
 import { CookieSecurePolicy } from './CookieSecurePolicy';
@@ -30,8 +31,8 @@ export class CookieBuilder {
 	httpOnly = false;
 	sameSite = SameSiteMode.Unspecified;
 	securePolicy = CookieSecurePolicy.SameAsRequest;
-	expiration?: number /* TODO: TimeSpan */;
-	maxAge?: number /* TODO: TimeSpan */;
+	expiration: TimeSpan | undefined;
+	maxAge: TimeSpan | undefined;
 	isEssential = false;
 
 	build(
@@ -51,7 +52,7 @@ export class CookieBuilder {
 				context.request.isHttps);
 		options.expires =
 			this.expiration !== undefined
-				? expiresFrom + this.expiration
+				? expiresFrom + this.expiration.totalMilliseconds
 				: undefined;
 
 		if (this.extensions !== undefined && this.extensions.length > 0) {

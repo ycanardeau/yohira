@@ -1,4 +1,4 @@
-import { HeaderNames } from '@yohira/base';
+import { HeaderNames } from '@yohira/http.headers';
 
 import { HttpLoggingFields } from './HttpLoggingFields';
 
@@ -22,7 +22,7 @@ export class HttpLoggingOptions {
 	 * should not be logged unless logs are secure and
 	 * access controlled and the privacy impact assessed.
 	 */
-	requestHeaders: readonly typeof HeaderNames[number][] = [
+	requestHeaders: readonly (typeof HeaderNames)[number][] = [
 		'Accept',
 		'Accept-Charset',
 		'Accept-Encoding',
@@ -57,7 +57,7 @@ export class HttpLoggingOptions {
 	 * If a response header is not present in the {@link responseHeaders},
 	 * the header name will be logged with a redacted value.
 	 */
-	responseHeaders: readonly typeof HeaderNames[number][] = [
+	responseHeaders: readonly (typeof HeaderNames)[number][] = [
 		'Accept-Ranges',
 		'Age',
 		'Allow',

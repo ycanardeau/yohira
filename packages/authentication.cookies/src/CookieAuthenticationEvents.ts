@@ -1,3 +1,6 @@
+import { RedirectContext } from '@yohira/authentication';
+
+import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
 import { CookieSignedInContext } from './CookieSignedInContext';
 import { CookieSigningInContext } from './CookieSigningInContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
@@ -26,6 +29,13 @@ export class CookieAuthenticationEvents {
 	onSignedIn = (context: CookieSignedInContext): Promise<void> =>
 		Promise.resolve();
 
+	onRedirectToReturnUrl = (
+		context: RedirectContext<CookieAuthenticationOptions>,
+	): Promise<void> => {
+		// TODO
+		throw new Error('Method not implemented.');
+	};
+
 	/**
 	 * Invoked to validate the principal.
 	 * @param context The {@link CookieValidatePrincipalContext}.
@@ -48,5 +58,14 @@ export class CookieAuthenticationEvents {
 	 */
 	signedIn(context: CookieSignedInContext): Promise<void> {
 		return this.onSignedIn(context);
+	}
+
+	/**
+	 * Invoked when the client is being redirected after log out.
+	 */
+	redirectToReturnUrl(
+		context: RedirectContext<CookieAuthenticationOptions>,
+	): Promise<void> {
+		return this.onRedirectToReturnUrl(context);
 	}
 }

@@ -46,6 +46,15 @@ export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 		return this.buffer !== undefined;
 	}
 
+	equals(other: StringSegment): boolean {
+		if (this.hasValue && other.hasValue) {
+			return this.value === other.value;
+		} else {
+			// TODO
+			return !this.hasValue && !other.hasValue;
+		}
+	}
+
 	at(index: number): string {
 		if (index < 0 || index >= this.length) {
 			throw new Error(
@@ -90,5 +99,9 @@ export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 			this.offset + offset,
 			length,
 		);
+	}
+
+	toString(): string {
+		return this.value ?? '';
 	}
 }

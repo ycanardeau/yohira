@@ -96,6 +96,7 @@
 			"@yohira/http.abstractions": ["packages/http.abstractions/src"],
 			"@yohira/http.extensions": ["packages/http.extensions/src"],
 			"@yohira/http.features": ["packages/http.features/src"],
+			"@yohira/http.headers": ["packages/http.headers/src"],
 			"@yohira/http.shared": ["packages/http.shared/src"],
 			"@yohira/routing": ["packages/routing/src"],
 			"@yohira/session": ["packages/session/src"],

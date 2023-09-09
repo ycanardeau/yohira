@@ -9,7 +9,6 @@ import {
 	LogLevel,
 } from '@yohira/extensions.logging.abstractions';
 import { IOptions } from '@yohira/extensions.options';
-import { StringValues } from '@yohira/extensions.primitives';
 import {
 	IHttpContext,
 	IMiddleware,
@@ -58,9 +57,9 @@ class SessionEstablisher {
 		);
 
 		const responseHeaders = response.headers;
-		responseHeaders.cacheControl = new StringValues('no-cache,no-store');
-		responseHeaders.pragma = new StringValues('no-cache');
-		responseHeaders.expires = new StringValues('-1');
+		responseHeaders['cache-control'] = 'no-cache,no-store';
+		responseHeaders.pragma = 'no-cache';
+		responseHeaders.expires = '-1';
 	}
 
 	private static onStartingCallback = (state: object): Promise<void> => {

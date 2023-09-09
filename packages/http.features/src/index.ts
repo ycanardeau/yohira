@@ -7,6 +7,7 @@ export * from './IHttpResponseFeature';
 export * from './IRequestCookieCollection';
 export * from './IRequestCookiesFeature';
 export * from './IResponseCookies';
+export * from './IResponseCookiesFeature';
 export * from './IServiceProvidersFeature';
 export * from './ISession';
 export * from './ISessionFeature';
