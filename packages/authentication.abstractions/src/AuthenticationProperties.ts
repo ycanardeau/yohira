@@ -1,6 +1,6 @@
-// https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationProperties.cs,07bee9fb5619ff86
 import { tryGetValue } from '@yohira/base';
 
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationProperties.cs,07bee9fb5619ff86
 /**
  * Dictionary used to store state values about the authentication session.
  */

@@ -1,4 +1,4 @@
-import { Ref } from '@yohira/base';
+import { Ref, unescapeDataString } from '@yohira/base';
 import { StringSegment, StringValues } from '@yohira/extensions.primitives';
 import { getTokenLength, getWhitespaceLength } from '@yohira/shared';
 import { Err, Ok, Result } from '@yohira/third-party.ts-results';
@@ -240,10 +240,6 @@ function tryParseCookieHeaderValue(
 	index.set(current);
 
 	return new Ok({ parsedName, parsedValue });
-}
-
-function unescapeDataString(stringToUnescape: string): string {
-	return decodeURIComponent(stringToUnescape);
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/src/Http/Shared/CookieHeaderParserShared.cs,279a231d46e5a05d,references

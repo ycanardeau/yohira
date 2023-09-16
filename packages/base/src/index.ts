@@ -37,3 +37,4 @@ export * from './TimeProvider';
 export * from './TimeSpan';
 export * from './Type';
 export * from './typedef';
+export * from './UriExt';

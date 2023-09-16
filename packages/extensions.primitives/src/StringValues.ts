@@ -35,6 +35,49 @@ export class StringValues implements IEquatable<StringValues> {
 		throw new Error('Index was outside the bounds of the array.' /* LOC */);
 	}
 
+	private copyTo(array: (string | undefined)[], arrayIndex: number): void {
+		const value = this.values;
+		if (typeof value === 'string') {
+			if (arrayIndex < 0) {
+				throw new Error(
+					'Specified argument was out of the range of valid values.' /* LOC */,
+				);
+			}
+			if (array.length - arrayIndex < 1) {
+				throw new Error(
+					"'array' is not long enough to copy all the items in the collection. Check 'arrayIndex' and 'array' length.",
+				);
+			}
+
+			array[arrayIndex] = value;
+			return;
+		}
+
+		if (value !== undefined) {
+			for (let i = 0; i < value.length; i++) {
+				array[arrayIndex + i] = value[0 + i];
+			}
+		}
+	}
+
+	static concat(values1: StringValues, values2: StringValues): StringValues {
+		const count1 = values1.count;
+		const count2 = values2.count;
+
+		if (count1 === 0) {
+			return values2;
+		}
+
+		if (count2 === 0) {
+			return values1;
+		}
+
+		const combined: string[] = new Array(count1 + count2);
+		values1.copyTo(combined, 0);
+		values2.copyTo(combined, count1);
+		return new StringValues(combined);
+	}
+
 	static equals(left: StringValues, right: StringValues): boolean {
 		const count = left.count;
 
@@ -53,5 +96,20 @@ export class StringValues implements IEquatable<StringValues> {
 
 	equals(other: StringValues): boolean {
 		return StringValues.equals(this, other);
+	}
+
+	private getArrayValue(): (string | undefined)[] | undefined {
+		const value = this.values;
+		if (typeof value === 'string') {
+			return [value];
+		} else if (value !== undefined) {
+			return value;
+		} else {
+			return undefined;
+		}
+	}
+
+	toArray(): (string | undefined)[] {
+		return this.getArrayValue() ?? [];
 	}
 }

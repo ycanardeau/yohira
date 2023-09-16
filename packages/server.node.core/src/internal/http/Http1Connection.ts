@@ -25,12 +25,16 @@ export class Http1Connection
 		IHttpResponseBodyFeature,
 		IEndpointFeature
 {
-	private currentIHttpRequestFeature?: IHttpRequestFeature;
-	private currentIHttpResponseFeature?: IHttpResponseFeature;
-	private currentIHttpResponseBodyFeature?: IHttpResponseBodyFeature;
-	private currentIEndpointFeature?: IEndpointFeature;
+	private currentIHttpRequestFeature: IHttpRequestFeature | undefined;
+	private currentIHttpResponseFeature: IHttpResponseFeature | undefined;
+	private currentIHttpResponseBodyFeature:
+		| IHttpResponseBodyFeature
+		| undefined;
+	private currentIEndpointFeature: IEndpointFeature | undefined;
 
-	private currentIServiceProvidersFeature?: IServiceProvidersFeature;
+	private currentIServiceProvidersFeature:
+		| IServiceProvidersFeature
+		| undefined;
 
 	private fastReset(): void {
 		this.currentIHttpRequestFeature = this;
@@ -48,14 +52,16 @@ export class Http1Connection
 		this.featureRevision++;
 	}
 
-	private _onStarting?: [(state: object) => Promise<void>, object][];
+	private _onStarting:
+		| [(state: object) => Promise<void>, object][]
+		| undefined;
 
 	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
 
-	private _pathBase?: string;
-	private _path?: string;
-	private _queryString?: string;
-	private _rawBody?: string;
+	private _pathBase: string | undefined;
+	private _path: string | undefined;
+	private _queryString: string | undefined;
+	private _rawBody: string | undefined;
 
 	reset(): void {
 		this._onStarting?.splice(0, this._onStarting.length) /* TODO: clear */;
@@ -214,7 +220,7 @@ export class Http1Connection
 		return this.request.headers;
 	}
 
-	private _endpoint?: Endpoint;
+	private _endpoint: Endpoint | undefined;
 	get endpoint(): Endpoint | undefined {
 		return this._endpoint;
 	}
