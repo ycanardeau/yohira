@@ -1,3 +1,4 @@
+import { TimeSpan } from '@yohira/base';
 import { CacheableKeyRing, IKeyRing } from '@yohira/data-protection';
 import { expect, test } from 'vitest';
 
@@ -13,7 +14,7 @@ test('IsValid_CancellationTokenTriggered_ReturnsFalse', () => {
 	// TODO: const cts =
 	const cacheableKeyRing = new CacheableKeyRing(
 		// TODO: cts.token,
-		now + 1 * 60 * 60 * 1000,
+		now + TimeSpan.fromHours(1).totalMilliseconds,
 		keyRing,
 	);
 
@@ -29,13 +30,16 @@ test('IsValid_Expired_ReturnsFalse', () => {
 	// TODO: const cts =
 	const cacheableKeyRing = new CacheableKeyRing(
 		// TODO: cts.token,
-		now + 1 * 60 * 60 * 1000,
+		now + TimeSpan.fromHours(1).totalMilliseconds,
 		keyRing,
 	);
 
 	expect(CacheableKeyRing.isValid(cacheableKeyRing, now)).toBe(true);
 	expect(
-		CacheableKeyRing.isValid(cacheableKeyRing, now + 1 * 60 * 60 * 1000),
+		CacheableKeyRing.isValid(
+			cacheableKeyRing,
+			now + TimeSpan.fromHours(1).totalMilliseconds,
+		),
 	).toBe(false);
 });
 

@@ -1,4 +1,4 @@
-import { Guid } from '@yohira/base';
+import { Guid, TimeSpan } from '@yohira/base';
 import {
 	IAuthenticatedEncryptorDescriptor,
 	IAuthenticatedEncryptorFactory,
@@ -10,8 +10,8 @@ import { expect, test } from 'vitest';
 test('Ctor_Properties', () => {
 	const keyId = Guid.newGuid();
 	const creationDate = Date.now();
-	const activationDate = Date.now() + 2 * 24 * 60 * 60 * 1000;
-	const expirationDate = Date.now() + 90 * 24 * 60 * 60 * 1000;
+	const activationDate = Date.now() + TimeSpan.fromDays(2).totalMilliseconds;
+	const expirationDate = Date.now() + TimeSpan.fromDays(90).totalMilliseconds;
 	const descriptor: IAuthenticatedEncryptorDescriptor =
 		{} as IAuthenticatedEncryptorDescriptor;
 	const encryptorFactory: IAuthenticatedEncryptorFactory =

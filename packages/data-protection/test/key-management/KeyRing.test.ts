@@ -1,4 +1,4 @@
-import { Guid } from '@yohira/base';
+import { Guid, TimeSpan } from '@yohira/base';
 import {
 	IAuthenticatedEncryptor,
 	IAuthenticatedEncryptorDescriptor,
@@ -22,8 +22,10 @@ class MyKey implements IKey {
 		expectedEncryptorInstance?: IAuthenticatedEncryptor,
 	) {
 		this.creationDate = Date.now();
-		this.activationDate = Date.now() + 1 * 60 * 60 * 1000;
-		this.expirationDate = Date.now() + 30 * 24 * 60 * 60 * 1000;
+		this.activationDate =
+			Date.now() + TimeSpan.fromHours(1).totalMilliseconds;
+		this.expirationDate =
+			Date.now() + TimeSpan.fromDays(30).totalMilliseconds;
 		this.isRevoked = isRevoked;
 		this.keyId = Guid.newGuid();
 		this.encryptorFactory = (): IAuthenticatedEncryptor =>

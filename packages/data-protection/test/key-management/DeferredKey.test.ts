@@ -12,8 +12,8 @@ import { expect, test } from 'vitest';
 /* TODO: test('Ctor_Properties', () => {
 	const keyId = Guid.newGuid();
 	const creationDate = Date.now();
-	const activationDate = Date.now() + 2 * 24 * 60 * 60 * 1000;
-	const expirationDate = Date.now() + 90 * 24 * 60 * 60 * 1000;
+	const activationDate = Date.now() + TimeSpan.fromDays(2).totalMilliseconds;
+	const expirationDate = Date.now() + TimeSpan.fromDays(90).totalMilliseconds;
 	const mockDescriptor: IAuthenticatedEncryptorDescriptor =
 		{} as IAuthenticatedEncryptorDescriptor;
 	const mockInternalKeyManager: IInternalXmlKeyManager =

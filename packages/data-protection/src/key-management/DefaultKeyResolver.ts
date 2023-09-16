@@ -1,4 +1,4 @@
-import { Guid, Out } from '@yohira/base';
+import { Guid, Out, TimeSpan } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -73,11 +73,11 @@ function logRepositoryContainsNoViableDefaultKey(logger: ILogger): void {
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/DefaultKeyResolver.cs,53f63ccf038547e9,references
 export class DefaultKeyResolver implements IDefaultKeyResolver {
-	private readonly keyPropagationWindow: number;
+	private readonly keyPropagationWindow: TimeSpan;
 
 	private readonly logger: ILogger;
 
-	private readonly maxServerToServerClockSkew: number;
+	private readonly maxServerToServerClockSkew: TimeSpan;
 
 	constructor(@inject(ILoggerFactory) loggerFactory: ILoggerFactory) {
 		this.keyPropagationWindow = KeyManagementOptions.keyPropagationWindow;
@@ -116,7 +116,8 @@ export class DefaultKeyResolver implements IDefaultKeyResolver {
 		let preferredDefaultKey: IKey | undefined = Array.from(allKeys)
 			.filter(
 				(key) =>
-					key.activationDate <= now + this.maxServerToServerClockSkew,
+					key.activationDate <=
+					now + this.maxServerToServerClockSkew.totalMilliseconds,
 			)
 			.sort(
 				(a, b) =>
@@ -159,8 +160,11 @@ export class DefaultKeyResolver implements IDefaultKeyResolver {
 				(key) =>
 					key.activationDate <=
 						preferredDefaultKey!.expirationDate +
-							this.maxServerToServerClockSkew &&
-					!isExpired(key, now + this.keyPropagationWindow) &&
+							this.maxServerToServerClockSkew.totalMilliseconds &&
+					!isExpired(
+						key,
+						now + this.keyPropagationWindow.totalMilliseconds,
+					) &&
 					!key.isRevoked,
 			);
 			callerShouldGenerateNewKey.set(callerShouldGenerateNewKeyValue);
@@ -182,7 +186,8 @@ export class DefaultKeyResolver implements IDefaultKeyResolver {
 			Array.from(allKeys)
 				.filter(
 					(key) =>
-						key.creationDate <= now - this.keyPropagationWindow,
+						key.creationDate <=
+						now - this.keyPropagationWindow.totalMilliseconds,
 				)
 				.sort((a, b) => b.creationDate - a.creationDate)
 				.concat(

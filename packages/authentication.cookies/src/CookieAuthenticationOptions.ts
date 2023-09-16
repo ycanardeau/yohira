@@ -4,6 +4,7 @@ import {
 	RequestPathBaseCookieBuilder,
 } from '@yohira/authentication';
 import { AuthenticationTicket } from '@yohira/authentication.abstractions';
+import { TimeSpan } from '@yohira/base';
 import { IDataProtectionProvider } from '@yohira/data-protection.abstractions';
 import {
 	CookieBuilder,
@@ -94,12 +95,12 @@ export class CookieAuthenticationOptions extends AuthenticationSchemeOptions {
 	 */
 	sessionStore: ITicketStore | undefined;
 
-	expireTimeSpan: number;
+	expireTimeSpan: TimeSpan;
 
 	constructor() {
 		super();
 
-		this.expireTimeSpan = 60 * 1000 * 60 * 24 * 14;
+		this.expireTimeSpan = TimeSpan.fromDays(14);
 		this.returnUrlParameter =
 			CookieAuthenticationDefaults.returnUrlParameter;
 		this.slidingExpiration = true;

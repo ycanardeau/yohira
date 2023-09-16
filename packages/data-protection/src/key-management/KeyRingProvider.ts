@@ -1,4 +1,4 @@
-import { Guid } from '@yohira/base';
+import { Guid, TimeSpan } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -73,7 +73,8 @@ export class KeyRingProvider
 		this.logger = loggerFactory.createLogger(KeyRingProvider.name);
 
 		// We will automatically refresh any unknown keys for 2 minutes see https://github.com/dotnet/aspnetcore/issues/3975
-		this.autoRefreshWindowEnd = Date.now() + 2 * 60 * 1000;
+		this.autoRefreshWindowEnd =
+			Date.now() + TimeSpan.fromMinutes(2).totalMilliseconds;
 	}
 
 	inAutoRefreshWindow(): boolean {
@@ -121,13 +122,16 @@ export class KeyRingProvider
 		return this.getCurrentKeyRingCore(Date.now(), true);
 	}
 
-	private static getRefreshPeriodWithJitter(refreshPeriod: number): number {
+	private static getRefreshPeriodWithJitter(
+		refreshPeriod: TimeSpan,
+	): TimeSpan {
 		// We'll fudge the refresh period up to -20% so that multiple applications don't try to
 		// hit a single repository simultaneously. For instance, if the refresh period is 1 hour,
 		// we'll return a value in the vicinity of 48 - 60 minutes. We use the Random class since
 		// we don't need a secure PRNG for this.
-		const refreshPeriodTicks = refreshPeriod * 10000;
-		return (refreshPeriodTicks * (1.0 - Math.random() / 5)) / 10000;
+		return TimeSpan.fromTicks(
+			refreshPeriod.ticks * (1.0 - Math.random() / 5),
+		);
 	}
 
 	private static min(a: number, b: number): number {
@@ -155,7 +159,7 @@ export class KeyRingProvider
 			now +
 			KeyRingProvider.getRefreshPeriodWithJitter(
 				KeyManagementOptions.keyRingRefreshPeriod,
-			);
+			).totalMilliseconds;
 
 		// The cached keyring should expire at the earliest of (default key expiration, next auto-refresh time).
 		// Since the refresh period and safety window are not user-settable, we can guarantee that there's at
@@ -234,7 +238,8 @@ export class KeyRingProvider
 			// means that we need to create a new key with immediate activation.
 			const newKey = this.keyManager.createNewKey(
 				now,
-				now + this.keyManagementOptions.newKeyLifetime,
+				now +
+					this.keyManagementOptions.newKeyLifetime.totalMilliseconds,
 			);
 			return this.createCacheableKeyRingCore(now, newKey); // recursively call
 		} else {

@@ -269,7 +269,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 
 		if (signInContext.properties.expiresUtc === undefined) {
 			signInContext.properties.expiresUtc =
-				issuedUtc + this.options.expireTimeSpan;
+				issuedUtc + this.options.expireTimeSpan.totalMilliseconds;
 		}
 
 		await this.events.signingIn(signInContext);
@@ -277,7 +277,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		if (signInContext.properties.isPersistent) {
 			const expiresUtc =
 				signInContext.properties.expiresUtc ??
-				issuedUtc + this.options.expireTimeSpan;
+				issuedUtc + this.options.expireTimeSpan.totalMilliseconds;
 			signInContext.cookieOptions.expires = expiresUtc;
 		}
 
