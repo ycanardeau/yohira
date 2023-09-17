@@ -30,12 +30,12 @@ export class AuthenticationProperties {
 		this.parameters = parameters ?? new Map();
 	}
 
-	getString(key: string): string | undefined {
+	protected getString(key: string): string | undefined {
 		const tryGetValueResult = tryGetValue(this.items, key);
 		return tryGetValueResult.ok ? tryGetValueResult.val : undefined;
 	}
 
-	setString(key: string, value: string | undefined): void {
+	protected setString(key: string, value: string | undefined): void {
 		if (value !== undefined) {
 			this.items.set(key, value);
 		} else {
@@ -43,16 +43,35 @@ export class AuthenticationProperties {
 		}
 	}
 
-	getDateTimeOffset(key: string): number | undefined {
+	protected getDateTimeOffset(key: string): number | undefined {
 		const tryGetValueResult = tryGetValue(this.items, key);
 		return tryGetValueResult.ok && tryGetValueResult.val !== undefined
 			? new Date(tryGetValueResult.val).getTime()
 			: undefined;
 	}
 
-	setDateTimeOffset(key: string, value: number | undefined): void {
+	protected setDateTimeOffset(key: string, value: number | undefined): void {
 		if (value !== undefined) {
 			this.items.set(key, new Date(value).toUTCString());
+		} else {
+			this.items.delete(key);
+		}
+	}
+
+	protected getBoolean(key: string): boolean | undefined {
+		const tryGetValueResult = tryGetValue(this.items, key);
+		return tryGetValueResult.ok
+			? tryGetValueResult.val === 'true'
+				? true
+				: tryGetValueResult.val === 'false'
+				? false
+				: undefined
+			: undefined;
+	}
+
+	protected setBoolean(key: string, value: boolean | undefined): void {
+		if (value !== undefined) {
+			this.items.set(key, value ? 'true' : 'false');
 		} else {
 			this.items.delete(key);
 		}
@@ -99,5 +118,15 @@ export class AuthenticationProperties {
 	}
 	set expiresUtc(value: number /* REVIEW */ | undefined) {
 		this.setDateTimeOffset(AuthenticationProperties.expiresUtcKey, value);
+	}
+
+	/**
+	 * Gets or sets if refreshing the authentication session should be allowed.
+	 */
+	get allowRefresh(): boolean | undefined {
+		return this.getBoolean(AuthenticationProperties.refreshKey);
+	}
+	set allowRefresh(value: boolean | undefined) {
+		this.setBoolean(AuthenticationProperties.refreshKey, value);
 	}
 }

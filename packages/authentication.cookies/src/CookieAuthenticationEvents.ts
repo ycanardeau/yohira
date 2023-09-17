@@ -3,6 +3,7 @@ import { RedirectContext } from '@yohira/authentication';
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
 import { CookieSignedInContext } from './CookieSignedInContext';
 import { CookieSigningInContext } from './CookieSigningInContext';
+import { CookieSlidingExpirationContext } from './CookieSlidingExpirationContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/CookieAuthenticationEvents.cs,8ff04a0cd46d7a23,references
@@ -15,6 +16,13 @@ export class CookieAuthenticationEvents {
 	 */
 	onValidatePrincipal = (
 		context: CookieValidatePrincipalContext,
+	): Promise<void> => Promise.resolve();
+
+	/**
+	 * Invoked to check if the cookie should be renewed.
+	 */
+	onCheckSlidingExpiration = (
+		context: CookieSlidingExpirationContext,
 	): Promise<void> => Promise.resolve();
 
 	/**
@@ -42,6 +50,15 @@ export class CookieAuthenticationEvents {
 	 */
 	validatePrincipal(context: CookieValidatePrincipalContext): Promise<void> {
 		return this.onValidatePrincipal(context);
+	}
+
+	/**
+	 * Invoked to check if the cookie should be renewed.
+	 */
+	checkSlidingExpiration(
+		context: CookieSlidingExpirationContext,
+	): Promise<void> {
+		return this.onCheckSlidingExpiration(context);
 	}
 
 	/**

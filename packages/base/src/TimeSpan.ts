@@ -24,6 +24,10 @@ export class TimeSpan {
 		return new TimeSpan(value * ticksPerMinute);
 	}
 
+	static fromMilliseconds(value: number): TimeSpan {
+		return new TimeSpan(value * ticksPerMillisecond);
+	}
+
 	get totalMilliseconds(): number {
 		return this.ticks / ticksPerMillisecond;
 	}

@@ -8,6 +8,7 @@ import {
 	AuthenticationTicket,
 	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
+import { TimeSpan } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -23,6 +24,7 @@ import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
 import { CookieSignedInContext } from './CookieSignedInContext';
 import { CookieSigningInContext } from './CookieSigningInContext';
+import { CookieSlidingExpirationContext } from './CookieSlidingExpirationContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/LoggingExtensions.cs,9a9b6924411cb67e,references
@@ -117,17 +119,46 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		return this.readCookiePromise;
 	}
 
-	private checkForRefresh(ticket: AuthenticationTicket): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-
 	private requestRefresh(
 		ticket: AuthenticationTicket,
 		replacedPrincipal?: ClaimsPrincipal,
 	): void {
 		// TODO
 		throw new Error('Method not implemented.');
+	}
+
+	private async checkForRefresh(ticket: AuthenticationTicket): Promise<void> {
+		const currentUtc = this.timeProvider.getUtcNow();
+		const issuedUtc = ticket.properties.issuedUtc;
+		const expiresUtc = ticket.properties.expiresUtc;
+		const allowRefresh = ticket.properties.allowRefresh ?? true;
+		if (
+			issuedUtc !== undefined &&
+			expiresUtc !== undefined &&
+			this.options.slidingExpiration &&
+			allowRefresh
+		) {
+			const timeElapsed = TimeSpan.fromMilliseconds(
+				currentUtc - issuedUtc,
+			);
+			const timeRemaining = TimeSpan.fromMilliseconds(
+				expiresUtc - currentUtc,
+			);
+
+			const eventContext = new CookieSlidingExpirationContext(
+				this.context,
+				this.scheme,
+				this.options,
+				ticket,
+				timeElapsed,
+				timeRemaining,
+			);
+			await this.events.checkSlidingExpiration(eventContext);
+
+			if (eventContext.shouldRenew) {
+				this.requestRefresh(ticket);
+			}
+		}
 	}
 
 	protected async handleAuthenticate(): Promise<AuthenticateResult> {
