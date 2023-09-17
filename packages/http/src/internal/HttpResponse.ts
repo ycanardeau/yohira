@@ -13,8 +13,8 @@ import {
 	IHttpResponseFeature,
 	IResponseCookies,
 	IResponseCookiesFeature,
+	IResponseHeaderDictionary,
 } from '@yohira/http.features';
-import { IncomingHttpHeaders } from 'node:http';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
@@ -92,8 +92,8 @@ export class HttpResponse implements IHttpResponse {
 		this._statusCode = value;
 	}
 
-	get headers(): IncomingHttpHeaders {
-		return this.httpResponseFeature.headers;
+	get headers(): IResponseHeaderDictionary {
+		return this.httpResponseFeature.responseHeaders;
 	}
 
 	get body(): Stream {

@@ -192,12 +192,18 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		shouldHonorReturnUrlParameter: boolean,
 		properties: AuthenticationProperties,
 	): Promise<void> {
-		this.response.headers['cache-control'] =
-			CookieAuthenticationHandler.headerValueNoCacheNoStore;
-		this.response.headers.pragma =
-			CookieAuthenticationHandler.headerValueNoCache;
-		this.response.headers.expires =
-			CookieAuthenticationHandler.headerValueEpocDate;
+		this.response.headers.setHeader(
+			'cache-control',
+			CookieAuthenticationHandler.headerValueNoCacheNoStore,
+		);
+		this.response.headers.setHeader(
+			'pragma',
+			CookieAuthenticationHandler.headerValueNoCache,
+		);
+		this.response.headers.setHeader(
+			'expires',
+			CookieAuthenticationHandler.headerValueEpocDate,
+		);
 
 		if (
 			shouldRedirect &&

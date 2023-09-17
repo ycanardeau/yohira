@@ -57,9 +57,9 @@ class SessionEstablisher {
 		);
 
 		const responseHeaders = response.headers;
-		responseHeaders['cache-control'] = 'no-cache,no-store';
-		responseHeaders.pragma = 'no-cache';
-		responseHeaders.expires = '-1';
+		responseHeaders.setHeader('cache-control', 'no-cache,no-store');
+		responseHeaders.setHeader('pragma', 'no-cache');
+		responseHeaders.setHeader('expires', '-1');
 	}
 
 	private static onStartingCallback = (state: object): Promise<void> => {

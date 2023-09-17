@@ -13,10 +13,10 @@ import {
 	CookieOptions,
 	IHttpResponseFeature,
 	IResponseCookies,
+	IResponseHeaderDictionary,
 	IServiceProvidersFeature,
 	SameSiteMode,
 } from '@yohira/http.features';
-import { IncomingHttpHeaders } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/ResponseCookies.cs,e208c05fbe0b89cd,references
 function logSameSiteCookieNotSecure(logger: ILogger, name: string): void {
@@ -33,13 +33,13 @@ function logSameSiteCookieNotSecure(logger: ILogger, name: string): void {
 export class ResponseCookies implements IResponseCookies {
 	private logger: ILogger | undefined;
 
-	private headers: IncomingHttpHeaders;
+	private headers: IResponseHeaderDictionary;
 
 	constructor(private readonly features: IFeatureCollection) {
 		this.headers = getRequiredFeature<IHttpResponseFeature>(
 			this.features,
 			IHttpResponseFeature,
-		).headers;
+		).responseHeaders;
 	}
 
 	append(key: string, value: string, options: CookieOptions): void {
@@ -62,10 +62,15 @@ export class ResponseCookies implements IResponseCookies {
 		const cookie = options
 			.createCookieHeader(key, escapeDataString(value))
 			.toString();
-		this.headers['set-cookie'] = StringValues.concat(
-			new StringValues(this.headers['set-cookie']),
-			new StringValues(cookie),
-		).toArray() as string[];
+		this.headers.setHeader(
+			'set-cookie',
+			StringValues.concat(
+				new StringValues(
+					this.headers.getHeader('set-cookie') as string | string[],
+				),
+				new StringValues(cookie),
+			).toArray() as string[],
+		);
 	}
 
 	delete(key: string, options?: CookieOptions | undefined): void {

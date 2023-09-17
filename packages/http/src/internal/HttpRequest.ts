@@ -114,7 +114,7 @@ export class HttpRequest implements IHttpRequest {
 	}
 
 	get headers(): IncomingHttpHeaders {
-		return this.httpRequestFeature.headers;
+		return this.httpRequestFeature.requestHeaders;
 	}
 
 	get cookies(): IRequestCookieCollection {

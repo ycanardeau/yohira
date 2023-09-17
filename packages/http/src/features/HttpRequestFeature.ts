@@ -8,11 +8,11 @@ export class HttpRequestFeature implements IHttpRequestFeature {
 	pathBase: string;
 	path: string;
 	queryString: string;
-	headers: IncomingHttpHeaders;
+	requestHeaders: IncomingHttpHeaders;
 	rawBody: string;
 
 	constructor() {
-		this.headers = {};
+		this.requestHeaders = {};
 		this.rawBody = '';
 		this.scheme = '';
 		this.method = '';

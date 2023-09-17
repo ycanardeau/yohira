@@ -8,6 +8,6 @@ export interface IHttpRequestFeature {
 	pathBase: string;
 	path: string;
 	queryString: string;
-	headers: IncomingHttpHeaders;
+	requestHeaders: IncomingHttpHeaders;
 	rawBody: string;
 }

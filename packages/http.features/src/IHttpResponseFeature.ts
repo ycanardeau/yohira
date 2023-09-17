@@ -1,4 +1,9 @@
-import { IncomingHttpHeaders } from 'node:http';
+import { IncomingMessage, ServerResponse } from 'node:http';
+
+export type IResponseHeaderDictionary = Pick<
+	ServerResponse<IncomingMessage>,
+	'getHeaders' | 'getHeader' | 'setHeader'
+>;
 
 export const IHttpResponseFeature = Symbol.for('IHttpResponseFeature');
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Features/IHttpResponseFeature.cs,cac9ce0faa55e5f2,references
@@ -9,6 +14,6 @@ export interface IHttpResponseFeature {
 	/**
 	 * Gets or sets the response headers to send. Headers with multiple values will be emitted as multiple headers.
 	 */
-	headers: IncomingHttpHeaders;
+	responseHeaders: IResponseHeaderDictionary;
 	onStarting(callback: (state: object) => Promise<void>, state: object): void;
 }

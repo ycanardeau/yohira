@@ -5,6 +5,7 @@ import {
 	IHttpRequestFeature,
 	IHttpResponseBodyFeature,
 	IHttpResponseFeature,
+	IResponseHeaderDictionary,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 import {
@@ -231,8 +232,12 @@ export class Http1Connection
 		return this._queryString!;
 	}
 
-	get headers(): IncomingHttpHeaders {
+	get requestHeaders(): IncomingHttpHeaders {
 		return this.request.headers;
+	}
+
+	get responseHeaders(): IResponseHeaderDictionary {
+		return this.response;
 	}
 
 	private _endpoint: Endpoint | undefined;

@@ -1,5 +1,7 @@
-import { IResponseCookies } from '@yohira/http.features';
-import { IncomingHttpHeaders } from 'node:http';
+import {
+	IResponseCookies,
+	IResponseHeaderDictionary,
+} from '@yohira/http.features';
 import { Stream } from 'node:stream';
 
 import { IHttpContext } from './IHttpContext';
@@ -21,7 +23,7 @@ export interface IHttpResponse {
 	/**
 	 * Gets the response headers.
 	 */
-	headers: IncomingHttpHeaders;
+	headers: IResponseHeaderDictionary;
 	/**
 	 * Gets or sets the response body {@link Stream}.
 	 */

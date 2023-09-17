@@ -47,7 +47,7 @@ export class RequestCookiesFeature implements IRequestCookiesFeature {
 			return this.parsedValues;
 		}
 
-		const headers = this.httpRequestFeature.headers;
+		const headers = this.httpRequestFeature.requestHeaders;
 		const current = new StringValues(headers.cookie);
 
 		if (this.parsedValues === undefined || !this.original.equals(current)) {
