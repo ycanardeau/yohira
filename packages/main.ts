@@ -112,6 +112,8 @@ export async function main(): Promise<void> {
 			ClaimsPrincipal.fromIdentity(claimsIdentity),
 			authProperties,
 		);
+
+		await write(context.response, JSON.stringify({}));
 	});
 
 	useEndpoints(app, () => {});

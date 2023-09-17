@@ -5,7 +5,11 @@ import { tryGetValue } from '@yohira/base';
  * Dictionary used to store state values about the authentication session.
  */
 export class AuthenticationProperties {
+	static readonly issuedUtcKey = '.issued';
+	static readonly expiresUtcKey = '.expires';
+	static readonly isPersistentKey = '.persistent';
 	static readonly redirectUriKey = '.redirect';
+	static readonly refreshKey = '.refresh';
 
 	/**
 	 * State values about the authentication session.
@@ -39,16 +43,35 @@ export class AuthenticationProperties {
 		}
 	}
 
+	getDateTimeOffset(key: string): number | undefined {
+		const tryGetValueResult = tryGetValue(this.items, key);
+		return tryGetValueResult.ok && tryGetValueResult.val !== undefined
+			? new Date(tryGetValueResult.val).getTime()
+			: undefined;
+	}
+
+	setDateTimeOffset(key: string, value: number | undefined): void {
+		if (value !== undefined) {
+			this.items.set(key, new Date(value).toUTCString());
+		} else {
+			this.items.delete(key);
+		}
+	}
+
 	/**
 	 * Gets or sets whether the authentication session is persisted across multiple requests.
 	 */
 	get isPersistent(): boolean {
-		// TODO
-		throw new Error('Method not implemented.');
+		return (
+			this.getString(AuthenticationProperties.isPersistentKey) !==
+			undefined
+		);
 	}
 	set isPersistent(value: boolean) {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.setString(
+			AuthenticationProperties.isPersistentKey,
+			value ? '' : undefined,
+		);
 	}
 
 	get redirectUri(): string | undefined {
@@ -62,23 +85,19 @@ export class AuthenticationProperties {
 	 * Gets or sets the time at which the authentication ticket was issued.
 	 */
 	get issuedUtc(): number /* REVIEW */ | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this.getDateTimeOffset(AuthenticationProperties.issuedUtcKey);
 	}
 	set issuedUtc(value: number /* REVIEW */ | undefined) {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.setDateTimeOffset(AuthenticationProperties.issuedUtcKey, value);
 	}
 
 	/**
 	 * Gets or sets the time at which the authentication ticket expires.
 	 */
 	get expiresUtc(): number /* REVIEW */ | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this.getDateTimeOffset(AuthenticationProperties.expiresUtcKey);
 	}
 	set expiresUtc(value: number /* REVIEW */ | undefined) {
-		// TODO
-		throw new Error('Method not implemented.');
+		this.setDateTimeOffset(AuthenticationProperties.expiresUtcKey, value);
 	}
 }

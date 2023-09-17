@@ -58,6 +58,7 @@ export class Http1Connection
 
 	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
 
+	private _scheme: string | undefined;
 	private _pathBase: string | undefined;
 	private _path: string | undefined;
 	private _queryString: string | undefined;
@@ -79,6 +80,18 @@ export class Http1Connection
 		this._queryString = undefined;
 		this._rawBody = undefined;
 		// TODO
+
+		// TODO
+
+		if (this._scheme === undefined) {
+			this._scheme =
+				this.response.socket !== null &&
+				'encrypted' in this.response.socket /* REVIEW */
+					? 'https'
+					: 'http';
+		}
+
+		this.scheme = this._scheme;
 
 		// TODO
 	}
@@ -198,8 +211,10 @@ export class Http1Connection
 	}
 
 	get scheme(): string {
-		// TODO
-		throw new Error('Method not implemented.');
+		return this._scheme ?? 'http';
+	}
+	set scheme(value: string) {
+		this._scheme = value;
 	}
 
 	get pathBase(): string {
