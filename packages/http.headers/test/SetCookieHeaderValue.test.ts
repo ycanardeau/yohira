@@ -13,7 +13,7 @@ const setCookieHeaderDataSet = ((): readonly (readonly [
 		StringSegment.from('n1=v1&n2=v2&n3=v3'),
 	);
 	header1.domain = StringSegment.from('domain1');
-	header1.expires = new Date(1994, 11 - 1, 6, 8, 49, 37).getTime();
+	header1.expires = Date.UTC(1994, 11 - 1, 6, 8, 49, 37);
 	header1.sameSite = SameSiteMode.Strict;
 	header1.httpOnly = true;
 	header1.maxAge = TimeSpan.fromDays(1);
@@ -50,7 +50,7 @@ const setCookieHeaderDataSet = ((): readonly (readonly [
 		StringSegment.from('value5'),
 	);
 	header5.domain = StringSegment.from('domain1');
-	header5.expires = new Date(1994, 11 - 1, 6, 8, 49, 37).getTime();
+	header5.expires = Date.UTC(1994, 11 - 1, 6, 8, 49, 37);
 	dataset.push([
 		header5,
 		'name5=value5; expires=Sun, 06 Nov 1994 08:49:37 GMT; domain=domain1',
