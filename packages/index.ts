@@ -1,4 +1,6 @@
+export * from './authentication/src';
 export * from './authentication.abstractions/src';
+export * from './authentication.cookies/src';
 export * from './base/src';
 export * from './core/src';
 export * from './extensions.config/src';
