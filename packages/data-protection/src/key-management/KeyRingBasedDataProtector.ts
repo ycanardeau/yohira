@@ -30,6 +30,18 @@ function performingProtectOperationToKeyWithPurposes(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,b80b19517becab3d,references
+function performingUnprotectOperationToKeyWithPurposes(
+	logger: ILogger,
+	keyId: Guid,
+	purposes: string,
+): void {
+	logger.log(
+		LogLevel.Trace,
+		`Performing unprotect operation to key ${keyId} with purposes ${purposes}.`,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/LoggingExtensions.cs,548a69640d62f161,references
 function keyWasNotFoundInTheKeyRingUnprotectOperationCannotProceed(
 	logger: ILogger,
@@ -359,7 +371,7 @@ export class KeyRingBasedDataProtector
 			}
 
 			if (this.logger !== undefined && isDebugLevelEnabled(this.logger)) {
-				performingProtectOperationToKeyWithPurposes(
+				performingUnprotectOperationToKeyWithPurposes(
 					this.logger,
 					keyIdFromPayload,
 					KeyRingBasedDataProtector.joinPurposesForLog(this.purposes),
