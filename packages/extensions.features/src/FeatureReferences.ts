@@ -23,7 +23,8 @@ export class FeatureReferences<TCache> {
 		this.cache = defaultValueFactory();
 	}
 
-	initialize(collection: IFeatureCollection): void {
+	initialize(collection: IFeatureCollection, revision?: number): void {
+		this.revision = revision ?? collection.revision;
 		this.collection = collection;
 	}
 

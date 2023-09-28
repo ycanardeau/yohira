@@ -26,6 +26,8 @@ export class HttpContextFactory implements IHttpContextFactory {
 		httpContext: HttpContext,
 		featureCollection: IFeatureCollection,
 	): void {
+		httpContext.initialize(featureCollection);
+
 		// TODO
 
 		httpContext.serviceScopeFactory = this.serviceScopeFactory;

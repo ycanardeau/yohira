@@ -51,6 +51,15 @@ export class HttpContext implements IHttpContext {
 		this.response = new HttpResponse(this);
 	}
 
+	initialize(features: IFeatureCollection): void {
+		const revision = features.revision;
+		this._features.initialize(features, revision);
+		// TODO: this.request.initialize(revision);
+		// TODO: this.response.initialize(revision);
+		// TODO
+		// TODO: this.active = true;
+	}
+
 	serviceScopeFactory!: IServiceScopeFactory;
 
 	private get serviceProvidersFeature(): IServiceProvidersFeature {
