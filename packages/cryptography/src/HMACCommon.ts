@@ -10,7 +10,7 @@ export class HMACCommon {
 
 	// The actual key used for hashing. This will not be the same as the original key passed to ChangeKey() if the original key exceeded the
 	// hash algorithm's block size. (See RFC 2104, section 2)
-	_actualKey?: Buffer;
+	_actualKey: Buffer | undefined;
 	get actualKey(): Buffer | undefined {
 		return this._actualKey;
 	}

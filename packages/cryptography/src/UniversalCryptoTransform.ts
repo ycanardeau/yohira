@@ -271,7 +271,7 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 	// whether this is the final block that needs depadding. This block is held (in encrypted form) in heldoverCipher. The next call to transformBlock
 	// or transformFinalBlock must include the decryption of heldoverCipher in the results.
 	//
-	private heldoverCipher?: Buffer;
+	private heldoverCipher: Buffer | undefined;
 
 	constructor(
 		paddingMode: PaddingMode,

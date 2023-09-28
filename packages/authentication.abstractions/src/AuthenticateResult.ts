@@ -39,7 +39,7 @@ export class AuthenticateResult {
 	/**
 	 * Additional state values for the authentication session.
 	 */
-	properties?: AuthenticationProperties;
+	properties: AuthenticationProperties | undefined;
 
 	private _failure: Error | undefined;
 	/**

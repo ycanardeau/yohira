@@ -27,7 +27,7 @@ import { WebHostOptions } from '../internal/WebHostOptions';
 export class GenericWebHostBuilder
 	implements IWebHostBuilder, ISupportsStartup
 {
-	private startupObject?: unknown;
+	private startupObject: unknown | undefined;
 
 	private getWebHostBuilderContext(
 		context: HostBuilderContext,

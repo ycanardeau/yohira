@@ -16,7 +16,7 @@ import { NamespaceHandling, XmlWriter, XmlWriterSettings } from './XmlWriter';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XNode.cs,2137ed2a1146d569,references
 export abstract class XNode extends XObject {
-	/** @internal */ next?: XNode;
+	/** @internal */ next: XNode | undefined;
 
 	/** @internal */ static getXmlReaderSettings(
 		o: LoadOptions,
@@ -162,7 +162,7 @@ class ContentReader {
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XContainer.cs,071975611afa24f5,references
 export abstract class XContainer extends XNode {
-	/** @internal */ content?: string | XNode; /* TODO: object */
+	/** @internal */ content: string | XNode /* TODO: object */ | undefined;
 
 	/** @internal */ static getStringValue(
 		value: string /* TODO: object */,
@@ -351,7 +351,7 @@ export class XCData extends XText {
 export class XElement extends XContainer {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	/** @internal */ _name: XName = undefined!;
-	/** @internal */ lastAttr?: XAttribute;
+	/** @internal */ lastAttr: XAttribute | undefined;
 
 	static fromName(name: XName): XElement {
 		const element = new XElement();

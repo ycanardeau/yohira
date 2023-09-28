@@ -10,8 +10,8 @@ import { IServiceProvidersFeature } from '@yohira/http.features';
 export class RequestServicesFeature
 	implements IServiceProvidersFeature, IDisposable, IAsyncDisposable
 {
-	private _requestServices?: IServiceProvider;
-	private scope?: IServiceScope;
+	private _requestServices: IServiceProvider | undefined;
+	private scope: IServiceScope | undefined;
 	private requestServicesSet = false;
 
 	constructor(

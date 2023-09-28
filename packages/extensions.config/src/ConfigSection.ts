@@ -9,9 +9,12 @@ import { getChildrenImpl } from './InternalConfigRootExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationSection.cs,b07a8fc9758fd876,references
 export class ConfigSection implements IConfigSection {
-	private _key?: string;
+	private _key: string | undefined;
 
-	constructor(private readonly root: IConfigRoot, readonly path: string) {}
+	constructor(
+		private readonly root: IConfigRoot,
+		readonly path: string,
+	) {}
 
 	get key(): string {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

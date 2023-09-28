@@ -6,7 +6,7 @@ import { ICryptoTransform } from './ICryptoTransform';
 export abstract class HashAlgorithm implements IDisposable, ICryptoTransform {
 	private disposed = false;
 	protected hashSizeValue = 0;
-	protected hashValue?: Buffer;
+	protected hashValue: Buffer | undefined;
 	protected state = 0;
 
 	get hashSize(): number {

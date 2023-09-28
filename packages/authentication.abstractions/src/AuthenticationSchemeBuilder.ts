@@ -11,12 +11,12 @@ export class AuthenticationSchemeBuilder {
 	/**
 	 * Gets or sets the display name for the scheme being built.
 	 */
-	displayName?: string;
+	displayName: string | undefined;
 
 	/**
 	 * Gets or sets the {@link IAuthenticationHandler} type responsible for this scheme.
 	 */
-	handlerCtor?: Ctor<IAuthenticationHandler>;
+	handlerCtor: Ctor<IAuthenticationHandler> | undefined;
 
 	constructor(
 		/**

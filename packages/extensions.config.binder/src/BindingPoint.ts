@@ -1,6 +1,6 @@
 // https://source.dot.net/#Microsoft.Extensions.Configuration.Binder/BindingPoint.cs,54b2cc589b0b3c04,references
 export class BindingPoint {
-	private _setValue?: object;
+	private _setValue: object | undefined;
 	private valueSet = false;
 
 	constructor(

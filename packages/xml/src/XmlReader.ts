@@ -31,8 +31,8 @@ export class XmlReaderSettings {
 			settings.readOnly = true;
 			return settings;
 		})();
-	private _nameTable?: XmlNameTable;
-	private _xmlResolver?: XmlResolver;
+	private _nameTable: XmlNameTable | undefined;
+	private _xmlResolver: XmlResolver | undefined;
 	private _maxCharactersInDocument = 0;
 	private _maxCharactersFromEntities = 0;
 	private _ignoreWhitespace = false;
@@ -232,7 +232,7 @@ enum InitInputType {
 class LaterInitParam {
 	useAsync = false;
 
-	inputTextReader?: TextReader;
+	inputTextReader: TextReader | undefined;
 
 	initType = InitInputType.Invalid;
 }
@@ -249,7 +249,7 @@ class ParsingState {
 	// TODO
 
 	// input text reader
-	/** @internal */ textReader?: TextReader;
+	/** @internal */ textReader: TextReader | undefined;
 
 	// current line number & position
 	/** @internal */ lineNo = 0;
@@ -297,13 +297,13 @@ class NodeData {
 	/** @internal */ localName: string = undefined!;
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	/** @internal */ prefix: string = undefined!;
-	/** @internal */ ns?: string;
-	/** @internal */ nameWPrefix?: string;
+	/** @internal */ ns: string | undefined;
+	/** @internal */ nameWPrefix: string | undefined;
 
 	// value:
 	// value == null -> the value is kept in the 'chars' buffer starting at valueStartPos and valueLength long
-	private value?: string;
-	private chars?: number[];
+	private value: string | undefined;
+	private chars: number[] | undefined;
 	private valueStartPos = 0;
 	private valueLength = 0;
 	// TODO
@@ -329,7 +329,7 @@ class NodeData {
 	/** @internal */ xmlContextPushed = false;
 
 	// attribute value chunks
-	/** @internal */ nextAttrValueChunk?: NodeData;
+	/** @internal */ nextAttrValueChunk: NodeData | undefined;
 
 	// TODO
 
@@ -691,7 +691,7 @@ const xmlDeclarationBeginning = '<?xml';
 
 // https://source.dot.net/#System.Private.Xml/System/Xml/Core/XmlTextReaderImpl.cs,af5cfe6df03d2864,references
 export class XmlTextReaderImpl extends XmlReader {
-	private laterInitParam?: LaterInitParam;
+	private laterInitParam: LaterInitParam | undefined;
 
 	// current parsing state (aka. scanner data)
 	private ps = new ParsingState();
@@ -746,7 +746,7 @@ export class XmlTextReaderImpl extends XmlReader {
 	private readonly v1Compat: boolean;
 
 	// namespace handling
-	private namespaceManager?: XmlNamespaceManager;
+	private namespaceManager: XmlNamespaceManager | undefined;
 	private lastPrefix = '';
 
 	// TODO

@@ -5,7 +5,7 @@ import {
 
 // https://source.dot.net/#Microsoft.Extensions.Caching.Memory/CacheEntry.cs,cbca03395cd04b6f,references
 export class CacheEntry implements ICacheEntry {
-	private _value?: object;
+	private _value: object | undefined;
 	private isValueSet = false;
 	private _evictionReason = EvictionReason.None;
 

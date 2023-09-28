@@ -7,7 +7,7 @@ import {
 } from '@yohira/http.abstractions';
 
 class HostingAppContext {
-	httpContext?: IHttpContext;
+	httpContext: IHttpContext | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingApplication.cs,91ffdac1d653a48b,references

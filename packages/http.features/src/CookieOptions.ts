@@ -8,13 +8,13 @@ import { SameSiteMode } from './SameSiteMode';
 export class CookieOptions {
 	private _extensions: string[] | undefined;
 
-	domain?: string;
-	path?: string;
-	expires?: number /* REVIEW */;
+	domain: string | undefined;
+	path: string | undefined;
+	expires: number /* REVIEW */ | undefined;
 	secure = false;
 	sameSite = SameSiteMode.Unspecified;
 	httpOnly = false;
-	maxAge?: TimeSpan;
+	maxAge: TimeSpan | undefined;
 	isEssential = false;
 
 	/**

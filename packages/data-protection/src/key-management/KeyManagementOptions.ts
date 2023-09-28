@@ -12,9 +12,9 @@ export class KeyManagementOptions {
 	private static readonly _maxServerClockSkew = TimeSpan.fromMinutes(5);
 	private _newKeyLifetime = TimeSpan.fromDays(90);
 
-	authenticatedEncryptorConfig?: AlgorithmConfig;
-	xmlRepository?: IXmlRepository;
-	xmlEncryptor?: IXmlEncryptor;
+	authenticatedEncryptorConfig: AlgorithmConfig | undefined;
+	xmlRepository: IXmlRepository | undefined;
+	xmlEncryptor: IXmlEncryptor | undefined;
 
 	readonly authenticatedEncryptorFactories: IList<IAuthenticatedEncryptorFactory> =
 		new List();

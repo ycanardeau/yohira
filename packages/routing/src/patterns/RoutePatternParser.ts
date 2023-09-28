@@ -37,7 +37,7 @@ function trimPrefix(routePattern: string): string {
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,7fb8faec81aa82ba,references
 class Context {
 	index: number;
-	private _mark?: number;
+	private _mark: number | undefined;
 
 	readonly parameterNames = new CaseInsensitiveSet();
 

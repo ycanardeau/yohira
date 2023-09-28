@@ -4,7 +4,7 @@ import { XmlReservedNs } from './XmlReservedNs';
 // https://source.dot.net/#System.Private.Xml/System/Xml/XmlNamespacemanager.cs,0d78e06001a78a31,references
 class NamespaceDeclaration {
 	prefix: string = undefined!;
-	uri?: string;
+	uri: string | undefined;
 	scopeId = 0;
 	previousNsIndex = 0;
 

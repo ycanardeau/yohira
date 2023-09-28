@@ -5,7 +5,7 @@ import { XObject } from './XObject';
 
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XAttribute.cs,4ca7337be72c47a4,references
 export class XAttribute extends XObject {
-	/** @internal */ next?: XAttribute;
+	/** @internal */ next: XAttribute | undefined;
 	/** @internal */ name: XName;
 	/** @internal */ value: string;
 

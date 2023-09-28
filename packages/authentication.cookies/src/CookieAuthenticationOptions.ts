@@ -23,7 +23,7 @@ import { ITicketStore } from './ITicketStore';
  * Configuration options for {@link CookieAuthenticationOptions}.
  */
 export class CookieAuthenticationOptions extends AuthenticationSchemeOptions {
-	private cookieBuilder = ((): RequestPathBaseCookieBuilder => {
+	private cookieBuilder = ((): CookieBuilder => {
 		const cookieBuilder = new RequestPathBaseCookieBuilder();
 
 		// the default name is configured in PostConfigureCookieAuthenticationOptions

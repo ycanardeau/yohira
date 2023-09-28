@@ -101,7 +101,7 @@ export class HttpResponse implements IHttpResponse {
 	}
 
 	// TODO
-	private _contentType?: string;
+	private _contentType: string | undefined;
 	get contentType(): string | undefined {
 		return this._contentType;
 	}

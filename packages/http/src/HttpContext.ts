@@ -25,8 +25,8 @@ import { HttpResponse } from './internal/HttpResponse';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,6cd3f52cf0ced363,references
 class FeatureInterfaces {
-	serviceProviders?: IServiceProvidersFeature;
-	authentication?: IHttpAuthenticationFeature;
+	serviceProviders: IServiceProvidersFeature | undefined;
+	authentication: IHttpAuthenticationFeature | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references

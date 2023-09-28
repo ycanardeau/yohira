@@ -379,13 +379,13 @@ export class XmlEncodedRawTextWriter extends XmlRawWriter {
 	protected bufChars: number[] = undefined!;
 
 	// output text writer
-	protected writer?: TextWriter;
+	protected writer: TextWriter | undefined;
 
 	// escaping of characters invalid in the output encoding
 	protected trackTextContent = false;
 	protected inTextContent = false;
 	private lastMarkPos = 0;
-	private textContentMarks?: number[]; // even indices contain text content start positions
+	private textContentMarks: number[] | undefined; // even indices contain text content start positions
 	// odd indices contain markup start positions
 
 	// writer settings
@@ -1168,7 +1168,7 @@ class ElementScope {
 	/** @internal */ localName: string = undefined!;
 	/** @internal */ namespaceUri: string = undefined!;
 	/** @internal */ xmlSpace = XmlSpace.None;
-	/** @internal */ xmlLang?: string;
+	/** @internal */ xmlLang: string | undefined;
 
 	/** @internal */ set(
 		prefix: string,
@@ -1307,7 +1307,7 @@ enum ItemType {
 // https://source.dot.net/#System.Private.Xml/System/Xml/Core/XmlWellFormedWriterHelpers.cs,d1d08de4980914bf,references
 class AttributeValueCache {
 	private _stringValue = new StringBuilder();
-	private singleStringValue?: string; // special-case for a single WriteString call
+	private singleStringValue: string | undefined; // special-case for a single WriteString call
 	private firstItem = 0;
 	private lastItem = -1;
 
@@ -1992,8 +1992,8 @@ export class XmlWellFormedWriter extends XmlWriter {
 
 	// special attribute caching (xmlns, xml:space, xml:lang)
 	private specAttr = SpecialAttribute.No;
-	private attrValueCache?: AttributeValueCache;
-	private curDeclPrefix?: string;
+	private attrValueCache: AttributeValueCache | undefined;
+	private curDeclPrefix: string | undefined;
 
 	// state machine
 	private stateTable: readonly State[];

@@ -17,7 +17,7 @@ import { WebAppOptions } from './WebAppOptions';
 export class WebAppBuilder {
 	private readonly hostAppBuilder: HostAppBuilder;
 
-	private builtApp?: WebApp;
+	private builtApp: WebApp | undefined;
 
 	private configureApp = (
 		/* TODO: context: WebHostBuilderContext, */

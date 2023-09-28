@@ -10,7 +10,9 @@ export class RequestCookieCollection implements IRequestCookieCollection {
 
 	private static readonly emptyIterator = [][Symbol.iterator];
 
-	private store?: CaseInsensitiveMap<string>; /* TODO: AdaptiveCapacityDictionary */
+	private store:
+		| CaseInsensitiveMap<string> /* TODO: AdaptiveCapacityDictionary */
+		| undefined;
 
 	constructor() {
 		this.store = new CaseInsensitiveMap<string>();

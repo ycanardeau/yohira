@@ -9,7 +9,7 @@ import { IHttpContext } from './IHttpContext';
  * Defines settings used to create a cookie.
  */
 export class CookieBuilder {
-	private _name?: string;
+	private _name: string | undefined;
 	private extensions: string[] | undefined;
 
 	/**
@@ -26,8 +26,8 @@ export class CookieBuilder {
 		this._name = value;
 	}
 
-	path?: string;
-	domain?: string;
+	path: string | undefined;
+	domain: string | undefined;
 	httpOnly = false;
 	sameSite = SameSiteMode.Unspecified;
 	securePolicy = CookieSecurePolicy.SameAsRequest;

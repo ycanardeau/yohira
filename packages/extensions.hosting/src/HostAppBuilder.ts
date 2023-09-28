@@ -37,7 +37,7 @@ export class HostAppBuilder {
 	private createServiceProvider: () => IServiceProvider;
 
 	private hostBuilt = false;
-	private appServices?: IServiceProvider;
+	private appServices: IServiceProvider | undefined;
 
 	/**
 	 * Provides information about the hosting environment an application is running in.

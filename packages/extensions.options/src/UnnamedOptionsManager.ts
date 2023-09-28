@@ -7,7 +7,7 @@ import { Options } from './Options';
 
 // https://source.dot.net/#Microsoft.Extensions.Options/UnnamedOptionsManager.cs,6f6a7794aed32ecc,references
 export class UnnamedOptionsManager<TOptions> implements IOptions<TOptions> {
-	private _value?: TOptions;
+	private _value: TOptions | undefined;
 
 	constructor(
 		@inject(Symbol.for('IOptionsFactory<>'))

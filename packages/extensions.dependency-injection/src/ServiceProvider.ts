@@ -27,7 +27,7 @@ import { ServiceProviderEngineScope } from './service-lookup/ServiceProviderEngi
 export class ServiceProvider
 	implements IServiceProvider, IDisposable, IAsyncDisposable
 {
-	private readonly callSiteValidator?: CallSiteValidator;
+	private readonly callSiteValidator: CallSiteValidator | undefined;
 
 	// Internal for testing
 	/** @internal */ engine: ServiceProviderEngine;

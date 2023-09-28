@@ -9,7 +9,7 @@ export class DataSourceDependentCache<T> implements IDisposable {
 	private readonly initializer: () => T;
 
 	private initialized = false;
-	private _value?: T;
+	private _value: T | undefined;
 
 	private disposed = false;
 

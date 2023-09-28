@@ -7,7 +7,7 @@ import { IKey } from './IKey';
 
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/KeyBase.cs,5ec1c24aae0ef7c2,references
 export abstract class KeyBase implements IKey {
-	private encryptor?: IAuthenticatedEncryptor;
+	private encryptor: IAuthenticatedEncryptor | undefined;
 
 	constructor(
 		readonly keyId: Guid,

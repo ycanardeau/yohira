@@ -11,11 +11,11 @@ export abstract class EndpointBuilder {
 	/**
 	 * Gets or sets the delegate used to process requests for the endpoint.
 	 */
-	requestDelegate?: RequestDelegate;
+	requestDelegate: RequestDelegate | undefined;
 	/**
 	 * Gets or sets the informational display name of this endpoint.
 	 */
-	displayName?: string;
+	displayName: string | undefined;
 	/**
 	 * Gets the collection of metadata associated with this endpoint.
 	 */

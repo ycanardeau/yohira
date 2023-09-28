@@ -11,7 +11,7 @@ export class RequestPathBaseCookieBuilder extends CookieBuilder {
 	/**
 	 * Gets an optional value that is appended to the request path base.
 	 */
-	protected readonly additionalPath?: string;
+	protected readonly additionalPath: string | undefined;
 
 	build(context: HttpContext, expiresFrom: number): CookieOptions {
 		// check if the user has overridden the default value of path. If so, use that instead of our default value.

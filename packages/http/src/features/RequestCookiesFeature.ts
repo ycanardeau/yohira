@@ -20,7 +20,7 @@ export class RequestCookiesFeature implements IRequestCookiesFeature {
 		() => undefined,
 	);
 	private original = StringValues.empty;
-	private parsedValues?: IRequestCookieCollection;
+	private parsedValues: IRequestCookieCollection | undefined;
 
 	constructor(features: IFeatureCollection) {
 		this.features.initialize(features);

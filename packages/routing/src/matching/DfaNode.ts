@@ -12,19 +12,19 @@ export class DfaNode {
 	pathDepth = -1;
 
 	// Just for diagnostics and debugging
-	label?: string;
+	label: string | undefined;
 
-	matches?: Endpoint[];
+	matches: Endpoint[] | undefined;
 
-	literals?: CaseInsensitiveMap<DfaNode>;
+	literals: CaseInsensitiveMap<DfaNode> | undefined;
 
-	parameters?: DfaNode;
+	parameters: DfaNode | undefined;
 
-	catchAll?: DfaNode;
+	catchAll: DfaNode | undefined;
 
 	nodeBuilder!: INodeBuilderPolicy;
 
-	policyEdges?: Map<object /* TODO */, DfaNode>;
+	policyEdges: Map<object /* TODO */, DfaNode> | undefined;
 
 	addPolicyEdge(state: object, node: DfaNode): void {
 		if (this.policyEdges === undefined) {

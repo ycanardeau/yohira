@@ -14,5 +14,5 @@ export abstract class SharedOptionsBase {
 	 * Files are served from the path specified in {@link IWebHostEnv.webRootPath}
 	 * or {@link IWebHostEnv.webRootFileProvider} which defaults to the 'wwwroot' subfolder.
 	 */
-	fileProvider?: IFileProvider;
+	fileProvider: IFileProvider | undefined;
 }

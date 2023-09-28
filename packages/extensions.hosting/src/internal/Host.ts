@@ -12,7 +12,7 @@ import {
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, IAsyncDisposable {
-	private hostedServices?: IHostedService[];
+	private hostedServices: IHostedService[] | undefined;
 	private stopCalled = false;
 
 	constructor(

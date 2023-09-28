@@ -15,7 +15,7 @@ export class ServiceProviderEngineScope
 		IServiceScopeFactory
 {
 	private disposed = false;
-	private disposables?: (IDisposable | IAsyncDisposable)[];
+	private disposables: (IDisposable | IAsyncDisposable)[] | undefined;
 
 	/** @internal */ readonly resolvedServices: Map<
 		number /* TODO: ServiceCacheKey */,

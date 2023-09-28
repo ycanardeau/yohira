@@ -5,7 +5,7 @@ export abstract class FileSystemInfo {
 	protected fullPath!: string;
 	protected originalPath!: string;
 
-	_name?: string;
+	_name: string | undefined;
 
 	get fullName(): string {
 		return this.fullPath;

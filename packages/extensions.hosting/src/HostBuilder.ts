@@ -89,10 +89,10 @@ export class HostBuilder implements IHostBuilder {
 	) => void)[] = [];
 	private serviceProviderFactory: IServiceFactoryAdapter;
 	private hostBuilt = false;
-	private hostConfig?: IConfig;
-	private hostBuilderContext?: HostBuilderContext;
-	private hostingEnv?: HostingEnv;
-	private appServices?: IServiceProvider;
+	private hostConfig: IConfig | undefined;
+	private hostBuilderContext: HostBuilderContext | undefined;
+	private hostingEnv: HostingEnv | undefined;
+	private appServices: IServiceProvider | undefined;
 
 	constructor() {
 		this.serviceProviderFactory =

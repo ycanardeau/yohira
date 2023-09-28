@@ -10,8 +10,8 @@ import { PaddingMode } from './PaddingMode';
 export abstract class SymmetricAlgorithm implements IDisposable {
 	protected modeValue: CipherMode;
 	protected paddingValue: PaddingMode;
-	protected keyValue?: Buffer;
-	protected ivValue?: Buffer;
+	protected keyValue: Buffer | undefined;
+	protected ivValue: Buffer | undefined;
 	protected blockSizeValue = 0;
 	protected feedbackSizeValue = 0;
 	protected keySizeValue = 0;

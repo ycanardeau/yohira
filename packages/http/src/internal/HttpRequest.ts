@@ -18,8 +18,8 @@ import { RequestCookiesFeature } from '../features/RequestCookiesFeature';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpRequest.cs,00ce2db34b5033bf,references
 class FeatureInterfaces {
-	request?: IHttpRequestFeature;
-	cookies?: IRequestCookiesFeature;
+	request: IHttpRequestFeature | undefined;
+	cookies: IRequestCookiesFeature | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpRequest.cs,7c96c43ce8999806,references

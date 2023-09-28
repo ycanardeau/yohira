@@ -5,8 +5,8 @@ import { IFeatureCollection } from './IFeatureCollection';
 
 // https://source.dot.net/#Microsoft.Extensions.Features/FeatureCollection.cs,6445f4078512cfd6,references
 export class FeatureCollection implements IFeatureCollection {
-	private readonly defaults?: IFeatureCollection;
-	private features?: Map<symbol, any /* TODO: DO not use any. */>;
+	private readonly defaults: IFeatureCollection | undefined;
+	private features: Map<symbol, any /* TODO: DO not use any. */> | undefined;
 	private /* REVIEW: volatile */ containerRevision = 0;
 
 	get revision(): number {

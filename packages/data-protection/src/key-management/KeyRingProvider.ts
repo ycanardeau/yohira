@@ -47,7 +47,7 @@ function logUsingKeyAsDefaultKey(logger: ILogger, keyId: Guid): void {
 export class KeyRingProvider
 	implements ICacheableKeyRingProvider, IKeyRingProvider
 {
-	private cacheableKeyRing?: CacheableKeyRing;
+	private cacheableKeyRing: CacheableKeyRing | undefined;
 	private readonly keyManagementOptions: KeyManagementOptions;
 	private readonly logger: ILogger;
 

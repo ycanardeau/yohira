@@ -66,8 +66,8 @@ class NamespaceDeclaration {
 // https://source.dot.net/#System.Private.Xml.Linq/System/Xml/Linq/XLinq.cs,84aa37da63f3d367,references
 class NamespaceResolver {
 	private scope = 0;
-	private declaration?: NamespaceDeclaration;
-	private rover?: NamespaceDeclaration;
+	private declaration: NamespaceDeclaration | undefined;
+	private rover: NamespaceDeclaration | undefined;
 
 	pushScope(): void {
 		this.scope++;

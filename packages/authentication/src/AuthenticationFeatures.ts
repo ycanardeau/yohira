@@ -12,8 +12,8 @@ import { IHttpAuthenticationFeature } from '@yohira/http.features';
 export class AuthenticationFeatures
 	implements IAuthenticateResultFeature, IHttpAuthenticationFeature
 {
-	private _user?: ClaimsPrincipal;
-	private result?: AuthenticateResult;
+	private _user: ClaimsPrincipal | undefined;
+	private result: AuthenticateResult | undefined;
 
 	constructor(result: AuthenticateResult) {
 		this.authenticateResult = result;

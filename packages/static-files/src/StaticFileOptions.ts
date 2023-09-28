@@ -12,7 +12,7 @@ export class StaticFileOptions extends SharedOptionsBase {
 	 * None is provided by default, so the client must determine the format themselves.
 	 * http://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html#sec7
 	 */
-	defaultContentType?: string;
+	defaultContentType: string | undefined;
 	/**
 	 * If the file is not a recognized content-type should it be served?
 	 * Default: false.

@@ -9,7 +9,9 @@ export class XNamespace {
 	/** @internal */ static readonly xmlnsPrefixNamespace =
 		'http://www.w3.org/2000/xmlns/';
 
-	private static namespaces?: Map<string, XNamespace> /* TODO: XHashtable */;
+	private static namespaces:
+		| Map<string, XNamespace> /* TODO: XHashtable */
+		| undefined;
 
 	private readonly hashCode: number;
 	private readonly names: Map<string, XName>; /* TODO: XHashtable */

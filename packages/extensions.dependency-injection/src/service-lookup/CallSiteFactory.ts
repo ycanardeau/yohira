@@ -33,8 +33,8 @@ function getGenericTypeDefinition(type: symbol): symbol {
 }
 
 class ServiceDescriptorCacheItem {
-	private item?: ServiceDescriptor;
-	private items?: List<ServiceDescriptor>;
+	private item: ServiceDescriptor | undefined;
+	private items: List<ServiceDescriptor> | undefined;
 
 	get last(): ServiceDescriptor {
 		if (this.items !== undefined && this.items.count > 0) {

@@ -10,7 +10,7 @@ export class CompositeEndpointDataSource
 {
 	private readonly dataSources: ICollection<EndpointDataSource>;
 
-	private _endpoints?: Endpoint[];
+	private _endpoints: Endpoint[] | undefined;
 
 	constructor(endpointDataSources: Iterable<EndpointDataSource>) {
 		super();

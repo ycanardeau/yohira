@@ -75,7 +75,7 @@ export class StaticFileContext {
 		}
 	}
 
-	private _requestHeaders?: RequestHeaders;
+	private _requestHeaders: RequestHeaders | undefined;
 	private get requestHeaders(): RequestHeaders {
 		return (this._requestHeaders ??= getTypedHeaders(this.request));
 	}

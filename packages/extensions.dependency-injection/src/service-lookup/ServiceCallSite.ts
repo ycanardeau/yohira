@@ -8,5 +8,5 @@ export abstract class ServiceCallSite {
 	abstract get serviceType(): symbol;
 	// TODO: implType
 	abstract get kind(): CallSiteKind;
-	value?: object;
+	value: object | undefined;
 }

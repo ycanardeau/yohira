@@ -12,27 +12,27 @@ export class AuthenticationOptions {
 	/**
 	 * Used as the fallback default scheme for all the other defaults.
 	 */
-	defaultScheme?: string;
+	defaultScheme: string | undefined;
 	/**
 	 * Used as the default scheme by {@link IAuthenticationService.authenticate}.
 	 */
-	defaultAuthenticateScheme?: string;
+	defaultAuthenticateScheme: string | undefined;
 	/**
 	 * Used as the default scheme by {@link IAuthenticationService.signIn}.
 	 */
-	defaultSignInScheme?: string;
+	defaultSignInScheme: string | undefined;
 	/**
 	 * Used as the default scheme by {@link IAuthenticationService.signOut}.
 	 */
-	defaultSignOutScheme?: string;
+	defaultSignOutScheme: string | undefined;
 	/**
 	 * Used as the default scheme by {@link IAuthenticationService.challenge}.
 	 */
-	defaultChallengeScheme?: string;
+	defaultChallengeScheme: string | undefined;
 	/**
 	 * Used as the default scheme by {@link IAuthenticationService.forbid}.
 	 */
-	defaultForbidScheme?: string;
+	defaultForbidScheme: string | undefined;
 	/**
 	 * If true, SignIn should throw if attempted with a user is not authenticated.
 	 * A user is considered authenticated if {@link ClaimsIdentity.isAuthenticated} returns true for the {@link ClaimsPrincipal} associated with the HTTP request.

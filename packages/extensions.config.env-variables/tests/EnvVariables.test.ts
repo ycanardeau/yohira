@@ -235,7 +235,7 @@ test('PrefixPreventsLoadingSqlConnectionStrings', () => {
 const envVariable =
 	'Microsoft__Extensions__Configuration__EnvironmentVariables__Test__Foo';
 class SettingsWithFoo {
-	@bindProperty(String) foo?: string;
+	@bindProperty(String) foo: string | undefined;
 }
 
 // https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Configuration.EnvironmentVariables/tests/EnvironmentVariablesTest.cs#L245

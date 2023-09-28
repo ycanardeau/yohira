@@ -7,7 +7,7 @@ import { IKeyRing } from './internal/IKeyRing';
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/KeyManagement/KeyRing.cs,416bb76dcc1a693c,references
 // used for providing lazy activation of the authenticated encryptor instance
 class KeyHolder {
-	private encryptor?: IAuthenticatedEncryptor;
+	private encryptor: IAuthenticatedEncryptor | undefined;
 
 	constructor(private readonly key: IKey) {}
 

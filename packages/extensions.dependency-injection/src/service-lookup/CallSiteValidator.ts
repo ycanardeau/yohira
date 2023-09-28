@@ -10,7 +10,7 @@ import { IterableCallSite } from '../service-lookup/IterableCallSite';
 import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
 
 class CallSiteValidatorState {
-	singleton?: ServiceCallSite;
+	singleton: ServiceCallSite | undefined;
 }
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteValidator.cs,80039ca1254de7d7,references

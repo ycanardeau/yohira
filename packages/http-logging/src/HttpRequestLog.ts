@@ -1,6 +1,6 @@
 // https://source.dot.net/#Microsoft.AspNetCore.HttpLogging/HttpRequestLog.cs,1ec73d8f7e4bec03,references
 export class HttpRequestLog {
-	private cachedString?: string;
+	private cachedString: string | undefined;
 
 	constructor(private readonly keyValues: [string, string | undefined][]) {}
 

@@ -12,11 +12,11 @@ export abstract class FileConfigSource implements IConfigSource {
 	/**
 	 * Used to access the contents of the file.
 	 */
-	fileProvider?: IFileProvider;
+	fileProvider: IFileProvider | undefined;
 	/**
 	 * The path to the file.
 	 */
-	path?: string;
+	path: string | undefined;
 	/**
 	 * Determines if loading the file is optional.
 	 */
