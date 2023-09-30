@@ -58,7 +58,7 @@ export class FeatureReferences<TCache> {
 		return cachedValue;
 	}
 
-	fetch<TFeature, TState>(
+	fetchWithState<TFeature, TState>(
 		featureType: symbol,
 		cached: Ref<TFeature | undefined>,
 		state: TState,
@@ -84,6 +84,19 @@ export class FeatureReferences<TCache> {
 				revision,
 				flush,
 			)
+		);
+	}
+
+	fetch<TFeature>(
+		featureType: symbol,
+		cached: Ref<TFeature | undefined>,
+		factory: (state: IFeatureCollection) => TFeature | undefined,
+	): TFeature | undefined {
+		return this.fetchWithState(
+			featureType,
+			cached,
+			this.collection,
+			factory,
 		);
 	}
 }

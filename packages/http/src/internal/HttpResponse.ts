@@ -52,7 +52,6 @@ export class HttpResponse implements IHttpResponse {
 				get: () => this.features.cache.response,
 				set: (value) => (this.features.cache.response = value),
 			},
-			this.features.collection,
 			HttpResponse.nullResponseFeature,
 		)!;
 	}
@@ -65,7 +64,6 @@ export class HttpResponse implements IHttpResponse {
 				get: () => this.features.cache.responseBody,
 				set: (value) => (this.features.cache.responseBody = value),
 			},
-			this.features.collection,
 			HttpResponse.nullResponseBodyFeature,
 		)!;
 	}
@@ -78,7 +76,6 @@ export class HttpResponse implements IHttpResponse {
 				get: () => this.features.cache.cookies,
 				set: (value) => (this.features.cache.cookies = value),
 			},
-			this.features.collection,
 			HttpResponse.newResponseCookiesFeature,
 		)!;
 	}

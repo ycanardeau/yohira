@@ -64,7 +64,7 @@ export class HttpContext implements IHttpContext {
 
 	private get serviceProvidersFeature(): IServiceProvidersFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		return this._features.fetch(
+		return this._features.fetchWithState(
 			IServiceProvidersFeature,
 			{
 				get: () => this._features.cache.serviceProviders,
@@ -82,7 +82,6 @@ export class HttpContext implements IHttpContext {
 				get: () => this._features.cache.authentication,
 				set: (value) => (this._features.cache.authentication = value),
 			},
-			this,
 			HttpContext.newHttpAuthenticationFeature,
 		)!;
 	}

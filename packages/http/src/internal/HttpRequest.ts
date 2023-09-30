@@ -52,7 +52,6 @@ export class HttpRequest implements IHttpRequest {
 				get: () => this.features.cache.request,
 				set: (value) => (this.features.cache.request = value),
 			},
-			this.features.collection,
 			HttpRequest.nullRequestFeature,
 		)!;
 	}
@@ -65,7 +64,6 @@ export class HttpRequest implements IHttpRequest {
 				get: () => this.features.cache.cookies,
 				set: (value) => (this.features.cache.cookies = value),
 			},
-			this.features.collection,
 			HttpRequest.newRequestCookiesFeature,
 		)!;
 	}

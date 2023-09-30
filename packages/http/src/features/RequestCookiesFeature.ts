@@ -34,7 +34,6 @@ export class RequestCookiesFeature implements IRequestCookiesFeature {
 				get: () => this.features.cache,
 				set: (value) => (this.features.cache = value),
 			},
-			this.features,
 			RequestCookiesFeature.nullRequestFeature,
 		)!;
 	}
