@@ -59,8 +59,8 @@ export class HttpContext implements IHttpContext {
 	initialize(features: IFeatureCollection): void {
 		const revision = features.revision;
 		this._features.initialize(features, revision);
-		// TODO: this.request.initialize(revision);
-		// TODO: this.response.initialize(revision);
+		this.request.initialize(revision);
+		this.response.initialize(revision);
 		// TODO: this.connection?.initialize(features, revision);
 		// TODO: this.websockets?.initialize(features, revision);
 		this.active = true;
@@ -73,8 +73,8 @@ export class HttpContext implements IHttpContext {
 		this._features = new FeatureReferences<FeatureInterfaces>(
 			() => new FeatureInterfaces(),
 		);
-		// TODO: this.request.uninitialize();
-		// TODO: this.response.uninitialize();
+		this.request.uninitialize();
+		this.response.uninitialize();
 		// TODO: this.connection?.uninitialize();
 		// TODO: this.websockets?.uninitialize();
 		this.active = false;
@@ -83,6 +83,7 @@ export class HttpContext implements IHttpContext {
 	serviceScopeFactory!: IServiceScopeFactory;
 
 	private get itemsFeature(): IItemsFeature {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._features.fetch(
 			IItemsFeature,
 			{
@@ -107,6 +108,7 @@ export class HttpContext implements IHttpContext {
 	}
 
 	private get httpAuthenticationFeature(): IHttpAuthenticationFeature {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this._features.fetch(
 			IHttpAuthenticationFeature,
 			{

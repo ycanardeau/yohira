@@ -44,6 +44,16 @@ export class HttpRequest implements IHttpRequest {
 		this.features.initialize(httpContext.features);
 	}
 
+	initialize(revision?: number): void {
+		this.features.initialize(this.httpContext.features, revision);
+	}
+
+	uninitialize(): void {
+		this.features = new FeatureReferences<FeatureInterfaces>(
+			() => new FeatureInterfaces(),
+		);
+	}
+
 	private get httpRequestFeature(): IHttpRequestFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.features.fetch(

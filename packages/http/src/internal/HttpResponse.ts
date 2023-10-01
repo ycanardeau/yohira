@@ -38,12 +38,22 @@ export class HttpResponse implements IHttpResponse {
 		f: IFeatureCollection,
 	): IResponseCookiesFeature | undefined => new ResponseCookiesFeature(f);
 
-	private readonly features = new FeatureReferences<FeatureInterfaces>(
+	private features = new FeatureReferences<FeatureInterfaces>(
 		() => new FeatureInterfaces(),
 	);
 
 	constructor(readonly httpContext: IHttpContext) {
 		this.features.initialize(httpContext.features);
+	}
+
+	initialize(revision?: number): void {
+		this.features.initialize(this.httpContext.features, revision);
+	}
+
+	uninitialize(): void {
+		this.features = new FeatureReferences<FeatureInterfaces>(
+			() => new FeatureInterfaces(),
+		);
 	}
 
 	private get httpResponseFeature(): IHttpResponseFeature {
