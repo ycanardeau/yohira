@@ -2,6 +2,7 @@ import { IFeatureCollection } from '@yohira/extensions.features';
 import { IHttpApp } from '@yohira/hosting.server.abstractions';
 import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
 import {
+	IHttpAuthenticationFeature,
 	IHttpRequestFeature,
 	IHttpResponseBodyFeature,
 	IHttpResponseFeature,
@@ -35,6 +36,9 @@ export class Http1Connection
 
 	private currentIServiceProvidersFeature:
 		| IServiceProvidersFeature
+		| undefined;
+	private currentIHttpAuthenticationFeature:
+		| IHttpAuthenticationFeature
 		| undefined;
 
 	private fastReset(): void {
@@ -278,6 +282,8 @@ export class Http1Connection
 			feature = this.currentIEndpointFeature as T;
 		} else if (key === IServiceProvidersFeature) {
 			feature = this.currentIServiceProvidersFeature as T;
+		} else if (key === IHttpAuthenticationFeature) {
+			feature = this.currentIHttpAuthenticationFeature as T;
 		}
 
 		// TODO
@@ -299,6 +305,9 @@ export class Http1Connection
 		} else if (key === IServiceProvidersFeature) {
 			this.currentIServiceProvidersFeature =
 				instance as IServiceProvidersFeature;
+		} else if (key === IHttpAuthenticationFeature) {
+			this.currentIHttpAuthenticationFeature =
+				instance as IHttpAuthenticationFeature;
 		}
 
 		// TODO
