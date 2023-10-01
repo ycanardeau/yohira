@@ -21,7 +21,7 @@ export class RequestServicesFeature
 
 	get requestServices(): IServiceProvider {
 		if (!this.requestServicesSet && this.scopeFactory !== undefined) {
-			// TODO: this.context.response.registerForDisposeAsync(this);
+			this.context.response.registerForDisposeAsync(this);
 			this.scope = this.scopeFactory.createScope();
 			this._requestServices = this.scope.serviceProvider;
 			this.requestServicesSet = true;
@@ -34,9 +34,30 @@ export class RequestServicesFeature
 		this.requestServicesSet = true;
 	}
 
-	disposeAsync(): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+	private isIDisposable(
+		scope: object | IDisposable | IAsyncDisposable | undefined,
+	): scope is IDisposable {
+		return scope !== undefined && 'dispose' in scope;
+	}
+
+	private isIAsyncDisposable(
+		scope: object | IDisposable | IAsyncDisposable | undefined,
+	): scope is IAsyncDisposable {
+		return scope !== undefined && 'disposeAsync' in scope;
+	}
+
+	async disposeAsync(): Promise<void> {
+		if (this.isIAsyncDisposable(this.scope)) {
+			// REVIEW
+			await this.scope.disposeAsync();
+		} else if (this.isIDisposable(this.scope)) {
+			this.scope.dispose();
+		}
+
+		this.scope = undefined;
+		this._requestServices = undefined;
+
+		return Promise.resolve();
 	}
 
 	dispose(): void {

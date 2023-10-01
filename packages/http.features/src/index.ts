@@ -4,6 +4,7 @@ export * from './IHttpAuthenticationFeature';
 export * from './IHttpRequestFeature';
 export * from './IHttpResponseBodyFeature';
 export * from './IHttpResponseFeature';
+export * from './IItemsFeature';
 export * from './IRequestCookieCollection';
 export * from './IRequestCookiesFeature';
 export * from './IResponseCookies';

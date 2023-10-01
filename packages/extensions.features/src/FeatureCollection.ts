@@ -6,7 +6,7 @@ import { IFeatureCollection } from './IFeatureCollection';
 // https://source.dot.net/#Microsoft.Extensions.Features/FeatureCollection.cs,6445f4078512cfd6,references
 export class FeatureCollection implements IFeatureCollection {
 	private readonly defaults: IFeatureCollection | undefined;
-	private features: Map<symbol, any /* TODO: DO not use any. */> | undefined;
+	private features: Map<symbol, any /* TODO: Do not use any. */> | undefined;
 	private /* REVIEW: volatile */ containerRevision = 0;
 
 	get revision(): number {
@@ -36,5 +36,18 @@ export class FeatureCollection implements IFeatureCollection {
 		}
 		this.features.set(key, instance);
 		this.containerRevision++;
+	}
+
+	*[Symbol.iterator](): Iterator<[symbol, any /* TODO: Do not use any. */]> {
+		if (this.features !== undefined) {
+			for (const pair of this.features) {
+				yield pair;
+			}
+		}
+
+		if (this.defaults !== undefined) {
+			// TODO
+			throw new Error('Method not implemented.');
+		}
 	}
 }

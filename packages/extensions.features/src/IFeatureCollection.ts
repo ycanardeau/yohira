@@ -2,7 +2,8 @@
 /**
  * Represents a collection of HTTP features.
  */
-export interface IFeatureCollection {
+export interface IFeatureCollection
+	extends Iterable<[symbol, any /* TODO: Do not use any. */]> {
 	/**
 	 * Incremented for each modification and can be used to verify cached results.
 	 */

@@ -16,4 +16,8 @@ export interface IHttpResponseFeature {
 	 */
 	responseHeaders: IResponseHeaderDictionary;
 	onStarting(callback: (state: object) => Promise<void>, state: object): void;
+	onCompleted(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void;
 }

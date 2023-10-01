@@ -1,3 +1,4 @@
+import { IAsyncDisposable, IDisposable } from '@yohira/base';
 import {
 	IResponseCookies,
 	IResponseHeaderDictionary,
@@ -6,6 +7,28 @@ import { Stream } from 'node:stream';
 
 import { IHttpContext } from './IHttpContext';
 import { StatusCodes } from './StatusCodes';
+
+function isIAsyncDisposable(
+	service: object | IDisposable | IAsyncDisposable | undefined,
+): service is IAsyncDisposable {
+	return service !== undefined && 'disposeAsync' in service;
+}
+
+function isIDisposable(
+	service: object | IDisposable | IAsyncDisposable | undefined,
+): service is IDisposable {
+	return service !== undefined && 'dispose' in service;
+}
+
+export const disposeDelegate = (state: object): Promise<void> => {
+	// Prefer async dispose over dispose
+	if (isIAsyncDisposable(state)) {
+		return state.disposeAsync();
+	} else if (isIDisposable(state)) {
+		state.dispose();
+	}
+	return Promise.resolve();
+};
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpResponse.cs,7642421540ea6ef2,references
 /**
@@ -41,4 +64,9 @@ export interface IHttpResponse {
 	 */
 	readonly hasStarted: boolean;
 	onStarting(callback: (state: object) => Promise<void>, state: object): void;
+	onCompleted(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void;
+	registerForDisposeAsync(disposable: IAsyncDisposable): void;
 }

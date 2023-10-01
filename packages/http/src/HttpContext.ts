@@ -9,28 +9,29 @@ import {
 	IFeatureCollection,
 } from '@yohira/extensions.features';
 import { RequestServicesFeature } from '@yohira/http';
-import {
-	IHttpContext,
-	IHttpRequest,
-	IHttpResponse,
-} from '@yohira/http.abstractions';
+import { IHttpContext } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
+	IItemsFeature,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 
+import { ItemsFeature } from './features/ItemsFeature';
 import { HttpAuthenticationFeature } from './features/authentication/HttpAuthenticationFeature';
 import { HttpRequest } from './internal/HttpRequest';
 import { HttpResponse } from './internal/HttpResponse';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,6cd3f52cf0ced363,references
 class FeatureInterfaces {
+	items: IItemsFeature | undefined;
 	serviceProviders: IServiceProvidersFeature | undefined;
 	authentication: IHttpAuthenticationFeature | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references
 export class HttpContext implements IHttpContext {
+	private static readonly newItemsFeature = (): IItemsFeature =>
+		new ItemsFeature();
 	private static readonly newServiceProvidersFeature = (
 		context: HttpContext,
 	): IServiceProvidersFeature =>
@@ -42,8 +43,12 @@ export class HttpContext implements IHttpContext {
 		() => new FeatureInterfaces(),
 	);
 
-	readonly request: IHttpRequest;
-	readonly response: IHttpResponse;
+	readonly request: HttpRequest;
+	readonly response: HttpResponse;
+
+	// This is field exists to make analyzing memory dumps easier.
+	// https://github.com/dotnet/aspnetcore/issues/29709
+	/** @internal */ active = false;
 
 	constructor(features: IFeatureCollection) {
 		this._features.initialize(features);
@@ -56,11 +61,37 @@ export class HttpContext implements IHttpContext {
 		this._features.initialize(features, revision);
 		// TODO: this.request.initialize(revision);
 		// TODO: this.response.initialize(revision);
-		// TODO
-		// TODO: this.active = true;
+		// TODO: this.connection?.initialize(features, revision);
+		// TODO: this.websockets?.initialize(features, revision);
+		this.active = true;
+	}
+
+	/**
+	 * Uninitialize all the features in the {@link HttpContext}.
+	 */
+	uninitialize(): void {
+		this._features = new FeatureReferences<FeatureInterfaces>(
+			() => new FeatureInterfaces(),
+		);
+		// TODO: this.request.uninitialize();
+		// TODO: this.response.uninitialize();
+		// TODO: this.connection?.uninitialize();
+		// TODO: this.websockets?.uninitialize();
+		this.active = false;
 	}
 
 	serviceScopeFactory!: IServiceScopeFactory;
+
+	private get itemsFeature(): IItemsFeature {
+		return this._features.fetch(
+			IItemsFeature,
+			{
+				get: () => this._features.cache.items,
+				set: (value) => (this._features.cache.items = value),
+			},
+			HttpContext.newItemsFeature,
+		)!;
+	}
 
 	private get serviceProvidersFeature(): IServiceProvidersFeature {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -112,6 +143,13 @@ export class HttpContext implements IHttpContext {
 	}
 	set user(value: ClaimsPrincipal) {
 		this.httpAuthenticationFeature.user = value;
+	}
+
+	get items(): Map<unknown /* TODO */, unknown /* TODO */ | undefined> {
+		return this.itemsFeature.items;
+	}
+	set items(value: Map<unknown /* TODO */, unknown /* TODO */ | undefined>) {
+		this.itemsFeature.items = value;
 	}
 
 	get requestServices(): IServiceProvider {

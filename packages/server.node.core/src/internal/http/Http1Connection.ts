@@ -60,6 +60,9 @@ export class Http1Connection
 	private _onStarting:
 		| [(state: object) => Promise<void>, object][]
 		| undefined;
+	private _onCompleted:
+		| [(state: object) => Promise<void>, object][]
+		| undefined;
 
 	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
 
@@ -71,6 +74,10 @@ export class Http1Connection
 
 	reset(): void {
 		this._onStarting?.splice(0, this._onStarting.length) /* TODO: clear */;
+		this._onCompleted?.splice(
+			0,
+			this._onCompleted.length,
+		) /* TODO: clear */;
 		// TODO
 
 		this.requestProcessingStatus = RequestProcessingStatus.RequestPending;
@@ -155,6 +162,34 @@ export class Http1Connection
 		return Promise.resolve();
 	}
 
+	protected fireOnCompleted(): Promise<void> {
+		async function processEvents(
+			protocol: Http1Connection,
+			events: [(state: object) => Promise<void>, object][],
+		): Promise<void> {
+			// Try/Catch is inside the loop as any error that occurs is after the request has finished.
+			// So we will just log it and keep processing the events, as the completion has already happened.
+			try {
+				let entry:
+					| [(state: object) => Promise<void>, object]
+					| undefined;
+				while ((entry = events.pop())) {
+					await entry[0](entry[1]);
+				}
+			} catch (error) {
+				// TODO
+				throw new Error('Method not implemented.');
+			}
+		}
+
+		const onCompleted = this._onCompleted;
+		if (onCompleted !== undefined && onCompleted.length > 0) {
+			return processEvents(this, onCompleted);
+		}
+
+		return Promise.resolve();
+	}
+
 	private async processRequestsCore<TContext>(
 		app: IHttpApp<TContext>,
 	): Promise<void> {
@@ -198,6 +233,14 @@ export class Http1Connection
 
 		// TODO
 		// TODO: catch
+
+		// TODO
+
+		if (this._onCompleted !== undefined && this._onCompleted.length > 0) {
+			await this.fireOnCompleted();
+		}
+
+		// TODO
 	}
 
 	async processRequests<TContext>(app: IHttpApp<TContext>): Promise<void> {
@@ -265,6 +308,32 @@ export class Http1Connection
 		throw new Error('Method not implemented.');
 	}
 
+	onStarting(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void {
+		if (this.hasResponseStarted) {
+			throw new Error(
+				'onStarting cannot be set because the response has already started.' /* LOC */,
+			);
+		}
+
+		if (this._onStarting === undefined) {
+			this._onStarting = [];
+		}
+		this._onStarting.push([callback, state]);
+	}
+
+	onCompleted(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void {
+		if (this._onCompleted === undefined) {
+			this._onCompleted = [];
+		}
+		this._onCompleted.push([callback, state]);
+	}
+
 	private featureRevision = 0;
 	get revision(): number {
 		return this.featureRevision;
@@ -313,19 +382,28 @@ export class Http1Connection
 		// TODO
 	}
 
-	onStarting(
-		callback: (state: object) => Promise<void>,
-		state: object,
-	): void {
-		if (this.hasResponseStarted) {
-			throw new Error(
-				'onStarting cannot be set because the response has already started.' /* LOC */,
-			);
+	*[Symbol.iterator](): Iterator<[symbol, any]> {
+		if (this.currentIHttpRequestFeature !== undefined) {
+			yield [IHttpRequestFeature, this.currentIHttpRequestFeature];
+		} else if (this.currentIHttpResponseFeature !== undefined) {
+			yield [IHttpResponseFeature, this.currentIHttpResponseFeature];
+		} else if (this.currentIHttpResponseBodyFeature !== undefined) {
+			yield [
+				IHttpResponseBodyFeature,
+				this.currentIHttpResponseBodyFeature,
+			];
+		} else if (this.currentIEndpointFeature !== undefined) {
+			yield [IEndpointFeature, this.currentIEndpointFeature];
+		} else if (this.currentIServiceProvidersFeature !== undefined) {
+			yield [
+				IServiceProvidersFeature,
+				this.currentIServiceProvidersFeature,
+			];
+		} else if (this.currentIHttpAuthenticationFeature !== undefined) {
+			yield [
+				IHttpAuthenticationFeature,
+				this.currentIHttpAuthenticationFeature,
+			];
 		}
-
-		if (this._onStarting === undefined) {
-			this._onStarting = [];
-		}
-		this._onStarting.push([callback, state]);
 	}
 }

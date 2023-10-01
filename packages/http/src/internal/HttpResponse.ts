@@ -1,3 +1,4 @@
+import { IAsyncDisposable } from '@yohira/base';
 import {
 	FeatureReferences,
 	IFeatureCollection,
@@ -7,6 +8,7 @@ import {
 	IHttpContext,
 	IHttpResponse,
 	StatusCodes,
+	disposeDelegate,
 } from '@yohira/http.abstractions';
 import {
 	IHttpResponseBodyFeature,
@@ -120,5 +122,16 @@ export class HttpResponse implements IHttpResponse {
 		state: object,
 	): void {
 		this.httpResponseFeature.onStarting(callback, state);
+	}
+
+	onCompleted(
+		callback: (state: object) => Promise<void>,
+		state: object,
+	): void {
+		this.httpResponseFeature.onCompleted(callback, state);
+	}
+
+	registerForDisposeAsync(disposable: IAsyncDisposable): void {
+		this.onCompleted(disposeDelegate, disposable);
 	}
 }
