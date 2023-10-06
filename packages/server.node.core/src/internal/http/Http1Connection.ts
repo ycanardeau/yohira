@@ -129,6 +129,12 @@ export class Http1Connection
 		);
 	}
 
+	protected onRequestProcessingEnded(): void {
+		// TODO
+
+		this.reset();
+	}
+
 	protected beginRequestProcessing(): void {
 		// Reset the features and timeout.
 		this.reset();
@@ -245,9 +251,15 @@ export class Http1Connection
 	}
 
 	async processRequests<TContext>(app: IHttpApp<TContext>): Promise<void> {
-		// TODO: try
-		this.processRequestsCore(app);
-		// TODO: catch
+		try {
+			await this.processRequestsCore(app);
+		} /* TODO */ finally {
+			try {
+				// TODO
+			} /* TODO */ finally {
+				this.onRequestProcessingEnded();
+			}
+		}
 	}
 
 	get rawBody(): string {
