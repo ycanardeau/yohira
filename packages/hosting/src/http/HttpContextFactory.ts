@@ -6,16 +6,26 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { HttpContext } from '@yohira/http';
-import { IHttpContext, IHttpContextFactory } from '@yohira/http.abstractions';
+import {
+	IHttpContext,
+	IHttpContextAccessor,
+	IHttpContextFactory,
+} from '@yohira/http.abstractions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Http/DefaultHttpContextFactory.cs,a66c2cafba21597c,references
 export class HttpContextFactory implements IHttpContextFactory {
+	readonly httpContextAccessor: IHttpContextAccessor | undefined;
 	private readonly serviceScopeFactory: IServiceScopeFactory;
 
 	constructor(
 		@inject(IServiceProvider)
 		serviceProvider: IServiceProvider,
 	) {
+		// May be undefined
+		this.httpContextAccessor =
+			serviceProvider.getService<IHttpContextAccessor>(
+				IHttpContextAccessor,
+			);
 		this.serviceScopeFactory = getRequiredService(
 			serviceProvider,
 			IServiceScopeFactory,

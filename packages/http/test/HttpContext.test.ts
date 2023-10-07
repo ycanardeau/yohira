@@ -192,7 +192,7 @@ test('RequestServicesAreNotOverwrittenIfAlreadySet', () => {
 		IServiceScopeFactory,
 	);
 
-	const context = new HttpContext(new FeatureCollection());
+	const context = HttpContext.create();
 	context.serviceScopeFactory = scopeFactory;
 	context.requestServices = serviceProvider;
 
@@ -241,19 +241,7 @@ test('RequestServicesAreDisposedOnCompleted', async () => {
 	);
 	let instance: DisposableThing | undefined = undefined;
 
-	const context = new HttpContext(new FeatureCollection());
-	context.features.set<IHttpRequestFeature>(
-		IHttpRequestFeature,
-		new HttpRequestFeature(),
-	);
-	context.features.set<IHttpResponseFeature>(
-		IHttpResponseFeature,
-		new HttpResponseFeature(),
-	);
-	/* TODO: context.features.set<IHttpResponseBodyFeature>(
-		IHttpResponseBodyFeature,
-		new StreamResponseBodyFeature(Stream.undefined),
-	); */
+	const context = HttpContext.create();
 	context.serviceScopeFactory = scopeFactory;
 	const responseFeature = new TestHttpResponseFeature();
 	context.features.set<IHttpResponseFeature>(
@@ -342,19 +330,7 @@ test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
 	);
 	let instance: DisposableThing | undefined = undefined;
 
-	const context = new HttpContext(new FeatureCollection());
-	context.features.set<IHttpRequestFeature>(
-		IHttpRequestFeature,
-		new HttpRequestFeature(),
-	);
-	context.features.set<IHttpResponseFeature>(
-		IHttpResponseFeature,
-		new HttpResponseFeature(),
-	);
-	/* TODO: context.features.set<IHttpResponseBodyFeature>(
-		IHttpResponseBodyFeature,
-		new StreamResponseBodyFeature(Stream.undefined),
-	); */
+	const context = HttpContext.create();
 	context.serviceScopeFactory = scopeFactory;
 	const responseFeature = new TestHttpResponseFeature();
 	context.features.set<IHttpResponseFeature>(
@@ -383,19 +359,7 @@ test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
 
 // https://github.com/dotnet/aspnetcore/blob/95b1de9ccf67adbc57919132464dac44c20e92b8/src/Http/Http/test/DefaultHttpContextTests.cs#L261C17-L261C48
 test('InternalActiveFlagIsSetAndUnset', () => {
-	const context = new HttpContext(new FeatureCollection());
-	context.features.set<IHttpRequestFeature>(
-		IHttpRequestFeature,
-		new HttpRequestFeature(),
-	);
-	context.features.set<IHttpResponseFeature>(
-		IHttpResponseFeature,
-		new HttpResponseFeature(),
-	);
-	/* TODO: context.features.set<IHttpResponseBodyFeature>(
-		IHttpResponseBodyFeature,
-		new StreamResponseBodyFeature(Stream.undefined),
-	); */
+	const context = HttpContext.create();
 
 	expect(context.active).toBe(false);
 

@@ -5,13 +5,21 @@ import {
 import { IServiceProvider } from '@yohira/base';
 import { IServiceScopeFactory } from '@yohira/extensions.dependency-injection.abstractions';
 import {
+	FeatureCollection,
 	FeatureReferences,
 	IFeatureCollection,
 } from '@yohira/extensions.features';
-import { RequestServicesFeature } from '@yohira/http';
+import {
+	HttpRequestFeature,
+	HttpResponseFeature,
+	RequestServicesFeature,
+} from '@yohira/http';
 import { IHttpContext } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
+	IHttpRequestFeature,
+	IHttpResponseBodyFeature,
+	IHttpResponseFeature,
 	IItemsFeature,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
@@ -54,6 +62,23 @@ export class HttpContext implements IHttpContext {
 		this._features.initialize(features);
 		this.request = new HttpRequest(this);
 		this.response = new HttpResponse(this);
+	}
+
+	static create(): HttpContext {
+		const httpContext = new HttpContext(new FeatureCollection());
+		httpContext.features.set<IHttpRequestFeature>(
+			IHttpRequestFeature,
+			new HttpRequestFeature(),
+		);
+		httpContext.features.set<IHttpResponseFeature>(
+			IHttpResponseFeature,
+			new HttpResponseFeature(),
+		);
+		/* TODO: httpContext.features.set<IHttpResponseBodyFeature>(
+			IHttpResponseBodyFeature,
+			new StreamResponseBodyFeature(Stream.undefined),
+		); */
+		return httpContext;
 	}
 
 	initialize(features: IFeatureCollection): void {

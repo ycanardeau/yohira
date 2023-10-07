@@ -13,6 +13,7 @@ export * from './CookieSecurePolicy';
 export * from './HttpMethods';
 export * from './IAppBuilder';
 export * from './IHttpContext';
+export * from './IHttpContextAccessor';
 export * from './IHttpContextFactory';
 export * from './IHttpRequest';
 export * from './IHttpResponse';

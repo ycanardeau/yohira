@@ -78,6 +78,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.file-providers/src',
 			),
+			'@yohira/extensions.hosting.abstractions': resolve(
+				__dirname,
+				'./packages/extensions.hosting.abstractions/src',
+			),
 			'@yohira/extensions.logging': resolve(
 				__dirname,
 				'./packages/extensions.logging/src',
@@ -101,6 +105,15 @@ export default defineConfig({
 			'@yohira/extensions.web-encoders': resolve(
 				__dirname,
 				'./packages/extensions.web-encoders/src',
+			),
+			'@yohira/hosting': resolve(__dirname, './packages/hosting/src'),
+			'@yohira/hosting.abstractions': resolve(
+				__dirname,
+				'./packages/hosting.abstractions/src',
+			),
+			'@yohira/hosting.server.abstractions': resolve(
+				__dirname,
+				'./packages/hosting.server.abstractions/src',
 			),
 			'@yohira/http': resolve(__dirname, './packages/http/src'),
 			'@yohira/http.abstractions': resolve(
