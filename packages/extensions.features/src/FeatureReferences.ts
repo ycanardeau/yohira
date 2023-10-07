@@ -41,21 +41,19 @@ export class FeatureReferences<TCache> {
 			this.cache = this.defaultValueFactory();
 		}
 
-		let cachedValue = this.collection.get<TFeature>(featureType);
-		cached.set(cachedValue);
-		if (cachedValue === undefined) {
+		cached.set(this.collection.get<TFeature>(featureType));
+		if (cached.get() === undefined) {
 			// Item not in collection, create it with factory
-			cachedValue = factory(state);
-			cached.set(cachedValue);
+			cached.set(factory(state));
 			// Add item to IFeatureCollection
-			this.collection.set(featureType, cachedValue);
+			this.collection.set(featureType, cached.get());
 			// Revision changed by .Set, update revision to new value
 			this.revision = this.collection.revision;
 		} else if (flush) {
 			this.revision = revision;
 		}
 
-		return cachedValue;
+		return cached.get();
 	}
 
 	fetchWithState<TFeature, TState>(
