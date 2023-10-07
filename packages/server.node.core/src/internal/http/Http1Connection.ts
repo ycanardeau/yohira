@@ -1,3 +1,4 @@
+import { List } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { IHttpApp } from '@yohira/hosting.server.abstractions';
 import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
@@ -53,7 +54,7 @@ export class Http1Connection
 	// Internal for testing
 	/** @internal */ resetFeatureCollection(): void {
 		this.fastReset();
-		// TODO
+		this.maybeExtra?.clear();
 		this.featureRevision++;
 	}
 
@@ -339,6 +340,46 @@ export class Http1Connection
 		return this.featureRevision;
 	}
 
+	private maybeExtra: List<[symbol, any]> | undefined;
+
+	private extraFeatureGet(key: symbol): any /* TODO */ {
+		if (this.maybeExtra === undefined) {
+			return undefined;
+		}
+		for (let i = 0; i < this.maybeExtra.count; i++) {
+			const kv = this.maybeExtra.get(i);
+			if (kv[0] === key) {
+				return kv[1];
+			}
+		}
+		return undefined;
+	}
+
+	private extraFeatureSet(key: symbol, value: any /* TODO */): void {
+		if (value === undefined) {
+			if (this.maybeExtra === undefined) {
+				return;
+			}
+			for (let i = 0; i < this.maybeExtra.count; i++) {
+				if (this.maybeExtra.get(i)[0] === key) {
+					this.maybeExtra.removeAt(i);
+					return;
+				}
+			}
+		} else {
+			if (this.maybeExtra === undefined) {
+				this.maybeExtra = new List();
+			}
+			for (let i = 0; i < this.maybeExtra.count; i++) {
+				if (this.maybeExtra.get(i)[0] === key) {
+					this.maybeExtra.set(i, [key, value]);
+					return;
+				}
+			}
+			this.maybeExtra.add([key, value]);
+		}
+	}
+
 	get<T>(key: symbol): T | undefined {
 		let feature: T | undefined;
 		if (key === IHttpRequestFeature) {
@@ -353,6 +394,8 @@ export class Http1Connection
 			feature = this.currentIServiceProvidersFeature as T;
 		} else if (key === IHttpAuthenticationFeature) {
 			feature = this.currentIHttpAuthenticationFeature as T;
+		} else if (this.maybeExtra !== undefined) {
+			feature = this.extraFeatureGet(key);
 		}
 
 		// TODO
@@ -377,6 +420,8 @@ export class Http1Connection
 		} else if (key === IHttpAuthenticationFeature) {
 			this.currentIHttpAuthenticationFeature =
 				instance as IHttpAuthenticationFeature;
+		} else {
+			this.extraFeatureSet(key, instance);
 		}
 
 		// TODO
@@ -404,6 +449,12 @@ export class Http1Connection
 				IHttpAuthenticationFeature,
 				this.currentIHttpAuthenticationFeature,
 			];
+		}
+
+		if (this.maybeExtra !== undefined) {
+			for (const item of this.maybeExtra) {
+				yield item;
+			}
 		}
 	}
 }
