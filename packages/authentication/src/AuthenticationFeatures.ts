@@ -24,6 +24,7 @@ export class AuthenticationFeatures
 	}
 	set authenticateResult(value: AuthenticateResult | undefined) {
 		this.result = value;
+		this._user = this.result?.principal;
 	}
 
 	get user(): ClaimsPrincipal | undefined {
