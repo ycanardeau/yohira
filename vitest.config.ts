@@ -133,6 +133,10 @@ export default defineConfig({
 				'./packages/http.shared/src',
 			),
 			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
+			'@yohira/server.node.core': resolve(
+				__dirname,
+				'./packages/server.node.core/src',
+			),
 			'@yohira/shared': resolve(__dirname, './packages/shared/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,

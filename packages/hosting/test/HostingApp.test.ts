@@ -7,12 +7,13 @@ import {
 	HostingAppContext,
 	HttpContextFactory,
 } from '@yohira/hosting';
+import { IHostContextContainer } from '@yohira/hosting.server.abstractions';
 import { Activity, HttpContext, IHttpActivityFeature } from '@yohira/http';
 import { IHttpContextFactory } from '@yohira/http.abstractions';
 import { expect, test } from 'vitest';
 
 class FeaturesWithContext<T>
-	implements /* TODO: IHostContextContainer<T>, */ IFeatureCollection
+	implements IHostContextContainer<T>, IFeatureCollection
 {
 	hostContext!: T;
 
