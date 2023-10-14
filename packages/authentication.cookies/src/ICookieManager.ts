@@ -27,4 +27,16 @@ export interface ICookieManager {
 		value: string | undefined,
 		options: CookieOptions,
 	): void;
+
+	/**
+	 * Append a delete cookie to the response.
+	 * @param context
+	 * @param key
+	 * @param options
+	 */
+	deleteCookie(
+		context: IHttpContext,
+		key: string,
+		options: CookieOptions,
+	): void;
 }

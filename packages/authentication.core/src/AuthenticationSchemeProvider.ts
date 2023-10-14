@@ -64,6 +64,18 @@ export class AuthenticationSchemeProvider
 			: this.getDefaultScheme();
 	}
 
+	getDefaultSignInScheme(): Promise<AuthenticationScheme | undefined> {
+		return this.options.defaultSignInScheme !== undefined
+			? this.getScheme(this.options.defaultSignInScheme)
+			: this.getDefaultScheme();
+	}
+
+	getDefaultSignOutScheme(): Promise<AuthenticationScheme | undefined> {
+		return this.options.defaultSignOutScheme !== undefined
+			? this.getScheme(this.options.defaultSignOutScheme)
+			: this.getDefaultScheme();
+	}
+
 	getRequestHandlerSchemes(): Promise<Iterable<AuthenticationScheme>> {
 		return Promise.resolve(this.requestHandlersCopy);
 	}

@@ -1,3 +1,4 @@
+import { StringValues } from '@yohira/extensions.primitives';
 import { IHttpContext } from '@yohira/http.abstractions';
 import { CookieOptions } from '@yohira/http.features';
 
@@ -14,6 +15,7 @@ export class ChunkingCookieManager implements ICookieManager {
 	 */
 	private static readonly defaultChunkSize = 4050;
 
+	private static readonly chunkKeySuffix = 'C';
 	private static readonly chunkCountPrefix = 'chunks-';
 
 	/**
@@ -102,6 +104,93 @@ export class ChunkingCookieManager implements ICookieManager {
 
 			// TODO
 			throw new Error('Method not implemented.');
+		}
+	}
+
+	deleteCookie(
+		context: IHttpContext,
+		key: string,
+		options: CookieOptions,
+	): void {
+		const keys = [key + '='];
+
+		const requestCookies = context.request.cookies;
+		const requestCookie = requestCookies.get(key);
+		let chunks = ChunkingCookieManager.parseChunksCount(requestCookie);
+		if (chunks > 0) {
+			for (let i = 1; i <= chunks + 1; i++) {
+				const subkey =
+					key +
+					ChunkingCookieManager.chunkKeySuffix +
+					i.toString(); /* TODO */
+
+				// Only delete cookies we received. We received the chunk count cookie so we should have received the others too.
+				if (!requestCookies.get(subkey)) {
+					chunks = i - 1;
+					break;
+				}
+
+				keys.push(subkey + '=');
+			}
+		}
+
+		const domainHasValue = !!options.domain;
+		const pathHasValue = !!options.path;
+
+		let rejectPredicate: (value: string) => boolean;
+		const predicate = (value: string): boolean =>
+			keys.some((k) => value.startsWith(k));
+		if (domainHasValue) {
+			rejectPredicate = (value): boolean =>
+				predicate(value) && value.includes('domain=' + options.domain);
+		} else if (pathHasValue) {
+			rejectPredicate = (value): boolean =>
+				predicate(value) && value.includes('path=' + options.path);
+		} else {
+			rejectPredicate = (value): boolean => predicate(value);
+		}
+
+		const responseHeaders = context.response.headers;
+		const existingValues = new StringValues(
+			responseHeaders.getHeader('set-cookie') as
+				| string
+				| string[] /* REVIEW */,
+		);
+
+		if (!StringValues.isUndefinedOrEmpty(existingValues)) {
+			const values = existingValues.toArray();
+			const newValues: string[] = [];
+
+			for (let i = 0; i < values.length; i++) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				const value = values[i]!;
+				if (!rejectPredicate(value)) {
+					newValues.push(value);
+				}
+			}
+
+			responseHeaders.setHeader('set-cookie', newValues);
+		}
+
+		const responseCookies = context.response.cookies;
+
+		const keyValuePairs: [string, string][] = new Array(chunks + 1);
+		keyValuePairs[0] = [key, ''];
+
+		for (let i = 1; i <= chunks; i++) {
+			keyValuePairs[i] = [key + 'C' + i.toString() /* TODO */, ''];
+		}
+
+		for (const [key, value] of keyValuePairs) {
+			responseCookies.append(
+				key,
+				value,
+				((): CookieOptions => {
+					const cookieOptions = CookieOptions.fromOptions(options);
+					cookieOptions.expires = 0;
+					return cookieOptions;
+				})(),
+			);
 		}
 	}
 }

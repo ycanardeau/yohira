@@ -66,7 +66,9 @@ export class ResponseCookies implements IResponseCookies {
 			'set-cookie',
 			StringValues.concat(
 				new StringValues(
-					this.headers.getHeader('set-cookie') as string | string[],
+					this.headers.getHeader('set-cookie') as
+						| string
+						| string[] /* REVIEW */,
 				),
 				new StringValues(cookie),
 			).toArray() as string[],

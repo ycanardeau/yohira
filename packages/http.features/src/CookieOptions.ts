@@ -6,16 +6,47 @@ import { SameSiteMode } from './SameSiteMode';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Features/CookieOptions.cs,14d3cbcab9624444,references
 export class CookieOptions {
-	private _extensions: string[] | undefined;
+	private constructor(
+		public domain: string | undefined,
+		public path: string | undefined,
+		public expires: number /* REVIEW */ | undefined,
+		public secure: boolean,
+		public sameSite: SameSiteMode,
+		public httpOnly: boolean,
+		public maxAge: TimeSpan | undefined,
+		public isEssential: boolean,
+		private _extensions: string[] | undefined,
+	) {}
 
-	domain: string | undefined;
-	path: string | undefined;
-	expires: number /* REVIEW */ | undefined;
-	secure = false;
-	sameSite = SameSiteMode.Unspecified;
-	httpOnly = false;
-	maxAge: TimeSpan | undefined;
-	isEssential = false;
+	static create(): CookieOptions {
+		return new CookieOptions(
+			undefined,
+			'/',
+			undefined,
+			false,
+			SameSiteMode.Unspecified,
+			false,
+			undefined,
+			false,
+			undefined,
+		);
+	}
+
+	static fromOptions(options: CookieOptions): CookieOptions {
+		return new CookieOptions(
+			options.domain,
+			options.path,
+			options.expires,
+			options.secure,
+			options.sameSite,
+			options.httpOnly,
+			options.maxAge,
+			options.isEssential,
+			options._extensions !== undefined && options._extensions.length > 0
+				? [...options._extensions]
+				: undefined,
+		);
+	}
 
 	/**
 	 * Gets a collection of additional values to append to the cookie.

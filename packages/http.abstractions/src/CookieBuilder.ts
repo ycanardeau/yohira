@@ -39,7 +39,7 @@ export class CookieBuilder {
 		context: IHttpContext,
 		expiresFrom = new Date().getTime(),
 	): CookieOptions {
-		const options = new CookieOptions();
+		const options = CookieOptions.create();
 		options.path = this.path ?? '/';
 		options.sameSite = this.sameSite;
 		options.httpOnly = this.httpOnly;

@@ -34,4 +34,20 @@ export interface IAuthenticationSchemeProvider {
 	 * @returns The schemes in priority order for request handling
 	 */
 	getRequestHandlerSchemes(): Promise<Iterable<AuthenticationScheme>>;
+
+	/**
+	 * Returns the scheme that will be used by default for {@link IAuthenticationService.signIn}.
+	 * This is typically specified via {@link AuthenticationOptions.defaultSignInScheme}.
+	 * Otherwise, this will fallback to {@link AuthenticationOptions.defaultScheme}.
+	 * @returns The scheme that will be used by default for {@link IAuthenticationService.signIn}.
+	 */
+	getDefaultSignInScheme(): Promise<AuthenticationScheme | undefined>;
+
+	/**
+	 * Returns the scheme that will be used by default for {@link IAuthenticationService.signOut}.
+	 * This is typically specified via {@link AuthenticationOptions.defaultSignOutScheme}.
+	 * Otherwise, this will fallback to {@link getDefaultSignInScheme} .
+	 * @returns The scheme that will be used by default for {@link IAuthenticationService.signOut}.
+	 */
+	getDefaultSignOutScheme(): Promise<AuthenticationScheme | undefined>;
 }

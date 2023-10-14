@@ -42,6 +42,13 @@ export class AuthenticationSchemeOptions {
 	forwardSignIn: string | undefined;
 
 	/**
+	 * If set, this specifies the target scheme that this scheme should forward SignOutAsync calls to.
+	 * For example Context.SignOutAsync("ThisScheme") => Context.SignOutAsync("ForwardSignOutValue");
+	 * Set the target to the current scheme to disable forwarding and allow normal processing.
+	 */
+	forwardSignOut: string | undefined;
+
+	/**
 	 * Used for testing.
 	 */
 	timeProvider: TimeProvider | undefined;

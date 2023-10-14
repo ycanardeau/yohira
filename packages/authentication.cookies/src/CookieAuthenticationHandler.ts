@@ -24,6 +24,7 @@ import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
 import { CookieSignedInContext } from './CookieSignedInContext';
 import { CookieSigningInContext } from './CookieSigningInContext';
+import { CookieSigningOutContext } from './CookieSigningOutContext';
 import { CookieSlidingExpirationContext } from './CookieSlidingExpirationContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
 
@@ -38,6 +39,16 @@ function logAuthenticationSchemeSignedIn(
 	);
 }
 
+function logAuthenticationSchemeSignedOut(
+	logger: ILogger,
+	authenticationScheme: string,
+): void {
+	logger.log(
+		LogLevel.Information,
+		`AuthenticationScheme: ${authenticationScheme} signed out.`,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/CookieAuthenticationHandler.cs,54c4e5158289a976,references
 /**
  * Implementation for the cookie-based authentication handler.
@@ -49,6 +60,9 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		'Thu, 01 Jan 1970 00:00:00 GMT';
 
 	private signInCalled = false;
+	private signOutCalled = false;
+
+	private sessionKey: string | undefined;
 
 	private readCookiePromise: Promise<AuthenticateResult> | undefined;
 
@@ -365,5 +379,57 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		);
 
 		logAuthenticationSchemeSignedIn(this.logger, this.scheme.name);
+	}
+
+	protected async handleSignOut(
+		properties: AuthenticationProperties | undefined,
+	): Promise<void> {
+		properties =
+			properties ?? new AuthenticationProperties(undefined, undefined);
+
+		this.signOutCalled = true;
+
+		// Process the request cookie to initialize members like _sessionKey.
+		await this.ensureCookieTicket();
+		const cookieOptions = this.buildCookieOptions();
+		if (
+			this.options.sessionStore !== undefined &&
+			this.sessionKey !== undefined
+		) {
+			await this.options.sessionStore.remove(
+				this.sessionKey,
+				this.context,
+				// TODO: this.context.requestAborted,
+			);
+		}
+
+		const context = new CookieSigningOutContext(
+			this.context,
+			this.scheme,
+			this.options,
+			properties,
+			cookieOptions,
+		);
+
+		await this.events.signingOut(context);
+
+		this.options.cookieManager.deleteCookie(
+			this.context,
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			this.options.cookie.name!,
+			context.cookieOptions,
+		);
+
+		// Only honor the ReturnUrl query string parameter on the logout path
+		const shouldHonorReturnUrlParameter =
+			this.options.logoutPath !== undefined &&
+			this.originalPath === this.options.logoutPath;
+		await this.applyHeaders(
+			true,
+			shouldHonorReturnUrlParameter,
+			context.properties,
+		);
+
+		logAuthenticationSchemeSignedOut(this.logger, this.scheme.name);
 	}
 }

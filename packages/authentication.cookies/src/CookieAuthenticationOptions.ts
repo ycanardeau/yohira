@@ -63,6 +63,11 @@ export class CookieAuthenticationOptions extends AuthenticationSchemeOptions {
 	loginPath!: PathString;
 
 	/**
+	 * If the LogoutPath is provided the handler then a request to that path will redirect based on the ReturnUrlParameter.
+	 */
+	logoutPath!: PathString;
+
+	/**
 	 * The ReturnUrlParameter determines the name of the query string parameter which is appended by the handler
 	 * during a Challenge. This is also the query string parameter looked for when a request arrives on the login
 	 * path or logout path, in order to return to the original url after the action is performed.

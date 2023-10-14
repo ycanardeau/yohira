@@ -3,6 +3,7 @@ import { RedirectContext } from '@yohira/authentication';
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';
 import { CookieSignedInContext } from './CookieSignedInContext';
 import { CookieSigningInContext } from './CookieSigningInContext';
+import { CookieSigningOutContext } from './CookieSigningOutContext';
 import { CookieSlidingExpirationContext } from './CookieSlidingExpirationContext';
 import { CookieValidatePrincipalContext } from './CookieValidatePrincipalContext';
 
@@ -35,6 +36,12 @@ export class CookieAuthenticationEvents {
 	 * Invoked after sign in has completed.
 	 */
 	onSignedIn = (context: CookieSignedInContext): Promise<void> =>
+		Promise.resolve();
+
+	/**
+	 * Invoked on signing out.
+	 */
+	onSigningOut = (context: CookieSigningOutContext): Promise<void> =>
 		Promise.resolve();
 
 	onRedirectToReturnUrl = (
@@ -75,6 +82,14 @@ export class CookieAuthenticationEvents {
 	 */
 	signedIn(context: CookieSignedInContext): Promise<void> {
 		return this.onSignedIn(context);
+	}
+
+	/**
+	 * Invoked on sign out.
+	 * @param context {@link CookieSigningOutContext}.
+	 */
+	signingOut(context: CookieSigningOutContext): Promise<void> {
+		return this.onSigningOut(context);
 	}
 
 	/**

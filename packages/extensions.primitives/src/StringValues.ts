@@ -8,6 +8,26 @@ export class StringValues implements IEquatable<StringValues> {
 
 	static readonly empty = new StringValues([]);
 
+	static isUndefinedOrEmpty(value: StringValues): boolean {
+		const data = value.values;
+		if (data === undefined) {
+			return true;
+		}
+		if (typeof data === 'string') {
+			// Not array, can only be string
+			return !!data;
+		} else {
+			switch (data.length) {
+				case 0:
+					return true;
+				case 1:
+					return !!data[0];
+				default:
+					return false;
+			}
+		}
+	}
+
 	get count(): number {
 		const value = this.values;
 		if (value === undefined) {

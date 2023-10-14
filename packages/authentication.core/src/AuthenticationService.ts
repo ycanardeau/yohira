@@ -9,6 +9,7 @@ import {
 	IAuthenticationSchemeProvider,
 	IAuthenticationService,
 	IAuthenticationSignInHandler,
+	IAuthenticationSignOutHandler,
 	IClaimsTransformation,
 } from '@yohira/authentication.abstractions';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
@@ -19,6 +20,12 @@ function isIAuthenticationSignInHandler(
 	value: IAuthenticationHandler,
 ): value is IAuthenticationSignInHandler {
 	return 'signIn' in value;
+}
+
+function isIAuthenticationSignOutHandler(
+	value: IAuthenticationHandler,
+): value is IAuthenticationSignOutHandler {
+	return 'signOut' in value;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Core/AuthenticationService.cs,30159f972b8c22ae,references
@@ -84,8 +91,7 @@ export class AuthenticationService implements IAuthenticationService {
 		scheme: string | undefined,
 	): Promise<AuthenticateResult> {
 		if (scheme === undefined) {
-			const defaultScheme =
-				await this.schemes.getDefaultAuthenticateScheme();
+			const defaultScheme = await this.schemes.getDefaultSignInScheme();
 			scheme = defaultScheme?.name;
 			if (scheme === undefined) {
 				throw new Error(
@@ -188,12 +194,81 @@ export class AuthenticationService implements IAuthenticationService {
 		await handler.signIn(principal, properties);
 	}
 
-	signOut(
+	private async getAllSignOutSchemeNames(): Promise<string> {
+		return Array.from(await this.schemes.getAllSchemes())
+			.filter(() => true /* TODO */)
+			.map((sch) => sch.name)
+			.join(', ');
+	}
+
+	private async createMissingSignOutHandlerError(
+		scheme: string,
+	): Promise<Error> {
+		const schemes = await this.getAllSignOutSchemeNames();
+
+		const footer = ` Did you forget to call AddAuthentication().AddCookie(\"${scheme}\",...)?`;
+
+		if (!schemes) {
+			// CookieAuth is the most common implementation of sign-out, but OpenIdConnect and WsFederation also support it.
+			return new Error(
+				'No sign-out authentication handlers are registered.' + footer,
+			);
+		}
+
+		return new Error(
+			`No sign-out authentication handler is registered for the scheme '${scheme}'. The registered sign-out schemes are: ${schemes}.` +
+				footer,
+		);
+	}
+
+	private async createMismatchedSignOutHandlerError(
+		scheme: string,
+		handler: IAuthenticationHandler,
+	): Promise<Error> {
+		const schemes = await this.getAllSignOutSchemeNames();
+
+		const mismatchError = `The authentication handler registered for scheme '${scheme}' is '${handler}' which cannot be used for signOut. `;
+
+		if (!schemes) {
+			// CookieAuth is the most common implementation of sign-out, but OpenIdConnect and WsFederation also support it.
+			return new Error(
+				mismatchError +
+					`Did you forget to call AddAuthentication().AddCookie(\"Cookies\") and signOut(\"Cookies\",...)?`,
+			);
+		}
+
+		return new Error(
+			mismatchError + `The registered sign-out schemes are: ${schemes}.`,
+		);
+	}
+
+	async signOut(
 		context: IHttpContext,
 		scheme: string | undefined,
 		properties: AuthenticationProperties | undefined,
 	): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (scheme === undefined) {
+			const defaultScheme = await this.schemes.getDefaultSignOutScheme();
+			scheme = defaultScheme?.name;
+			if (scheme === undefined) {
+				throw new Error(
+					'No authenticationScheme was specified, and there was no DefaultSignOutScheme found. The default schemes can be set using either AddAuthentication(string defaultScheme) or AddAuthentication(Action<AuthenticationOptions> configureOptions).',
+				);
+			}
+		}
+
+		const handler = await this.handlers.getHandler(context, scheme);
+		if (handler === undefined) {
+			throw await this.createMissingSignOutHandlerError(scheme);
+		}
+
+		if (!isIAuthenticationSignOutHandler(handler)) {
+			throw await this.createMismatchedSignOutHandlerError(
+				scheme,
+				handler,
+			);
+		}
+
+		await handler.signOut(properties);
 	}
 }

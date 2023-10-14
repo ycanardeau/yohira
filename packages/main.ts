@@ -6,6 +6,7 @@ import {
 	ClaimsIdentity,
 	ClaimsPrincipal,
 	signIn,
+	signOut,
 } from '@yohira/authentication.abstractions';
 import {
 	CookieAuthenticationDefaults,
@@ -110,6 +111,21 @@ export async function main(): Promise<void> {
 			context,
 			CookieAuthenticationDefaults.authenticationScheme,
 			ClaimsPrincipal.fromIdentity(claimsIdentity),
+			authProperties,
+		);
+
+		await write(context.response, JSON.stringify({}));
+	});
+
+	mapGet(app, '/signOut', async (context) => {
+		const authProperties = new AuthenticationProperties(
+			undefined,
+			undefined,
+		);
+
+		await signOut(
+			context,
+			CookieAuthenticationDefaults.authenticationScheme,
 			authProperties,
 		);
 

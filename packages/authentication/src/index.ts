@@ -5,6 +5,7 @@ export * from './AuthenticationServiceCollectionExtensions';
 export * from './IDataSerializer';
 export * from './ISecureDataFormat';
 export * from './PrincipalContext';
+export * from './PropertiesContext';
 export * from './RedirectContext';
 export * from './RequestPathBaseCookieBuilder';
 export * from './SecureDataFormat';
