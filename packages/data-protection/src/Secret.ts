@@ -1,11 +1,10 @@
-import { IDisposable } from '@yohira/base';
 import { randomBytes } from 'node:crypto';
 
 import { ISecret } from './ISecret';
 
 // REVIEW
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/Secret.cs,726e6ae00d63e382,references
-export class Secret implements IDisposable, ISecret {
+export class Secret implements Disposable, ISecret {
 	private readonly localAllocHandle: Buffer;
 	private readonly plaintextLength: number;
 

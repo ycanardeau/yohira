@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -8,7 +8,7 @@ import { IServiceProvidersFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Features/RequestServicesFeature.cs,108ec86c767ee7c3,references
 export class RequestServicesFeature
-	implements IServiceProvidersFeature, IDisposable, IAsyncDisposable
+	implements IServiceProvidersFeature, Disposable, AsyncDisposable
 {
 	private _requestServices: IServiceProvider | undefined;
 	private scope: IServiceScope | undefined;
@@ -35,14 +35,14 @@ export class RequestServicesFeature
 	}
 
 	private isIDisposable(
-		scope: object | IDisposable | IAsyncDisposable | undefined,
-	): scope is IDisposable {
+		scope: object | Disposable | AsyncDisposable | undefined,
+	): scope is Disposable {
 		return scope !== undefined && Symbol.dispose in scope;
 	}
 
 	private isIAsyncDisposable(
-		scope: object | IDisposable | IAsyncDisposable | undefined,
-	): scope is IAsyncDisposable {
+		scope: object | Disposable | AsyncDisposable | undefined,
+	): scope is AsyncDisposable {
 		return scope !== undefined && Symbol.asyncDispose in scope;
 	}
 

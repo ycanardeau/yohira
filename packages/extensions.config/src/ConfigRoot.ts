@@ -1,4 +1,4 @@
-import { IDisposable, IList } from '@yohira/base';
+import { IList } from '@yohira/base';
 import {
 	IConfigProvider,
 	IConfigRoot,
@@ -9,7 +9,7 @@ import { ConfigSection } from './ConfigSection';
 import { getChildrenImpl } from './InternalConfigRootExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationRoot.cs,0a5ad779923b882b,references
-export class ConfigRoot implements IConfigRoot, IDisposable {
+export class ConfigRoot implements IConfigRoot, Disposable {
 	constructor(private readonly _providers: IList<IConfigProvider>) {
 		// TODO
 

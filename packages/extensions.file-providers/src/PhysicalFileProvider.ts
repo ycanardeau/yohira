@@ -1,6 +1,5 @@
 import {
 	FileInfo,
-	IDisposable,
 	combinePaths,
 	getFullPath,
 	getRelativePath,
@@ -20,7 +19,7 @@ import {
 import { PhysicalFileInfo } from './PhysicalFileInfo';
 
 // https://source.dot.net/#Microsoft.Extensions.FileProviders.Physical/PhysicalFileProvider.cs,deeb5176dbadb21d,references
-export class PhysicalFileProvider implements IFileProvider, IDisposable {
+export class PhysicalFileProvider implements IFileProvider, Disposable {
 	readonly root: string;
 
 	constructor(

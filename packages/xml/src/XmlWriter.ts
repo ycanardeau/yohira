@@ -1,4 +1,4 @@
-import { IDisposable, StringBuilder, TextWriter } from '@yohira/base';
+import { StringBuilder, TextWriter } from '@yohira/base';
 
 import {
 	isAttributeValueChar,
@@ -214,7 +214,7 @@ export enum WriteState {
 }
 
 // https://source.dot.net/#System.Private.Xml/System/Xml/Core/XmlWriter.cs,e5032b905808fabc,references
-export abstract class XmlWriter implements IDisposable {
+export abstract class XmlWriter implements Disposable {
 	// Creates an XmlWriter for writing into the provided TextWriter with the specified settings.
 	static create(
 		output: TextWriter,

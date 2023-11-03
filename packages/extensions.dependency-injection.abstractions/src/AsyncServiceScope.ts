@@ -1,8 +1,8 @@
-import { IAsyncDisposable, IServiceProvider } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 
 import { IServiceScope } from './IServiceScope';
 
-export class AsyncServiceScope implements IServiceScope, IAsyncDisposable {
+export class AsyncServiceScope implements IServiceScope, AsyncDisposable {
 	constructor(private readonly serviceScope: IServiceScope) {}
 
 	get serviceProvider(): IServiceProvider {
@@ -14,12 +14,12 @@ export class AsyncServiceScope implements IServiceScope, IAsyncDisposable {
 	}
 
 	private static isIAsyncDisposable(
-		serviceScope: IServiceScope | (IServiceScope & IAsyncDisposable),
-	): serviceScope is IServiceScope & IAsyncDisposable {
+		serviceScope: IServiceScope | (IServiceScope & AsyncDisposable),
+	): serviceScope is IServiceScope & AsyncDisposable {
 		return Symbol.asyncDispose in serviceScope;
 	}
 
-	[Symbol.asyncDispose](): Promise<void> {
+	[Symbol.asyncDispose](): PromiseLike<void> {
 		if (AsyncServiceScope.isIAsyncDisposable(this.serviceScope)) {
 			return this.serviceScope[Symbol.asyncDispose]();
 		}

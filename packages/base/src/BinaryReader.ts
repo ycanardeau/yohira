@@ -1,8 +1,7 @@
-import { IDisposable } from './IDisposable';
 import { MemoryStream } from './MemoryStream';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/BinaryReader.cs,4f6cad84482876ff,references
-export class BinaryReader implements IDisposable {
+export class BinaryReader implements Disposable {
 	constructor(private readonly _stream: MemoryStream) {}
 
 	[Symbol.dispose](): void {

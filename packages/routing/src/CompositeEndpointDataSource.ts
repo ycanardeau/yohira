@@ -1,4 +1,4 @@
-import { ICollection, IDisposable, List } from '@yohira/base';
+import { ICollection, List } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { EndpointDataSource } from './EndpointDataSource';
@@ -6,7 +6,7 @@ import { EndpointDataSource } from './EndpointDataSource';
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/CompositeEndpointDataSource.cs,296d73b6a71a22b3,references
 export class CompositeEndpointDataSource
 	extends EndpointDataSource
-	implements IDisposable
+	implements Disposable
 {
 	private readonly dataSources: ICollection<EndpointDataSource>;
 

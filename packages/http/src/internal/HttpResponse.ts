@@ -1,4 +1,3 @@
-import { IAsyncDisposable } from '@yohira/base';
 import {
 	FeatureReferences,
 	IFeatureCollection,
@@ -135,13 +134,13 @@ export class HttpResponse implements IHttpResponse {
 	}
 
 	onCompleted(
-		callback: (state: object) => Promise<void>,
+		callback: (state: object) => PromiseLike<void>,
 		state: object,
 	): void {
 		this.httpResponseFeature.onCompleted(callback, state);
 	}
 
-	registerForDisposeAsync(disposable: IAsyncDisposable): void {
+	registerForDisposeAsync(disposable: AsyncDisposable): void {
 		this.onCompleted(disposeDelegate, disposable);
 	}
 }

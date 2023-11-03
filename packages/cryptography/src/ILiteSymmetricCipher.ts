@@ -1,7 +1,5 @@
-import { IDisposable } from '@yohira/base';
-
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/ILiteSymmetricCipher.cs,1b52e199b0ad218e,references
-export interface ILiteSymmetricCipher extends IDisposable {
+export interface ILiteSymmetricCipher extends Disposable {
 	readonly blockSizeInBytes: number;
 	readonly paddingSizeInBytes: number;
 

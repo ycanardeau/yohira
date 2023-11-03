@@ -1,9 +1,7 @@
-import { IDisposable } from '@yohira/base';
-
 import { ICryptoTransform } from './ICryptoTransform';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/HashAlgorithm.cs,e7c6be1ed86f474f,references
-export abstract class HashAlgorithm implements IDisposable, ICryptoTransform {
+export abstract class HashAlgorithm implements Disposable, ICryptoTransform {
 	private disposed = false;
 	protected hashSizeValue = 0;
 	protected hashValue: Buffer | undefined;

@@ -1,7 +1,5 @@
-import { IDisposable } from '@yohira/base';
-
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/HashProvider.cs,4c10c84edd3e12aa,references
-export abstract class HashProvider implements IDisposable {
+export abstract class HashProvider implements Disposable {
 	// Returns the length of the byte array returned by FinalizeHashAndReset.
 	abstract get hashSizeInBytes(): number;
 

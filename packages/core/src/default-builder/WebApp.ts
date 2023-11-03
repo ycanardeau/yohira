@@ -1,9 +1,4 @@
-import {
-	IAsyncDisposable,
-	ICollection,
-	IServiceProvider,
-	List,
-} from '@yohira/base';
+import { ICollection, IServiceProvider, List } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHost, runApp } from '@yohira/extensions.hosting.abstractions';
 import { IWebHostEnv } from '@yohira/hosting.abstractions';
@@ -21,7 +16,7 @@ const globalEndpointRouteBuilderKey = '__GlobalEndpointRouteBuilder';
  * The web application used to configure the HTTP pipeline, and routes.
  */
 export class WebApp
-	implements IHost, IAppBuilder, IEndpointRouteBuilder, IAsyncDisposable
+	implements IHost, IAppBuilder, IEndpointRouteBuilder, AsyncDisposable
 {
 	private readonly _dataSources = new List<EndpointDataSource>();
 	get dataSources(): ICollection<EndpointDataSource> {
@@ -80,8 +75,8 @@ export class WebApp
 		return this.host.stop();
 	}
 
-	[Symbol.asyncDispose](): Promise<void> {
-		return (this.host as IAsyncDisposable)[Symbol.asyncDispose]();
+	[Symbol.asyncDispose](): PromiseLike<void> {
+		return (this.host as AsyncDisposable)[Symbol.asyncDispose]();
 	}
 
 	/**

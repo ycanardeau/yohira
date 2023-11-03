@@ -1,8 +1,6 @@
 import {
 	AggregateError,
-	IAsyncDisposable,
 	ICollection,
-	IDisposable,
 	IServiceProvider,
 	getOrAdd,
 } from '@yohira/base';
@@ -25,7 +23,7 @@ import { ServiceProviderEngineScope } from './service-lookup/ServiceProviderEngi
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceProvider.cs,7b97f84895159f6d,references
 export class ServiceProvider
-	implements IServiceProvider, IDisposable, IAsyncDisposable
+	implements IServiceProvider, Disposable, AsyncDisposable
 {
 	private readonly callSiteValidator: CallSiteValidator | undefined;
 

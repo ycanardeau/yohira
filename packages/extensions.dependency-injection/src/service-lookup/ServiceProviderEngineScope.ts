@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,
@@ -11,11 +11,11 @@ export class ServiceProviderEngineScope
 	implements
 		IServiceScope,
 		IServiceProvider,
-		IAsyncDisposable,
+		AsyncDisposable,
 		IServiceScopeFactory
 {
 	private disposed = false;
-	private disposables: (IDisposable | IAsyncDisposable)[] | undefined;
+	private disposables: (Disposable | AsyncDisposable)[] | undefined;
 
 	/** @internal */ readonly resolvedServices: Map<
 		number /* TODO: ServiceCacheKey */,
@@ -46,20 +46,20 @@ export class ServiceProviderEngineScope
 	}
 
 	private isIDisposable(
-		service: object | IDisposable | IAsyncDisposable | undefined,
-	): service is IDisposable {
+		service: object | Disposable | AsyncDisposable | undefined,
+	): service is Disposable {
 		return service !== undefined && Symbol.dispose in service;
 	}
 
 	private isIAsyncDisposable(
-		service: object | IDisposable | IAsyncDisposable | undefined,
-	): service is IAsyncDisposable {
+		service: object | Disposable | AsyncDisposable | undefined,
+	): service is AsyncDisposable {
 		return service !== undefined && Symbol.asyncDispose in service;
 	}
 
 	/** @internal */ captureDisposable(
-		service: object | IDisposable | IAsyncDisposable | undefined,
-	): object | IDisposable | IAsyncDisposable | undefined {
+		service: object | Disposable | AsyncDisposable | undefined,
+	): object | Disposable | AsyncDisposable | undefined {
 		if (
 			this === service ||
 			!(this.isIDisposable(service) || this.isIAsyncDisposable(service))
@@ -94,7 +94,7 @@ export class ServiceProviderEngineScope
 		return service;
 	}
 
-	private beginDispose(): (IDisposable | IAsyncDisposable)[] | undefined {
+	private beginDispose(): (Disposable | AsyncDisposable)[] | undefined {
 		// REVIEW: lock
 		if (this.disposed) {
 			return undefined;
@@ -121,7 +121,7 @@ export class ServiceProviderEngineScope
 					disposable[Symbol.dispose]();
 				} else {
 					throw new Error(
-						`{${disposable.constructor.name}}' type only implements IAsyncDisposable. Use asyncDispose to dispose the container.` /* LOC */,
+						`{${disposable.constructor.name}}' type only implements AsyncDisposable. Use asyncDispose to dispose the container.` /* LOC */,
 					);
 				}
 			}

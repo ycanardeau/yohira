@@ -1,4 +1,4 @@
-import { IDisposable, MemoryStream, using } from '@yohira/base';
+import { MemoryStream, using } from '@yohira/base';
 import {
 	CryptoStream,
 	CryptoStreamMode,
@@ -26,7 +26,7 @@ const sizeofUint32 = 4;
 // REVIEW
 // https://source.dot.net/#Microsoft.AspNetCore.DataProtection/Managed/ManagedAuthenticatedEncryptor.cs,5ae5d9fd0d294a74,references
 export class ManagedAuthenticatedEncryptor
-	implements IAuthenticatedEncryptor, IDisposable
+	implements IAuthenticatedEncryptor, Disposable
 {
 	// Even when IVs are chosen randomly, CBC is susceptible to IV collisions within a single
 	// key. For a 64-bit block cipher (like 3DES), we'd expect a collision after 2^32 block

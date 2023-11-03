@@ -1,6 +1,4 @@
-export type IAsyncDisposable = AsyncDisposable;
-
-export async function usingAsync<TDisposable extends IAsyncDisposable, T>(
+export async function usingAsync<TDisposable extends AsyncDisposable, T>(
 	disposable: TDisposable,
 	callback: (disposable: TDisposable) => Promise<T>,
 ): Promise<T> {

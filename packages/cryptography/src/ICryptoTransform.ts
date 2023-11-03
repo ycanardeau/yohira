@@ -1,7 +1,5 @@
-import { IDisposable } from '@yohira/base';
-
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/ICryptoTransform.cs,1580d78b8a5ac0c8,references
-export interface ICryptoTransform extends IDisposable {
+export interface ICryptoTransform extends Disposable {
 	readonly inputBlockSize: number;
 	readonly outputBlockSize: number;
 	/**

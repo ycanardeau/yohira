@@ -1,4 +1,3 @@
-import { IAsyncDisposable, IDisposable } from '@yohira/base';
 import {
 	IResponseCookies,
 	IResponseHeaderDictionary,
@@ -9,18 +8,18 @@ import { IHttpContext } from './IHttpContext';
 import { StatusCodes } from './StatusCodes';
 
 function isIAsyncDisposable(
-	service: object | IDisposable | IAsyncDisposable | undefined,
-): service is IAsyncDisposable {
+	service: object | Disposable | AsyncDisposable | undefined,
+): service is AsyncDisposable {
 	return service !== undefined && Symbol.asyncDispose in service;
 }
 
 function isIDisposable(
-	service: object | IDisposable | IAsyncDisposable | undefined,
-): service is IDisposable {
+	service: object | Disposable | AsyncDisposable | undefined,
+): service is Disposable {
 	return service !== undefined && Symbol.dispose in service;
 }
 
-export const disposeDelegate = (state: object): Promise<void> => {
+export const disposeDelegate = (state: object): PromiseLike<void> => {
 	// Prefer async dispose over dispose
 	if (isIAsyncDisposable(state)) {
 		return state[Symbol.asyncDispose]();
@@ -68,5 +67,5 @@ export interface IHttpResponse {
 		callback: (state: object) => Promise<void>,
 		state: object,
 	): void;
-	registerForDisposeAsync(disposable: IAsyncDisposable): void;
+	registerForDisposeAsync(disposable: AsyncDisposable): void;
 }

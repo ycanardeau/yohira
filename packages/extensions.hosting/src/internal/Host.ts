@@ -1,4 +1,4 @@
-import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import { getServices } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHost, IHostedService } from '@yohira/extensions.hosting.abstractions';
 import { ILoggerT } from '@yohira/extensions.logging.abstractions';
@@ -11,7 +11,7 @@ import {
 } from '../internal/HostingLoggerExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
-export class Host implements IHost, IAsyncDisposable {
+export class Host implements IHost, AsyncDisposable {
 	private hostedServices: IHostedService[] | undefined;
 	private stopCalled = false;
 
@@ -54,19 +54,19 @@ export class Host implements IHost, IAsyncDisposable {
 
 	async [Symbol.asyncDispose](): Promise<void> {
 		function isIAsyncDisposable(
-			o: object | IDisposable | IAsyncDisposable,
-		): o is IAsyncDisposable {
+			o: object | Disposable | AsyncDisposable,
+		): o is AsyncDisposable {
 			return Symbol.asyncDispose in o;
 		}
 
 		function isIDisposable(
-			o: object | IDisposable | IAsyncDisposable,
-		): o is IDisposable {
+			o: object | Disposable | AsyncDisposable,
+		): o is Disposable {
 			return Symbol.dispose in o;
 		}
 
 		async function asyncDispose(
-			o: object | IDisposable | IAsyncDisposable,
+			o: object | Disposable | AsyncDisposable,
 		): Promise<void> {
 			if (isIAsyncDisposable(o)) {
 				await o[Symbol.asyncDispose]();

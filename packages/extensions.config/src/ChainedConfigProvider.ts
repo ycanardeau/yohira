@@ -1,4 +1,3 @@
-import { IDisposable } from '@yohira/base';
 import {
 	IConfig,
 	IConfigProvider,
@@ -8,7 +7,7 @@ import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 import { ChainedConfigSource } from './ChainedConfigSource';
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ChainedConfigurationProvider.cs,2bf7ba944b788eb3,references
-export class ChainedConfigProvider implements IConfigProvider, IDisposable {
+export class ChainedConfigProvider implements IConfigProvider, Disposable {
 	readonly config: IConfig;
 
 	constructor(source: ChainedConfigSource) {

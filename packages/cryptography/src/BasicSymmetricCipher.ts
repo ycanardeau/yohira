@@ -1,7 +1,5 @@
-import { IDisposable } from '@yohira/base';
-
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/BasicSymmetricCipher.cs,f47c054bd8e81a20,references
-export abstract class BasicSymmetricCipher implements IDisposable {
+export abstract class BasicSymmetricCipher implements Disposable {
 	protected _iv: Buffer | undefined;
 	protected get iv(): Buffer | undefined {
 		return this._iv;

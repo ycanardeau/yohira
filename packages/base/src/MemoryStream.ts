@@ -1,11 +1,10 @@
 import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 
-import { IDisposable } from './IDisposable';
 import { SeekOrigin } from './SeekOrigin';
 import { Stream } from './Stream';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/MemoryStream.cs,044ce0129bdbdc11
-export class MemoryStream extends Stream implements IDisposable {
+export class MemoryStream extends Stream implements Disposable {
 	protected constructor(
 		private _buffer: Buffer,
 		private readonly _origin: number,

@@ -1,5 +1,4 @@
 import {
-	IDisposable,
 	Out,
 	Ref,
 	StringBuilder,
@@ -144,7 +143,7 @@ export enum ReadState {
 }
 
 // https://source.dot.net/#System.Private.Xml/System/Xml/Core/XmlReader.cs,086471e5cca0825f,references
-export abstract class XmlReader implements IDisposable {
+export abstract class XmlReader implements Disposable {
 	static readonly defaultBufferSize = 4096;
 
 	// Chosen to be small enough that the character buffer in XmlTextReader when using Async = true

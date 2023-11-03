@@ -1,6 +1,4 @@
-export type IDisposable = Disposable;
-
-export function using<TDisposable extends IDisposable, T>(
+export function using<TDisposable extends Disposable, T>(
 	disposable: TDisposable,
 	callback: (disposable: TDisposable) => T,
 ): T {

@@ -1,4 +1,4 @@
-import { IDisposable, IList, List } from '@yohira/base';
+import { IList, List } from '@yohira/base';
 import {
 	IConfigBuilder,
 	IConfigProvider,
@@ -78,7 +78,7 @@ export class ConfigBuilderProperties extends Map<string, unknown> {
 }
 
 // https://source.dot.net/#Microsoft.Extensions.Configuration/ConfigurationManager.cs,9fd7bcd9fe6aeaa6,references
-export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
+export class ConfigManager implements IConfigBuilder, IConfigRoot, Disposable {
 	private readonly _sources: ConfigSources;
 	private readonly _properties: ConfigBuilderProperties;
 	// HACK: https://github.com/dotnet/runtime/blob/a490a3417adb78dbc36891624e67720ebdca919f/src/libraries/Microsoft.Extensions.Configuration/src/ConfigurationManager.cs#L23

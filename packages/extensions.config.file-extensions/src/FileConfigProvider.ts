@@ -1,4 +1,4 @@
-import { CaseInsensitiveMap, IDisposable } from '@yohira/base';
+import { CaseInsensitiveMap } from '@yohira/base';
 import { ConfigProvider } from '@yohira/extensions.config';
 import { readFileSync } from 'node:fs';
 import { Readable, Stream } from 'node:stream';
@@ -8,7 +8,7 @@ import { FileConfigSource } from './FileConfigSource';
 // https://source.dot.net/#Microsoft.Extensions.Configuration.FileExtensions/FileConfigurationProvider.cs,56fc0e8e704cec9a,references
 export abstract class FileConfigProvider
 	extends ConfigProvider
-	implements IDisposable
+	implements Disposable
 {
 	constructor(readonly source: FileConfigSource) {
 		super();

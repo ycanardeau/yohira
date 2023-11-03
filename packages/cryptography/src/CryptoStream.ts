@@ -1,10 +1,10 @@
-import { IDisposable, Stream } from '@yohira/base';
+import { Stream } from '@yohira/base';
 
 import { CryptoStreamMode } from './CryptoStreamMode';
 import { ICryptoTransform } from './ICryptoTransform';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/CryptoStream.cs,af85dc74cc324e3e,references
-export class CryptoStream extends Stream implements IDisposable {
+export class CryptoStream extends Stream implements Disposable {
 	private inputBuffer: Buffer; // read from _stream before _Transform
 	private inputBufferIndex = 0;
 	private readonly inputBlockSize: number;

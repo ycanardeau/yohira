@@ -1,8 +1,7 @@
-import { IDisposable } from './IDisposable';
 import { StringBuilder } from './StringBuilder';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/TextReader.cs,7b5eff52b5bf1164,references
-export abstract class TextReader implements IDisposable {
+export abstract class TextReader implements Disposable {
 	protected constructor() {}
 
 	protected disposeCore(disposing: boolean): void {}

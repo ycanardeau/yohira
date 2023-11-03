@@ -1,10 +1,9 @@
-import { IDisposable } from '@yohira/base';
 import { Endpoint } from '@yohira/http.abstractions';
 
 import { EndpointDataSource } from './EndpointDataSource';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/DataSourceDependentCache.cs,576bd81b7918d64e,references
-export class DataSourceDependentCache<T> implements IDisposable {
+export class DataSourceDependentCache<T> implements Disposable {
 	private readonly initializeCore: (endpoints: readonly Endpoint[]) => T;
 	private readonly initializer: () => T;
 

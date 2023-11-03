@@ -1,9 +1,8 @@
-import { IDisposable } from './IDisposable';
 import { MemoryStream } from './MemoryStream';
 import { SeekOrigin } from './SeekOrigin';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/BinaryWriter.cs,cf806b417abe1a35,references
-export class BinaryWriter implements IDisposable {
+export class BinaryWriter implements Disposable {
 	constructor(protected outStream: MemoryStream) {}
 
 	[Symbol.dispose](): void {

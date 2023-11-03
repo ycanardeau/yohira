@@ -1,4 +1,3 @@
-import { IDisposable } from '@yohira/base';
 import {
 	Hash,
 	Hmac,
@@ -7,7 +6,7 @@ import {
 } from 'node:crypto';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/LiteHashProvider.cs,212d0fbf5acf4379,references
-interface ILiteHash extends IDisposable {
+interface ILiteHash extends Disposable {
 	readonly hashSizeInBytes: number;
 
 	append(data: Buffer): void;

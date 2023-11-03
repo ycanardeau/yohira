@@ -2,7 +2,7 @@ import {
 	ClaimsIdentity,
 	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
-import { IAsyncDisposable, IDisposable, IServiceProvider } from '@yohira/base';
+import { IServiceProvider } from '@yohira/base';
 import {
 	ServiceProvider,
 	buildServiceProvider,
@@ -199,7 +199,7 @@ test('RequestServicesAreNotOverwrittenIfAlreadySet', () => {
 	expect(context.requestServices === serviceProvider).toBe(true);
 });
 
-class DisposableThing implements IDisposable {
+class DisposableThing implements Disposable {
 	disposed = false;
 
 	[Symbol.dispose](): void {
@@ -264,7 +264,7 @@ class TestHttpResponseFeature implements IHttpResponseFeature {
 	expect(instance.disposed).toBe(true);
 }); */
 
-class AsyncServiceScope implements IServiceScope, IAsyncDisposable {
+class AsyncServiceScope implements IServiceScope, AsyncDisposable {
 	disposeCalled = false;
 	disposeAsyncCalled = false;
 
@@ -287,7 +287,7 @@ class AsyncServiceScope implements IServiceScope, IAsyncDisposable {
 }
 
 class AsyncDisposableServiceProvider
-	implements IServiceProvider, IDisposable, IServiceScopeFactory
+	implements IServiceProvider, Disposable, IServiceScopeFactory
 {
 	readonly scopes: AsyncServiceScope[] = [];
 

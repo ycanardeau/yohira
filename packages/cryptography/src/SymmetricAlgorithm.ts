@@ -1,4 +1,3 @@
-import { IDisposable } from '@yohira/base';
 import { CipherMode } from 'node:crypto';
 
 import { ICryptoTransform } from './ICryptoTransform';
@@ -7,7 +6,7 @@ import { KeySizes } from './KeySizes';
 import { PaddingMode } from './PaddingMode';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/SymmetricAlgorithm.cs,97c6f2476150a40d,references
-export abstract class SymmetricAlgorithm implements IDisposable {
+export abstract class SymmetricAlgorithm implements Disposable {
 	protected modeValue: CipherMode;
 	protected paddingValue: PaddingMode;
 	protected keyValue: Buffer | undefined;

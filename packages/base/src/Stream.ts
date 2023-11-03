@@ -1,7 +1,5 @@
-import { IDisposable } from './IDisposable';
-
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/Stream.cs,f956b0c07e86df64,references
-export abstract class Stream implements IDisposable {
+export abstract class Stream implements Disposable {
 	abstract get canRead(): boolean;
 	abstract get canWrite(): boolean;
 	abstract get canSeek(): boolean;
