@@ -602,7 +602,7 @@ export class CryptoStream extends Stream implements IDisposable {
 					this.flushFinalBlock();
 				}
 				if (!this.leaveOpen) {
-					this.stream.dispose();
+					this.stream[Symbol.dispose]();
 				}
 			}
 		} finally {

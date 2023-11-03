@@ -12,5 +12,5 @@ export class NullLoggerFactory implements ILoggerFactory {
 
 	addProvider(): void {}
 
-	dispose(): void {}
+	[Symbol.dispose](): void {}
 }

@@ -18,6 +18,6 @@ export async function runApp(host: IHost): Promise<void> {
 
 		await waitForShutdown(host);
 	} finally {
-		await host.disposeAsync();
+		await host[Symbol.asyncDispose]();
 	}
 }

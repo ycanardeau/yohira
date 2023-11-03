@@ -55,10 +55,10 @@ export class OpenSslCipher extends BasicSymmetricCipher {
 		);
 	}
 
-	dispose(): void {
-		this.cipherLite.dispose();
+	[Symbol.dispose](): void {
+		this.cipherLite[Symbol.dispose]();
 
-		super.dispose();
+		super[Symbol.dispose]();
 	}
 
 	transform(input: Buffer, output: Buffer): number {

@@ -2,7 +2,7 @@ import { IDisposable } from '@yohira/base';
 
 // https://source.dot.net/#System.Diagnostics.DiagnosticSource/System/Diagnostics/Activity.cs,dde15fa2c6eb71de,references
 export class Activity implements IDisposable {
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 	}
 }

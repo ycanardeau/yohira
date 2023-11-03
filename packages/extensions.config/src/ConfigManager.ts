@@ -125,7 +125,7 @@ export class ConfigManager implements IConfigBuilder, IConfigRoot, IDisposable {
 		return providers;
 	}
 
-	dispose(): Promise<void> {
+	[Symbol.dispose](): Promise<void> {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

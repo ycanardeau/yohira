@@ -65,7 +65,7 @@ export class LiteHash implements ILiteHash {
 		(this.ctx as Hash) = cryptoCreateHash(this.algorithm);
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}
@@ -133,7 +133,7 @@ export class LiteHmac implements ILiteHash {
 		(this.ctx as Hmac) = cryptoCreateHmac(this.algorithm, this.key);
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

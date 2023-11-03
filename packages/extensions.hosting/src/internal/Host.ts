@@ -52,32 +52,32 @@ export class Host implements IHost, IAsyncDisposable {
 		logStopped(this.logger);
 	}
 
-	async disposeAsync(): Promise<void> {
+	async [Symbol.asyncDispose](): Promise<void> {
 		function isIAsyncDisposable(
 			o: object | IDisposable | IAsyncDisposable,
 		): o is IAsyncDisposable {
-			return 'disposeAsync' in o;
+			return Symbol.asyncDispose in o;
 		}
 
 		function isIDisposable(
 			o: object | IDisposable | IAsyncDisposable,
 		): o is IDisposable {
-			return 'dispose' in o;
+			return Symbol.dispose in o;
 		}
 
-		async function disposeAsync(
+		async function asyncDispose(
 			o: object | IDisposable | IAsyncDisposable,
 		): Promise<void> {
 			if (isIAsyncDisposable(o)) {
-				await o.disposeAsync();
+				await o[Symbol.asyncDispose]();
 			} else if (isIDisposable(o)) {
-				o.dispose();
+				o[Symbol.dispose]();
 			}
 		}
 
 		// TODO
 
 		// Dispose the service provider
-		await disposeAsync(this.services);
+		await asyncDispose(this.services);
 	}
 }

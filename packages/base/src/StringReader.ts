@@ -11,7 +11,7 @@ export class StringReader extends TextReader {
 		this.s = s;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.s = undefined;
 		this.pos = 0;
 	}

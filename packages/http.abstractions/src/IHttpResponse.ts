@@ -11,21 +11,21 @@ import { StatusCodes } from './StatusCodes';
 function isIAsyncDisposable(
 	service: object | IDisposable | IAsyncDisposable | undefined,
 ): service is IAsyncDisposable {
-	return service !== undefined && 'disposeAsync' in service;
+	return service !== undefined && Symbol.asyncDispose in service;
 }
 
 function isIDisposable(
 	service: object | IDisposable | IAsyncDisposable | undefined,
 ): service is IDisposable {
-	return service !== undefined && 'dispose' in service;
+	return service !== undefined && Symbol.dispose in service;
 }
 
 export const disposeDelegate = (state: object): Promise<void> => {
 	// Prefer async dispose over dispose
 	if (isIAsyncDisposable(state)) {
-		return state.disposeAsync();
+		return state[Symbol.asyncDispose]();
 	} else if (isIDisposable(state)) {
-		state.dispose();
+		state[Symbol.dispose]();
 	}
 	return Promise.resolve();
 };

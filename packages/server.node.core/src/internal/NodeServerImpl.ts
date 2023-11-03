@@ -29,7 +29,7 @@ export class NodeServerImpl implements IServer, IAsyncDisposable {
 		throw new Error('Method not implemented.');
 	}
 
-	async disposeAsync(): Promise<void> {
+	async [Symbol.asyncDispose](): Promise<void> {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

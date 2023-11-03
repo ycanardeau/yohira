@@ -9,21 +9,21 @@ export class AsyncServiceScope implements IServiceScope, IAsyncDisposable {
 		return this.serviceScope.serviceProvider;
 	}
 
-	dispose(): void {
-		this.serviceScope.dispose();
+	[Symbol.dispose](): void {
+		this.serviceScope[Symbol.dispose]();
 	}
 
 	private static isIAsyncDisposable(
 		serviceScope: IServiceScope | (IServiceScope & IAsyncDisposable),
 	): serviceScope is IServiceScope & IAsyncDisposable {
-		return 'disposeAsync' in serviceScope;
+		return Symbol.asyncDispose in serviceScope;
 	}
 
-	disposeAsync(): Promise<void> {
+	[Symbol.asyncDispose](): Promise<void> {
 		if (AsyncServiceScope.isIAsyncDisposable(this.serviceScope)) {
-			return this.serviceScope.disposeAsync();
+			return this.serviceScope[Symbol.asyncDispose]();
 		}
-		this.serviceScope.dispose();
+		this.serviceScope[Symbol.dispose]();
 
 		return Promise.resolve();
 	}

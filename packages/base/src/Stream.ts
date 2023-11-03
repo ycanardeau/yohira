@@ -68,7 +68,7 @@ export abstract class Stream implements IDisposable {
 		// TODO
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.close();
 	}
 

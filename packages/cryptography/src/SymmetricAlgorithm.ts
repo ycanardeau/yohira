@@ -166,7 +166,7 @@ export abstract class SymmetricAlgorithm implements IDisposable {
 		throw new Error('Method not implemented.');
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		if (this.keyValue !== undefined) {
 			this.keyValue.fill(0);
 			this.keyValue = undefined;

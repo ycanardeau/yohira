@@ -80,8 +80,8 @@ export class WebApp
 		return this.host.stop();
 	}
 
-	disposeAsync(): Promise<void> {
-		return (this.host as IAsyncDisposable).disposeAsync();
+	[Symbol.asyncDispose](): Promise<void> {
+		return (this.host as IAsyncDisposable)[Symbol.asyncDispose]();
 	}
 
 	/**

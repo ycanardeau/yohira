@@ -6,9 +6,9 @@ export class StringWriter extends TextWriter {
 	private readonly sb = new StringBuilder();
 	private isOpen = true;
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.isOpen = false;
-		super.dispose();
+		super[Symbol.dispose]();
 	}
 
 	// Writes a character to the underlying string buffer.

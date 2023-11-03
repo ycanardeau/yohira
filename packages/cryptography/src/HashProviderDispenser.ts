@@ -34,8 +34,8 @@ class EvpHashProvider extends HashProvider {
 		return written;
 	}
 
-	dispose(): void {
-		this.liteHash.dispose();
+	[Symbol.dispose](): void {
+		this.liteHash[Symbol.dispose]();
 	}
 
 	reset(): void {
@@ -77,8 +77,8 @@ class HmacHashProvider extends HashProvider {
 		return written;
 	}
 
-	dispose(): void {
-		this.liteHmac.dispose();
+	[Symbol.dispose](): void {
+		this.liteHmac[Symbol.dispose]();
 	}
 
 	reset(): void {

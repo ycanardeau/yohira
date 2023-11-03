@@ -79,7 +79,7 @@ export class OpenSslCipherLite implements ILiteSymmetricCipher {
 		this.isFinalized = false;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

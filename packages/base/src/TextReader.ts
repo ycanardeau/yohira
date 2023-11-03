@@ -12,7 +12,7 @@ export abstract class TextReader implements IDisposable {
 		// TODO
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.disposeCore(true);
 		// TODO
 	}

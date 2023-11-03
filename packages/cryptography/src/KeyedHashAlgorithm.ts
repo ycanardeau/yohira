@@ -12,13 +12,13 @@ export abstract class KeyedHashAlgorithm extends HashAlgorithm {
 		this.keyValue = Buffer.from(value);
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// For keyed hash algorithms, we always want to zero out the key value
 		if (this.keyValue !== undefined) {
 			this.keyValue.fill(0);
 		}
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.keyValue = undefined!;
-		super.dispose();
+		super[Symbol.dispose]();
 	}
 }

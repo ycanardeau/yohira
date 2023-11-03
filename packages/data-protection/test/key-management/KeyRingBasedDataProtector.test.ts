@@ -71,7 +71,7 @@ function buildAadFromPurposeStrings(
 		const memStream = MemoryStream.alloc();
 		const writer = new BinaryWriter(memStream);
 		writer.writeString(purpose); // also writes 7-bit encoded int length
-		writer.dispose();
+		writer[Symbol.dispose]();
 		expectedAad = Buffer.concat([expectedAad, memStream.toBuffer()]);
 	}
 

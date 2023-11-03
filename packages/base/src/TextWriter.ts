@@ -2,7 +2,7 @@ import { IDisposable } from './IDisposable';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/TextWriter.cs,6e84a88dc2be46e3,references
 export abstract class TextWriter implements IDisposable {
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

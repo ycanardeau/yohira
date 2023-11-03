@@ -48,13 +48,13 @@ export class ServiceProviderEngineScope
 	private isIDisposable(
 		service: object | IDisposable | IAsyncDisposable | undefined,
 	): service is IDisposable {
-		return service !== undefined && 'dispose' in service;
+		return service !== undefined && Symbol.dispose in service;
 	}
 
 	private isIAsyncDisposable(
 		service: object | IDisposable | IAsyncDisposable | undefined,
 	): service is IAsyncDisposable {
-		return service !== undefined && 'disposeAsync' in service;
+		return service !== undefined && Symbol.asyncDispose in service;
 	}
 
 	/** @internal */ captureDisposable(
@@ -83,11 +83,11 @@ export class ServiceProviderEngineScope
 			}
 
 			if (this.isIDisposable(service)) {
-				service.dispose();
+				service[Symbol.dispose]();
 
 				throwObjectDisposedError();
 			} else {
-				service.disposeAsync().then(throwObjectDisposedError);
+				service[Symbol.asyncDispose]().then(throwObjectDisposedError);
 			}
 		}
 
@@ -105,23 +105,23 @@ export class ServiceProviderEngineScope
 		this.disposed = true;
 
 		if (this.isRootScope && !this.rootProvider.isDisposed()) {
-			this.rootProvider.dispose();
+			this.rootProvider[Symbol.dispose]();
 		}
 
 		return this.disposables;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		const toDispose = this.beginDispose();
 
 		if (toDispose !== undefined) {
 			for (let i = toDispose.length - 1; i >= 0; i--) {
 				const disposable = toDispose[i];
 				if (this.isIDisposable(disposable)) {
-					disposable.dispose();
+					disposable[Symbol.dispose]();
 				} else {
 					throw new Error(
-						`{${disposable.constructor.name}}' type only implements IAsyncDisposable. Use disposeAsync to dispose the container.` /* LOC */,
+						`{${disposable.constructor.name}}' type only implements IAsyncDisposable. Use asyncDispose to dispose the container.` /* LOC */,
 					);
 				}
 			}
@@ -129,16 +129,16 @@ export class ServiceProviderEngineScope
 	}
 
 	// REVIEW
-	async disposeAsync(): Promise<void> {
+	async [Symbol.asyncDispose](): Promise<void> {
 		const toDispose = this.beginDispose();
 
 		if (toDispose !== undefined) {
 			for (let i = toDispose.length - 1; i >= 0; i--) {
 				const disposable = toDispose[i];
 				if (this.isIAsyncDisposable(disposable)) {
-					await disposable.disposeAsync();
+					await disposable[Symbol.asyncDispose]();
 				} else {
-					disposable.dispose();
+					disposable[Symbol.dispose]();
 				}
 			}
 		}

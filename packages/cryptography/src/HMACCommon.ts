@@ -58,7 +58,7 @@ export class HMACCommon {
 		const oldHashProvider = this.hMacProvider;
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.hMacProvider = undefined!;
-		oldHashProvider?.dispose();
+		oldHashProvider?.[Symbol.dispose]();
 		this.hMacProvider = createMacProvider(this.hashAlgorithmId, key);
 
 		return modifiedKey;
@@ -100,8 +100,8 @@ export class HMACCommon {
 		return this.hMacProvider.reset();
 	}
 
-	dispose(): void {
-		this.hMacProvider?.dispose();
+	[Symbol.dispose](): void {
+		this.hMacProvider?.[Symbol.dispose]();
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.hMacProvider = undefined!;
 	}

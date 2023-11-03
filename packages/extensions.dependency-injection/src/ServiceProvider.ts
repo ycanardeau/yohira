@@ -189,14 +189,14 @@ export class ServiceProvider
 		// TODO
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.disposeCore();
-		this.root.dispose();
+		this.root[Symbol.dispose]();
 	}
 
-	disposeAsync(): Promise<void> {
+	[Symbol.asyncDispose](): Promise<void> {
 		this.disposeCore();
-		return this.root.disposeAsync();
+		return this.root[Symbol.asyncDispose]();
 	}
 
 	/** @internal */ createScope(): IServiceScope {

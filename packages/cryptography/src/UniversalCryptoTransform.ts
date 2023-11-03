@@ -62,8 +62,8 @@ export abstract class UniversalCryptoTransform implements ICryptoTransform {
 		}
 	}
 
-	dispose(): void {
-		this.basicSymmetricCipher.dispose();
+	[Symbol.dispose](): void {
+		this.basicSymmetricCipher[Symbol.dispose]();
 	}
 
 	protected abstract uncheckedTransformBlockCore(
@@ -441,13 +441,13 @@ export class UniversalCryptoDecryptor extends UniversalCryptoTransform {
 		}
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		const heldoverCipher = this.heldoverCipher;
 		this.heldoverCipher = undefined;
 		if (heldoverCipher !== undefined) {
 			heldoverCipher.fill(0);
 		}
 
-		super.dispose();
+		super[Symbol.dispose]();
 	}
 }

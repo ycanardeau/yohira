@@ -6,8 +6,8 @@ import { SeekOrigin } from './SeekOrigin';
 export class BinaryWriter implements IDisposable {
 	constructor(protected outStream: MemoryStream) {}
 
-	dispose(): void {
-		this.outStream.dispose();
+	[Symbol.dispose](): void {
+		this.outStream[Symbol.dispose]();
 	}
 
 	seek(offset: number, loc: SeekOrigin): number {

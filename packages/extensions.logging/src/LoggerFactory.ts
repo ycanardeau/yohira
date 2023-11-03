@@ -25,7 +25,7 @@ export class LoggerFactory implements ILoggerFactory {
 		return logger;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		if (!this.disposed) {
 			this.disposed = true;
 

@@ -214,7 +214,7 @@ export abstract class XmlReader implements IDisposable {
 		return this.nodeType;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

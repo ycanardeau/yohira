@@ -94,8 +94,8 @@ class Impl extends SHA512 {
 		this.hashProvider.reset();
 	}
 
-	dispose(): void {
-		this.hashProvider.dispose();
-		super.dispose();
+	[Symbol.dispose](): void {
+		this.hashProvider[Symbol.dispose]();
+		super[Symbol.dispose]();
 	}
 }

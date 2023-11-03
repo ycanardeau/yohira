@@ -65,7 +65,7 @@ class IdentityTransform implements ICryptoTransform {
 		return this._outputBlockSize;
 	}
 
-	dispose(): void {}
+	[Symbol.dispose](): void {}
 
 	transformBlock(
 		inputBuffer: Buffer,
@@ -287,7 +287,7 @@ test('MultipleDispose', () => {
 		using(
 			new CryptoStream(output, encryptor, CryptoStreamMode.Write),
 			(encryptStream) => {
-				encryptStream.dispose();
+				encryptStream[Symbol.dispose]();
 			},
 		);
 
@@ -298,7 +298,7 @@ test('MultipleDispose', () => {
 		using(
 			new CryptoStream(output, encryptor, CryptoStreamMode.Write, false),
 			(encryptStream) => {
-				encryptStream.dispose();
+				encryptStream[Symbol.dispose]();
 			},
 		);
 
@@ -309,7 +309,7 @@ test('MultipleDispose', () => {
 		using(
 			new CryptoStream(output, encryptor, CryptoStreamMode.Write, true),
 			(encryptStream) => {
-				encryptStream.dispose();
+				encryptStream[Symbol.dispose]();
 			},
 		);
 
@@ -343,7 +343,7 @@ test('DisposeAsync_DataFlushedCorrectly', () => {
 					encryptStream.flushFinalBlock();
 				}
 
-				encryptStream.dispose();
+				encryptStream[Symbol.dispose]();
 				expect(encryptStream.hasFlushedFinalBlock).toBe(true);
 				expect(stream.toBuffer().length).toBe(5);
 
@@ -384,7 +384,7 @@ test('DisposeAsync_DerivedStream_InvokesDispose', () => {
 		),
 		(encryptStream) => {
 			expect(encryptStream.disposeInvoked).toBe(false);
-			encryptStream.dispose(); /* TODO */
+			encryptStream[Symbol.dispose](); /* TODO */
 			expect(encryptStream.disposeInvoked).toBe(true);
 		},
 	);

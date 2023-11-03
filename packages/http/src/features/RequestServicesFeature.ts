@@ -37,21 +37,21 @@ export class RequestServicesFeature
 	private isIDisposable(
 		scope: object | IDisposable | IAsyncDisposable | undefined,
 	): scope is IDisposable {
-		return scope !== undefined && 'dispose' in scope;
+		return scope !== undefined && Symbol.dispose in scope;
 	}
 
 	private isIAsyncDisposable(
 		scope: object | IDisposable | IAsyncDisposable | undefined,
 	): scope is IAsyncDisposable {
-		return scope !== undefined && 'disposeAsync' in scope;
+		return scope !== undefined && Symbol.asyncDispose in scope;
 	}
 
-	async disposeAsync(): Promise<void> {
+	async [Symbol.asyncDispose](): Promise<void> {
 		if (this.isIAsyncDisposable(this.scope)) {
 			// REVIEW
-			await this.scope.disposeAsync();
+			await this.scope[Symbol.asyncDispose]();
 		} else if (this.isIDisposable(this.scope)) {
-			this.scope.dispose();
+			this.scope[Symbol.dispose]();
 		}
 
 		this.scope = undefined;
@@ -60,7 +60,7 @@ export class RequestServicesFeature
 		return Promise.resolve();
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

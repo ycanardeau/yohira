@@ -43,7 +43,7 @@ export abstract class HashProvider implements IDisposable {
 	}
 
 	// Releases any native resources and keys used by the HashProvider.
-	abstract dispose(): void;
+	abstract [Symbol.dispose](): void;
 
 	abstract reset(): void;
 }

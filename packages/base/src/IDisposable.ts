@@ -1,6 +1,4 @@
-export interface IDisposable {
-	dispose(): void;
-}
+export type IDisposable = Disposable;
 
 export function using<TDisposable extends IDisposable, T>(
 	disposable: TDisposable,
@@ -9,6 +7,6 @@ export function using<TDisposable extends IDisposable, T>(
 	try {
 		return callback(disposable);
 	} finally {
-		disposable.dispose();
+		disposable[Symbol.dispose]();
 	}
 }

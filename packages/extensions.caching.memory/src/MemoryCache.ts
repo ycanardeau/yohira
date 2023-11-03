@@ -136,7 +136,7 @@ export class MemoryCache implements IMemoryCache {
 		return new Err(undefined);
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

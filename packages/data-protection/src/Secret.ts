@@ -57,7 +57,7 @@ export class Secret implements IDisposable, ISecret {
 		return this.plaintextLength;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

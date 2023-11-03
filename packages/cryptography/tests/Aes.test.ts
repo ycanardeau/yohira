@@ -125,7 +125,7 @@ test('AesDefaultCtor', () => {
 
 // https://github.com/dotnet/runtime/blob/ab2b80d06dd4d997df5ffa72a3c4a99cb36ccbff/src/libraries/System.Security.Cryptography/tests/AesTests.cs#L25
 test('EnsureLegalSizesValuesIsolated', () => {
-	new AesLegalSizesBreaker().dispose();
+	new AesLegalSizesBreaker()[Symbol.dispose]();
 
 	using(Aes.create(), (aes) => {
 		expect(aes.legalKeySizes[0].minSize).toBe(128);

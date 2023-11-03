@@ -40,7 +40,7 @@ export abstract class BasicSymmetricCipher implements IDisposable {
 
 	abstract transformFinal(input: Buffer, output: Buffer): number;
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		if (this.iv !== undefined) {
 			this.iv.fill(0);
 			this.iv = undefined;

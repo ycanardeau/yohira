@@ -51,7 +51,7 @@ export class DataSourceDependentCache<T> implements IDisposable {
 		return this._value;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// REVIEW: lock
 		if (!this.disposed) {
 			// TODO

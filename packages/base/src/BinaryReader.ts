@@ -5,8 +5,8 @@ import { MemoryStream } from './MemoryStream';
 export class BinaryReader implements IDisposable {
 	constructor(private readonly _stream: MemoryStream) {}
 
-	dispose(): void {
-		this._stream.dispose();
+	[Symbol.dispose](): void {
+		this._stream[Symbol.dispose]();
 	}
 
 	readBoolean(): boolean {

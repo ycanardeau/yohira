@@ -37,7 +37,7 @@ export class PhysicalFileProvider implements IFileProvider, IDisposable {
 		// TODO
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		//throw new Error('Method not implemented.');
 	}

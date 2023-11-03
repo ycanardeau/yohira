@@ -120,13 +120,13 @@ export class HMACSHA256 extends HMAC {
 		return this.hMacCommon.reset();
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		const hMacCommon = this.hMacCommon;
 		if (hMacCommon !== undefined) {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			this.hMacCommon = undefined!;
-			hMacCommon.dispose();
+			hMacCommon[Symbol.dispose]();
 		}
-		super.dispose();
+		super[Symbol.dispose]();
 	}
 }

@@ -61,7 +61,7 @@ test('MemoryStream_WriteToTests_Negative', () => {
 			'Stream does not support writing.',
 		);
 
-		readonlyStream.dispose();
+		readonlyStream[Symbol.dispose]();
 
 		// [] Pass in a closed stream
 		expect(() => ms2.writeTo(readonlyStream)).toThrowError(

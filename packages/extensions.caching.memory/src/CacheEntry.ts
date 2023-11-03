@@ -26,7 +26,7 @@ export class CacheEntry implements ICacheEntry {
 		this._evictionReason = value;
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

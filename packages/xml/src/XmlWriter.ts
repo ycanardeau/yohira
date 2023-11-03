@@ -275,7 +275,7 @@ export abstract class XmlWriter implements IDisposable {
 	abstract flush(): void;
 
 	// Dispose the underline stream objects (calls Close on the XmlWriter)
-	dispose(): void {
+	[Symbol.dispose](): void {
 		if (this.writeState !== WriteState.Closed) {
 			this.close();
 		}
@@ -1121,7 +1121,7 @@ export class XmlEncodedRawTextWriter extends XmlRawWriter {
 				} finally {
 					try {
 						if (this.closeOutput) {
-							this.writer.dispose();
+							this.writer[Symbol.dispose]();
 						}
 					} finally {
 						this.writer = undefined;

@@ -185,7 +185,7 @@ export class ManagedAuthenticatedEncryptor
 			this.symmetricAlgorithmSubkeyLengthInBytes =
 				symmetricAlgorithmKeySizeInBytes;
 		} finally {
-			symmetricAlgorithm.dispose();
+			symmetricAlgorithm[Symbol.dispose]();
 		}
 
 		// Validate that the MAC algorithm has the properties we require
@@ -197,7 +197,7 @@ export class ManagedAuthenticatedEncryptor
 			this.validationAlgorithmSubkeyLengthInBytes =
 				this.validationAlgorithmDigestLengthInBytes; // for simplicity we'll generate MAC subkeys with a length equal to the digest length
 		} finally {
-			validationAlgorithm.dispose();
+			validationAlgorithm[Symbol.dispose]();
 		}
 
 		// TODO: assert
@@ -526,7 +526,7 @@ export class ManagedAuthenticatedEncryptor
 		}
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		// TODO
 		throw new Error('Method not implemented.');
 	}

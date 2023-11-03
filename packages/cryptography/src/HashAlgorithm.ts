@@ -98,7 +98,7 @@ export abstract class HashAlgorithm implements IDisposable, ICryptoTransform {
 		}
 	}
 
-	dispose(): void {
+	[Symbol.dispose](): void {
 		this.disposed = true;
 	}
 
