@@ -53,13 +53,13 @@ export class Host implements IHost, AsyncDisposable {
 	}
 
 	async [Symbol.asyncDispose](): Promise<void> {
-		function isIAsyncDisposable(
+		function isAsyncDisposable(
 			o: object | Disposable | AsyncDisposable,
 		): o is AsyncDisposable {
 			return Symbol.asyncDispose in o;
 		}
 
-		function isIDisposable(
+		function isDisposable(
 			o: object | Disposable | AsyncDisposable,
 		): o is Disposable {
 			return Symbol.dispose in o;
@@ -68,9 +68,9 @@ export class Host implements IHost, AsyncDisposable {
 		async function asyncDispose(
 			o: object | Disposable | AsyncDisposable,
 		): Promise<void> {
-			if (isIAsyncDisposable(o)) {
+			if (isAsyncDisposable(o)) {
 				await o[Symbol.asyncDispose]();
-			} else if (isIDisposable(o)) {
+			} else if (isDisposable(o)) {
 				o[Symbol.dispose]();
 			}
 		}

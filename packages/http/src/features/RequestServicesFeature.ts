@@ -34,23 +34,23 @@ export class RequestServicesFeature
 		this.requestServicesSet = true;
 	}
 
-	private isIDisposable(
+	private isDisposable(
 		scope: object | Disposable | AsyncDisposable | undefined,
 	): scope is Disposable {
 		return scope !== undefined && Symbol.dispose in scope;
 	}
 
-	private isIAsyncDisposable(
+	private isAsyncDisposable(
 		scope: object | Disposable | AsyncDisposable | undefined,
 	): scope is AsyncDisposable {
 		return scope !== undefined && Symbol.asyncDispose in scope;
 	}
 
 	async [Symbol.asyncDispose](): Promise<void> {
-		if (this.isIAsyncDisposable(this.scope)) {
+		if (this.isAsyncDisposable(this.scope)) {
 			// REVIEW
 			await this.scope[Symbol.asyncDispose]();
-		} else if (this.isIDisposable(this.scope)) {
+		} else if (this.isDisposable(this.scope)) {
 			this.scope[Symbol.dispose]();
 		}
 

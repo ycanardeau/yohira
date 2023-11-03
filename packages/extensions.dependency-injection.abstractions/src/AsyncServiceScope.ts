@@ -13,14 +13,14 @@ export class AsyncServiceScope implements IServiceScope, AsyncDisposable {
 		this.serviceScope[Symbol.dispose]();
 	}
 
-	private static isIAsyncDisposable(
+	private static isAsyncDisposable(
 		serviceScope: IServiceScope | (IServiceScope & AsyncDisposable),
 	): serviceScope is IServiceScope & AsyncDisposable {
 		return Symbol.asyncDispose in serviceScope;
 	}
 
 	[Symbol.asyncDispose](): PromiseLike<void> {
-		if (AsyncServiceScope.isIAsyncDisposable(this.serviceScope)) {
+		if (AsyncServiceScope.isAsyncDisposable(this.serviceScope)) {
 			return this.serviceScope[Symbol.asyncDispose]();
 		}
 		this.serviceScope[Symbol.dispose]();

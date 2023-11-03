@@ -230,7 +230,7 @@ class TestHttpResponseFeature implements IHttpResponseFeature {
 }
 
 // https://github.com/dotnet/aspnetcore/blob/95b1de9ccf67adbc57919132464dac44c20e92b8/src/Http/Http/test/DefaultHttpContextTests.cs#L204C23-L204C60
-/* TODO: test('RequestServicesAreDisposedOnCompleted', async () => {
+test('RequestServicesAreDisposedOnCompleted', async () => {
 	let $: IServiceCollection = new ServiceCollection();
 	$ = addTransientCtor($, Symbol.for('DisposableThing'), DisposableThing);
 	const serviceProvider = buildServiceProvider($);
@@ -262,7 +262,7 @@ class TestHttpResponseFeature implements IHttpResponseFeature {
 
 	expect(context.requestServices).toBeUndefined();
 	expect(instance.disposed).toBe(true);
-}); */
+});
 
 class AsyncServiceScope implements IServiceScope, AsyncDisposable {
 	disposeCalled = false;
@@ -317,7 +317,7 @@ class AsyncDisposableServiceProvider
 }
 
 // https://github.com/dotnet/aspnetcore/blob/95b1de9ccf67adbc57919132464dac44c20e92b8/src/Http/Http/test/DefaultHttpContextTests.cs#L231C23-L231C64
-/* TODO: test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
+test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
 	let $: IServiceCollection = new ServiceCollection();
 	$ = addTransientCtor($, Symbol.for('DisposableThing'), DisposableThing);
 	const serviceProvider = new AsyncDisposableServiceProvider(
@@ -355,7 +355,7 @@ class AsyncDisposableServiceProvider
 	const scope = serviceProvider.scopes[0];
 	expect(scope.disposeAsyncCalled).toBe(true);
 	expect(scope.disposeCalled).toBe(false);
-}); */
+});
 
 // https://github.com/dotnet/aspnetcore/blob/95b1de9ccf67adbc57919132464dac44c20e92b8/src/Http/Http/test/DefaultHttpContextTests.cs#L261C17-L261C48
 test('InternalActiveFlagIsSetAndUnset', () => {

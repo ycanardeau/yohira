@@ -45,13 +45,13 @@ export class ServiceProviderEngineScope
 		return this.rootProvider.createScope();
 	}
 
-	private isIDisposable(
+	private isDisposable(
 		service: object | Disposable | AsyncDisposable | undefined,
 	): service is Disposable {
 		return service !== undefined && Symbol.dispose in service;
 	}
 
-	private isIAsyncDisposable(
+	private isAsyncDisposable(
 		service: object | Disposable | AsyncDisposable | undefined,
 	): service is AsyncDisposable {
 		return service !== undefined && Symbol.asyncDispose in service;
@@ -62,7 +62,7 @@ export class ServiceProviderEngineScope
 	): object | Disposable | AsyncDisposable | undefined {
 		if (
 			this === service ||
-			!(this.isIDisposable(service) || this.isIAsyncDisposable(service))
+			!(this.isDisposable(service) || this.isAsyncDisposable(service))
 		) {
 			return service;
 		}
@@ -82,7 +82,7 @@ export class ServiceProviderEngineScope
 				throw new Error('Cannot access a disposed object.' /* LOC */);
 			}
 
-			if (this.isIDisposable(service)) {
+			if (this.isDisposable(service)) {
 				service[Symbol.dispose]();
 
 				throwObjectDisposedError();
@@ -117,7 +117,7 @@ export class ServiceProviderEngineScope
 		if (toDispose !== undefined) {
 			for (let i = toDispose.length - 1; i >= 0; i--) {
 				const disposable = toDispose[i];
-				if (this.isIDisposable(disposable)) {
+				if (this.isDisposable(disposable)) {
 					disposable[Symbol.dispose]();
 				} else {
 					throw new Error(
@@ -135,7 +135,7 @@ export class ServiceProviderEngineScope
 		if (toDispose !== undefined) {
 			for (let i = toDispose.length - 1; i >= 0; i--) {
 				const disposable = toDispose[i];
-				if (this.isIAsyncDisposable(disposable)) {
+				if (this.isAsyncDisposable(disposable)) {
 					await disposable[Symbol.asyncDispose]();
 				} else {
 					disposable[Symbol.dispose]();

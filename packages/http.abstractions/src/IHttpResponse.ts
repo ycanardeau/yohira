@@ -7,13 +7,13 @@ import { Stream } from 'node:stream';
 import { IHttpContext } from './IHttpContext';
 import { StatusCodes } from './StatusCodes';
 
-function isIAsyncDisposable(
+function isAsyncDisposable(
 	service: object | Disposable | AsyncDisposable | undefined,
 ): service is AsyncDisposable {
 	return service !== undefined && Symbol.asyncDispose in service;
 }
 
-function isIDisposable(
+function isDisposable(
 	service: object | Disposable | AsyncDisposable | undefined,
 ): service is Disposable {
 	return service !== undefined && Symbol.dispose in service;
@@ -21,9 +21,9 @@ function isIDisposable(
 
 export const disposeDelegate = (state: object): PromiseLike<void> => {
 	// Prefer async dispose over dispose
-	if (isIAsyncDisposable(state)) {
+	if (isAsyncDisposable(state)) {
 		return state[Symbol.asyncDispose]();
-	} else if (isIDisposable(state)) {
+	} else if (isDisposable(state)) {
 		state[Symbol.dispose]();
 	}
 	return Promise.resolve();

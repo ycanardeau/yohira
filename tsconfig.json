@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es2016",
-		"lib": ["es6", "ESNext.Disposable"],
+		"lib": ["es6"],
 		"types": ["reflect-metadata", "node"],
 		"module": "commonjs",
 		"moduleResolution": "node",
