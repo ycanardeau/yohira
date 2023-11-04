@@ -1,6 +1,7 @@
 import { IRequestCookieCollection } from '@yohira/http.features';
 import { IncomingHttpHeaders } from 'node:http';
 
+import { HostString } from './HostString';
 import { IHttpContext } from './IHttpContext';
 import { PathString } from './PathString';
 
@@ -18,6 +19,11 @@ export interface IHttpRequest {
 	 * @returns true if this request is using https; otherwise, false.
 	 */
 	isHttps: boolean;
+	/**
+	 * Gets or sets the Host header. May include the port.
+	 * @returns The Host header.
+	 */
+	host: HostString;
 	pathBase: PathString;
 	path: PathString;
 	queryString: string;

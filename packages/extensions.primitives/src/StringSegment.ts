@@ -101,6 +101,43 @@ export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 		);
 	}
 
+	private indexOfCore(c: string, start: number, count: number): number {
+		let index = -1;
+
+		if (this.hasValue) {
+			if (start > this.length) {
+				throw new Error(
+					'Specified argument was out of the range of valid values.' /* LOC */,
+				);
+			}
+
+			if (count > this.length - start) {
+				throw new Error(
+					'Specified argument was out of the range of valid values.' /* LOC */,
+				);
+			}
+
+			index = this.substring(start, count).indexOf(c);
+			if (index !== -1) {
+				index -= this.offset;
+			}
+		}
+
+		return index;
+	}
+
+	indexOf(c: string): number;
+	indexOf(c: string, start: number): number;
+	indexOf(c: string, start?: number, count?: number): number {
+		if (start !== undefined && count !== undefined) {
+			return this.indexOfCore(c, start, count);
+		} else if (start !== undefined) {
+			return this.indexOfCore(c, start, this.length - start);
+		} else {
+			return this.indexOfCore(c, 0, this.length);
+		}
+	}
+
 	toString(): string {
 		return this.value ?? '';
 	}

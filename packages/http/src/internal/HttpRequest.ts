@@ -3,6 +3,7 @@ import {
 	IFeatureCollection,
 } from '@yohira/extensions.features';
 import {
+	HostString,
 	IHttpContext,
 	IHttpRequest,
 	PathString,
@@ -101,6 +102,13 @@ export class HttpRequest implements IHttpRequest {
 	}
 	set isHttps(value: boolean) {
 		this.scheme = value ? HttpRequest.https : HttpRequest.http;
+	}
+
+	get host(): HostString {
+		return HostString.fromUriComponent(this.headers.host ?? '');
+	}
+	set host(value: HostString) {
+		this.headers.host = value.toUriComponent();
 	}
 
 	get pathBase(): PathString {

@@ -28,6 +28,7 @@ export * from './http-logging/src';
 export * from './http.abstractions/src';
 export * from './http.extensions/src';
 export * from './http.features/src';
+export * from './https-policy/src';
 export * from './routing/src';
 export * from './server.node/src';
 export * from './server.node.core/src';

@@ -132,6 +132,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/http.shared/src',
 			),
+			'@yohira/https-policy': resolve(
+				__dirname,
+				'./packages/https-policy/src',
+			),
 			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
 			'@yohira/server.node.core': resolve(
 				__dirname,

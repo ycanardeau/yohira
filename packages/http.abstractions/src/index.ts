@@ -10,6 +10,7 @@ export * from './routing/EndpointMetadataCollection';
 export * from './routing/IEndpointFeature';
 export * from './CookieBuilder';
 export * from './CookieSecurePolicy';
+export * from './HostString';
 export * from './HttpMethods';
 export * from './IAppBuilder';
 export * from './IHttpContext';
