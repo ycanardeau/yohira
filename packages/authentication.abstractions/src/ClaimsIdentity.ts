@@ -142,11 +142,6 @@ export class ClaimsIdentity implements IIdentity {
 		return !!this._authenticationType;
 	}
 
-	get name(): string | undefined {
-		// TODO
-		throw new Error('Method not implemented.');
-	}
-
 	findFirst(type: string): Claim | undefined {
 		for (const claim of this.claims) {
 			if (claim !== undefined) {
@@ -154,6 +149,16 @@ export class ClaimsIdentity implements IIdentity {
 					return claim;
 				}
 			}
+		}
+
+		return undefined;
+	}
+
+	// just an accessor for getting the name claim
+	get name(): string | undefined {
+		const claim = this.findFirst(this.nameClaimType);
+		if (claim !== undefined) {
+			return claim.value;
 		}
 
 		return undefined;
