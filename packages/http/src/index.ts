@@ -1,5 +1,6 @@
 export * from './builder/AppBuilder';
 export * from './features/HttpRequestFeature';
+export * from './features/HttpRequestIdentifierFeature';
 export * from './features/HttpResponseFeature';
 export * from './features/IHttpActivityFeature';
 export * from './features/RequestServicesFeature';

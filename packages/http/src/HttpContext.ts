@@ -11,6 +11,7 @@ import {
 } from '@yohira/extensions.features';
 import {
 	HttpRequestFeature,
+	HttpRequestIdentifierFeature,
 	HttpResponseFeature,
 	RequestServicesFeature,
 } from '@yohira/http';
@@ -18,7 +19,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
 	IHttpRequestFeature,
-	IHttpResponseBodyFeature,
+	IHttpRequestIdentifierFeature,
 	IHttpResponseFeature,
 	IItemsFeature,
 	IServiceProvidersFeature,
@@ -34,6 +35,7 @@ class FeatureInterfaces {
 	items: IItemsFeature | undefined;
 	serviceProviders: IServiceProvidersFeature | undefined;
 	authentication: IHttpAuthenticationFeature | undefined;
+	requestIdentifier: IHttpRequestIdentifierFeature | undefined;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/DefaultHttpContext.cs,804830786046817e,references
@@ -46,6 +48,8 @@ export class HttpContext implements IHttpContext {
 		new RequestServicesFeature(context, context.serviceScopeFactory);
 	private static readonly newHttpAuthenticationFeature =
 		(): IHttpAuthenticationFeature => new HttpAuthenticationFeature();
+	private static readonly newHttpRequestIdentifierFeature =
+		(): IHttpRequestIdentifierFeature => new HttpRequestIdentifierFeature();
 
 	private _features = new FeatureReferences<FeatureInterfaces>(
 		() => new FeatureInterfaces(),
@@ -144,6 +148,19 @@ export class HttpContext implements IHttpContext {
 		)!;
 	}
 
+	private get requestIdentifierFeature(): IHttpRequestIdentifierFeature {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		return this._features.fetch(
+			IHttpRequestIdentifierFeature,
+			{
+				get: () => this._features.cache.requestIdentifier,
+				set: (value) =>
+					(this._features.cache.requestIdentifier = value),
+			},
+			HttpContext.newHttpRequestIdentifierFeature,
+		)!;
+	}
+
 	get features(): IFeatureCollection {
 		if (this._features === undefined) {
 			throw new Error('Request has finished and IHttpContext disposed.');
@@ -184,5 +201,12 @@ export class HttpContext implements IHttpContext {
 	}
 	set requestServices(value: IServiceProvider) {
 		this.serviceProvidersFeature.requestServices = value;
+	}
+
+	get traceIdentifier(): string {
+		return this.requestIdentifierFeature.traceIdentifier;
+	}
+	set traceIdentifier(value: string) {
+		this.requestIdentifierFeature.traceIdentifier = value;
 	}
 }
