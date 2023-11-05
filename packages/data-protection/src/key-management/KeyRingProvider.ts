@@ -130,7 +130,11 @@ export class KeyRingProvider
 		// we'll return a value in the vicinity of 48 - 60 minutes. We use the Random class since
 		// we don't need a secure PRNG for this.
 		return TimeSpan.fromTicks(
-			refreshPeriod.ticks * (1.0 - Math.random() / 5),
+			BigInt(
+				Math.floor(
+					Number(refreshPeriod.ticks) * (1.0 - Math.random() / 5),
+				),
+			),
 		);
 	}
 
