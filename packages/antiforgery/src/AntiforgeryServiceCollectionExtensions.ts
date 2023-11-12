@@ -3,12 +3,15 @@ import {
 	IServiceCollection,
 	ServiceDescriptor,
 	ServiceLifetime,
+	tryAddServiceDescriptor,
 	tryAddServiceDescriptorIterable,
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 
 import { AntiforgeryOptions } from './AntiforgeryOptions';
 import { AntiforgeryOptionsSetup } from './AntiforgeryOptionsSetup';
+import { DefaultAntiforgery } from './DefaultAntiforgery';
+import { IAntiforgery } from './IAntiforgery';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Antiforgery/AntiforgeryServiceCollectionExtensions.cs,5dede04cf233c9b3,references
 export function addAntiforgery(
@@ -27,6 +30,14 @@ export function addAntiforgery(
 		),
 	);
 
+	tryAddServiceDescriptor(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			IAntiforgery,
+			DefaultAntiforgery,
+		),
+	);
 	// TODO
 
 	if (setupAction !== undefined) {
