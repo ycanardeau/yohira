@@ -15,6 +15,7 @@
 		"declaration": true,
 		"baseUrl": "./",
 		"paths": {
+			"@yohira/antiforgery": ["packages/antiforgery/src"],
 			"@yohira/authentication": ["packages/authentication/src"],
 			"@yohira/authentication.abstractions": [
 				"packages/authentication.abstractions/src"

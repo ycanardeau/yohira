@@ -1,3 +1,4 @@
+export * from './antiforgery/src';
 export * from './authentication/src';
 export * from './authentication.abstractions/src';
 export * from './authentication.cookies/src';

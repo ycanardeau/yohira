@@ -4,6 +4,10 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	resolve: {
 		alias: {
+			'@yohira/antiforgery': resolve(
+				__dirname,
+				'./packages/antiforgery/src',
+			),
 			'@yohira/authentication': resolve(
 				__dirname,
 				'./packages/authentication/src',
