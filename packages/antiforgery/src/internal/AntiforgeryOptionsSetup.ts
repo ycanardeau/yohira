@@ -3,7 +3,7 @@ import { DataProtectionOptions } from '@yohira/data-protection';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { IConfigureOptions, IOptions } from '@yohira/extensions.options';
 
-import { AntiforgeryOptions } from './AntiforgeryOptions';
+import { AntiforgeryOptions } from '../AntiforgeryOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Antiforgery/Internal/AntiforgeryOptionsSetup.cs,e8ae2e6c9046671d,references
 export class AntiforgeryOptionsSetup

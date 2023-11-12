@@ -216,6 +216,10 @@ class TestHttpResponseFeature implements IHttpResponseFeature {
 	responseHeaders: IResponseHeaderDictionary =
 		{} as IResponseHeaderDictionary /* TODO */;
 
+	get hasStarted(): boolean {
+		return false;
+	}
+
 	onCompleted(
 		callback: (state: object) => Promise<void>,
 		state: object,

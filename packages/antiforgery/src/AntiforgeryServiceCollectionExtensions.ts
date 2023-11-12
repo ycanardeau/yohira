@@ -9,9 +9,11 @@ import {
 import { configureOptionsServices } from '@yohira/extensions.options';
 
 import { AntiforgeryOptions } from './AntiforgeryOptions';
-import { AntiforgeryOptionsSetup } from './AntiforgeryOptionsSetup';
-import { DefaultAntiforgery } from './DefaultAntiforgery';
 import { IAntiforgery } from './IAntiforgery';
+import { AntiforgeryOptionsSetup } from './internal/AntiforgeryOptionsSetup';
+import { DefaultAntiforgery } from './internal/DefaultAntiforgery';
+import { DefaultAntiforgeryTokenStore } from './internal/DefaultAntiforgeryTokenStore';
+import { IAntiforgeryTokenStore } from './internal/IAntiforgeryTokenStore';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Antiforgery/AntiforgeryServiceCollectionExtensions.cs,5dede04cf233c9b3,references
 export function addAntiforgery(
@@ -36,6 +38,15 @@ export function addAntiforgery(
 			ServiceLifetime.Singleton,
 			IAntiforgery,
 			DefaultAntiforgery,
+		),
+	);
+	// TODO
+	tryAddServiceDescriptor(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			IAntiforgeryTokenStore,
+			DefaultAntiforgeryTokenStore,
 		),
 	);
 	// TODO

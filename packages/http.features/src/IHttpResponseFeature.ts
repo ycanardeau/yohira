@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'node:http';
 
 export type IResponseHeaderDictionary = Pick<
 	ServerResponse<IncomingMessage>,
-	'getHeaders' | 'getHeader' | 'setHeader'
+	'getHeaders' | 'getHeader' | 'setHeader' | 'hasHeader'
 >;
 
 export const IHttpResponseFeature = Symbol.for('IHttpResponseFeature');
@@ -15,6 +15,7 @@ export interface IHttpResponseFeature {
 	 * Gets or sets the response headers to send. Headers with multiple values will be emitted as multiple headers.
 	 */
 	responseHeaders: IResponseHeaderDictionary;
+	readonly hasStarted: boolean;
 	onStarting(callback: (state: object) => Promise<void>, state: object): void;
 	onCompleted(
 		callback: (state: object) => PromiseLike<void>,

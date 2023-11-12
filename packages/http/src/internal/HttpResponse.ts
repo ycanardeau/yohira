@@ -122,8 +122,7 @@ export class HttpResponse implements IHttpResponse {
 	}
 
 	get hasStarted(): boolean {
-		// TODO: return this.httpResponseFeature.hasStarted;
-		throw new Error('Method not implemented.');
+		return this.httpResponseFeature.hasStarted;
 	}
 
 	onStarting(

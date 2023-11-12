@@ -6,6 +6,13 @@ import { SameSiteMode } from '@yohira/http.features';
  * Provides programmatic configuration for the antiforgery token system.
  */
 export class AntiforgeryOptions {
+	private static readonly antiforgeryTokenFieldName =
+		'__RequestVerificationToken';
+	private static readonly antiforgeryTokenHeaderName =
+		'RequestVerificationToken';
+
+	private _formFieldName = AntiforgeryOptions.antiforgeryTokenFieldName;
+
 	private _cookieBuilder = ((): CookieBuilder => {
 		const cookieBuilder = new CookieBuilder();
 
@@ -36,4 +43,29 @@ export class AntiforgeryOptions {
 	set cookie(value: CookieBuilder) {
 		this._cookieBuilder = value;
 	}
+
+	/**
+	 * Specifies the name of the antiforgery token field that is used by the antiforgery system.
+	 */
+	get formFieldName(): string {
+		return this._formFieldName;
+	}
+	set formFieldName(value: string) {
+		this._formFieldName = value;
+	}
+
+	/**
+	 * Specifies the name of the header value that is used by the antiforgery system. If <c>null</c> then
+	 * antiforgery validation will only consider form data.
+	 */
+	headerName: string | undefined =
+		AntiforgeryOptions.antiforgeryTokenHeaderName;
+
+	/**
+	 * Specifies whether to suppress the generation of X-Frame-Options header
+	 * which is used to prevent ClickJacking. By default, the X-Frame-Options
+	 * header is generated with the value SAMEORIGIN. If this setting is 'true',
+	 * the X-Frame-Options header will not be generated for the response.
+	 */
+	suppressXFrameOptionsHeader = false;
 }

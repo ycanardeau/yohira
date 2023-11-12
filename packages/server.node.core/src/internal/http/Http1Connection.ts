@@ -300,6 +300,10 @@ export class Http1Connection
 		return this.response;
 	}
 
+	get hasStarted(): boolean {
+		return this.hasResponseStarted;
+	}
+
 	private _endpoint: Endpoint | undefined;
 	get endpoint(): Endpoint | undefined {
 		return this._endpoint;

@@ -4,6 +4,7 @@ export * from './extensions/IEndpointConventionBuilder';
 export * from './extensions/RunExtensions';
 export * from './extensions/UseExtensions';
 export * from './extensions/UseMiddlewareExtensions';
+export * from './metadata/IAntiforgeryMetadata';
 export * from './routing/Endpoint';
 export * from './routing/EndpointHttpContextExtensions';
 export * from './routing/EndpointMetadataCollection';

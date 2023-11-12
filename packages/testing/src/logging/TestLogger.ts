@@ -38,7 +38,7 @@ export class TestLogger implements ILogger {
 				const context = new WriteContext();
 				context.logLevel = logLevel;
 				// TODO: context.eventId = eventId;
-				// TODO: context.state = state;
+				context.state = message /* TODO */;
 				// TODO: context.error = error
 				// TODO: context.formatter = (s, e) => formatter(s, e);
 				context.loggerName = this.name;
