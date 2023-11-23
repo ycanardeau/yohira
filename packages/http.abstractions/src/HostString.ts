@@ -4,6 +4,25 @@ import { StringSegment } from '@yohira/extensions.primitives';
 export class HostString {
 	constructor(readonly value: string) {}
 
+	static fromHostAndPort(host: string, port: number): HostString {
+		if (port <= 0) {
+			throw new Error('The value must be greater than zero.' /* LOC */);
+		}
+
+		let index: number;
+		if (
+			!host.includes('[') &&
+			(index = host.indexOf(':')) >= 0 &&
+			index < host.length - 1 &&
+			host.indexOf(':', index + 1) >= 0
+		) {
+			// IPv6 without brackets ::1 is the only type of host with 2 or more colons
+			host = `[${host}]`;
+		}
+
+		return new HostString(`${host}:${port}`);
+	}
+
 	static fromUriComponent(uriComponent: string): HostString {
 		if (!!uriComponent) {
 			let index = 0;
@@ -66,10 +85,32 @@ export class HostString {
 		return { host, port };
 	}
 
+	/**
+	 * Returns the value of the host part of the value. The port is removed if it was present.
+	 * IPv6 addresses will have brackets added if they are missing.
+	 * @returns The host portion of the value.
+	 */
 	get host(): string {
 		const { host } = HostString.getParts(StringSegment.from(this.value));
 
 		return host.toString();
+	}
+
+	/**
+	 * Returns the value of the port part of the host, or <value>null</value> if none is found.
+	 * @returns The port portion of the value.
+	 */
+	get port(): number | undefined {
+		const { port } = HostString.getParts(StringSegment.from(this.value));
+
+		if (
+			!StringSegment.isNullOrEmpty(port) &&
+			Number.isInteger(Number(port.toString()))
+		) {
+			return Number(port.toString());
+		}
+
+		return undefined;
 	}
 
 	toUriComponent(): string {
