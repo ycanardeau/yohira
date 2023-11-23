@@ -7,6 +7,7 @@ import {
 	IHttpContext,
 	IHttpRequest,
 	PathString,
+	QueryString,
 } from '@yohira/http.abstractions';
 import {
 	IHttpRequestFeature,
@@ -125,8 +126,8 @@ export class HttpRequest implements IHttpRequest {
 		this.httpRequestFeature.path = value.value ?? '';
 	}
 
-	get queryString(): string {
-		return this.httpRequestFeature.queryString;
+	get queryString(): QueryString {
+		return new QueryString(this.httpRequestFeature.queryString);
 	}
 
 	get headers(): IncomingHttpHeaders {

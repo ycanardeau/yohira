@@ -4,6 +4,7 @@ import { IncomingHttpHeaders } from 'node:http';
 import { HostString } from './HostString';
 import { IHttpContext } from './IHttpContext';
 import { PathString } from './PathString';
+import { QueryString } from './QueryString';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HttpRequest.cs,ea81be9b74317002,references
 export interface IHttpRequest {
@@ -26,7 +27,7 @@ export interface IHttpRequest {
 	host: HostString;
 	pathBase: PathString;
 	path: PathString;
-	queryString: string;
+	queryString: QueryString;
 	readonly headers: IncomingHttpHeaders;
 	/**
 	 * Gets the collection of Cookies for this request.
