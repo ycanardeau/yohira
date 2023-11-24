@@ -55,7 +55,18 @@ test('Port_ExtractsPortFromValue', () => {
 	Port_ExtractsPortFromValue('本地主機:5000', 5000);
 });
 
-// TODO
+// https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Http/Http.Abstractions/test/HostStringTest.cs#L64C17-L64C50
+test('Port_ExtractsInvalidPortFromValue', () => {
+	function Port_ExtractsInvalidPortFromValue(sourceValue: string): void {
+		const hostString = new HostString(sourceValue);
+
+		const result = hostString.port;
+
+		expect(result).toBeUndefined();
+	}
+
+	Port_ExtractsInvalidPortFromValue('localhost:BLAH');
+});
 
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Http/Http.Abstractions/test/HostStringTest.cs#L82C17-L82C44
 test('Ctor_CreatesFromHostAndPort', () => {
@@ -89,6 +100,15 @@ test('Ctor_CreatesFromHostAndPort', () => {
 		5000,
 	);
 	Ctor_CreatesFromHostAndPort('本地主機', 5000, '本地主機', 5000);
+});
+
+// TODO
+
+// https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Http/Http.Abstractions/test/HostStringTest.cs#L118C17-L118C62
+test('NotEquals_EmptyHostStringAndNonNullHostString', () => {
+	const hostString = new HostString('example.com');
+
+	expect(new HostString('').equals(hostString)).toBe(false);
 });
 
 // TODO

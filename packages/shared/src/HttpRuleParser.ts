@@ -1,3 +1,4 @@
+import { indexOfAnyExcept } from '@yohira/base';
 import { StringSegment } from '@yohira/extensions.primitives';
 
 // token = 1*<any CHAR except CTLs or separators>
@@ -11,19 +12,6 @@ const CR = '\r';
 const LF = '\n';
 const SP = ' ';
 const Tab = '\t';
-
-// OPTIMIZE
-export function indexOfAnyExcept(
-	searchSpace: string,
-	values: string[],
-): number {
-	for (let i = 0; i < searchSpace.length; i++) {
-		if (values.every((value) => value !== searchSpace[i])) {
-			return i;
-		}
-	}
-	return -1;
-}
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/src/Shared/HttpRuleParser.cs,867e8f421db604f4,references
 export function getTokenLength(

@@ -1,7 +1,14 @@
+import { includesAnyExcept } from '@yohira/base';
 import { StringSegment } from '@yohira/extensions.primitives';
+import { domainToASCII } from 'node:url';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/HostString.cs,677c1978743f8e43,references
 export class HostString {
+	private static readonly safeHostStringChars =
+		'%-.0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ[]abcdefghijklmnopqrstuvwxyz'.split(
+			'',
+		);
+
 	constructor(readonly value: string) {}
 
 	static fromHostAndPort(host: string, port: number): HostString {
@@ -45,7 +52,7 @@ export class HostString {
 	}
 
 	get hasValue(): boolean {
-		return !this.value;
+		return !!this.value;
 	}
 
 	private static getParts(value: StringSegment): {
@@ -113,8 +120,42 @@ export class HostString {
 		return undefined;
 	}
 
+	/**
+	 * Compares the equality of the Value property, ignoring case.
+	 * @param other The {@link HostString} to compare against.
+	 * @returns <see langword="true" /> if they have the same value.
+	 */
+	equals(other: HostString): boolean {
+		if (!this.hasValue && !other.hasValue) {
+			return true;
+		}
+		return this.value.toLowerCase() === other.value.toLowerCase();
+	}
+
 	toUriComponent(): string {
-		// TODO
-		throw new Error('Method not implemented.');
+		if (!this.hasValue) {
+			return '';
+		}
+
+		if (!includesAnyExcept(this.value, HostString.safeHostStringChars)) {
+			return this.value;
+		}
+
+		const { host, port } = HostString.getParts(
+			StringSegment.from(this.value),
+		);
+
+		const encoded = domainToASCII(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			host.buffer!.substring(host.offset, host.offset + host.length),
+		);
+
+		return StringSegment.isNullOrEmpty(port)
+			? encoded
+			: encoded.concat(':', port.toString());
+	}
+
+	toString(): string {
+		return this.toUriComponent();
 	}
 }

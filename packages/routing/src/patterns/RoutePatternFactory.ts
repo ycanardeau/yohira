@@ -1,8 +1,10 @@
+import { indexOfAny } from '@yohira/base';
+
 import { RoutePattern } from './RoutePattern';
 import { RoutePatternLiteralPart } from './RoutePatternLiteralPart';
 import { RoutePatternParameterKind } from './RoutePatternParameterKind';
 import { RoutePatternParameterPart } from './RoutePatternParameterPart';
-import { indexOfAny, invalidParameterNameChars } from './RoutePatternParser';
+import { invalidParameterNameChars } from './RoutePatternParser';
 import { RoutePatternPart } from './RoutePatternPart';
 import { RoutePatternPathSegment } from './RoutePatternPathSegment';
 import { RoutePatternSeparatorPart } from './RoutePatternSeparatorPart';

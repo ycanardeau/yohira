@@ -1,4 +1,4 @@
-import { CaseInsensitiveSet, List, replaceAll } from '@yohira/base';
+import { CaseInsensitiveSet, List, indexOfAny, replaceAll } from '@yohira/base';
 
 import { parseRouteParameter } from './RouteParameterParser';
 import { RoutePattern } from './RoutePattern';
@@ -168,18 +168,6 @@ function parseLiteral(context: Context, parts: RoutePatternPart[]): boolean {
 	} else {
 		return false;
 	}
-}
-
-// OPTIMIZE
-export function indexOfAny(searchSpace: string, values: string[]): number {
-	for (const value of values) {
-		const indexOf = searchSpace.indexOf(value);
-		if (indexOf >= 0) {
-			return indexOf;
-		}
-	}
-
-	return -1;
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Routing/Patterns/RoutePatternParser.cs,ec4f220dc199081d,references

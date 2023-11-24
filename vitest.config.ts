@@ -120,6 +120,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/http.abstractions/src',
 			),
+			'@yohira/http.extensions': resolve(
+				__dirname,
+				'./packages/http.extensions/src',
+			),
 			'@yohira/http.features': resolve(
 				__dirname,
 				'./packages/http.features/src',
