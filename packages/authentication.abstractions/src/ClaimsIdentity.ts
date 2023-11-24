@@ -47,12 +47,13 @@ export class ClaimsIdentity implements IIdentity {
 	bootstrapContext: unknown /* TODO */ | undefined;
 	private externalClaims: Claim[][] | undefined;
 	private readonly instanceClaims: Claim[] = [];
-	readonly nameClaimType = ClaimsIdentity.defaultNameClaimType;
-	readonly roleClaimType = ClaimsIdentity.defaultRoleClaimType;
 
 	static readonly defaultIssuer = 'LOCAL AUTHORITY';
 	static readonly defaultNameClaimType = ClaimTypes.name;
 	static readonly defaultRoleClaimType = ClaimTypes.role;
+
+	readonly nameClaimType = ClaimsIdentity.defaultNameClaimType;
+	readonly roleClaimType = ClaimsIdentity.defaultRoleClaimType;
 
 	/**
 	 * Initializes an instance of {@link ClaimsIdentity}.
