@@ -28,7 +28,7 @@ export class QueryString {
 	 */
 	toUriComponent(): string {
 		// Escape things properly so System.Uri doesn't mis-interpret the data.
-		return !!this.value ? this.value.replace('#', '%23') : '';
+		return !!this.value ? this.value.replaceAll('#', '%23') : '';
 	}
 
 	toString(): string {

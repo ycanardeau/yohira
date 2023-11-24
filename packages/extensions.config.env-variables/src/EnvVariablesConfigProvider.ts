@@ -1,8 +1,4 @@
-import {
-	CaseInsensitiveMap,
-	replaceAll,
-	startsWithIgnoreCase,
-} from '@yohira/base';
+import { CaseInsensitiveMap, startsWithIgnoreCase } from '@yohira/base';
 import { ConfigProvider } from '@yohira/extensions.config';
 import { keyDelimiter } from '@yohira/extensions.config.abstractions';
 import { env } from 'node:process';
@@ -18,8 +14,7 @@ export class EnvVariablesConfigProvider extends ConfigProvider {
 	private readonly normalizedPrefix: string;
 
 	private static normalize(key: string): string {
-		// TODO: Replace with string.replaceAll.
-		return replaceAll(key, '__', keyDelimiter);
+		return key.replaceAll('__', keyDelimiter);
 	}
 
 	constructor(prefix: string | undefined) {

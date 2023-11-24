@@ -1,4 +1,4 @@
-import { CaseInsensitiveSet, List, indexOfAny, replaceAll } from '@yohira/base';
+import { CaseInsensitiveSet, List, indexOfAny } from '@yohira/base';
 
 import { parseRouteParameter } from './RouteParameterParser';
 import { RoutePattern } from './RoutePattern';
@@ -161,7 +161,7 @@ function parseLiteral(context: Context, parts: RoutePatternPart[]): boolean {
 	}
 
 	const encoded = context.capture()!;
-	const decoded = replaceAll(replaceAll(encoded, '}}', '}'), '{{', '{');
+	const decoded = encoded.replaceAll('}}', '}').replaceAll('{{', '{');
 	if (isValidLiteral(context, decoded)) {
 		parts.push(createLiteralPart(decoded));
 		return true;
@@ -250,7 +250,7 @@ function parseParameter(context: Context, parts: RoutePatternPart[]): boolean {
 	}
 
 	const inside = text?.substring(1, text.length - 1);
-	const decoded = replaceAll(replaceAll(inside, '}}', '}'), '{{', '{');
+	const decoded = inside.replaceAll('}}', '}').replaceAll('{{', '{');
 
 	// At this point, we need to parse the raw name for inline constraint,
 	// default values and optional parameters.
