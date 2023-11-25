@@ -5,48 +5,30 @@ import {
 	addSingletonInstance,
 	tryAddServiceDescriptor,
 } from '@yohira/extensions.dependency-injection.abstractions';
-import {
-	HostBuilderContext,
-	IHostBuilder,
-} from '@yohira/extensions.hosting.abstractions';
+import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
 import { IWebHostBuilder, IWebHostEnv } from '@yohira/hosting.abstractions';
 import { IAppBuilder, IHttpContextFactory } from '@yohira/http.abstractions';
 
 import { WebHostBuilderContext } from '../WebHostBuilderContext';
+import { WebHostBuilderOptions } from '../WebHostBuilderOptions';
 import { AppBuilderFactory } from '../builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
 import { GenericWebHostServiceOptions } from '../generic-host/GenericWebHostServiceOptions';
 import { HttpContextFactory } from '../http/HttpContextFactory';
 import { ISupportsStartup } from '../infrastructure/ISupportsStartup';
-import { HostingEnv } from '../internal/HostingEnv';
-import { initialize } from '../internal/HostingEnvExtensions';
-import { WebHostOptions } from '../internal/WebHostOptions';
+import { WebHostBuilderBase } from './WebHostBuilderBase';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references
 export class GenericWebHostBuilder
-	implements IWebHostBuilder, ISupportsStartup
+	extends WebHostBuilderBase
+	implements ISupportsStartup
 {
 	private startupObject: unknown | undefined;
 
-	private getWebHostBuilderContext(
-		context: HostBuilderContext,
-	): WebHostBuilderContext {
-		const options = new WebHostOptions(context.config);
-		const webHostBuilderContext = new WebHostBuilderContext(/* TODO */);
-		// TODO
-		webHostBuilderContext.hostingEnv = new HostingEnv();
-		initialize(
-			webHostBuilderContext.hostingEnv,
-			context.hostingEnv.contentRootPath,
-			options,
-			context.hostingEnv,
-		);
-		// TODO
-		return webHostBuilderContext;
-	}
+	constructor(builder: IHostBuilder, options: WebHostBuilderOptions) {
+		super(builder, options);
 
-	constructor(private readonly builder: IHostBuilder /* TODO: options */) {
 		// TODO
 
 		builder.configureServices((context, services) => {

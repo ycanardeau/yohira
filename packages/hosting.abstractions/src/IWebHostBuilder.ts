@@ -9,4 +9,5 @@ export interface IWebHostBuilder {
 			services: IServiceCollection,
 		) => void,
 	): this;
+	useSetting(key: string, value: string | undefined): this;
 }

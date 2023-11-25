@@ -10,3 +10,4 @@ export * from './internal/HostingEnv';
 export * from './GenericHostWebHostBuilderExtensions';
 export * from './WebHostBuilderContext';
 export * from './WebHostBuilderExtensions';
+export * from './WebHostBuilderOptions';

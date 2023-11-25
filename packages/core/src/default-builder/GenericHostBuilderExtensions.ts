@@ -1,5 +1,5 @@
 import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
-import { configureWebHost } from '@yohira/hosting';
+import { WebHostBuilderOptions, configureWebHost } from '@yohira/hosting';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions';
 
 import { configureWebDefaults } from './WebHost';
@@ -8,7 +8,7 @@ import { configureWebDefaults } from './WebHost';
 export function configureWebHostDefaults(
 	builder: IHostBuilder,
 	configure: (webHostBuilder: IWebHostBuilder) => void,
-	// TODO: configureOptions
+	configureOptions: (options: WebHostBuilderOptions) => void = (): void => {},
 ): IHostBuilder {
 	return configureWebHost(
 		builder,
@@ -16,6 +16,7 @@ export function configureWebHostDefaults(
 			configureWebDefaults(webHostBuilder);
 
 			configure(webHostBuilder);
-		} /* TODO: configureOptions */,
+		},
+		configureOptions,
 	);
 }

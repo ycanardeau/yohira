@@ -4,6 +4,7 @@ import {
 } from '@yohira/extensions.hosting.abstractions';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions';
 
+import { WebHostBuilderOptions } from './WebHostBuilderOptions';
 import { GenericWebHostBuilder } from './generic-host/GenericWebHostBuilder';
 import { GenericWebHostService } from './generic-host/GenericWebHostService';
 
@@ -11,10 +12,16 @@ import { GenericWebHostService } from './generic-host/GenericWebHostService';
 export function configureWebHost(
 	builder: IHostBuilder,
 	configure: (webHostBuilder: IWebHostBuilder) => void,
-	// TODO: configureWebHostBuilder
+	configureWebHostBuilder: (options: WebHostBuilderOptions) => void,
 ): IHostBuilder {
 	// TODO
-	const webHostBuilder = new GenericWebHostBuilder(builder);
+
+	const webHostBuilderOptions = new WebHostBuilderOptions();
+	configureWebHostBuilder(webHostBuilderOptions);
+	const webHostBuilder = new GenericWebHostBuilder(
+		builder,
+		webHostBuilderOptions,
+	);
 	configure(webHostBuilder);
 	builder.configureServices((context, services) =>
 		addHostedService(GenericWebHostService, services),
