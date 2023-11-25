@@ -29,6 +29,10 @@ export class TimeSpan {
 		return new TimeSpan(BigInt(value) * ticksPerMillisecond);
 	}
 
+	static fromSeconds(value: number): TimeSpan {
+		return new TimeSpan(BigInt(value) * ticksPerSecond);
+	}
+
 	get totalMilliseconds(): number {
 		return Number(this.ticks / ticksPerMillisecond);
 	}

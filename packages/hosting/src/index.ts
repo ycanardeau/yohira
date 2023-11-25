@@ -7,6 +7,7 @@ export * from './http/HttpContextFactory';
 export * from './infrastructure/ISupportsStartup';
 export * from './internal/HostingApp';
 export * from './internal/HostingEnv';
+export * from './server/features/ServerAddressesFeature';
 export * from './GenericHostWebHostBuilderExtensions';
 export * from './WebHostBuilderContext';
 export * from './WebHostBuilderExtensions';

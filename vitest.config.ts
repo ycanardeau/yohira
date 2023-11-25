@@ -78,6 +78,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/extensions.file-providers/src',
 			),
+			'@yohira/extensions.hosting': resolve(
+				__dirname,
+				'./packages/extensions.hosting/src',
+			),
 			'@yohira/extensions.hosting.abstractions': resolve(
 				__dirname,
 				'./packages/extensions.hosting.abstractions/src',
@@ -146,6 +150,7 @@ export default defineConfig({
 				'./packages/server.node.core/src',
 			),
 			'@yohira/shared': resolve(__dirname, './packages/shared/src'),
+			'@yohira/test-host': resolve(__dirname, './packages/test-host/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,
 				'./packages/third-party.inversify/src',

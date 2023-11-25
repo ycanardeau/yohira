@@ -12,7 +12,9 @@ import { GenericWebHostService } from './generic-host/GenericWebHostService';
 export function configureWebHost(
 	builder: IHostBuilder,
 	configure: (webHostBuilder: IWebHostBuilder) => void,
-	configureWebHostBuilder: (options: WebHostBuilderOptions) => void,
+	configureWebHostBuilder: (
+		options: WebHostBuilderOptions,
+	) => void = (): void => {},
 ): IHostBuilder {
 	// TODO
 

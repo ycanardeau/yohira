@@ -1,10 +1,36 @@
-import { IHttpApp, IServer } from '@yohira/hosting.server.abstractions';
+import {
+	FeatureCollection,
+	IFeatureCollection,
+} from '@yohira/extensions.features';
+import { ServerAddressesFeature } from '@yohira/hosting';
+import {
+	IHttpApp,
+	IServer,
+	IServerAddressesFeature,
+} from '@yohira/hosting.server.abstractions';
 import { Http1Connection } from '@yohira/server.node.core';
 import { createServer } from 'node:http';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/KestrelServerImpl.cs,6911f1692c68cbd5,references
 export class NodeServerImpl implements IServer, AsyncDisposable {
+	private readonly serverAddresses: ServerAddressesFeature;
+
 	private hasStarted = false;
+
+	readonly features: IFeatureCollection;
+
+	constructor() {
+		// TODO
+
+		this.features = new FeatureCollection();
+		this.serverAddresses = new ServerAddressesFeature();
+		this.features.set<IServerAddressesFeature>(
+			IServerAddressesFeature,
+			this.serverAddresses,
+		);
+
+		// TODO
+	}
 
 	async start<TContext>(app: IHttpApp<TContext>): Promise<void> {
 		// TODO: validateOptions
