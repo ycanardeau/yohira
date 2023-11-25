@@ -34,5 +34,10 @@ export interface IHttpRequest {
 	 * @returns The collection of Cookies for this request.
 	 */
 	readonly cookies: IRequestCookieCollection;
+	/**
+	 * Gets or sets the Content-Type header.
+	 * @returns The Content-Type header.
+	 */
+	contentType: string | undefined;
 	rawBody: string;
 }

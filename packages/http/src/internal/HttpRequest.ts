@@ -140,4 +140,11 @@ export class HttpRequest implements IHttpRequest {
 	set cookies(value: IRequestCookieCollection) {
 		this.requestCookiesFeature.cookies = value;
 	}
+
+	get contentType(): string | undefined {
+		return this.headers['content-type'];
+	}
+	set contentType(value: string | undefined) {
+		this.headers['content-type'] = value;
+	}
 }
