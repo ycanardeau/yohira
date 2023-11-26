@@ -1,3 +1,4 @@
+import { tryGetValue } from '@yohira/base';
 import {
 	ConfigBuilder,
 	addInMemoryCollection,
@@ -39,13 +40,17 @@ export abstract class WebHostBuilderBase implements IWebHostBuilder {
 	protected getWebHostBuilderContext(
 		context: HostBuilderContext,
 	): WebHostBuilderContext {
-		if (true /* TODO */) {
+		const tryGetValueResult = tryGetValue(
+			context.properties,
+			Symbol.for('WebHostBuilderContext'),
+		);
+		if (!tryGetValueResult.ok) {
 			// Use _config as a fallback for WebHostOptions in case the chained source was removed from the hosting IConfigurationBuilder.
 			const options = new WebHostOptions(context.config);
 			const webHostBuilderContext = ((): WebHostBuilderContext => {
 				const webHostBuilderContext =
 					new WebHostBuilderContext(/* TODO */);
-				// TODO
+				webHostBuilderContext.config = context.config;
 				webHostBuilderContext.hostingEnv = new HostingEnv();
 				return webHostBuilderContext;
 			})();
@@ -55,12 +60,17 @@ export abstract class WebHostBuilderBase implements IWebHostBuilder {
 				options,
 				context.hostingEnv,
 			);
-			// TODO
+			context.properties.set(
+				Symbol.for('WebHostBuilderContext'),
+				webHostBuilderContext,
+			);
+			context.properties.set(Symbol.for('WebHostOptions'), options);
 			return webHostBuilderContext;
 		}
 
-		// TODO
-		throw new Error('Method not implemented.');
+		const webHostContext = tryGetValueResult.val as WebHostBuilderContext;
+		webHostContext.config = context.config;
+		return webHostContext;
 	}
 
 	configureServices(
@@ -70,9 +80,9 @@ export abstract class WebHostBuilderBase implements IWebHostBuilder {
 		) => void,
 	): this {
 		this.builder.configureServices((context, builder) => {
-			const webhostBuilderContext =
+			const webHostBuilderContext =
 				this.getWebHostBuilderContext(context);
-			configureServices(webhostBuilderContext, builder);
+			configureServices(webHostBuilderContext, builder);
 		});
 
 		return this;

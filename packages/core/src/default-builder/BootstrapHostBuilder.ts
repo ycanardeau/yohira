@@ -1,3 +1,4 @@
+import { IConfigBuilder } from '@yohira/extensions.config.abstractions';
 import { IServiceCollection } from '@yohira/extensions.dependency-injection.abstractions';
 import { HostAppBuilder } from '@yohira/extensions.hosting';
 import {
@@ -8,6 +9,9 @@ import {
 
 // https://source.dot.net/#Microsoft.AspNetCore/BootstrapHostBuilder.cs,9f38532326a07c2d,references
 export class BootstrapHostBuilder implements IHostBuilder {
+	private readonly configureHostActions: ((
+		config: IConfigBuilder,
+	) => void)[] = [];
 	private readonly configureServicesActions: ((
 		context: HostBuilderContext,
 		services: IServiceCollection,
@@ -32,6 +36,13 @@ export class BootstrapHostBuilder implements IHostBuilder {
 		this.context = context;
 	}
 
+	configureHostConfig(
+		configureDelegate: (config: IConfigBuilder) => void,
+	): this {
+		this.configureHostActions.push(configureDelegate);
+		return this;
+	}
+
 	configureServices(
 		configureDelegate: (
 			context: HostBuilderContext,
@@ -43,6 +54,10 @@ export class BootstrapHostBuilder implements IHostBuilder {
 	}
 
 	runDefaultCallbacks(): void /* TODO: ServiceDescriptor */ {
+		for (const configureHostAction of this.configureHostActions) {
+			configureHostAction(this.builder.config);
+		}
+
 		// TODO
 
 		for (const configureServicesAction of this.configureServicesActions) {

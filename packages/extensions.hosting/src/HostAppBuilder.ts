@@ -82,7 +82,7 @@ export class HostAppBuilder {
 
 		// TODO
 
-		this.hostBuilderContext = new HostBuilderContext(/* TODO */);
+		this.hostBuilderContext = new HostBuilderContext(new Map());
 		this.hostBuilderContext.hostingEnv = hostingEnv;
 		this.hostBuilderContext.config = this.config;
 
@@ -91,6 +91,7 @@ export class HostAppBuilder {
 		populateServiceCollection(
 			this.services,
 			this.hostBuilderContext,
+			this.config,
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			() => this.appServices!,
 		);

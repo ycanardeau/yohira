@@ -1,3 +1,4 @@
+import { addConfig } from '@yohira/extensions.config';
 import {
 	IServiceCollection,
 	ServiceDescriptor,
@@ -14,9 +15,10 @@ import { WebHostBuilderContext } from '../WebHostBuilderContext';
 import { WebHostBuilderOptions } from '../WebHostBuilderOptions';
 import { AppBuilderFactory } from '../builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
-import { GenericWebHostServiceOptions } from '../generic-host/GenericWebHostServiceOptions';
 import { HttpContextFactory } from '../http/HttpContextFactory';
 import { ISupportsStartup } from '../infrastructure/ISupportsStartup';
+import { WebHostOptions } from '../internal/WebHostOptions';
+import { GenericWebHostServiceOptions } from './GenericWebHostServiceOptions';
 import { WebHostBuilderBase } from './WebHostBuilderBase';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/GenericHost/GenericWebHostBuilder.cs,409816af9b4cc30f,references
@@ -29,15 +31,37 @@ export class GenericWebHostBuilder
 	constructor(builder: IHostBuilder, options: WebHostBuilderOptions) {
 		super(builder, options);
 
+		builder.configureHostConfig((config) => {
+			addConfig(config, this.config);
+
+			// We do this super early but still late enough that we can process the configuration
+			// wired up by calls to UseSetting
+			// TODO: this.executeHostingStartups();
+		});
+
 		// TODO
 
 		builder.configureServices((context, services) => {
 			const webHostContext = this.getWebHostBuilderContext(context);
+			const webHostOptions = context.properties.get(
+				Symbol.for('WebHostOptions'),
+			) as WebHostOptions;
 
 			addSingletonInstance(
 				services,
 				IWebHostEnv,
 				webHostContext.hostingEnv,
+			);
+
+			configureOptionsServices(
+				GenericWebHostServiceOptions,
+				services,
+				(options) => {
+					// Set the options
+					options.webHostOptions = webHostOptions;
+					// Store and forward any startup errors
+					// TODO: options.hostingStartupErrors = this.hostingStartupErrors;
+				},
 			);
 
 			// TODO

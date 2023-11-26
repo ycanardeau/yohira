@@ -10,7 +10,8 @@ export interface IServer extends AsyncDisposable {
 	 */
 	readonly features: IFeatureCollection;
 	start<TContext>(
-		app: IHttpApp<TContext> /* TODO: cancellationToken */,
+		app: IHttpApp<TContext>,
+		// TODO: cancellationToken,
 	): Promise<void>;
 	stop(/* TODO: cancellationToken */): Promise<void>;
 }

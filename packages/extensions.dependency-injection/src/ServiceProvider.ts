@@ -71,7 +71,7 @@ export class ServiceProvider
 			new CallSiteChain(),
 		);
 		if (callSite !== undefined) {
-			// TODO: Log.
+			// TODO: log
 			this.onCreate(callSite);
 
 			// TODO: Optimize singleton case
@@ -151,7 +151,7 @@ export class ServiceProvider
 			}
 		}
 
-		// TODO: Log.
+		// TODO: log
 	}
 
 	private onResolve(serviceType: symbol, scope: IServiceScope): void {
@@ -176,9 +176,9 @@ export class ServiceProvider
 			this._createServiceAccessor,
 		);
 		this.onResolve(serviceType, serviceProviderEngineScope);
-		// TODO: Log.
+		// TODO: log
 		const result = realizedService(serviceProviderEngineScope);
-		// TODO: Assert.
+		// TODO: assert
 		return result as T | undefined;
 	}
 
