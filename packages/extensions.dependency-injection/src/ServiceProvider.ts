@@ -1,9 +1,4 @@
-import {
-	AggregateError,
-	ICollection,
-	IServiceProvider,
-	getOrAdd,
-} from '@yohira/base';
+import { ICollection, IServiceProvider, getOrAdd } from '@yohira/base';
 import {
 	IServiceScope,
 	IServiceScopeFactory,

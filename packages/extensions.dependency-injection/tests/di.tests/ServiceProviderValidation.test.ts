@@ -1,4 +1,4 @@
-import { AggregateError, keyForType } from '@yohira/base';
+import { keyForType } from '@yohira/base';
 import {
 	ServiceProviderOptions,
 	buildServiceProvider,

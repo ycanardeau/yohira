@@ -1,4 +1,3 @@
-export * from './AggregateError';
 export * from './BinaryReader';
 export * from './BinaryWriter';
 export * from './CaseInsensitiveMap';
