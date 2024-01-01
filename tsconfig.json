@@ -106,6 +106,7 @@
 			"@yohira/shared": ["packages/shared/src"],
 			"@yohira/static-files": ["packages/static-files/src"],
 			"@yohira/test-host": ["packages/test-host/src"],
+			"@yohira/testing": ["packages/testing/src"],
 			"@yohira/third-party.inversify": [
 				"packages/third-party.inversify/src"
 			],

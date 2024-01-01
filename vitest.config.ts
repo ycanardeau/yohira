@@ -151,6 +151,7 @@ export default defineConfig({
 			),
 			'@yohira/shared': resolve(__dirname, './packages/shared/src'),
 			'@yohira/test-host': resolve(__dirname, './packages/test-host/src'),
+			'@yohira/testing': resolve(__dirname, './packages/testing/src'),
 			'@yohira/third-party.inversify': resolve(
 				__dirname,
 				'./packages/third-party.inversify/src',
