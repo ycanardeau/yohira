@@ -2,7 +2,7 @@ import {
 	CaseInsensitiveMap,
 	CaseInsensitiveSet,
 	IEquatable,
-	getStringHashCode,
+	getHashCode,
 	tryGetValue,
 	typedef,
 } from '@yohira/base';
@@ -62,8 +62,7 @@ class EdgeKey implements IEquatable<EdgeKey> {
 
 	getHashCode(): number {
 		return (
-			((this.httpMethod ? getStringHashCode(this.httpMethod) : 23) *
-				397) ^
+			((this.httpMethod ? getHashCode(this.httpMethod) : 23) * 397) ^
 			(this.isCorsPreflightRequest ? 1 : 0)
 		);
 	}

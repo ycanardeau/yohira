@@ -7,6 +7,7 @@ export * from './DirectoryInfo';
 export * from './FileAttributes';
 export * from './FileInfo';
 export * from './FileSystemInfo';
+export * from './getHashCode';
 export * from './Guid';
 export * from './IAsyncDisposable';
 export * from './ICollection';

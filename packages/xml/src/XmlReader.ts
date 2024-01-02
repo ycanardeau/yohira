@@ -1,10 +1,4 @@
-import {
-	Out,
-	Ref,
-	StringBuilder,
-	TextReader,
-	getStringHashCode,
-} from '@yohira/base';
+import { Out, Ref, StringBuilder, TextReader, getHashCode } from '@yohira/base';
 
 import {
 	isAttributeValueChar,
@@ -563,7 +557,7 @@ class NameTable extends XmlNameTable {
 	}
 
 	/** @internal */ static computeHash32(key: string): number {
-		return getStringHashCode(key);
+		return getHashCode(key);
 	}
 
 	getString(value: string): string | undefined {
@@ -647,7 +641,7 @@ class NameTable extends XmlNameTable {
 			);
 		}
 
-		const hashCode = getStringHashCode(
+		const hashCode = getHashCode(
 			String.fromCharCode(...key.slice(start, start + len)),
 		);
 

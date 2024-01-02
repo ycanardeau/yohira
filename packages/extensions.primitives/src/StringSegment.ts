@@ -1,3 +1,5 @@
+import { getHashCode } from '@yohira/base';
+
 // https://source.dot.net/#Microsoft.Extensions.Primitives/StringSegment.cs,43c0264cae2a2363,references
 export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 	private constructor(
@@ -140,5 +142,13 @@ export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 
 	toString(): string {
 		return this.value ?? '';
+	}
+
+	getHashCode(): number {
+		return getHashCode(this.toString());
+	}
+
+	toLowerCase(): StringSegment {
+		return StringSegment.from(this.value?.toLowerCase());
 	}
 }

@@ -1,4 +1,4 @@
-import { getStringHashCode, tryGetValue } from '@yohira/base';
+import { getHashCode, tryGetValue } from '@yohira/base';
 
 import { XName } from './XName';
 
@@ -17,7 +17,7 @@ export class XNamespace {
 	private readonly names: Map<string, XName>; /* TODO: XHashtable */
 
 	constructor(readonly namespaceName: string) {
-		this.hashCode = getStringHashCode(namespaceName);
+		this.hashCode = getHashCode(namespaceName);
 		this.names = new Map() /* TODO: XHashtable */;
 	}
 

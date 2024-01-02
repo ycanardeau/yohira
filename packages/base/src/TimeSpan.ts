@@ -33,11 +33,20 @@ export class TimeSpan {
 		return new TimeSpan(BigInt(value) * ticksPerSecond);
 	}
 
+	static equals(t1: TimeSpan | undefined, t2: TimeSpan | undefined): boolean {
+		return t1?.ticks === t2?.ticks;
+	}
+
 	get totalMilliseconds(): number {
 		return Number(this.ticks / ticksPerMillisecond);
 	}
 
 	get totalSeconds(): number {
 		return Number(this.ticks / ticksPerSecond);
+	}
+
+	getHashCode(): number {
+		// REVIEW
+		return Number((this.ticks ^ (this.ticks >> 32n)) & 0xffffffffn);
 	}
 }

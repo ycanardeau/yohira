@@ -1,4 +1,4 @@
-import { IEquatable, getStringHashCode } from '@yohira/base';
+import { IEquatable, getHashCode } from '@yohira/base';
 
 import { XNamespace } from './XNamespace';
 import { verifyNCName } from './XmlConvert';
@@ -13,8 +13,7 @@ export class XName implements IEquatable<XName> {
 		localName: string,
 	) {
 		this._localName = verifyNCName(localName);
-		this.hashCode =
-			getStringHashCode(ns.toString()) ^ getStringHashCode(localName);
+		this.hashCode = getHashCode(ns.toString()) ^ getHashCode(localName);
 	}
 
 	static get(expandedName: string): XName {
