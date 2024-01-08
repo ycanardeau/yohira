@@ -10,12 +10,14 @@ import {
 	IResponseHeaderDictionary,
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
+import { createReadStream } from 'node:fs';
 import {
 	IncomingHttpHeaders,
 	IncomingMessage,
 	ServerResponse,
 } from 'node:http';
 import { Stream } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 
 import { RequestProcessingStatus } from './RequestProcessingStatus';
 
@@ -321,8 +323,13 @@ export class Http1Connection
 		offset: number,
 		count: number | undefined,
 	): Promise<void> {
-		// TODO
-		throw new Error('Method not implemented.');
+		return pipeline(
+			createReadStream(path, {
+				start: offset,
+				end: count !== undefined ? offset + count : undefined,
+			}),
+			this.response,
+		);
 	}
 
 	onStarting(
