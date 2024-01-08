@@ -1,35 +1,61 @@
-import { IFeatureCollection } from '@yohira/extensions.features';
+import {
+	FeatureCollection,
+	IFeatureCollection,
+} from '@yohira/extensions.features';
 import {
 	IHttpRequestFeature,
 	IHttpResponseBodyFeature,
 	IHttpResponseFeature,
 } from '@yohira/http.features';
-import { Http1Connection } from '@yohira/server.node.core';
+import {
+	Http1Connection,
+	HttpConnectionContext,
+	IDuplexPipe,
+	ServiceContext,
+} from '@yohira/server.node.core';
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { beforeEach, expect, test } from 'vitest';
 
 import { TestHttp1Connection } from './TestHttp1Connection';
 
+// https://github.com/dotnet/aspnetcore/blob/de52c219200aa70a3cebc2937a015413f77d8f0f/src/Servers/Kestrel/shared/test/TestContextFactory.cs#L48
+function createHttpConnectionContext(
+	serviceContext: ServiceContext,
+	transport: IDuplexPipe,
+	connectionFeatures: IFeatureCollection,
+): HttpConnectionContext {
+	const context = new HttpConnectionContext(
+		serviceContext,
+		connectionFeatures,
+	);
+	context.transport = transport;
+
+	return context;
+}
+
+// https://github.com/dotnet/aspnetcore/blob/de52c219200aa70a3cebc2937a015413f77d8f0f/src/Servers/Kestrel/shared/test/TestServiceContext.cs#L16
+class TestServiceContext extends ServiceContext {}
+
 let http1Connection: TestHttp1Connection;
-// TODO: let httpConnectionContext: HttpConnectionContext;
+let httpConnectionContext: HttpConnectionContext;
 let collection: IFeatureCollection;
 
 beforeEach(() => {
-	/* TODO: const context = createHttpConnectionContext(
-		{},
+	const context = createHttpConnectionContext(
+		// TODO: {},
 		new TestServiceContext(),
-		{},
-		new FeatureCollection(),
-		{},
-	); */
-
-	// TODO: httpConnectionContext = context;
-	http1Connection = new TestHttp1Connection(
-		{} as IncomingMessage,
 		{
-			socket: {},
-		} as ServerResponse<IncomingMessage>,
+			input: {} as IncomingMessage,
+			output: {
+				socket: {},
+			} as ServerResponse<IncomingMessage>,
+		},
+		new FeatureCollection(),
+		// TODO: {},
 	);
+
+	httpConnectionContext = context;
+	http1Connection = new TestHttp1Connection(context);
 	http1Connection.reset();
 	collection = http1Connection;
 });
@@ -51,12 +77,7 @@ test('FeaturesStartAsSelf', () => {
 });
 
 function createHttp1Connection(): Http1Connection {
-	return new TestHttp1Connection(
-		{} as IncomingMessage,
-		{
-			socket: {},
-		} as ServerResponse<IncomingMessage>,
-	);
+	return new TestHttp1Connection(httpConnectionContext);
 }
 
 function eachHttpProtocolFeatureSetAndUnique(): number {

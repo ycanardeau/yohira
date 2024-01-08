@@ -37,10 +37,11 @@ function logReusedCookieToken(logger: ILogger): void {
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Antiforgery/Internal/AntiforgeryLoggerExtensions.cs,e10e8963b5634d0d,references
-function logTokenDeserializeError(logger: ILogger, error: unknown): void {
+function logTokenDeserializeError(logger: ILogger, error: Error): void {
 	logger.log(
 		LogLevel.Error,
 		'An exception was thrown while deserializing the token.',
+		error,
 	);
 }
 
@@ -251,8 +252,12 @@ export class DefaultAntiforgery implements IAntiforgery {
 				return token;
 			}
 		} catch (error) {
-			// ignore failures since we'll just generate a new token
-			logTokenDeserializeError(this.logger, error);
+			if (error instanceof Error) {
+				// ignore failures since we'll just generate a new token
+				logTokenDeserializeError(this.logger, error);
+			} else {
+				throw error;
+			}
 		}
 
 		return undefined;

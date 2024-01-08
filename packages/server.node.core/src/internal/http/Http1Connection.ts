@@ -9,6 +9,7 @@ import {
 	IHttpResponseFeature,
 	IResponseHeaderDictionary,
 	IServiceProvidersFeature,
+	ITlsConnectionFeature,
 } from '@yohira/http.features';
 import { createReadStream } from 'node:fs';
 import {
@@ -16,9 +17,12 @@ import {
 	IncomingMessage,
 	ServerResponse,
 } from 'node:http';
-import { Stream } from 'node:stream';
+import { Readable, Stream, Writable } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
 
+import { HttpConnectionContext } from '../HttpConnectionContext';
+import { ServiceContext } from '../ServiceContext';
+import { NodeTrace } from '../infrastructure/NodeTrace';
 import { RequestProcessingStatus } from './RequestProcessingStatus';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/Http/Http1Connection.cs,9a7555a5b425c5dc,references
@@ -30,6 +34,9 @@ export class Http1Connection
 		IHttpResponseBodyFeature,
 		IEndpointFeature
 {
+	private static readonly schemeHttp = 'http';
+	private static readonly schemeHttps = 'https';
+
 	private currentIHttpRequestFeature: IHttpRequestFeature | undefined;
 	private currentIHttpResponseFeature: IHttpResponseFeature | undefined;
 	private currentIHttpResponseBodyFeature:
@@ -69,6 +76,10 @@ export class Http1Connection
 
 	protected requestProcessingStatus = RequestProcessingStatus.RequestPending;
 
+	protected applicationError: Error | undefined;
+
+	private context!: HttpConnectionContext;
+
 	private _scheme: string | undefined;
 	private _pathBase: string | undefined;
 	private _path: string | undefined;
@@ -99,11 +110,14 @@ export class Http1Connection
 		// TODO
 
 		if (this._scheme === undefined) {
+			const tlsFeature =
+				this.connectionFeatures?.get<ITlsConnectionFeature>(
+					ITlsConnectionFeature,
+				);
 			this._scheme =
-				this.response.socket !== null &&
-				'encrypted' in this.response.socket /* REVIEW */
-					? 'https'
-					: 'http';
+				tlsFeature !== undefined
+					? Http1Connection.schemeHttps
+					: Http1Connection.schemeHttp;
 		}
 
 		this.scheme = this._scheme;
@@ -111,17 +125,34 @@ export class Http1Connection
 		// TODO
 	}
 
-	initialize(): void {
+	initialize(context: HttpConnectionContext): void {
+		this.context = context;
+
 		// TODO
 
 		this.reset();
 	}
 
-	constructor(
-		private readonly request: IncomingMessage,
-		private readonly response: ServerResponse<IncomingMessage>,
-	) {
-		this.initialize();
+	readonly input: Readable;
+	readonly output: Writable; /* TODO */
+
+	constructor(context: HttpConnectionContext) {
+		this.initialize(context);
+
+		this.input = context.transport.input;
+		this.output = context.transport.output;
+	}
+
+	get serviceContext(): ServiceContext {
+		return this.context.serviceContext;
+	}
+
+	get connectionFeatures(): IFeatureCollection {
+		return this.context.connectionFeatures;
+	}
+
+	get log(): NodeTrace {
+		return this.serviceContext.log;
 	}
 
 	get hasResponseStarted(): boolean {
@@ -143,6 +174,32 @@ export class Http1Connection
 		// TODO
 	}
 
+	reportApplicationError(error: Error | undefined): void {
+		if (!error) {
+			return;
+		}
+
+		if (this.applicationError === undefined) {
+			this.applicationError = error;
+		} else if (this.applicationError instanceof AggregateError) {
+			this.applicationError = new AggregateError([
+				...this.applicationError.errors,
+				error,
+			]);
+		} else {
+			this.applicationError = new AggregateError([
+				this.applicationError,
+				error,
+			]);
+		}
+
+		this.log.applicationError(
+			'' /* TODO: this.connectionId */,
+			'' /* TODO: this.traceIdentifier */,
+			error,
+		);
+	}
+
 	protected fireOnStarting(): Promise<void> {
 		async function processEvents(
 			protocol: Http1Connection,
@@ -158,8 +215,11 @@ export class Http1Connection
 					await entry[0](entry[1]);
 				}
 			} catch (error) {
-				// TODO
-				throw new Error('Method not implemented.');
+				if (error instanceof Error) {
+					protocol.reportApplicationError(error);
+				} else {
+					throw error;
+				}
 			}
 		}
 
@@ -186,8 +246,15 @@ export class Http1Connection
 					await entry[0](entry[1]);
 				}
 			} catch (error) {
-				// TODO
-				throw new Error('Method not implemented.');
+				if (error instanceof Error) {
+					protocol.log.applicationError(
+						'' /* TODO: protocol.connectionId */,
+						'' /* TODO: protocol.traceIdentifier */,
+						error,
+					);
+				} else {
+					throw error;
+				}
 			}
 		}
 
@@ -205,8 +272,8 @@ export class Http1Connection
 		this.beginRequestProcessing();
 
 		const url = new URL(
-			this.request.url ?? '',
-			`http://${this.request.headers.host}`,
+			(this.input as IncomingMessage).url ?? '',
+			`http://${(this.input as IncomingMessage).headers.host}`,
 		);
 		this._path = url.pathname;
 		this._queryString = url.search;
@@ -214,7 +281,7 @@ export class Http1Connection
 		// REVIEW
 		// https://nodejs.bootcss.com/node-request-data/
 		const buffers = [];
-		for await (const chunk of this.request) {
+		for await (const chunk of this.input as IncomingMessage) {
 			buffers.push(chunk);
 		}
 		this._rawBody = Buffer.concat(buffers).toString();
@@ -270,7 +337,7 @@ export class Http1Connection
 	}
 
 	get method(): string {
-		return this.request.method ?? '';
+		return (this.input as IncomingMessage).method ?? '';
 	}
 
 	get scheme(): string {
@@ -295,11 +362,11 @@ export class Http1Connection
 	}
 
 	get requestHeaders(): IncomingHttpHeaders {
-		return this.request.headers;
+		return (this.input as IncomingMessage).headers;
 	}
 
 	get responseHeaders(): IResponseHeaderDictionary {
-		return this.response;
+		return this.output as ServerResponse;
 	}
 
 	get hasStarted(): boolean {
@@ -315,7 +382,7 @@ export class Http1Connection
 	}
 
 	get stream(): Stream {
-		return this.response;
+		return this.output as ServerResponse;
 	}
 
 	sendFile(
@@ -328,7 +395,7 @@ export class Http1Connection
 				start: offset,
 				end: count !== undefined ? offset + count : undefined,
 			}),
-			this.response,
+			this.output as ServerResponse,
 		);
 	}
 
