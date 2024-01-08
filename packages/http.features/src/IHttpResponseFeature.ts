@@ -1,9 +1,18 @@
+import { HeaderNames } from '@yohira/http.headers';
 import { IncomingMessage, ServerResponse } from 'node:http';
 
-export type IResponseHeaderDictionary = Pick<
-	ServerResponse<IncomingMessage>,
-	'getHeaders' | 'getHeader' | 'setHeader' | 'hasHeader'
->;
+export interface IResponseHeaderDictionary
+	extends Pick<
+		ServerResponse<IncomingMessage>,
+		'setHeader' | 'getHeader' | 'getHeaders' | 'hasHeader'
+	> {
+	setHeader(
+		name: HeaderNames,
+		value: number | string | ReadonlyArray<string>,
+	): ServerResponse<IncomingMessage>;
+	getHeader(name: HeaderNames): number | string | string[] | undefined;
+	hasHeader(name: HeaderNames): boolean;
+}
 
 export const IHttpResponseFeature = Symbol.for('IHttpResponseFeature');
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Features/IHttpResponseFeature.cs,cac9ce0faa55e5f2,references

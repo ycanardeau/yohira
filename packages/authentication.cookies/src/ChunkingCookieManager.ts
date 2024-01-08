@@ -1,6 +1,7 @@
 import { StringValues } from '@yohira/extensions.primitives';
 import { IHttpContext } from '@yohira/http.abstractions';
 import { CookieOptions } from '@yohira/http.features';
+import { HeaderNames } from '@yohira/http.headers';
 
 import { ICookieManager } from './ICookieManager';
 
@@ -152,7 +153,7 @@ export class ChunkingCookieManager implements ICookieManager {
 
 		const responseHeaders = context.response.headers;
 		const existingValues = new StringValues(
-			responseHeaders.getHeader('set-cookie') as
+			responseHeaders.getHeader(HeaderNames['Set-Cookie']) as
 				| string
 				| string[] /* REVIEW */,
 		);
@@ -169,7 +170,7 @@ export class ChunkingCookieManager implements ICookieManager {
 				}
 			}
 
-			responseHeaders.setHeader('set-cookie', newValues);
+			responseHeaders.setHeader(HeaderNames['Set-Cookie'], newValues);
 		}
 
 		const responseCookies = context.response.cookies;

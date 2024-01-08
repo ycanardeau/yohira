@@ -33,6 +33,7 @@ import {
 	CookieSecurePolicy,
 	IHttpContext,
 } from '@yohira/http.abstractions';
+import { HeaderNames } from '@yohira/http.headers';
 import { TestLogger, TestSink } from '@yohira/testing';
 import { expect, test } from 'vitest';
 
@@ -606,11 +607,13 @@ test('GetAndStoreTokens_ExistingValidCookieToken_NotOverriden_AndSetsDoNotCacheH
 		context.testTokenSet.oldCookieToken,
 	);
 	expect(
-		context.httpContext.response.headers.getHeader('Cache-Control'),
+		context.httpContext.response.headers.getHeader(
+			HeaderNames['Cache-Control'],
+		),
 	).toBe('no-cache, no-store');
-	expect(context.httpContext.response.headers.getHeader('Pragma')).toBe(
-		'no-cache',
-	);
+	expect(
+		context.httpContext.response.headers.getHeader(HeaderNames.Pragma),
+	).toBe('no-cache');
 });
 
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L316C17-L316C67
@@ -623,7 +626,10 @@ test('GetAndStoreTokens_ExistingCachingHeaders_Overriden', () => {
 		antiforgeryFeature,
 	);
 	const antiforgery = getAntiforgery(context);
-	context.httpContext.response.headers.setHeader('Cache-Control', 'public');
+	context.httpContext.response.headers.setHeader(
+		HeaderNames['Cache-Control'],
+		'public',
+	);
 
 	const tokenSet = antiforgery.getAndStoreTokens(context.httpContext);
 
@@ -638,16 +644,18 @@ test('GetAndStoreTokens_ExistingCachingHeaders_Overriden', () => {
 		context.testTokenSet.oldCookieToken,
 	);
 	expect(
-		context.httpContext.response.headers.getHeader('Cache-Control'),
+		context.httpContext.response.headers.getHeader(
+			HeaderNames['Cache-Control'],
+		),
 	).toBe('no-cache, no-store');
-	expect(context.httpContext.response.headers.getHeader('Pragma')).toBe(
-		'no-cache',
-	);
+	expect(
+		context.httpContext.response.headers.getHeader(HeaderNames.Pragma),
+	).toBe('no-cache');
 });
 
 function GetAndStoreTokens_CacheHeadersArrangeAct(
 	testSink: TestSink,
-	headerName: string,
+	headerName: HeaderNames,
 	headerValue: string,
 ): string | undefined {
 	const loggerFactory = {
@@ -676,7 +684,7 @@ function GetAndStoreTokens_CacheHeadersArrangeAct(
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L375C17-L375C69
 test('GetAndStoreTokens_DoesNotOverwriteCacheControlHeader', () => {
 	function GetAndStoreTokens_DoesNotOverwriteCacheControlHeader(
-		headerName: string,
+		headerName: HeaderNames,
 		headerValue: string,
 	): void {
 		const testSink = new TestSink();
@@ -696,19 +704,19 @@ test('GetAndStoreTokens_DoesNotOverwriteCacheControlHeader', () => {
 	}
 
 	GetAndStoreTokens_DoesNotOverwriteCacheControlHeader(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'no-cache, no-store',
 	);
 	GetAndStoreTokens_DoesNotOverwriteCacheControlHeader(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'NO-CACHE, NO-STORE',
 	);
 	GetAndStoreTokens_DoesNotOverwriteCacheControlHeader(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'no-cache, no-store, private',
 	);
 	GetAndStoreTokens_DoesNotOverwriteCacheControlHeader(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'NO-CACHE, NO-STORE, PRIVATE',
 	);
 });
@@ -716,7 +724,7 @@ test('GetAndStoreTokens_DoesNotOverwriteCacheControlHeader', () => {
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L393C17-L393C81
 test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet', () => {
 	function GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet(
-		headerName: string,
+		headerName: HeaderNames,
 		headerValue: string,
 	): void {
 		const testSink = new TestSink();
@@ -736,11 +744,11 @@ test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet', () => {
 	}
 
 	GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'no-cache, private',
 	);
 	GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'NO-CACHE, PRIVATE',
 	);
 });
@@ -748,7 +756,7 @@ test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoStoreIsNotSet', () => {
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L411C17-L411C81
 test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet', () => {
 	function GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet(
-		headerName: string,
+		headerName: HeaderNames,
 		headerValue: string,
 	): void {
 		const testSink = new TestSink();
@@ -768,11 +776,11 @@ test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet', () => {
 	}
 
 	GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'no-store, private',
 	);
 	GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet(
-		'Cache-Control',
+		HeaderNames['Cache-Control'],
 		'NO-STORE, PRIVATE',
 	);
 });
@@ -780,7 +788,7 @@ test('GetAndStoreTokens_OverwritesCacheControlHeader_IfNoCacheIsNotSet', () => {
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L429C17-L429C63
 test('GetAndStoreTokens_DoesNotOverwritePragmaHeader', () => {
 	function GetAndStoreTokens_DoesNotOverwritePragmaHeader(
-		headerName: string,
+		headerName: HeaderNames,
 		headerValue: string,
 	): void {
 		const testSink = new TestSink();
@@ -799,8 +807,14 @@ test('GetAndStoreTokens_DoesNotOverwritePragmaHeader', () => {
 		expect(hasWarningMessage).toBe(false);
 	}
 
-	GetAndStoreTokens_DoesNotOverwritePragmaHeader('Pragma', 'no-cache');
-	GetAndStoreTokens_DoesNotOverwritePragmaHeader('Pragma', 'NO-CACHE');
+	GetAndStoreTokens_DoesNotOverwritePragmaHeader(
+		HeaderNames.Pragma,
+		'no-cache',
+	);
+	GetAndStoreTokens_DoesNotOverwritePragmaHeader(
+		HeaderNames.Pragma,
+		'NO-CACHE',
+	);
 });
 
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L445C17-L445C62
@@ -870,11 +884,13 @@ test('GetAndStoreTokens_NoExistingCookieToken_Saved_AndSetsDoNotCacheHeaders', (
 		context.testTokenSet.oldCookieToken,
 	);
 	expect(
-		context.httpContext.response.headers.getHeader('Cache-Control'),
+		context.httpContext.response.headers.getHeader(
+			HeaderNames['Cache-Control'],
+		),
 	).toBe('no-cache, no-store');
-	expect(context.httpContext.response.headers.getHeader('Pragma')).toBe(
-		'no-cache',
-	);
+	expect(
+		context.httpContext.response.headers.getHeader(HeaderNames.Pragma),
+	).toBe('no-cache');
 });
 
 // https://github.com/dotnet/aspnetcore/blob/ffa0a028464e13d46aaec0c5ad8de0725a4d5aa5/src/Antiforgery/test/DefaultAntiforgeryTest.cs#L509C17-L509C56

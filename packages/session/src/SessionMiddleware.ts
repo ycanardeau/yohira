@@ -15,6 +15,7 @@ import {
 	RequestDelegate,
 } from '@yohira/http.abstractions';
 import { ISessionFeature } from '@yohira/http.features';
+import { HeaderNames } from '@yohira/http.headers';
 import { randomUUID } from 'node:crypto';
 
 import { protectCookie, unprotectCookie } from './CookieProtection';
@@ -57,9 +58,12 @@ class SessionEstablisher {
 		);
 
 		const responseHeaders = response.headers;
-		responseHeaders.setHeader('cache-control', 'no-cache,no-store');
-		responseHeaders.setHeader('pragma', 'no-cache');
-		responseHeaders.setHeader('expires', '-1');
+		responseHeaders.setHeader(
+			HeaderNames['Cache-Control'],
+			'no-cache,no-store',
+		);
+		responseHeaders.setHeader(HeaderNames.Pragma, 'no-cache');
+		responseHeaders.setHeader(HeaderNames.Expires, '-1');
 	}
 
 	private static onStartingCallback = (state: object): Promise<void> => {

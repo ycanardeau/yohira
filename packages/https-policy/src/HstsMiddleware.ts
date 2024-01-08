@@ -10,6 +10,7 @@ import {
 	IMiddleware,
 	RequestDelegate,
 } from '@yohira/http.abstractions';
+import { HeaderNames } from '@yohira/http.headers';
 
 import { HstsOptions } from './HstsOptions';
 
@@ -81,7 +82,7 @@ export class HstsMiddleware implements IMiddleware {
 		}
 
 		context.response.headers.setHeader(
-			'strict-transport-security',
+			HeaderNames['Strict-Transport-Security'],
 			this.strictTransportSecurityValue,
 		);
 		addingHstsHeader(this.logger);

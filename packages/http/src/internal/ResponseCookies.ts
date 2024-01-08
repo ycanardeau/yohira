@@ -17,6 +17,7 @@ import {
 	IServiceProvidersFeature,
 	SameSiteMode,
 } from '@yohira/http.features';
+import { HeaderNames } from '@yohira/http.headers';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/ResponseCookies.cs,e208c05fbe0b89cd,references
 function logSameSiteCookieNotSecure(logger: ILogger, name: string): void {
@@ -63,10 +64,10 @@ export class ResponseCookies implements IResponseCookies {
 			.createCookieHeader(key, escapeDataString(value))
 			.toString();
 		this.headers.setHeader(
-			'set-cookie',
+			HeaderNames['Set-Cookie'],
 			StringValues.concat(
 				new StringValues(
-					this.headers.getHeader('set-cookie') as
+					this.headers.getHeader(HeaderNames['Set-Cookie']) as
 						| string
 						| string[] /* REVIEW */,
 				),

@@ -14,6 +14,7 @@ import {
 	StatusCodes,
 } from '@yohira/http.abstractions';
 import { buildAbsolute } from '@yohira/http.extensions';
+import { HeaderNames } from '@yohira/http.headers';
 
 import { HttpsRedirectionOptions } from './HttpsRedirectionOptions';
 
@@ -88,7 +89,7 @@ export class HttpsRedirectionMiddleware implements IMiddleware {
 		);
 
 		context.response.statusCode = this.statusCode;
-		context.response.headers.setHeader('location', redirectUrl);
+		context.response.headers.setHeader(HeaderNames.Location, redirectUrl);
 
 		logRedirectingToHttps(this.logger, redirectUrl);
 

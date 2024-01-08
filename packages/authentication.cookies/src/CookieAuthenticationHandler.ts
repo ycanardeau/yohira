@@ -18,6 +18,7 @@ import {
 import { IOptionsMonitor } from '@yohira/extensions.options';
 import { StatusCodes } from '@yohira/http.abstractions';
 import { CookieOptions, ITlsTokenBindingFeature } from '@yohira/http.features';
+import { HeaderNames } from '@yohira/http.headers';
 
 import { AuthenticateResults } from './AuthenticateResults';
 import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
@@ -238,15 +239,15 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 		properties: AuthenticationProperties,
 	): Promise<void> {
 		this.response.headers.setHeader(
-			'cache-control',
+			HeaderNames['Cache-Control'],
 			CookieAuthenticationHandler.headerValueNoCacheNoStore,
 		);
 		this.response.headers.setHeader(
-			'pragma',
+			HeaderNames.Pragma,
 			CookieAuthenticationHandler.headerValueNoCache,
 		);
 		this.response.headers.setHeader(
-			'expires',
+			HeaderNames.Expires,
 			CookieAuthenticationHandler.headerValueEpocDate,
 		);
 

@@ -8,7 +8,7 @@ import {
 import { IOptions } from '@yohira/extensions.options';
 import { StringSegment, StringValues } from '@yohira/extensions.primitives';
 import { CookieSecurePolicy, IHttpContext } from '@yohira/http.abstractions';
-import { CacheControlHeaderValue } from '@yohira/http.headers';
+import { CacheControlHeaderValue, HeaderNames } from '@yohira/http.headers';
 
 import { AntiforgeryOptions } from '../AntiforgeryOptions';
 import { AntiforgeryTokenSet } from '../AntiforgeryTokenSet';
@@ -106,13 +106,15 @@ export class DefaultAntiforgery implements IAntiforgery {
 
 		if (
 			!this.options.suppressXFrameOptionsHeader &&
-			!httpContext.response.headers.hasHeader('X-Frame-Options')
+			!httpContext.response.headers.hasHeader(
+				HeaderNames['X-Frame-Options'],
+			)
 		) {
 			// Adding X-Frame-Options header to prevent ClickJacking. See
 			// http://tools.ietf.org/html/draft-ietf-websec-x-frame-options-10
 			// for more information.
 			httpContext.response.headers.setHeader(
-				'X-Frame-Options',
+				HeaderNames['X-Frame-Options'],
 				'SAMEORIGIN',
 			);
 		}
@@ -126,7 +128,9 @@ export class DefaultAntiforgery implements IAntiforgery {
 		let logWarning = false;
 		const responseHeaders = httpContext.response.headers;
 
-		const cacheControlHeader = responseHeaders.getHeader('Cache-Control');
+		const cacheControlHeader = responseHeaders.getHeader(
+			HeaderNames['Cache-Control'],
+		);
 		let cacheControlHeaderValue: CacheControlHeaderValue | undefined;
 		if (
 			CacheControlHeaderValue.tryParse(
@@ -143,17 +147,20 @@ export class DefaultAntiforgery implements IAntiforgery {
 			) {
 				logWarning = true;
 				responseHeaders.setHeader(
-					'Cache-Control',
+					HeaderNames['Cache-Control'],
 					'no-cache, no-store',
 				);
 			}
 		} else {
-			responseHeaders.setHeader('Cache-Control', 'no-cache, no-store');
+			responseHeaders.setHeader(
+				HeaderNames['Cache-Control'],
+				'no-cache, no-store',
+			);
 		}
 
-		const pragmaHeader = responseHeaders.hasHeader('Pragma')
+		const pragmaHeader = responseHeaders.hasHeader(HeaderNames.Pragma)
 			? new StringValues(
-					responseHeaders.getHeader('Pragma') as
+					responseHeaders.getHeader(HeaderNames.Pragma) as
 						| string
 						| string[] /* REVIEw */,
 			  )
@@ -164,10 +171,16 @@ export class DefaultAntiforgery implements IAntiforgery {
 				pragmaHeader.at(0)?.toLowerCase() !== 'no-cache'.toLowerCase()
 			) {
 				logWarning = true;
-				httpContext.response.headers.setHeader('Pragma', 'no-cache');
+				httpContext.response.headers.setHeader(
+					HeaderNames.Pragma,
+					'no-cache',
+				);
 			}
 		} else {
-			httpContext.response.headers.setHeader('Pragma', 'no-cache');
+			httpContext.response.headers.setHeader(
+				HeaderNames.Pragma,
+				'no-cache',
+			);
 		}
 
 		// Since antiforgery token generation is not very obvious to the end users (ex: MVC's form tag generates them
