@@ -210,3 +210,5 @@ await runApp(host);
 -   [Key management extensibility in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/data-protection/extensibility/key-management)
 -   [Use cookie authentication without ASP.NET Core Identity | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/cookie?view=aspnetcore-7.0)
 -   [Mapping, customizing, and transforming claims in ASP.NET Core | Microsoft Learn](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims?view=aspnetcore-7.0)
+-   [dotnet/aspire: An opinionated, cloud ready stack for building observable, production ready, distributed applications in .NET](https://github.com/dotnet/aspire)
+-   [Next.js + ASP.NET Core を .NET Aspire で構成する（with YARP） #.NET - Qiita](https://qiita.com/takashiuesaka/items/e167852af299a7b00939)

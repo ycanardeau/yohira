@@ -16,6 +16,7 @@
 		"baseUrl": "./",
 		"paths": {
 			"@yohira/antiforgery": ["packages/antiforgery/src"],
+			"@yohira/aspire.hosting": ["packages/aspire.hosting/src"],
 			"@yohira/authentication": ["packages/authentication/src"],
 			"@yohira/authentication.abstractions": [
 				"packages/authentication.abstractions/src"

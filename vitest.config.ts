@@ -11,6 +11,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/antiforgery/src',
 			),
+			'@yohira/aspire.hosting': resolve(
+				__dirname,
+				'./packages/aspire.hosting/src',
+			),
 			'@yohira/authentication': resolve(
 				__dirname,
 				'./packages/authentication/src',
