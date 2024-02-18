@@ -80,7 +80,7 @@ export class NodeServerImpl implements IServer, AsyncDisposable {
 			);
 			await httpConnectionContext.processRequests(app);
 		});
-		server.listen(8000 /* TODO */);
+		server.listen(5000 /* TODO */);
 	}
 
 	stop(): Promise<void> {
