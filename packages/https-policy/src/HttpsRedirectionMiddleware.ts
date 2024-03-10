@@ -36,10 +36,10 @@ export class HttpsRedirectionMiddleware implements IMiddleware {
 	private readonly logger: ILogger;
 
 	//  Returns PortNotFound (-1) if we were unable to determine the port.
-	private tryGetHttpsPort(): number {
+	private tryGetHttpsPort = (): number => {
 		// TODO
 		throw new Error('Method not implemented.');
-	}
+	};
 
 	constructor(
 		@inject(Symbol.for('IOptions<HttpsRedirectionOptions>'))
