@@ -15,9 +15,9 @@ import {
 	IResponseCookies,
 	IResponseHeaderDictionary,
 	IServiceProvidersFeature,
-	SameSiteMode,
 } from '@yohira/http.features';
 import { HeaderNames } from '@yohira/http.headers';
+import { SameSiteMode } from '@yohira/http.shared';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/ResponseCookies.cs,e208c05fbe0b89cd,references
 function logSameSiteCookieNotSecure(logger: ILogger, name: string): void {

@@ -15,4 +15,3 @@ export * from './ISession';
 export * from './ISessionFeature';
 export * from './ITlsConnectionFeature';
 export * from './ITlsTokenBindingFeature';
-export * from './SameSiteMode';

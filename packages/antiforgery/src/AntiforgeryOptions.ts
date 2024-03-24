@@ -1,5 +1,5 @@
 import { CookieBuilder, CookieSecurePolicy } from '@yohira/http.abstractions';
-import { SameSiteMode } from '@yohira/http.features';
+import { SameSiteMode } from '@yohira/http.shared';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Antiforgery/AntiforgeryOptions.cs,21f0d65fa390f452,references
 /**

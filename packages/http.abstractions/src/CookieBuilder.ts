@@ -1,5 +1,6 @@
 import { TimeSpan } from '@yohira/base';
-import { CookieOptions, SameSiteMode } from '@yohira/http.features';
+import { CookieOptions } from '@yohira/http.features';
+import { SameSiteMode } from '@yohira/http.shared';
 
 import { CookieSecurePolicy } from './CookieSecurePolicy';
 import { IHttpContext } from './IHttpContext';

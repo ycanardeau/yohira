@@ -1,5 +1,5 @@
 import { CookieBuilder, CookieSecurePolicy } from '@yohira/http.abstractions';
-import { SameSiteMode } from '@yohira/http.features';
+import { SameSiteMode } from '@yohira/http.shared';
 
 import { SessionDefaults } from './SessionDefaults';
 

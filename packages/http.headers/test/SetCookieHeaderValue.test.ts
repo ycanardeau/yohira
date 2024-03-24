@@ -1,6 +1,7 @@
 import { StringBuilder, TimeSpan } from '@yohira/base';
 import { StringSegment } from '@yohira/extensions.primitives';
-import { SameSiteMode, SetCookieHeaderValue } from '@yohira/http.headers';
+import { SetCookieHeaderValue } from '@yohira/http.headers';
+import { SameSiteMode } from '@yohira/http.shared';
 import { expect, test } from 'vitest';
 
 const setCookieHeaderDataSet = ((): readonly (readonly [

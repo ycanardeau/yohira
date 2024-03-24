@@ -11,7 +11,7 @@ import {
 	CookieSecurePolicy,
 	PathString,
 } from '@yohira/http.abstractions';
-import { SameSiteMode } from '@yohira/http.features';
+import { SameSiteMode } from '@yohira/http.shared';
 
 import { CookieAuthenticationDefaults } from './CookieAuthenticationDefaults';
 import { CookieAuthenticationEvents } from './CookieAuthenticationEvents';
