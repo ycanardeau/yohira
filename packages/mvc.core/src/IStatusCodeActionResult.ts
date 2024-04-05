@@ -10,5 +10,5 @@ export interface IStatusCodeActionResult extends IActionResult {
 	/**
 	 * Gets the HTTP status code.
 	 */
-	readonly statusCode: StatusCodes;
+	readonly statusCode: StatusCodes | undefined;
 }
