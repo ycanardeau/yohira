@@ -32,6 +32,8 @@ export * from './http.features/src';
 export * from './http.headers/src';
 export * from './http.shared/src';
 export * from './https-policy/src';
+export * from './mvc.abstractions/src';
+export * from './mvc.core/src';
 export * from './routing/src';
 export * from './server.node/src';
 export * from './server.node.core/src';

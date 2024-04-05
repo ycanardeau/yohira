@@ -151,6 +151,11 @@ export default defineConfig({
 				__dirname,
 				'./packages/https-policy/src',
 			),
+			'@yohira/mvc.abstractions': resolve(
+				__dirname,
+				'./packages/mvc.abstractions/src',
+			),
+			'@yohira/mvc.core': resolve(__dirname, './.packages/mvc.core/src'),
 			'@yohira/routing': resolve(__dirname, './packages/routing/src'),
 			'@yohira/server.node.core': resolve(
 				__dirname,

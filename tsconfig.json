@@ -100,6 +100,8 @@
 			"@yohira/http.headers": ["packages/http.headers/src"],
 			"@yohira/http.shared": ["packages/http.shared/src"],
 			"@yohira/https-policy": ["packages/https-policy/src"],
+			"@yohira/mvc.abstractions": ["packages/mvc.abstractions/src"],
+			"@yohira/mvc.core": ["packages/mvc.core/src"],
 			"@yohira/routing": ["packages/routing/src"],
 			"@yohira/session": ["packages/session/src"],
 			"@yohira/server.node": ["packages/server.node/src"],
