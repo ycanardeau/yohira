@@ -10,7 +10,7 @@ import { IActionResultExecutor } from './infrastructure/IActionResultExecutor';
 /**
  * An action result which formats the given object as JSON.
  */
-export class JsonResult
+export class JsonResult<TValue>
 	extends ActionResult
 	implements IStatusCodeActionResult
 {
@@ -32,17 +32,16 @@ export class JsonResult
 		/**
 		 * Gets or sets the value to be formatted.
 		 */
-		public value: unknown,
+		public value: TValue,
 	) {
 		super();
 	}
 
 	executeResult(context: ActionContext): Promise<void> {
 		const services = context.httpContext.requestServices;
-		const executor = getRequiredService<IActionResultExecutor<JsonResult>>(
-			services,
-			Symbol.for('IActionResultExecutor<JsonResult>'),
-		);
+		const executor = getRequiredService<
+			IActionResultExecutor<JsonResult<unknown>>
+		>(services, Symbol.for('IActionResultExecutor<JsonResult>'));
 		return executor.execute(context, this);
 	}
 }
