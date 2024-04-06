@@ -21,6 +21,7 @@ export * from './extensions.logging/src';
 export * from './extensions.logging.abstractions/src';
 export * from './extensions.options/src';
 export * from './extensions.options.config-extensions/src';
+export * from './extensions.primitives/src';
 export * from './hosting/src';
 export * from './hosting.abstractions/src';
 export * from './hosting.server.abstractions/src';

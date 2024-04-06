@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { Stats, existsSync, statSync } from 'node:fs';
 
 import { FileSystemInfo } from './FileSystemInfo';
 import { getFileName, getFullPath } from './Path';
@@ -24,15 +24,28 @@ export class FileInfo extends FileSystemInfo {
 		this._name = fileName;
 	}
 
+	private _fileStatus: Stats | undefined;
+	private get fileStatus(): Stats {
+		if (this._fileStatus === undefined) {
+			this._fileStatus = statSync(this.fullPath);
+		}
+
+		return this._fileStatus;
+	}
+
 	get name(): string {
 		return (this._name ??= getFileName(this.originalPath));
 	}
 
 	get length(): number {
-		return 0; /* TODO */
+		return this.fileStatus.size;
 	}
 
 	existsSync(): boolean {
 		return existsSync(this.fullPath);
+	}
+
+	get lastWriteTimeUtc(): Date /* TODO: DateTimeOffset */ {
+		return this.fileStatus.mtime;
 	}
 }

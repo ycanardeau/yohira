@@ -19,4 +19,8 @@ export interface IFileInfo {
 	 * The name of the file or directory, not including any path.
 	 */
 	readonly name: string;
+	/**
+	 * When the file was last modified
+	 */
+	readonly lastModified: Date /* TODO: DateTimeOffset */;
 }

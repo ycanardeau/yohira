@@ -1,3 +1,4 @@
+export * from './dependency-injection/MvcCoreServiceCollectionExtensions';
 export * from './ActionResult';
 export * from './BadRequestResult';
 export * from './ChallengeResult';

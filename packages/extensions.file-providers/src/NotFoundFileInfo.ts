@@ -8,6 +8,10 @@ export class NotFoundFileInfo implements IFileInfo {
 		return false;
 	}
 
+	get lastModified(): Date {
+		return new Date(0);
+	}
+
 	get length(): number {
 		return -1;
 	}

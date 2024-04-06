@@ -21,4 +21,8 @@ export class PhysicalFileInfo implements IFileInfo {
 	get name(): string {
 		return this.info.name;
 	}
+
+	get lastModified(): Date /* TODO: DateTimeOffset */ {
+		return this.info.lastWriteTimeUtc;
+	}
 }

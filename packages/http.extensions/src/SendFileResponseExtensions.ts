@@ -4,7 +4,7 @@ import { IHttpResponse } from '@yohira/http.abstractions';
 import { IHttpResponseBodyFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Extensions/SendFileResponseExtensions.cs,46a23828b29f9242,references
-async function sendFileCore(
+export async function sendFileCore(
 	response: IHttpResponse,
 	fileName: string,
 	offset: number,
