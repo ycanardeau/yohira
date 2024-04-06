@@ -136,3 +136,12 @@ export function formatInt64(value: number): string {
 			return value.toString();
 	}
 }
+
+// https://source.dot.net/#Microsoft.Net.Http.Headers/HeaderUtilities.cs,0d2ef77ed3c8f120,references
+export function throwIfReadOnly(isReadOnly: boolean): void {
+	if (isReadOnly) {
+		throw new Error(
+			'The object cannot be modified because it is read-only.',
+		);
+	}
+}

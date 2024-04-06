@@ -63,6 +63,26 @@ export class NameValueHeaderValue {
 		}
 	}
 
+	static find(
+		values: NameValueHeaderValue[] | undefined,
+		name: StringSegment,
+	): NameValueHeaderValue | undefined {
+		if (name.length <= 0) {
+			throw new Error('Assertion failed.');
+		}
+
+		if (values === undefined || values.length === 0) {
+			return undefined;
+		}
+
+		for (const value of values) {
+			if (value.name.toLowerCase().equals(name.toLowerCase())) {
+				return value;
+			}
+		}
+		return undefined;
+	}
+
 	private static getValueLength(
 		input: StringSegment,
 		startIndex: number,
