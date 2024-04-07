@@ -5,7 +5,9 @@ import { tryParseCookieHeaderValues } from '@yohira/http.shared';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/RequestCookieCollection.cs,34d8bfffeeac1069,references
 export class RequestCookieCollection implements IRequestCookieCollection {
-	static readonly empty = new RequestCookieCollection();
+	static empty(): RequestCookieCollection {
+		return new RequestCookieCollection();
+	}
 	private static readonly emptyKeys: string[] = [];
 
 	private static readonly emptyIterator = [][Symbol.iterator];
@@ -34,7 +36,7 @@ export class RequestCookieCollection implements IRequestCookieCollection {
 
 	static parse(values: StringValues): RequestCookieCollection {
 		if (values.count === 0) {
-			return RequestCookieCollection.empty;
+			return RequestCookieCollection.empty();
 		}
 
 		// Do not set the collection capacity based on StringValues.Count, the Cookie header is supposed to be a single combined value.
@@ -44,12 +46,12 @@ export class RequestCookieCollection implements IRequestCookieCollection {
 
 		if (tryParseCookieHeaderValues(values, store, true)) {
 			if (store.size === 0) {
-				return RequestCookieCollection.empty;
+				return RequestCookieCollection.empty();
 			}
 
 			return collection;
 		}
-		return RequestCookieCollection.empty;
+		return RequestCookieCollection.empty();
 	}
 
 	get(key: string): string | undefined {

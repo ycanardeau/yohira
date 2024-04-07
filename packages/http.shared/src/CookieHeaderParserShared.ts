@@ -80,7 +80,7 @@ export function getCookieValue(
 	const startIndex = offset.get();
 
 	if (offset.get() >= input.length) {
-		return StringSegment.empty;
+		return StringSegment.empty();
 	}
 	let inQuotes = false;
 
@@ -101,7 +101,7 @@ export function getCookieValue(
 	if (inQuotes) {
 		if (offset.get() === input.length || input.at(offset.get()) !== '"') {
 			// Missing final quote
-			return StringSegment.empty;
+			return StringSegment.empty();
 		}
 		offset.set(offset.get() + 1);
 	}
@@ -111,7 +111,7 @@ export function getCookieValue(
 		return input.subsegment(startIndex, length);
 	}
 
-	return StringSegment.empty;
+	return StringSegment.empty();
 }
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/src/Http/Shared/CookieHeaderParserShared.cs,67c727301578df10,references

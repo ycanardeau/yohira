@@ -336,7 +336,7 @@ test('Unprotect_KeyNotFound_ThrowsKeyNotFound', () => {
 
 	// the keyring has only one key
 	const key = new Key(
-		Guid.empty,
+		Guid.empty(),
 		Date.now(),
 		Date.now(),
 		Date.now(),
@@ -410,7 +410,7 @@ test('Unprotect_KeyNotFound_RefreshOnce_ThrowsKeyNotFound', () => {
 
 	// the keyring has only one key
 	const key = new Key(
-		Guid.empty,
+		Guid.empty(),
 		Date.now(),
 		Date.now(),
 		Date.now(),
@@ -466,7 +466,7 @@ test('Unprotect_KeyNotFound_WontRefreshOnce_AfterTooLong', () => {
 
 	// the keyring has only one key
 	const key = new Key(
-		Guid.empty,
+		Guid.empty(),
 		Date.now(),
 		Date.now(),
 		Date.now(),
@@ -539,7 +539,7 @@ test('Unprotect_KeyNotFound_RefreshOnce_CanFindKey', () => {
 
 	// the keyring has only one key
 	const key = new Key(
-		Guid.empty,
+		Guid.empty(),
 		Date.now(),
 		Date.now(),
 		Date.now(),

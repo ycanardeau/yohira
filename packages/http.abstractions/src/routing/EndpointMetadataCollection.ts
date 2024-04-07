@@ -16,7 +16,9 @@ export class EndpointMetadataCollection implements IReadonlyList<object> {
 		this.cache = new Map();
 	}
 
-	static readonly empty = new EndpointMetadataCollection([]);
+	static empty(): EndpointMetadataCollection {
+		return new EndpointMetadataCollection([]);
+	}
 
 	[Symbol.iterator](): Iterator<object> {
 		return this.items[Symbol.iterator]();

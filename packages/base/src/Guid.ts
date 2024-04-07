@@ -134,7 +134,9 @@ export class Guid implements IEquatable<Guid> {
 		return new Guid(a, b, c, d, e, f, g, h, i, j, k);
 	}
 
-	static readonly empty = new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	static empty(): Guid {
+		return new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	}
 
 	static newGuid(): Guid {
 		return Guid.fromString(randomUUID());

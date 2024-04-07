@@ -12,7 +12,7 @@ export class ResultCache {
 
 	static readonly none = new ResultCache(
 		CallSiteResultCacheLocation.None,
-		ServiceCacheKey.empty,
+		ServiceCacheKey.empty(),
 	);
 
 	static create(

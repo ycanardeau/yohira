@@ -6,7 +6,9 @@ export class QueryString {
 	/**
 	 * Represents the empty query string. This field is read-only.
 	 */
-	static readonly empty = new QueryString('');
+	static empty(): QueryString {
+		return new QueryString('');
+	}
 
 	constructor(readonly value?: string) {
 		if (!!value && value[0] !== '?') {

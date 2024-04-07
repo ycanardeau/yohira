@@ -24,7 +24,9 @@ export class PathString {
 		this.value = value;
 	}
 
-	static readonly empty = new PathString('');
+	static empty(): PathString {
+		return new PathString('');
+	}
 
 	get hasValue(): boolean {
 		return !!this.value;
@@ -158,7 +160,7 @@ export class PathString {
 				remaining: new PathString(value1.slice(value2.length)),
 			};
 		}
-		return { ret: false, remaining: PathString.empty };
+		return { ret: false, remaining: PathString.empty() };
 	}
 
 	equals(other: PathString): boolean {

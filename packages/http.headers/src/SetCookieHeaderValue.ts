@@ -67,7 +67,7 @@ export class SetCookieHeaderValue {
 		return (this._extensions ??= []);
 	}
 
-	constructor(name: StringSegment, value = StringSegment.empty) {
+	constructor(name: StringSegment, value = StringSegment.empty()) {
 		this.name = name;
 		this.value = value;
 	}

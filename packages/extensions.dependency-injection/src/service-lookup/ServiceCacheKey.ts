@@ -7,7 +7,9 @@ export class ServiceCacheKey {
 		readonly slot: number,
 	) {}
 
-	static readonly empty = new ServiceCacheKey(undefined, 0);
+	static empty(): ServiceCacheKey {
+		return new ServiceCacheKey(undefined, 0);
+	}
 
 	equals(other: ServiceCacheKey): boolean {
 		return this.type === other.type && this.slot === other.slot;

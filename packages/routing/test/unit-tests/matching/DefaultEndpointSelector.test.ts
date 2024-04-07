@@ -30,7 +30,7 @@ function createEndpoint(template: string): RouteEndpoint {
 		emptyRequestDelegate,
 		parseRoutePattern(template),
 		0,
-		EndpointMetadataCollection.empty,
+		EndpointMetadataCollection.empty(),
 		`test: ${template}`,
 	);
 }

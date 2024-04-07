@@ -28,7 +28,9 @@ export class StringSegment /* TODO: implements IEquatable<StringSegment> */ {
 		return new StringSegment(buffer, offset, length);
 	}
 
-	static readonly empty = StringSegment.from('');
+	static empty(): StringSegment {
+		return StringSegment.from('');
+	}
 
 	static isNullOrEmpty(value: StringSegment): boolean {
 		if (value.buffer === undefined || value.length === 0) {

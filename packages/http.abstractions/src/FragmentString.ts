@@ -6,7 +6,9 @@ export class FragmentString {
 	/**
 	 * Represents the empty fragment string. This field is read-only.
 	 */
-	static readonly empty = new FragmentString('');
+	static empty(): FragmentString {
+		return new FragmentString('');
+	}
 
 	constructor(readonly value?: string) {
 		if (!!value && value[0] !== '#') {

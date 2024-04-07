@@ -11,7 +11,7 @@ export class Endpoint {
 		metadata: EndpointMetadataCollection | undefined,
 		readonly displayName: string | undefined,
 	) {
-		this.metadata = metadata ?? EndpointMetadataCollection.empty;
+		this.metadata = metadata ?? EndpointMetadataCollection.empty();
 	}
 
 	toString(): string | undefined {

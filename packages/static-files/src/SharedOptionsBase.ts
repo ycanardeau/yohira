@@ -7,7 +7,7 @@ export abstract class SharedOptionsBase {
 	 * The relative request path that maps to static resources.
 	 * This defaults to the site root '/'.
 	 */
-	requestPath = PathString.empty;
+	requestPath = PathString.empty();
 	/**
 	 * The file system used to locate resources
 	 * @remarks

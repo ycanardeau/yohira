@@ -76,8 +76,8 @@ test('Random_LengthIsMultipleOf16_Success', () => {
 		Guid.fromBuffer(buffer.subarray(0, 16)),
 		Guid.fromBuffer(buffer.subarray(16, 32)),
 	];
-	expect(guids[0].equals(Guid.empty)).toBe(false);
-	expect(guids[1].equals(Guid.empty)).toBe(false);
+	expect(guids[0].equals(Guid.empty())).toBe(false);
+	expect(guids[1].equals(Guid.empty())).toBe(false);
 	expect(guids[0].equals(guids[1])).toBe(false);
 });
 
@@ -92,8 +92,8 @@ test('Random_LengthIsNotMultipleOf16_Success', () => {
 		Guid.fromBuffer(buffer.subarray(0, 16)),
 		Guid.fromBuffer(buffer.subarray(16, 32)),
 	];
-	expect(guids[0].equals(Guid.empty)).toBe(false);
-	expect(guids[1].equals(Guid.empty)).toBe(false);
+	expect(guids[0].equals(Guid.empty())).toBe(false);
+	expect(guids[1].equals(Guid.empty())).toBe(false);
 	expect(guids[0].equals(guids[1])).toBe(false);
 	expect(buffer[31]).toBe(0);
 });

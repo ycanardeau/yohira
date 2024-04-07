@@ -6,7 +6,9 @@ export class StringValues implements IEquatable<StringValues> {
 		private readonly values: (string | undefined) | (string | undefined)[],
 	) {}
 
-	static readonly empty = new StringValues([]);
+	static empty(): StringValues {
+		return new StringValues([]);
+	}
 
 	static isUndefinedOrEmpty(value: StringValues): boolean {
 		const data = value.values;

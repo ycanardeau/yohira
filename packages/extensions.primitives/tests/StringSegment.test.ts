@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/runtime/blob/99aa25fee09a3a66fb698720a234eb3d7770ca1a/src/libraries/Microsoft.Extensions.Primitives/tests/StringSegmentTest.cs#L12
 test('StringSegment_Empty', () => {
-	const segment = StringSegment.empty;
+	const segment = StringSegment.empty();
 
 	expect(segment.hasValue).toBe(true);
 	expect(segment.value).toBe('');

@@ -1,9 +1,14 @@
 import { IEquatable } from '@yohira/base';
 
 export class PathSegment implements IEquatable<PathSegment> {
-	constructor(readonly start: number, readonly length: number) {}
+	constructor(
+		readonly start: number,
+		readonly length: number,
+	) {}
 
-	static readonly empty = new PathSegment(0, 0);
+	static empty(): PathSegment {
+		return new PathSegment(0, 0);
+	}
 
 	static equals(
 		left: PathSegment | undefined,

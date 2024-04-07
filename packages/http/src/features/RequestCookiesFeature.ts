@@ -19,7 +19,7 @@ export class RequestCookiesFeature implements IRequestCookiesFeature {
 	private features = new FeatureReferences<IHttpRequestFeature | undefined>(
 		() => undefined,
 	);
-	private original = StringValues.empty;
+	private original = StringValues.empty();
 	private parsedValues: IRequestCookieCollection | undefined;
 
 	constructor(features: IFeatureCollection) {
@@ -41,7 +41,7 @@ export class RequestCookiesFeature implements IRequestCookiesFeature {
 	get cookies(): IRequestCookieCollection {
 		if (this.features.collection === undefined) {
 			if (this.parsedValues === undefined) {
-				this.parsedValues = RequestCookieCollection.empty;
+				this.parsedValues = RequestCookieCollection.empty();
 			}
 			return this.parsedValues;
 		}

@@ -5,13 +5,13 @@ const testGuid = Guid.fromString('a8a110d5-fc49-43c5-bf46-802db8f843ff');
 
 // https://github.com/dotnet/runtime/blob/98343399e9f320b834151ed6ade21879093f2907/src/libraries/System.Runtime/tests/System/GuidTests.cs#L17
 test('Empty', () => {
-	expect(new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).equals(Guid.empty)).toBe(
+	expect(new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0).equals(Guid.empty())).toBe(
 		true,
 	);
 });
 
 function* Ctor_ByteArray_TestData(): Generator<[Buffer, Guid]> {
-	yield [Buffer.alloc(16), Guid.empty];
+	yield [Buffer.alloc(16), Guid.empty()];
 	yield [
 		Buffer.from([
 			0x44, 0x33, 0x22, 0x11, 0x66, 0x55, 0x88, 0x77, 0x99, 0x00, 0xaa,
@@ -49,7 +49,7 @@ function* Equals_TestData(): Generator<[Guid, Guid, boolean]> {
 		Guid.fromString('a8a110d5-fc49-43c5-bf46-802db8f843ff'),
 		true,
 	];
-	yield [testGuid, Guid.empty, false];
+	yield [testGuid, Guid.empty(), false];
 
 	// TODO: yield [testGuid, 'a8a110d5-fc49-43c5-bf46-802db8f843ff', false];
 

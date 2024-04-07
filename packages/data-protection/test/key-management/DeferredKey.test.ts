@@ -44,7 +44,7 @@ test('SetRevoked_Respected', () => {
 	const encryptorFactory: IAuthenticatedEncryptorFactory =
 		{} as IAuthenticatedEncryptorFactory;
 	const key = new DeferredKey(
-		Guid.empty,
+		Guid.empty(),
 		now,
 		now,
 		now,
