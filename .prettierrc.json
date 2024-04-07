@@ -10,7 +10,8 @@
 		"importOrderParserPlugins",
 		"classProperties",
 		"decorators-legacy",
-		"importAssertions"
+		"importAssertions",
+		"explicitResourceManagement"
 	],
 	"plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

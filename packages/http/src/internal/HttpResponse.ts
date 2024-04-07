@@ -16,6 +16,7 @@ import {
 	IResponseCookiesFeature,
 	IResponseHeaderDictionary,
 } from '@yohira/http.features';
+import { HeaderNames } from '@yohira/http.headers';
 import { Stream } from 'node:stream';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
@@ -108,13 +109,22 @@ export class HttpResponse implements IHttpResponse {
 		return this.httpResponseBodyFeature.stream;
 	}
 
-	// TODO
-	private _contentType: string | undefined;
-	get contentType(): string | undefined {
-		return this._contentType;
+	get contentLength(): number | undefined {
+		return this.headers.getHeader(HeaderNames['Content-Length']) as
+			| number
+			| undefined /* REVIEW */;
 	}
-	set contentType(value: string | undefined) {
-		this._contentType = value;
+	set contentLength(value: number) {
+		this.headers.setHeader(HeaderNames['Content-Length'], value);
+	}
+
+	get contentType(): string | undefined {
+		return this.headers.getHeader(HeaderNames['Content-Type']) as
+			| string
+			| undefined /* REVIEW */;
+	}
+	set contentType(value: string) {
+		this.headers.setHeader(HeaderNames['Content-Type'], value);
 	}
 
 	get cookies(): IResponseCookies {

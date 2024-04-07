@@ -1,3 +1,5 @@
+import { SeekOrigin } from './SeekOrigin';
+
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/Stream.cs,f956b0c07e86df64,references
 export abstract class Stream implements Disposable {
 	abstract get canRead(): boolean;
@@ -59,6 +61,44 @@ export abstract class Stream implements Disposable {
 		return bufferSize;
 	}
 
+	protected static validateCopyToArguments(
+		destination: Stream,
+		bufferSize: number,
+	): void {
+		if (bufferSize < 0) {
+			throw new Error(
+				`bufferSize ('${bufferSize}') must be a non-negative and non-zero value.` /* LOC */,
+			);
+		}
+
+		if (!destination.canWrite) {
+			if (destination.canRead) {
+				throw new Error('Stream does not support writing.' /* LOC */);
+			}
+
+			throw new Error('Cannot access a closed Stream.' /* LOC */);
+		}
+	}
+
+	copyTo(destination: Stream, bufferSize = this.getCopyBufferSize()): void {
+		Stream.validateCopyToArguments(destination, bufferSize);
+		if (!this.canRead) {
+			if (this.canWrite) {
+				throw new Error('Stream does not support reading.' /* LOC */);
+			}
+
+			throw new Error('Cannot access a closed Stream.' /* LOC */);
+		}
+
+		const buffer = Buffer.alloc(bufferSize); /* TODO: rent */
+		// TODO: try
+		let bytesRead: number;
+		while ((bytesRead = this.read(buffer, 0, buffer.length)) !== 0) {
+			destination.write(buffer, 0, bytesRead);
+		}
+		// TODO: finally
+	}
+
 	protected disposeCore(disposing: boolean): void {}
 
 	close(): void {
@@ -69,6 +109,8 @@ export abstract class Stream implements Disposable {
 	[Symbol.dispose](): void {
 		this.close();
 	}
+
+	abstract seek(offset: number, origin: SeekOrigin): number;
 
 	abstract read(buffer: Buffer, offset: number, count: number): number;
 

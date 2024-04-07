@@ -1,4 +1,4 @@
-import { Stream } from '@yohira/base';
+import { SeekOrigin, Stream } from '@yohira/base';
 
 import { CryptoStreamMode } from './CryptoStreamMode';
 import { ICryptoTransform } from './ICryptoTransform';
@@ -361,6 +361,10 @@ export class CryptoStream extends Stream implements Disposable {
 			// All input data has been processed.
 			this.inputBufferIndex = 0;
 		}
+	}
+
+	seek(offset: number, origin: SeekOrigin): number {
+		throw new Error('Stream does not support seeking.' /* LOC */);
 	}
 
 	read(buffer: Buffer, offset: number, count: number): number {

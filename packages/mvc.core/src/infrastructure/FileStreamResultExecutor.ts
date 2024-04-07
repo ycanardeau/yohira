@@ -1,4 +1,3 @@
-import { using } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -88,12 +87,13 @@ export class FileStreamResultExecutor
 		context: ActionContext,
 		result: FileStreamResult,
 	): Promise<void> {
-		await using(result.fileStream, async () => {
+		using fileStream = result.fileStream;
+		{
 			logExecutingFileResult(this.logger, result);
 
 			let fileLength: number | undefined;
-			if (result.fileStream.canSeek) {
-				fileLength = result.fileStream.length;
+			if (fileStream.canSeek) {
+				fileLength = fileStream.length;
 			}
 
 			const { range, rangeLength, serveBody } = this.setHeadersAndLog(
@@ -110,6 +110,6 @@ export class FileStreamResultExecutor
 			}
 
 			await this.writeFile(context, result, range, rangeLength);
-		});
+		}
 	}
 }

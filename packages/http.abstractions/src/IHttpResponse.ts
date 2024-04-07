@@ -51,6 +51,10 @@ export interface IHttpResponse {
 	 */
 	body: Stream;
 	/**
+	 * Gets or sets the value for the <c>Content-Length</c> response header.
+	 */
+	contentLength: number | undefined;
+	/**
 	 * Gets or sets the value for the <c>Content-Type</c> response header.
 	 */
 	contentType: string | undefined;
