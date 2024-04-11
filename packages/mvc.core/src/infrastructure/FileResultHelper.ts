@@ -66,6 +66,9 @@ export function setHeadersAndLog(
 
 	// TODO: implement
 
+	response.contentType = result.contentType;
+	// TODO: implement
+
 	if (fileLength !== undefined) {
 		// Assuming the request is not a range request, and the response body is not empty, the Content-Length header is set to
 		// the length of the entire file.
