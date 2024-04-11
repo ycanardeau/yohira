@@ -1,12 +1,11 @@
-import { SeekOrigin, Stream } from '@yohira/base';
 import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 import { IHttpContext, isHead } from '@yohira/http.abstractions';
 import {
 	EntityTagHeaderValue,
 	RangeItemHeaderValue,
 } from '@yohira/http.headers';
-import { copyTo } from '@yohira/http.shared';
-import { Writable } from 'node:stream';
+import { Readable, Writable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 
 import { FileResultInfo } from './FileResultInfo';
 
@@ -20,21 +19,18 @@ function logNotEnabledForRangeProcessing(logger: ILogger): void {
 // https://source.dot.net/#Microsoft.AspNetCore.Mvc.Core/src/Shared/ResultsHelpers/FileResultHelper.cs,da837f27cbb1a1a8,references
 export async function writeFile(
 	context: IHttpContext,
-	fileStream: Stream,
+	fileStream: Readable,
 	range: RangeItemHeaderValue | undefined,
 	rangeLength: number,
 ): Promise<void> {
-	const bufferSize = 64 * 1024;
 	const outputStream = context.response.body;
-	using $ = fileStream;
+	// TODO: using $ = fileStream;
 	{
 		// TODO: try
 		if (range === undefined) {
-			await copyTo($, outputStream as Writable, undefined, 64 * 1024);
+			await pipeline(fileStream, outputStream as Writable);
 		} else {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			$.seek(range.from!, SeekOrigin.Begin);
-			await copyTo($, outputStream as Writable, rangeLength, bufferSize);
+			throw new Error('Method not implemented.');
 		}
 		// TODO: catch
 	}

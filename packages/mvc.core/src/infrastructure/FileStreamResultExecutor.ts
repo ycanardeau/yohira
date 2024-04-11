@@ -87,14 +87,14 @@ export class FileStreamResultExecutor
 		context: ActionContext,
 		result: FileStreamResult,
 	): Promise<void> {
-		using fileStream = result.fileStream;
+		// TODO: using fileStream = result.fileStream;
 		{
 			logExecutingFileResult(this.logger, result);
 
 			let fileLength: number | undefined;
-			if (fileStream.canSeek) {
+			/* TODO: if (fileStream.canSeek) {
 				fileLength = fileStream.length;
-			}
+			} */
 
 			const { range, rangeLength, serveBody } = this.setHeadersAndLog(
 				context,

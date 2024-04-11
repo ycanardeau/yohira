@@ -1,4 +1,3 @@
-import { MemoryStream } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,
@@ -7,6 +6,7 @@ import {
 } from '@yohira/extensions.logging.abstractions';
 import { RangeItemHeaderValue } from '@yohira/http.headers';
 import { ActionContext } from '@yohira/mvc.abstractions';
+import { Readable } from 'node:stream';
 
 import { FileContentResult } from '../FileContentResult';
 import { FileResult } from '../FileResult';
@@ -75,11 +75,7 @@ export class FileContentResultExecutor
 			logWritingRangeToBody(this.logger);
 		}
 
-		const fileContentStream = MemoryStream.from(
-			result.fileContents,
-			0,
-			result.fileContents.length,
-		);
+		const fileContentStream = Readable.from(result.fileContents);
 		return FileResultExecutorBase.writeFile(
 			context.httpContext,
 			fileContentStream,

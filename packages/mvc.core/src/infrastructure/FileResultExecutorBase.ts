@@ -1,4 +1,4 @@
-import { Ctor, Stream } from '@yohira/base';
+import { Ctor } from '@yohira/base';
 import {
 	ILogger,
 	ILoggerFactory,
@@ -9,6 +9,7 @@ import {
 	RangeItemHeaderValue,
 } from '@yohira/http.headers';
 import { ActionContext } from '@yohira/mvc.abstractions';
+import { Readable } from 'node:stream';
 
 import { FileResult } from '../FileResult';
 import { setHeadersAndLog, writeFile } from './FileResultHelper';
@@ -78,7 +79,7 @@ export class FileResultExecutorBase {
 
 	protected static async writeFile(
 		context: IHttpContext,
-		fileStream: Stream,
+		fileStream: Readable,
 		range: RangeItemHeaderValue | undefined,
 		rangeLength: number,
 	): Promise<void> {

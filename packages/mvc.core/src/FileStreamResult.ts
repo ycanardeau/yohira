@@ -1,7 +1,7 @@
-import { Stream } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 import { MediaTypeHeaderValue } from '@yohira/http.headers';
 import { ActionContext } from '@yohira/mvc.abstractions';
+import { Readable } from 'node:stream';
 
 import { FileResult } from './FileResult';
 import { IActionResultExecutor } from './infrastructure/IActionResultExecutor';
@@ -23,7 +23,7 @@ export class FileStreamResult extends FileResult {
 		/**
 		 * Gets or sets the stream with the file that will be sent back as the response.
 		 */
-		public fileStream: Stream,
+		public fileStream: Readable,
 		contentType: MediaTypeHeaderValue,
 	) {
 		super(contentType.toString());
