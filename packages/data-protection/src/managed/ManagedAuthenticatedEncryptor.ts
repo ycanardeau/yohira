@@ -1,5 +1,6 @@
 import { MemoryStream, using } from '@yohira/base';
 import {
+	CryptographicError,
 	CryptoStream,
 	CryptoStreamMode,
 	HMACSHA512,
@@ -11,7 +12,6 @@ import {
 
 import { Secret } from '../Secret';
 import { IAuthenticatedEncryptor } from '../authenticated-encryption/IAuthenticatedEncryptor';
-import { CryptographicError } from '../key-management/CryptographicError';
 import {
 	deriveKeys,
 	deriveKeysWithContextHeader,

@@ -2,7 +2,6 @@ import {
 	FeatureReferences,
 	IFeatureCollection,
 } from '@yohira/extensions.features';
-import { ResponseCookiesFeature } from '@yohira/http';
 import {
 	IHttpContext,
 	IHttpResponse,
@@ -18,6 +17,8 @@ import {
 } from '@yohira/http.features';
 import { HeaderNames } from '@yohira/http.headers';
 import { Stream } from 'node:stream';
+
+import { ResponseCookiesFeature } from '../features/ResponseCookiesFeature';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Internal/DefaultHttpResponse.cs,b195f3cc5f74f4d2,references
 class FeatureInterfaces {

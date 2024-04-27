@@ -1,4 +1,4 @@
-import { CryptographicError } from '@yohira/data-protection';
+import { CryptographicError } from '@yohira/cryptography';
 
 function failCore(message: string): Error {
 	throw new CryptographicError(`Assertion failed: ${message}`);

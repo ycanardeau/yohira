@@ -1,5 +1,6 @@
 import { IConfig } from '@yohira/extensions.config.abstractions';
-import { IWebHostEnv } from '@yohira/hosting.abstractions';
+
+import { IWebHostEnv } from './IWebHostEnv';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting.Abstractions/WebHostBuilderContext.cs,0668c64ef2124ad1,references
 /**

@@ -1,6 +1,6 @@
-import { Result } from '@yohira/third-party.ts-results';
 import { IsExact, IsNever } from 'conditional-type-checks';
 import { Observable } from 'rxjs';
+import { Result } from 'src';
 import { expect } from 'vitest';
 
 export function expect_string<T>(x: T, y: IsExact<T, string>): void {}

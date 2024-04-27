@@ -1,5 +1,5 @@
-import { MemoryStream } from '@yohira/base';
 import { randomBytes } from 'node:crypto';
+import { MemoryStream } from 'src';
 import { expect, test } from 'vitest';
 
 function* getBuffersVariedBySize(): Generator<Buffer> {

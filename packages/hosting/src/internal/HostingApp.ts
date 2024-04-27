@@ -1,5 +1,4 @@
 import { IFeatureCollection } from '@yohira/extensions.features';
-import { HttpContextFactory } from '@yohira/hosting';
 import {
 	IHostContextContainer,
 	IHttpApp,
@@ -10,6 +9,8 @@ import {
 	IHttpContextFactory,
 	RequestDelegate,
 } from '@yohira/http.abstractions';
+
+import { HttpContextFactory } from '../http/HttpContextFactory';
 
 export class HostingAppContext {
 	httpContext: IHttpContext | undefined;

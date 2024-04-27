@@ -1,8 +1,8 @@
 import {
 	AuthenticationProperties,
 	AuthenticationScheme,
-	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticationSchemeOptions } from './AuthenticationSchemeOptions';

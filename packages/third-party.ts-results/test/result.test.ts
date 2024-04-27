@@ -9,7 +9,7 @@ import {
 	ResultOkType,
 	ResultOkTypes,
 	Some,
-} from '@yohira/third-party.ts-results';
+} from 'src';
 import { expect, test } from 'vitest';
 
 import { eq } from './util';

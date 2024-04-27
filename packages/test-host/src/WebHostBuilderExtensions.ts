@@ -1,7 +1,8 @@
 import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions';
 import { IWebHostBuilder } from '@yohira/hosting.abstractions';
 import { IServer } from '@yohira/hosting.server.abstractions';
-import { TestServer } from '@yohira/test-host';
+
+import { TestServer } from './TestServer';
 
 // https://source.dot.net/#Microsoft.AspNetCore.TestHost/WebHostBuilderExtensions.cs,a49945a3163a7df6,references
 /**

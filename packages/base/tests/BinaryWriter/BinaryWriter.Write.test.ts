@@ -1,4 +1,4 @@
-import { BinaryReader, BinaryWriter, MemoryStream, using } from '@yohira/base';
+import { BinaryReader, BinaryWriter, MemoryStream, using } from 'src';
 import { expect, test } from 'vitest';
 
 function createStream(): MemoryStream {

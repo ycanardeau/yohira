@@ -10,9 +10,8 @@ import {
 	HostBuilderContext,
 	IHostBuilder,
 } from '@yohira/extensions.hosting.abstractions';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IWebHostBuilder, WebHostBuilderContext } from '@yohira/hosting.abstractions';
 
-import { WebHostBuilderContext } from '../WebHostBuilderContext';
 import { WebHostBuilderOptions } from '../WebHostBuilderOptions';
 import { HostingEnv } from '../internal/HostingEnv';
 import { initialize } from '../internal/HostingEnvExtensions';

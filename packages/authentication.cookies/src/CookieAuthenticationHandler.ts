@@ -6,9 +6,8 @@ import {
 	AuthenticateResult,
 	AuthenticationProperties,
 	AuthenticationTicket,
-	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
-import { TimeSpan } from '@yohira/base';
+import { ClaimsPrincipal, TimeSpan } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,

@@ -1,11 +1,14 @@
+import { AuthenticationTicket } from '@yohira/authentication.abstractions';
 import {
-	AuthenticationTicket,
+	BinaryReader,
+	BinaryWriter,
 	Claim,
 	ClaimValueTypes,
 	ClaimsIdentity,
 	ClaimsPrincipal,
-} from '@yohira/authentication.abstractions';
-import { BinaryReader, BinaryWriter, MemoryStream, using } from '@yohira/base';
+	MemoryStream,
+	using,
+} from '@yohira/base';
 
 import { IDataSerializer } from './IDataSerializer';
 import { PropertiesSerializer } from './PropertiesSerializer';

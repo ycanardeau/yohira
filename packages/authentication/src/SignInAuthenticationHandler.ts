@@ -1,10 +1,9 @@
 import {
 	AuthenticationProperties,
-	ClaimsPrincipal,
 	IAuthenticationSignInHandler,
 	signIn,
 } from '@yohira/authentication.abstractions';
-import { Ctor } from '@yohira/base';
+import { ClaimsPrincipal, Ctor } from '@yohira/base';
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 import { IOptionsMonitor } from '@yohira/extensions.options';
 
@@ -51,6 +50,6 @@ export abstract class SignInAuthenticationHandler<
 					user,
 					properties ??
 						new AuthenticationProperties(undefined, undefined),
-			  );
+				);
 	}
 }

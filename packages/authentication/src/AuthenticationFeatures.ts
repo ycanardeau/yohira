@@ -1,8 +1,8 @@
 import {
 	AuthenticateResult,
-	ClaimsPrincipal,
 	IAuthenticateResultFeature,
 } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IHttpAuthenticationFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication/AuthenticationFeatures.cs,1db42f435e0aece7,references

@@ -3,7 +3,6 @@ import {
 	AuthenticationOptions,
 	AuthenticationProperties,
 	AuthenticationTicket,
-	ClaimsPrincipal,
 	IAuthenticationHandler,
 	IAuthenticationHandlerProvider,
 	IAuthenticationSchemeProvider,
@@ -12,6 +11,7 @@ import {
 	IAuthenticationSignOutHandler,
 	IClaimsTransformation,
 } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { IOptions } from '@yohira/extensions.options';
 import { IHttpContext } from '@yohira/http.abstractions';

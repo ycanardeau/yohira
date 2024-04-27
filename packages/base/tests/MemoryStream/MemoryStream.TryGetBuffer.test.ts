@@ -1,4 +1,4 @@
-import { MemoryStream } from '@yohira/base';
+import { MemoryStream } from 'src';
 import { expect, test } from 'vitest';
 
 function fillWithData(buffer: Buffer): Buffer {

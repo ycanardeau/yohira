@@ -9,7 +9,6 @@ export * from './key-management/internal/IDefaultKeyResolver';
 export * from './key-management/internal/IInternalXmlKeyManager';
 export * from './key-management/internal/IKeyRing';
 export * from './key-management/internal/IKeyRingProvider';
-export * from './key-management/CryptographicError';
 export * from './key-management/DefaultKeyResolver';
 export * from './key-management/DeferredKey';
 export * from './key-management/IKey';

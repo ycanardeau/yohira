@@ -1,4 +1,4 @@
-import { MemoryStream } from '@yohira/base';
+import { MemoryStream } from 'src';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/runtime/blob/1f86cb726cf2292c0bb68f455e223b41a7970740/src/libraries/System.IO/tests/MemoryStream/MemoryStream.GetBufferTests.cs#L11

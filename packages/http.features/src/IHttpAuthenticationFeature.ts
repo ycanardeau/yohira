@@ -1,4 +1,4 @@
-import { ClaimsPrincipal } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 
 export const IHttpAuthenticationFeature = Symbol.for(
 	'IHttpAuthenticationFeature',

@@ -1,7 +1,7 @@
 import { AuthenticationFailureError } from './AuthenticationFailureError';
 import { AuthenticationProperties } from './AuthenticationProperties';
 import { AuthenticationTicket } from './AuthenticationTicket';
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticateResult.cs,b5dbe684bca93171,references
 /**

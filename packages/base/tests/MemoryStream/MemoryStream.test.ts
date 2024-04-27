@@ -1,4 +1,4 @@
-import { MemoryStream, using } from '@yohira/base';
+import { MemoryStream, using } from 'src';
 import { expect, test } from 'vitest';
 
 // TODO

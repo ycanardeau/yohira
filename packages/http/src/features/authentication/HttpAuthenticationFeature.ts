@@ -1,4 +1,4 @@
-import { ClaimsPrincipal } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IHttpAuthenticationFeature } from '@yohira/http.features';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Features/Authentication/HttpAuthenticationFeature.cs,b153cb57fd6bbe4e,references

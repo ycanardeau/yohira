@@ -2,7 +2,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticateResult } from './AuthenticateResult';
 import { AuthenticationProperties } from './AuthenticationProperties';
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IAuthenticationService } from './IAuthenticationService';
 import { getToken as getTokenCore } from './TokenExtensions';
 

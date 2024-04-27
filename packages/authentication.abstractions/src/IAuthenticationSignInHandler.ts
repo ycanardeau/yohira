@@ -1,6 +1,6 @@
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/IAuthenticationSignInHandler.cs,a9056d902606583b,references
 import { AuthenticationProperties } from './AuthenticationProperties';
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IAuthenticationSignOutHandler } from './IAuthenticationSignOutHandler';
 
 /**

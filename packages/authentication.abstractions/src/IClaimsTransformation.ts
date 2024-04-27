@@ -1,4 +1,4 @@
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 
 export const IClaimsTransformation = Symbol.for('IClaimsTransformation');
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/IClaimsTransformation.cs,f6764fe1eb80a8a1,references

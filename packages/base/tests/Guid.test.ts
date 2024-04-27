@@ -1,4 +1,4 @@
-import { Guid } from '@yohira/base';
+import { Guid } from 'src';
 import { expect, test } from 'vitest';
 
 const testGuid = Guid.fromString('a8a110d5-fc49-43c5-bf46-802db8f843ff');

@@ -12,7 +12,7 @@ import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 import { IPersistedDataProtector } from '../IPersistedDataProtector';
 import { isDebugLevelEnabled, isTraceLevelEnabled } from '../LoggingExtensions';
 import { encrypt } from '../authenticated-encryption/AuthenticatedEncryptorExtensions';
-import { CryptographicError } from './CryptographicError';
+import { CryptographicError } from '@yohira/cryptography';
 import { KeyRingProvider } from './KeyRingProvider';
 import { IKeyRingProvider } from './internal/IKeyRingProvider';
 

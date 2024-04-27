@@ -1,10 +1,10 @@
-import { OneShotHashProvider } from '@yohira/cryptography';
 import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 import { randomBytes } from 'node:crypto';
 
 import { HMAC } from './HMAC';
 import { HMACCommon } from './HMACCommon';
 import { HashAlgorithmNames } from './HashAlgorithmNames';
+import { OneShotHashProvider } from './HashProviderDispenser';
 
 // https://source.dot.net/#System.Security.Cryptography/System/Security/Cryptography/HMACSHA512.cs,041349299f588cc0,references
 export class HMACSHA512 extends HMAC {

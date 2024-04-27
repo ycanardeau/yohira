@@ -2,8 +2,8 @@ import { PrincipalContext } from '@yohira/authentication';
 import {
 	AuthenticationProperties,
 	AuthenticationScheme,
-	ClaimsPrincipal,
 } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IHttpContext } from '@yohira/http.abstractions';
 
 import { CookieAuthenticationOptions } from './CookieAuthenticationOptions';

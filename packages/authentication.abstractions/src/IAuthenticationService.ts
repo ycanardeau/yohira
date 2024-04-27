@@ -2,7 +2,7 @@ import { IHttpContext } from '@yohira/http.abstractions';
 
 import { AuthenticateResult } from './AuthenticateResult';
 import { AuthenticationProperties } from './AuthenticationProperties';
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 
 export const IAuthenticationService = Symbol.for('IAuthenticationService');
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/IAuthenticationService.cs,193a6854fd42527a,references

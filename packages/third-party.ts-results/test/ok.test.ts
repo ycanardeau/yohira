@@ -1,5 +1,5 @@
-import { Err, Ok, Result } from '@yohira/third-party.ts-results';
 import { assert } from 'conditional-type-checks';
+import { Err, Ok, Result } from 'src';
 import { expect, test } from 'vitest';
 
 import { eq, expect_never, expect_string } from './util';
