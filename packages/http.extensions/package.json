@@ -1,0 +1,34 @@
+{
+	"name": "@yohira/http.extensions",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
+	"main": "dist/index.js",
+	"dependencies": {
+		"@yohira/extensions.features": "*",
+		"@yohira/extensions.file-providers": "*",
+		"@yohira/http.abstractions": "*",
+		"@yohira/http.features": "*"
+	},
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "npm run clean && tsc && tsc-alias",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ycanardeau/yohira.git"
+	},
+	"keywords": [
+		"aspnetcore",
+		"nodejs",
+		"typescript"
+	],
+	"author": "Aigamo",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ycanardeau/yohira/issues"
+	},
+	"homepage": "https://github.com/ycanardeau/yohira#readme"
+}

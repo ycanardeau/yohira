@@ -1,0 +1,35 @@
+{
+	"name": "@yohira/authentication.core",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
+	"main": "dist/index.js",
+	"dependencies": {
+		"@yohira/authentication.abstractions": "*",
+		"@yohira/base": "*",
+		"@yohira/extensions.dependency-injection.abstractions": "*",
+		"@yohira/extensions.options": "*",
+		"@yohira/http.abstractions": "*"
+	},
+	"scripts": {
+		"clean": "rimraf ./dist",
+		"build": "npm run clean && tsc && tsc-alias",
+		"test": "vitest",
+		"coverage": "vitest run --coverage"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ycanardeau/yohira.git"
+	},
+	"keywords": [
+		"aspnetcore",
+		"nodejs",
+		"typescript"
+	],
+	"author": "Aigamo",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ycanardeau/yohira/issues"
+	},
+	"homepage": "https://github.com/ycanardeau/yohira#readme"
+}
