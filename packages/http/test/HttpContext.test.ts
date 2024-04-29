@@ -1,8 +1,8 @@
 import {
 	ClaimsIdentity,
 	ClaimsPrincipal,
-} from '@yohira/authentication.abstractions';
-import { IServiceProvider } from '@yohira/base';
+	IServiceProvider,
+} from '@yohira/base';
 import {
 	ServiceProvider,
 	buildServiceProvider,

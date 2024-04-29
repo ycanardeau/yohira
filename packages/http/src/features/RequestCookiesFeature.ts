@@ -3,12 +3,13 @@ import {
 	IFeatureCollection,
 } from '@yohira/extensions.features';
 import { StringValues } from '@yohira/extensions.primitives';
-import { RequestCookieCollection } from '@yohira/http';
 import {
 	IHttpRequestFeature,
 	IRequestCookieCollection,
 	IRequestCookiesFeature,
 } from '@yohira/http.features';
+
+import { RequestCookieCollection } from '../internal/RequestCookieCollection';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http/Features/RequestCookiesFeature.cs,7a6678fd34debc93,references
 export class RequestCookiesFeature implements IRequestCookiesFeature {

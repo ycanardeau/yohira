@@ -1,8 +1,8 @@
 import { BinaryWriter, Guid, MemoryStream } from '@yohira/base';
+import { CryptographicError } from '@yohira/cryptography';
 import {
 	AuthenticatedEncryptorFactory,
 	CacheableKeyRing,
-	CryptographicError,
 	IAuthenticatedEncryptor,
 	IAuthenticatedEncryptorDescriptor,
 	IAuthenticatedEncryptorFactory,

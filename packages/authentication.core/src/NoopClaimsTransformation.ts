@@ -1,7 +1,5 @@
-import {
-	ClaimsPrincipal,
-	IClaimsTransformation,
-} from '@yohira/authentication.abstractions';
+import { IClaimsTransformation } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Core/NoopClaimsTransformation.cs,6320ffc78137554d,references
 /**

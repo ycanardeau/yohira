@@ -8,10 +8,9 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import { IHostBuilder } from '@yohira/extensions.hosting.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
-import { IWebHostBuilder, IWebHostEnv } from '@yohira/hosting.abstractions';
+import { IWebHostBuilder, IWebHostEnv, WebHostBuilderContext } from '@yohira/hosting.abstractions';
 import { IAppBuilder, IHttpContextFactory } from '@yohira/http.abstractions';
 
-import { WebHostBuilderContext } from '../WebHostBuilderContext';
 import { WebHostBuilderOptions } from '../WebHostBuilderOptions';
 import { AppBuilderFactory } from '../builder/AppBuilderFactory';
 import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';

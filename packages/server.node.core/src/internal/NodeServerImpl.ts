@@ -10,11 +10,11 @@ import {
 	IServer,
 	IServerAddressesFeature,
 } from '@yohira/hosting.server.abstractions';
-import { Http1Connection } from '@yohira/server.node.core';
 import { createServer } from 'node:http';
 
 import { HttpConnectionContext } from './HttpConnectionContext';
 import { ServiceContext } from './ServiceContext';
+import { Http1Connection } from './http/Http1Connection';
 import { NodeTrace } from './infrastructure/NodeTrace';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Server.Kestrel.Core/Internal/KestrelServerImpl.cs,6911f1692c68cbd5,references

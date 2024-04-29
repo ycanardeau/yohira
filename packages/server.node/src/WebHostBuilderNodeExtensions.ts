@@ -1,7 +1,6 @@
 import { addSingletonCtor } from '@yohira/extensions.dependency-injection.abstractions';
 import { configureOptionsServices } from '@yohira/extensions.options';
-import { WebHostBuilderContext } from '@yohira/hosting';
-import { IWebHostBuilder } from '@yohira/hosting.abstractions';
+import { IWebHostBuilder, WebHostBuilderContext } from '@yohira/hosting.abstractions';
 import { IServer } from '@yohira/hosting.server.abstractions';
 import { NodeServerImpl, NodeServerOptions } from '@yohira/server.node.core';
 

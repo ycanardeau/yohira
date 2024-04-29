@@ -1,10 +1,6 @@
 import { addAuthentication, useAuthentication } from '@yohira/authentication';
 import {
 	AuthenticationProperties,
-	Claim,
-	ClaimTypes,
-	ClaimsIdentity,
-	ClaimsPrincipal,
 	signIn,
 	signOut,
 } from '@yohira/authentication.abstractions';
@@ -12,6 +8,12 @@ import {
 	CookieAuthenticationDefaults,
 	addCookie,
 } from '@yohira/authentication.cookies';
+import {
+	Claim,
+	ClaimTypes,
+	ClaimsIdentity,
+	ClaimsPrincipal,
+} from '@yohira/base';
 import { createWebAppBuilder } from '@yohira/core';
 import { addDistributedMemoryCache } from '@yohira/extensions.caching.memory';
 import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';

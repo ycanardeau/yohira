@@ -1,4 +1,4 @@
-import { CryptographicError } from '@yohira/data-protection';
+import { CryptographicError } from './CryptographicError';
 import {
 	createHash as cryptoCreateHash,
 	createHmac as cryptoCreateHmac,

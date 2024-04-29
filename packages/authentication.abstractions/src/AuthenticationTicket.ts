@@ -1,6 +1,6 @@
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationTicket.cs,f94b5ee0f273ee26,references
 import { AuthenticationProperties } from './AuthenticationProperties';
-import { ClaimsPrincipal } from './ClaimsPrincipal';
+import { ClaimsPrincipal } from '@yohira/base';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Abstractions/AuthenticationTicket.cs,f94b5ee0f273ee26,references
 /**

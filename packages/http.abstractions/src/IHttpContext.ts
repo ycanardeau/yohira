@@ -1,4 +1,4 @@
-import { ClaimsPrincipal } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { IServiceProvider } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 

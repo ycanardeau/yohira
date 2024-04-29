@@ -1,8 +1,8 @@
 import {
 	AuthenticationProperties,
-	ClaimsPrincipal,
 	signIn,
 } from '@yohira/authentication.abstractions';
+import { ClaimsPrincipal } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	ILogger,

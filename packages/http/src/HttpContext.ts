@@ -1,7 +1,4 @@
-import {
-	ClaimsIdentity,
-	ClaimsPrincipal,
-} from '@yohira/authentication.abstractions';
+import { ClaimsIdentity, ClaimsPrincipal } from '@yohira/base';
 import { IServiceProvider } from '@yohira/base';
 import { IServiceScopeFactory } from '@yohira/extensions.dependency-injection.abstractions';
 import {
@@ -9,12 +6,6 @@ import {
 	FeatureReferences,
 	IFeatureCollection,
 } from '@yohira/extensions.features';
-import {
-	HttpRequestFeature,
-	HttpRequestIdentifierFeature,
-	HttpResponseFeature,
-	RequestServicesFeature,
-} from '@yohira/http';
 import { IHttpContext } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
@@ -25,7 +16,11 @@ import {
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 
+import { HttpRequestFeature } from './features/HttpRequestFeature';
+import { HttpRequestIdentifierFeature } from './features/HttpRequestIdentifierFeature';
+import { HttpResponseFeature } from './features/HttpResponseFeature';
 import { ItemsFeature } from './features/ItemsFeature';
+import { RequestServicesFeature } from './features/RequestServicesFeature';
 import { HttpAuthenticationFeature } from './features/authentication/HttpAuthenticationFeature';
 import { HttpRequest } from './internal/HttpRequest';
 import { HttpResponse } from './internal/HttpResponse';

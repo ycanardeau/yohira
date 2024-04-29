@@ -1,4 +1,5 @@
 export * from './Aes';
+export * from './CryptographicError';
 export * from './CryptoStream';
 export * from './CryptoStreamMode';
 export * from './HashAlgorithm';

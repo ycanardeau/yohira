@@ -1,4 +1,4 @@
-import { EndpointMetadataCollection } from '@yohira/http.abstractions';
+import { EndpointMetadataCollection } from './EndpointMetadataCollection';
 
 import { RequestDelegate } from '../RequestDelegate';
 

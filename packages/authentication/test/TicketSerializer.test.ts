@@ -2,11 +2,16 @@ import { TicketSerializer } from '@yohira/authentication';
 import {
 	AuthenticationProperties,
 	AuthenticationTicket,
+} from '@yohira/authentication.abstractions';
+import {
+	BinaryReader,
+	BinaryWriter,
 	Claim,
 	ClaimsIdentity,
 	ClaimsPrincipal,
-} from '@yohira/authentication.abstractions';
-import { BinaryReader, BinaryWriter, MemoryStream, using } from '@yohira/base';
+	MemoryStream,
+	using,
+} from '@yohira/base';
 import { expect, test } from 'vitest';
 
 // https://github.com/dotnet/aspnetcore/blob/00d0038f937f0059a847fde504649fe33ec935e0/src/Security/Authentication/test/TicketSerializerTests.cs#L12

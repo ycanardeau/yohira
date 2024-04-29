@@ -12,8 +12,9 @@ import {
 import {
 	ClaimsIdentity,
 	ClaimsPrincipal,
-} from '@yohira/authentication.abstractions';
-import { Ctor, IServiceProvider } from '@yohira/base';
+	Ctor,
+	IServiceProvider,
+} from '@yohira/base';
 import { buildServiceProvider } from '@yohira/extensions.dependency-injection';
 import {
 	ServiceCollection,
