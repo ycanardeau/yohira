@@ -5,11 +5,11 @@
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
 	"dependencies": {
-		"@yohira/http.abstractions": "*"
+		"@yohira/http.abstractions": "workspace:*"
 	},
 	"scripts": {
 		"clean": "rimraf ./dist",
-		"build": "npm run clean && tsc && tsc-alias",
+		"build": "pnpm clean && tsc && tsc-alias",
 		"test": "vitest",
 		"coverage": "vitest run --coverage"
 	},

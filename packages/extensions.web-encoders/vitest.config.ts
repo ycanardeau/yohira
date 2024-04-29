@@ -154,4 +154,7 @@ export default defineConfig({
 			'@yohira/xml': resolve(__dirname, '../xml/src'),
 		},
 	},
+	test: {
+		passWithNoTests: true
+	}
 });

@@ -5,7 +5,14 @@ Yohira is an experimental project to port ASP.NET Core to TypeScript.
 ## Installation
 
 ```
+# npm
 npm i yohira
+
+# yarn
+yarn add yohira
+
+# pnpm
+pnpm i yohira
 ```
 
 ## [Dependency Injection](https://github.com/ycanardeau/yohira/tree/main/packages/extensions.dependency-injection)

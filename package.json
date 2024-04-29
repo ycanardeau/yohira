@@ -22,16 +22,11 @@
 		"typescript": "^5.4.5",
 		"vitest": "^0.29.8"
 	},
-	"dependencies": {
-		"reflect-metadata": "^0.1.13"
-	},
 	"scripts": {
-		"clean": "rimraf ./dist",
-		"build": "npm run clean && tsc && tsc-alias",
-		"build:watch": "npm run clean && tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
-		"start": "node dist/main.js",
-		"test": "vitest",
-		"coverage": "vitest run --coverage"
+		"clean": "pnpm -r clean",
+		"build": "pnpm -r build",
+		"test": "pnpm -r test",
+		"coverage": "pnpm -r coverage"
 	},
 	"repository": {
 		"type": "git",
