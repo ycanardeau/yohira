@@ -1,7 +1,8 @@
 module.exports = {
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		project: 'tsconfig.json',
+		// https://typescript-eslint.io/getting-started/typed-linting/monorepos/#one-tsconfigjson-per-package-and-an-optional-one-in-the-root
+		project: ['./tsconfig.base.json', './packages/*/tsconfig.json'],
 		sourceType: 'module',
 		tsconfigRootDir: __dirname,
 	},

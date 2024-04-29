@@ -2,12 +2,10 @@
 	"compilerOptions": {
 		"target": "ES2022",
 		"lib": ["ES2022"],
-		"types": ["reflect-metadata", "node"],
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"outDir": "./dist",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
@@ -118,6 +116,5 @@
 			],
 			"@yohira/xml": ["packages/xml/src"]
 		}
-	},
-	"include": ["packages/**/*"]
+	}
 }
