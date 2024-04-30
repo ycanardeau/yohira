@@ -29,6 +29,7 @@
 			"@yohira/data-protection.abstractions": [
 				"packages/data-protection.abstractions/src"
 			],
+			"@yohira/diagnostics": ["packages/diagnostics/src"],
 			"@yohira/extensions.caching.abstractions": [
 				"packages/extensions.caching.abstractions/src"
 			],

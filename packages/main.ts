@@ -15,7 +15,9 @@ import {
 	ClaimsPrincipal,
 } from '@yohira/base';
 import { createWebAppBuilder } from '@yohira/core';
+import { useErrorHandler } from '@yohira/diagnostics';
 import { addDistributedMemoryCache } from '@yohira/extensions.caching.memory';
+import { isDevelopment } from '@yohira/extensions.hosting.abstractions';
 import { addHttpLogging, useHttpLogging } from '@yohira/http-logging';
 import { use, write } from '@yohira/http.abstractions';
 import { getEndpoint } from '@yohira/http.abstractions';
@@ -50,6 +52,10 @@ export async function main(): Promise<void> {
 	// TODO
 
 	const app = builder.build();
+
+	if (!isDevelopment(app.env)) {
+		useErrorHandler(app);
+	}
 
 	useStaticFiles(app);
 

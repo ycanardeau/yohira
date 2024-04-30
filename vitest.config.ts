@@ -37,6 +37,10 @@ export default defineConfig({
 				__dirname,
 				'./packages/data-protection.abstractions/src',
 			),
+			'@yohira/diagnostics': resolve(
+				__dirname,
+				'./packages/diagnostics/src',
+			),
 			'@yohira/extensions.config': resolve(
 				__dirname,
 				'./packages/extensions.config/src',

@@ -1,23 +1,13 @@
 {
-	"name": "@yohira/authentication",
+	"name": "@yohira/diagnostics",
 	"version": "0.0.0",
 	"private": true,
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
 	"dependencies": {
-		"@yohira/authentication.abstractions": "*",
-		"@yohira/authentication.core": "*",
-		"@yohira/base": "*",
-		"@yohira/data-protection": "*",
-		"@yohira/data-protection.abstractions": "*",
-		"@yohira/extensions.config.abstractions": "*",
-		"@yohira/extensions.dependency-injection.abstractions": "*",
-		"@yohira/extensions.logging.abstractions": "*",
 		"@yohira/extensions.options": "*",
-		"@yohira/extensions.web-encoders": "*",
-		"@yohira/http": "*",
+		"@yohira/extensions.logging.abstractions": "*",
 		"@yohira/http.abstractions": "*",
-		"@yohira/http.features": "*",
 		"@yohira/shared": "*"
 	},
 	"scripts": {

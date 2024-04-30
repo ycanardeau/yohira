@@ -4,6 +4,7 @@ export * from './authentication.abstractions/src';
 export * from './authentication.cookies/src';
 export * from './base/src';
 export * from './core/src';
+export * from './diagnostics/src';
 export * from './extensions.config/src';
 export * from './extensions.config.abstractions/src';
 export * from './extensions.config.binder/src';

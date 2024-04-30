@@ -2,9 +2,9 @@ import { IAuthenticationSchemeProvider } from '@yohira/authentication.abstractio
 import { tryGetValue } from '@yohira/base';
 import { getRequiredService } from '@yohira/extensions.dependency-injection.abstractions';
 import { IAppBuilder, use, useMiddleware } from '@yohira/http.abstractions';
+import { globalRouteBuilderKey, reroute } from '@yohira/shared';
 
 import { AuthenticationMiddleware } from './AuthenticationMiddleware';
-import { globalRouteBuilderKey, reroute } from './RerouteHelper';
 
 const authenticationMiddlewareSetKey = '__AuthenticationMiddlewareSet';
 
