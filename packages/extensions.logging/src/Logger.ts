@@ -2,6 +2,8 @@ import { ILogger, LogLevel } from '@yohira/extensions.logging.abstractions';
 
 // https://source.dot.net/#Microsoft.Extensions.Logging/Logger.cs,fdb90470ff3a62bd,references
 export class Logger implements ILogger {
+	constructor(private readonly categoryName: string) {}
+
 	log(logLevel: LogLevel, message?: any, ...optionalParams: any[]): void {
 		switch (logLevel) {
 			case LogLevel.Trace:

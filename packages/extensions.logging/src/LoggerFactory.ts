@@ -19,7 +19,7 @@ export class LoggerFactory implements ILoggerFactory {
 		if (tryGetValueResult.ok) {
 			return tryGetValueResult.val;
 		}
-		const logger = new Logger(/* TODO */);
+		const logger = new Logger(categoryName /* TODO */);
 		// TODO
 		this.loggers.set(categoryName, logger);
 		return logger;
