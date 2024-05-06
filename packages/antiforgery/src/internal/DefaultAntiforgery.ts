@@ -41,7 +41,6 @@ function logTokenDeserializeError(logger: ILogger, error: Error): void {
 	logger.log(
 		LogLevel.Error,
 		'An exception was thrown while deserializing the token.',
-		error,
 	);
 }
 
@@ -164,7 +163,7 @@ export class DefaultAntiforgery implements IAntiforgery {
 					responseHeaders.getHeader(HeaderNames.Pragma) as
 						| string
 						| string[] /* REVIEw */,
-			  )
+				)
 			: undefined;
 		if (pragmaHeader !== undefined && pragmaHeader.count > 0) {
 			// If the Pragma is already set, override it only if required

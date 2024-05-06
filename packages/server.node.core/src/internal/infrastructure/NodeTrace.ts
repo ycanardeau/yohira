@@ -15,7 +15,6 @@ function applicationError(
 	logger.log(
 		LogLevel.Error,
 		`Connection id "${connectionId}", Request id "${traceIdentifier}": An unhandled exception was thrown by the application.`,
-		error,
 	);
 }
 
@@ -31,8 +30,8 @@ export class NodeTrace implements ILogger {
 		return this.generalLogger.isEnabled(logLevel);
 	}
 
-	log(logLevel: LogLevel, message?: any, ...optionalParams: any[]): void {
-		return this.generalLogger.log(logLevel, message, ...optionalParams);
+	log(logLevel: LogLevel, message: string): void {
+		return this.generalLogger.log(logLevel, message);
 	}
 
 	applicationError(
