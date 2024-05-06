@@ -7,6 +7,7 @@ export * from './ClaimsIdentity';
 export * from './ClaimsPrincipal';
 export * from './ClaimTypes';
 export * from './ClaimValueTypes';
+export * from './ConsoleColor';
 export * from './Ctor';
 export * from './DirectoryInfo';
 export * from './FileAttributes';
