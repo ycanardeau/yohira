@@ -2,6 +2,7 @@ import { ClaimsPrincipal } from '@yohira/base';
 import { IServiceProvider } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 
+import { IConnectionInfo } from './IConnectionInfo';
 import { IHttpRequest } from './IHttpRequest';
 import { IHttpResponse } from './IHttpResponse';
 
@@ -19,6 +20,10 @@ export interface IHttpContext {
 	 * Gets the {@link IHttpResponse} object for this request.
 	 */
 	readonly response: IHttpResponse;
+	/**
+	 * Gets information about the underlying connection for this request.
+	 */
+	connection: IConnectionInfo;
 	/**
 	 * Gets or sets the user for this request.
 	 */

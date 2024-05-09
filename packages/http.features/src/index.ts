@@ -1,6 +1,7 @@
 export * from './CookieOptions';
 export * from './IHeaderDictionary';
 export * from './IHttpAuthenticationFeature';
+export * from './IHttpConnectionFeature';
 export * from './IHttpRequestFeature';
 export * from './IHttpRequestIdentifierFeature';
 export * from './IHttpResponseBodyFeature';

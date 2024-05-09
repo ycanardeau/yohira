@@ -16,6 +16,7 @@ export * from './FragmentString';
 export * from './HostString';
 export * from './HttpMethods';
 export * from './IAppBuilder';
+export * from './IConnectionInfo';
 export * from './IHttpContext';
 export * from './IHttpContextAccessor';
 export * from './IHttpContextFactory';

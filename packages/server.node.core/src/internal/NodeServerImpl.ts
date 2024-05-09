@@ -1,3 +1,4 @@
+import { IPAddress, IPEndPoint } from '@yohira/base';
 import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	FeatureCollection,
@@ -70,6 +71,30 @@ export class NodeServerImpl implements IServer, AsyncDisposable {
 					const httpConnectionContext = new HttpConnectionContext(
 						this.serviceContext,
 						this.features,
+						(request.socket.localFamily === 'IPv4' ||
+							request.socket.localFamily === 'IPv6') &&
+						request.socket.localAddress !== undefined &&
+						request.socket.localPort !== undefined
+							? new IPEndPoint(
+									new IPAddress(
+										request.socket.localFamily,
+										request.socket.localAddress,
+									),
+									request.socket.localPort,
+								)
+							: undefined,
+						(request.socket.remoteFamily === 'IPv4' ||
+							request.socket.remoteFamily === 'IPv6') &&
+						request.socket.remoteAddress !== undefined &&
+						request.socket.remotePort !== undefined
+							? new IPEndPoint(
+									new IPAddress(
+										request.socket.remoteFamily,
+										request.socket.remoteAddress,
+									),
+									request.socket.remotePort,
+								)
+							: undefined,
 					);
 					httpConnectionContext.transport = {
 						input: request,

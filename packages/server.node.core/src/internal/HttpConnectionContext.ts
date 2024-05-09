@@ -1,3 +1,4 @@
+import { IPEndPoint } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { Readable, Writable } from 'node:stream';
 
@@ -26,7 +27,14 @@ export class HttpConnectionContext extends BaseHttpConnectionContext {
 	constructor(
 		serviceContext: ServiceContext,
 		connectionFeatures: IFeatureCollection,
+		localEndPoint: IPEndPoint | undefined,
+		remoteEndPoint: IPEndPoint | undefined,
 	) {
-		super(serviceContext, connectionFeatures);
+		super(
+			serviceContext,
+			connectionFeatures,
+			localEndPoint,
+			remoteEndPoint,
+		);
 	}
 }

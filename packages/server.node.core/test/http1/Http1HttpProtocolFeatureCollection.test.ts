@@ -1,3 +1,4 @@
+import { IPEndPoint } from '@yohira/base';
 import {
 	FeatureCollection,
 	IFeatureCollection,
@@ -23,10 +24,14 @@ function createHttpConnectionContext(
 	serviceContext: ServiceContext,
 	transport: IDuplexPipe,
 	connectionFeatures: IFeatureCollection,
+	localEndPoint?: IPEndPoint,
+	remoteEndPoint?: IPEndPoint,
 ): HttpConnectionContext {
 	const context = new HttpConnectionContext(
 		serviceContext,
 		connectionFeatures,
+		localEndPoint,
+		remoteEndPoint,
 	);
 	context.transport = transport;
 

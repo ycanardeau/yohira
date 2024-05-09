@@ -1,3 +1,4 @@
+import { IPEndPoint } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 
 import { ServiceContext } from './ServiceContext';
@@ -7,5 +8,7 @@ export class BaseHttpConnectionContext {
 	constructor(
 		readonly serviceContext: ServiceContext,
 		readonly connectionFeatures: IFeatureCollection,
+		readonly localEndPoint: IPEndPoint | undefined,
+		readonly remoteEndPoint: IPEndPoint | undefined,
 	) {}
 }

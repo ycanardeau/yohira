@@ -1,9 +1,10 @@
-import { List } from '@yohira/base';
+import { IPAddress, IPEndPoint, List } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { IHttpApp } from '@yohira/hosting.server.abstractions';
 import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
+	IHttpConnectionFeature,
 	IHttpRequestFeature,
 	IHttpResponseBodyFeature,
 	IHttpResponseFeature,
@@ -32,7 +33,8 @@ export class Http1Connection
 		IHttpRequestFeature,
 		IHttpResponseFeature,
 		IHttpResponseBodyFeature,
-		IEndpointFeature
+		IEndpointFeature,
+		IHttpConnectionFeature
 {
 	private static readonly schemeHttp = 'http';
 	private static readonly schemeHttps = 'https';
@@ -43,6 +45,7 @@ export class Http1Connection
 		| IHttpResponseBodyFeature
 		| undefined;
 	private currentIEndpointFeature: IEndpointFeature | undefined;
+	private currentIHttpConnectionFeature: IHttpConnectionFeature | undefined;
 
 	private currentIServiceProvidersFeature:
 		| IServiceProvidersFeature
@@ -56,6 +59,7 @@ export class Http1Connection
 		this.currentIHttpResponseFeature = this;
 		this.currentIHttpResponseBodyFeature = this;
 		this.currentIEndpointFeature = this;
+		this.currentIHttpConnectionFeature = this;
 
 		this.currentIServiceProvidersFeature = undefined;
 	}
@@ -80,6 +84,10 @@ export class Http1Connection
 
 	private context!: HttpConnectionContext;
 
+	remoteIpAddress: IPAddress | undefined;
+	remotePort = 0;
+	localIpAddress: IPAddress | undefined;
+	localPort = 0;
 	private _scheme: string | undefined;
 	private _pathBase: string | undefined;
 	private _path: string | undefined;
@@ -106,6 +114,13 @@ export class Http1Connection
 		this._queryString = undefined;
 		this._rawBody = undefined;
 		// TODO
+
+		const remoteEndPoint = this.remoteEndPoint;
+		this.remoteIpAddress = remoteEndPoint?.address;
+		this.remotePort = remoteEndPoint?.port ?? 0;
+		const localEndPoint = this.localEndPoint;
+		this.localIpAddress = localEndPoint?.address;
+		this.localPort = localEndPoint?.port ?? 0;
 
 		// TODO
 
@@ -145,6 +160,18 @@ export class Http1Connection
 
 	get serviceContext(): ServiceContext {
 		return this.context.serviceContext;
+	}
+
+	get connectionId(): string {
+		return '' /* TODO */;
+	}
+
+	get localEndPoint(): IPEndPoint | undefined {
+		return this.context.localEndPoint;
+	}
+
+	get remoteEndPoint(): IPEndPoint | undefined {
+		return this.context.remoteEndPoint;
 	}
 
 	get connectionFeatures(): IFeatureCollection {
@@ -194,7 +221,7 @@ export class Http1Connection
 		}
 
 		this.log.applicationError(
-			'' /* TODO: this.connectionId */,
+			this.connectionId,
 			'' /* TODO: this.traceIdentifier */,
 			error,
 		);
@@ -248,7 +275,7 @@ export class Http1Connection
 			} catch (error) {
 				if (error instanceof Error) {
 					protocol.log.applicationError(
-						'' /* TODO: protocol.connectionId */,
+						protocol.connectionId,
 						'' /* TODO: protocol.traceIdentifier */,
 						error,
 					);
@@ -484,6 +511,8 @@ export class Http1Connection
 			feature = this.currentIServiceProvidersFeature as T;
 		} else if (key === IHttpAuthenticationFeature) {
 			feature = this.currentIHttpAuthenticationFeature as T;
+		} else if (key === IHttpConnectionFeature) {
+			feature = this.currentIHttpConnectionFeature as T;
 		} else if (this.maybeExtra !== undefined) {
 			feature = this.extraFeatureGet(key);
 		}
@@ -510,6 +539,9 @@ export class Http1Connection
 		} else if (key === IHttpAuthenticationFeature) {
 			this.currentIHttpAuthenticationFeature =
 				instance as IHttpAuthenticationFeature;
+		} else if (key === IHttpConnectionFeature) {
+			this.currentIHttpConnectionFeature =
+				instance as IHttpConnectionFeature;
 		} else {
 			this.extraFeatureSet(key, instance);
 		}

@@ -21,6 +21,8 @@ export * from './IComparer';
 export * from './IDisposable';
 export * from './IEquatable';
 export * from './IList';
+export * from './IPAddress';
+export * from './IPEndPoint';
 export * from './IReadonlyCollection';
 export * from './IReadonlyList';
 export * from './IServiceProvider';

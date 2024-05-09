@@ -6,7 +6,7 @@ import {
 	FeatureReferences,
 	IFeatureCollection,
 } from '@yohira/extensions.features';
-import { IHttpContext } from '@yohira/http.abstractions';
+import { IConnectionInfo, IHttpContext } from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
 	IHttpRequestFeature,
@@ -16,6 +16,7 @@ import {
 	IServiceProvidersFeature,
 } from '@yohira/http.features';
 
+import { ConnectionInfo } from './ConnectionInfo';
 import { HttpRequestFeature } from './features/HttpRequestFeature';
 import { HttpRequestIdentifierFeature } from './features/HttpRequestIdentifierFeature';
 import { HttpResponseFeature } from './features/HttpResponseFeature';
@@ -53,6 +54,8 @@ export class HttpContext implements IHttpContext {
 	readonly request: HttpRequest;
 	readonly response: HttpResponse;
 
+	private _connection: ConnectionInfo | undefined;
+
 	// This is field exists to make analyzing memory dumps easier.
 	// https://github.com/dotnet/aspnetcore/issues/29709
 	/** @internal */ active = false;
@@ -80,12 +83,19 @@ export class HttpContext implements IHttpContext {
 		return httpContext;
 	}
 
+	get connection(): IConnectionInfo {
+		return (
+			this._connection ??
+			(this._connection = new ConnectionInfo(this.features))
+		);
+	}
+
 	initialize(features: IFeatureCollection): void {
 		const revision = features.revision;
 		this._features.initialize(features, revision);
 		this.request.initialize(revision);
 		this.response.initialize(revision);
-		// TODO: this.connection?.initialize(features, revision);
+		this._connection?.initialize(features, revision);
 		// TODO: this.websockets?.initialize(features, revision);
 		this.active = true;
 	}
@@ -99,7 +109,7 @@ export class HttpContext implements IHttpContext {
 		);
 		this.request.uninitialize();
 		this.response.uninitialize();
-		// TODO: this.connection?.uninitialize();
+		this._connection?.uninitialize();
 		// TODO: this.websockets?.uninitialize();
 		this.active = false;
 	}
