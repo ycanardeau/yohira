@@ -14,6 +14,7 @@ export * from './NoContentResult';
 export * from './NotFoundResult';
 export * from './OkResult';
 export * from './PhysicalFileResult';
+export * from './RedirectResult';
 export * from './SignInResult';
 export * from './SignOutResult';
 export * from './StatusCodeResult';

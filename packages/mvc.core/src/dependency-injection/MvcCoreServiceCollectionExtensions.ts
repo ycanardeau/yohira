@@ -10,6 +10,7 @@ import { FileContentResultExecutor } from '../infrastructure/FileContentResultEx
 import { FileStreamResultExecutor } from '../infrastructure/FileStreamResultExecutor';
 import { JsonResultExecutor } from '../infrastructure/JsonResultExecutor';
 import { PhysicalFileResultExecutor } from '../infrastructure/PhysicalFileResultExecutor';
+import { RedirectResultExecutor } from '../infrastructure/RedirectResultExecutor';
 import { VirtualFileResultExecutor } from '../infrastructure/VirtualFileResultExecutor';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Mvc.Core/DependencyInjection/MvcCoreServiceCollectionExtensions.cs,633ab8f2eb7452b9,references
@@ -44,6 +45,14 @@ export function addMvcCoreServices(services: IServiceCollection): void {
 			ServiceLifetime.Singleton,
 			Symbol.for('IActionResultExecutor<FileContentResult>'),
 			FileContentResultExecutor,
+		),
+	);
+	tryAddServiceDescriptor(
+		services,
+		ServiceDescriptor.fromCtor(
+			ServiceLifetime.Singleton,
+			Symbol.for('IActionResultExecutor<RedirectResult>'),
+			RedirectResultExecutor,
 		),
 	);
 	tryAddServiceDescriptor(

@@ -1,3 +1,4 @@
+import { StatusCodes } from '@yohira/http.abstractions';
 import { HeaderNames } from '@yohira/http.headers';
 import { IncomingMessage, ServerResponse } from 'node:http';
 
@@ -20,6 +21,10 @@ export const IHttpResponseFeature = Symbol.for('IHttpResponseFeature');
  * Represents the fields and state of an HTTP response.
  */
 export interface IHttpResponseFeature {
+	/**
+	 * Gets or sets the status-code as defined in RFC 7230.
+	 */
+	statusCode: StatusCodes;
 	/**
 	 * Gets or sets the response headers to send. Headers with multiple values will be emitted as multiple headers.
 	 */

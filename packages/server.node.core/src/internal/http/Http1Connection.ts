@@ -1,7 +1,11 @@
 import { IPAddress, IPEndPoint, List } from '@yohira/base';
 import { IFeatureCollection } from '@yohira/extensions.features';
 import { IHttpApp } from '@yohira/hosting.server.abstractions';
-import { Endpoint, IEndpointFeature } from '@yohira/http.abstractions';
+import {
+	Endpoint,
+	IEndpointFeature,
+	StatusCodes,
+} from '@yohira/http.abstractions';
 import {
 	IHttpAuthenticationFeature,
 	IHttpConnectionFeature,
@@ -114,6 +118,8 @@ export class Http1Connection
 		this._queryString = undefined;
 		this._rawBody = undefined;
 		// TODO
+		this._statusCode = StatusCodes.Status200OK;
+		// TODO
 
 		const remoteEndPoint = this.remoteEndPoint;
 		this.remoteIpAddress = remoteEndPoint?.address;
@@ -187,6 +193,17 @@ export class Http1Connection
 			this.requestProcessingStatus >=
 			RequestProcessingStatus.HeadersCommitted
 		);
+	}
+
+	private _statusCode!: StatusCodes;
+	get statusCode(): StatusCodes {
+		return this._statusCode;
+	}
+	set statusCode(value: StatusCodes) {
+		if (this.hasResponseStarted) {
+		}
+
+		this._statusCode = value;
 	}
 
 	protected onRequestProcessingEnded(): void {

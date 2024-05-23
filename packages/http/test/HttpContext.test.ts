@@ -24,6 +24,7 @@ import {
 	HttpRequestFeature,
 	HttpResponseFeature,
 } from '@yohira/http';
+import { StatusCodes } from '@yohira/http.abstractions';
 import {
 	IHttpRequestFeature,
 	IHttpResponseFeature,
@@ -213,6 +214,7 @@ class TestHttpResponseFeature implements IHttpResponseFeature {
 		state: object;
 	}[] = [];
 
+	statusCode!: StatusCodes;
 	responseHeaders: IResponseHeaderDictionary =
 		{} as IResponseHeaderDictionary /* TODO */;
 

@@ -72,4 +72,11 @@ export interface IHttpResponse {
 		state: object,
 	): void;
 	registerForDisposeAsync(disposable: AsyncDisposable): void;
+	/**
+	 * Returns a redirect response (HTTP 301 or HTTP 302) to the client.
+	 * @param location The URL to redirect the client to. This must be properly encoded for use in http headers
+	 * where only ASCII characters are allowed.
+	 * @param permanent <c>True</c> if the redirect is permanent (301), otherwise <c>false</c> (302).
+	 */
+	redirect(location: string, permanent: boolean): void;
 }

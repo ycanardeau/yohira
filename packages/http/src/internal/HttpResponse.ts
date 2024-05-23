@@ -93,13 +93,11 @@ export class HttpResponse implements IHttpResponse {
 		)!;
 	}
 
-	// TODO
-	private _statusCode = StatusCodes.Status200OK;
 	get statusCode(): StatusCodes {
-		return this._statusCode;
+		return this.httpResponseFeature.statusCode;
 	}
 	set statusCode(value: StatusCodes) {
-		this._statusCode = value;
+		this.httpResponseFeature.statusCode = value;
 	}
 
 	get headers(): IResponseHeaderDictionary {
@@ -152,5 +150,16 @@ export class HttpResponse implements IHttpResponse {
 
 	registerForDisposeAsync(disposable: AsyncDisposable): void {
 		this.onCompleted(disposeDelegate, disposable);
+	}
+
+	redirect(location: string, permanent: boolean): void {
+		if (permanent) {
+			this.httpResponseFeature.statusCode =
+				StatusCodes.Status301MovedPermanently;
+		} else {
+			this.httpResponseFeature.statusCode = StatusCodes.Status302Found;
+		}
+
+		this.headers.setHeader(HeaderNames.Location, location);
 	}
 }
