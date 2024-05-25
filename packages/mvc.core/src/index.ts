@@ -1,4 +1,6 @@
 export * from './dependency-injection/MvcCoreServiceCollectionExtensions';
+export * from './infrastructure/ContentResultExecutor';
+export * from './infrastructure/RedirectResultExecutor';
 export * from './ActionResult';
 export * from './BadRequestResult';
 export * from './ChallengeResult';
@@ -9,6 +11,8 @@ export * from './FileContentResult';
 export * from './FileResult';
 export * from './FileStreamResult';
 export * from './ForbidResult';
+export * from './HttpActionResult';
+export * from './IStatusCodeActionResult';
 export * from './JsonResult';
 export * from './NoContentResult';
 export * from './NotFoundResult';

@@ -66,7 +66,7 @@ function createApp(
 // https://github.com/dotnet/aspnetcore/blob/e0aed17a16f5f6e5540925ef849bf87358fa10b3/src/Hosting/Hosting/test/HostingApplicationTests.cs#L22C17-L22C85
 test('DisposeContextDoesNotClearHttpContextIfDefaultHttpContextFactoryUsed', () => {
 	const hostingApp = createApp();
-	const httpContext = HttpContext.create();
+	const httpContext = HttpContext.createWithDefaultFeatureCollection();
 
 	const context = hostingApp.createContext(httpContext.features);
 	expect(context.httpContext).not.toBeUndefined();
@@ -91,9 +91,9 @@ test('DisposeContextDoesNotClearHttpContextIfDefaultHttpContextFactoryUsed', () 
 test('CreateContextReinitializesPreviouslyStoredDefaultHttpContext', () => {
 	const hostingApp = createApp();
 	const features = new FeaturesWithContext<HostingAppContext>(
-		HttpContext.create().features,
+		HttpContext.createWithDefaultFeatureCollection().features,
 	);
-	const previousContext = HttpContext.create();
+	const previousContext = HttpContext.createWithDefaultFeatureCollection();
 	features.hostContext = new HostingAppContext();
 	features.hostContext.httpContext = previousContext;
 
@@ -115,9 +115,9 @@ test('CreateContextCreatesNewContextIfNotUsingDefaultHttpContextFactory', () => 
 
 	const hostingApp = createApp(factory);
 	const features = new FeaturesWithContext<HostingAppContext>(
-		HttpContext.create().features,
+		HttpContext.createWithDefaultFeatureCollection().features,
 	);
-	const previousContext = HttpContext.create();
+	const previousContext = HttpContext.createWithDefaultFeatureCollection();
 	// Pretend like we had previous HttpContext
 	features.hostContext = new HostingAppContext();
 	features.hostContext.httpContext = previousContext;
@@ -137,7 +137,7 @@ class TestHttpActivityFeature implements IHttpActivityFeature {
 // https://github.com/dotnet/aspnetcore/blob/e0aed17a16f5f6e5540925ef849bf87358fa10b3/src/Hosting/Hosting/test/HostingApplicationTests.cs#L165C17-L165C67
 test('IHttpActivityFeatureIsNotPopulatedWithoutAListener', () => {
 	const hostingApp = createApp();
-	const httpContext = HttpContext.create();
+	const httpContext = HttpContext.createWithDefaultFeatureCollection();
 	httpContext.features.set<IHttpActivityFeature>(
 		IHttpActivityFeature,
 		new TestHttpActivityFeature(),

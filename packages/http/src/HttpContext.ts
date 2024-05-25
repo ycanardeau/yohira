@@ -66,7 +66,7 @@ export class HttpContext implements IHttpContext {
 		this.response = new HttpResponse(this);
 	}
 
-	static create(): HttpContext {
+	static createWithDefaultFeatureCollection(): HttpContext {
 		const httpContext = new HttpContext(new FeatureCollection());
 		httpContext.features.set<IHttpRequestFeature>(
 			IHttpRequestFeature,

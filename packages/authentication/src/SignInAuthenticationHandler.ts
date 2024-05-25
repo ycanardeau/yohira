@@ -48,8 +48,7 @@ export abstract class SignInAuthenticationHandler<
 			? signIn(this.context, target, user, properties)
 			: this.handleSignIn(
 					user,
-					properties ??
-						new AuthenticationProperties(undefined, undefined),
+					properties ?? AuthenticationProperties.create(),
 				);
 	}
 }

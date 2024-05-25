@@ -110,10 +110,7 @@ export async function main(): Promise<void> {
 			undefined,
 		);
 
-		const authProperties = new AuthenticationProperties(
-			undefined,
-			undefined,
-		);
+		const authProperties = AuthenticationProperties.create();
 
 		await signIn(
 			context,
@@ -126,10 +123,7 @@ export async function main(): Promise<void> {
 	});
 
 	mapGet(app, '/signOut', async (context) => {
-		const authProperties = new AuthenticationProperties(
-			undefined,
-			undefined,
-		);
+		const authProperties = AuthenticationProperties.create();
 
 		await signOut(
 			context,

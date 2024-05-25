@@ -109,11 +109,7 @@ export abstract class HttpMethodMatcherPolicyIntegrationTestBase {
 		httpMethod: HttpMethods,
 		corsPreflight = false,
 	): IHttpContext {
-		const features =
-			new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
-		const httpContext = new HttpContext(features);
-		features.set(IHttpRequestFeature, new HttpRequestFeature());
-		// TODO
+		const httpContext = HttpContext.createWithDefaultFeatureCollection();
 		httpContext.request.method = corsPreflight
 			? preflightHttpMethod
 			: httpMethod;

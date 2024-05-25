@@ -30,6 +30,16 @@ export class AuthenticationProperties {
 		this.parameters = parameters ?? new Map();
 	}
 
+	static create(): AuthenticationProperties {
+		return new AuthenticationProperties(undefined, undefined);
+	}
+
+	static createWithItems(
+		items: Map<string, string | undefined>,
+	): AuthenticationProperties {
+		return new AuthenticationProperties(items, undefined);
+	}
+
 	protected getString(key: string): string | undefined {
 		const tryGetValueResult = tryGetValue(this.items, key);
 		return tryGetValueResult.ok ? tryGetValueResult.val : undefined;
@@ -64,8 +74,8 @@ export class AuthenticationProperties {
 			? tryGetValueResult.val === 'true'
 				? true
 				: tryGetValueResult.val === 'false'
-				? false
-				: undefined
+					? false
+					: undefined
 			: undefined;
 	}
 

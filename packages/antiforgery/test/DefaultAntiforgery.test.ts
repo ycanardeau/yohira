@@ -53,7 +53,7 @@ function getServices(): IServiceProvider {
 function getHttpContext(
 	antiforgeryFeature?: IAntiforgeryFeature,
 ): IHttpContext {
-	const httpContext = HttpContext.create();
+	const httpContext = HttpContext.createWithDefaultFeatureCollection();
 	antiforgeryFeature = antiforgeryFeature ?? new AntiforgeryFeature();
 	httpContext.features.set(IAntiforgeryFeature, antiforgeryFeature);
 	httpContext.requestServices = getServices();

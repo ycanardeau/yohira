@@ -193,7 +193,7 @@ test('RequestServicesAreNotOverwrittenIfAlreadySet', () => {
 		IServiceScopeFactory,
 	);
 
-	const context = HttpContext.create();
+	const context = HttpContext.createWithDefaultFeatureCollection();
 	context.serviceScopeFactory = scopeFactory;
 	context.requestServices = serviceProvider;
 
@@ -247,7 +247,7 @@ test('RequestServicesAreDisposedOnCompleted', async () => {
 	);
 	let instance: DisposableThing | undefined = undefined;
 
-	const context = HttpContext.create();
+	const context = HttpContext.createWithDefaultFeatureCollection();
 	context.serviceScopeFactory = scopeFactory;
 	const responseFeature = new TestHttpResponseFeature();
 	context.features.set<IHttpResponseFeature>(
@@ -336,7 +336,7 @@ test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
 	);
 	let instance: DisposableThing | undefined = undefined;
 
-	const context = HttpContext.create();
+	const context = HttpContext.createWithDefaultFeatureCollection();
 	context.serviceScopeFactory = scopeFactory;
 	const responseFeature = new TestHttpResponseFeature();
 	context.features.set<IHttpResponseFeature>(
@@ -365,7 +365,7 @@ test('RequestServicesAreDisposedAsyncOnCompleted', async () => {
 
 // https://github.com/dotnet/aspnetcore/blob/95b1de9ccf67adbc57919132464dac44c20e92b8/src/Http/Http/test/DefaultHttpContextTests.cs#L261C17-L261C48
 test('InternalActiveFlagIsSetAndUnset', () => {
-	const context = HttpContext.create();
+	const context = HttpContext.createWithDefaultFeatureCollection();
 
 	expect(context.active).toBe(false);
 

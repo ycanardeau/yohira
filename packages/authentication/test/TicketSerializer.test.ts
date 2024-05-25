@@ -17,7 +17,7 @@ import { expect, test } from 'vitest';
 // https://github.com/dotnet/aspnetcore/blob/00d0038f937f0059a847fde504649fe33ec935e0/src/Security/Authentication/test/TicketSerializerTests.cs#L12
 test('CanRoundTripEmptyPrincipal', () => {
 	const serializer = new TicketSerializer();
-	const properties = new AuthenticationProperties(undefined, undefined);
+	const properties = AuthenticationProperties.create();
 	properties.redirectUri = 'bye';
 	const ticket = new AuthenticationTicket(
 		new ClaimsPrincipal(),
@@ -42,7 +42,7 @@ test('CanRoundTripEmptyPrincipal', () => {
 // https://github.com/dotnet/aspnetcore/blob/00d0038f937f0059a847fde504649fe33ec935e0/src/Security/Authentication/test/TicketSerializerTests.cs#L33
 test('CanRoundTripBootstrapContext', () => {
 	const serializer = new TicketSerializer();
-	const properties = new AuthenticationProperties(undefined, undefined);
+	const properties = AuthenticationProperties.create();
 
 	const ticket = new AuthenticationTicket(
 		new ClaimsPrincipal(),
@@ -84,7 +84,7 @@ test('CanRoundTripBootstrapContext', () => {
 // https://github.com/dotnet/aspnetcore/blob/00d0038f937f0059a847fde504649fe33ec935e0/src/Security/Authentication/test/TicketSerializerTests.cs#L55
 test('CanRoundTripActorIdentity', () => {
 	const serializer = new TicketSerializer();
-	const properties = new AuthenticationProperties(undefined, undefined);
+	const properties = AuthenticationProperties.create();
 
 	const actor = new ClaimsIdentity(
 		undefined,
@@ -135,7 +135,7 @@ test('CanRoundTripActorIdentity', () => {
 // https://github.com/dotnet/aspnetcore/blob/00d0038f937f0059a847fde504649fe33ec935e0/src/Security/Authentication/test/TicketSerializerTests.cs#L84
 test('CanRoundTripClaimProperties', () => {
 	const serializer = new TicketSerializer();
-	const properties = new AuthenticationProperties(undefined, undefined);
+	const properties = AuthenticationProperties.create();
 
 	const claim = new Claim(
 		'type',

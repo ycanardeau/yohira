@@ -30,7 +30,6 @@ export abstract class PropertiesContext<
 	) {
 		super(context, scheme, options);
 
-		this.properties =
-			properties ?? new AuthenticationProperties(undefined, undefined);
+		this.properties = properties ?? AuthenticationProperties.create();
 	}
 }

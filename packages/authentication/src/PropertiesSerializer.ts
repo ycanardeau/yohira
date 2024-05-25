@@ -44,7 +44,7 @@ export class PropertiesSerializer
 			const value = reader.readString();
 			extra.set(key, value);
 		}
-		return new AuthenticationProperties(extra, undefined);
+		return AuthenticationProperties.createWithItems(extra);
 	}
 
 	deserialize(data: Buffer): AuthenticationProperties | undefined {

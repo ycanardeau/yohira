@@ -37,8 +37,7 @@ export abstract class SignOutAuthenticationHandler<
 		return target !== undefined
 			? signOut(this.context, target, properties)
 			: this.handleSignOut(
-					properties ??
-						new AuthenticationProperties(undefined, undefined),
-			  );
+					properties ?? AuthenticationProperties.create(),
+				);
 	}
 }

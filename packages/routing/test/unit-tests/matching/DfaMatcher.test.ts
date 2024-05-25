@@ -87,12 +87,7 @@ function createDfaMatcher(
 }
 
 function createContext(): IHttpContext {
-	const features =
-		new FeatureCollection(/* TODO: defaultFeatureCollectionSize */);
-	const context = new HttpContext(features);
-	features.set(IHttpRequestFeature, new HttpRequestFeature());
-	// TODO
-	return context;
+	return HttpContext.createWithDefaultFeatureCollection();
 }
 
 // TODO

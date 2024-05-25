@@ -290,10 +290,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 
 	protected async handleSignIn(
 		user: ClaimsPrincipal,
-		properties: AuthenticationProperties = new AuthenticationProperties(
-			undefined,
-			undefined,
-		),
+		properties: AuthenticationProperties = AuthenticationProperties.create(),
 	): Promise<void> {
 		this.signInCalled = true;
 
@@ -384,8 +381,7 @@ export class CookieAuthenticationHandler extends SignInAuthenticationHandler<Coo
 	protected async handleSignOut(
 		properties: AuthenticationProperties | undefined,
 	): Promise<void> {
-		properties =
-			properties ?? new AuthenticationProperties(undefined, undefined);
+		properties = properties ?? AuthenticationProperties.create();
 
 		this.signOutCalled = true;
 

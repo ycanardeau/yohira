@@ -11,7 +11,7 @@ export class AuthenticationTicket {
 
 	constructor(
 		readonly principal: ClaimsPrincipal,
-		properties = new AuthenticationProperties(undefined, undefined),
+		properties = AuthenticationProperties.create(),
 		readonly authenticationScheme: string,
 	) {
 		this.properties = properties;
