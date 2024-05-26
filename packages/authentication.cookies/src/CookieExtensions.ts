@@ -72,12 +72,53 @@ function addCookieWithAuthenticationScheme(
 	);
 }
 
+// https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/CookieExtensions.cs,0b8b178019b6d4af,references
+function addCookieWithConfigureOptions(
+	builder: AuthenticationBuilder,
+	configureOptions: (options: CookieAuthenticationOptions) => void,
+): AuthenticationBuilder {
+	return addCookieWithAuthenticationSchemeAndConfigureOptions(
+		builder,
+		CookieAuthenticationDefaults.authenticationScheme,
+		configureOptions,
+	);
+}
+
 // https://source.dot.net/#Microsoft.AspNetCore.Authentication.Cookies/CookieExtensions.cs,af9790eb5f8abc9f,references
 export function addCookie(
 	builder: AuthenticationBuilder,
+): AuthenticationBuilder;
+export function addCookie(
+	builder: AuthenticationBuilder,
+	authenticationScheme: string,
+	configureOptions: (options: CookieAuthenticationOptions) => void,
+): AuthenticationBuilder;
+export function addCookie(
+	builder: AuthenticationBuilder,
+	authenticationScheme?: string,
+	configureOptions?: (options: CookieAuthenticationOptions) => void,
 ): AuthenticationBuilder {
-	return addCookieWithAuthenticationScheme(
-		builder,
-		CookieAuthenticationDefaults.authenticationScheme,
-	);
+	if (authenticationScheme === undefined) {
+		if (configureOptions === undefined) {
+			return addCookieWithAuthenticationScheme(
+				builder,
+				CookieAuthenticationDefaults.authenticationScheme,
+			);
+		} else {
+			return addCookieWithConfigureOptions(builder, configureOptions);
+		}
+	} else {
+		if (configureOptions === undefined) {
+			return addCookieWithAuthenticationScheme(
+				builder,
+				authenticationScheme,
+			);
+		} else {
+			return addCookieWithAuthenticationSchemeAndConfigureOptions(
+				builder,
+				authenticationScheme,
+				configureOptions,
+			);
+		}
+	}
 }
