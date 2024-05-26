@@ -12,6 +12,7 @@ import {
 } from '@yohira/extensions.dependency-injection.abstractions';
 import {
 	addOptionsWithName,
+	configureNamedOptionsServices,
 	configureOptionsServices,
 } from '@yohira/extensions.options';
 
@@ -56,8 +57,12 @@ export class AuthenticationBuilder {
 			},
 		);
 		if (configureOptions !== undefined) {
-			// TODO
-			throw new Error('Method not implemented.');
+			configureNamedOptionsServices<TOptions>(
+				optionsCtor,
+				this.services,
+				authenticationScheme,
+				configureOptions,
+			);
 		}
 		addOptionsWithName<TOptions>(
 			this.services,
