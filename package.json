@@ -1,6 +1,6 @@
 {
 	"name": "yohira",
-	"version": "0.0.0-alpha.51",
+	"version": "0.0.0-alpha.52",
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
 	"devDependencies": {
