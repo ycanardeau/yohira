@@ -1,6 +1,7 @@
 {
-	"name": "yohira",
-	"version": "0.0.0-alpha.53",
+	"name": "@yohira/toolchain",
+	"version": "0.0.0",
+	"private": true,
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
 	"devDependencies": {
@@ -9,29 +10,20 @@
 		"@typescript-eslint/eslint-plugin": "^7.6.0",
 		"@typescript-eslint/parser": "^7.6.0",
 		"@vitest/coverage-v8": "~1.6.0",
-		"concurrently": "^7.6.0",
-		"conditional-type-checks": "^1.0.6",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-prettier": "^5.1.3",
-		"json5": "^2.2.3",
 		"prettier": "^3.2.5",
 		"rimraf": "~5.0.7",
 		"tsc-alias": "^1.7.1",
 		"typescript": "^5.4.5",
 		"vitest": "~1.6.0"
 	},
-	"dependencies": {
-		"reflect-metadata": "^0.1.13"
-	},
 	"scripts": {
-		"clean": "rimraf ./dist",
-		"build": "npm run clean && tsc && tsc-alias",
-		"build:watch": "npm run clean && tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
-		"start": "node dist/main.js",
-		"test": "vitest",
-		"coverage": "vitest run --coverage"
+		"build": "exit",
+		"test": "exit",
+		"coverage": "exit"
 	},
 	"repository": {
 		"type": "git",

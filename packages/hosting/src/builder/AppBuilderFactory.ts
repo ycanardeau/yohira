@@ -3,7 +3,7 @@ import { inject } from '@yohira/extensions.dependency-injection.abstractions';
 import { AppBuilder } from '@yohira/http';
 import { IAppBuilder } from '@yohira/http.abstractions';
 
-import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
+import { IAppBuilderFactory } from './IAppBuilderFactory';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Builder/ApplicationBuilderFactory.cs,21990cbf6d36c613,references
 export class AppBuilderFactory implements IAppBuilderFactory {

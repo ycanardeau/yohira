@@ -8,7 +8,7 @@ import {
 	logStarting,
 	logStopped,
 	logStopping,
-} from '../internal/HostingLoggerExtensions';
+} from './HostingLoggerExtensions';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/Host.cs,aa490635fa6d2cca,references
 export class Host implements IHost, AsyncDisposable {

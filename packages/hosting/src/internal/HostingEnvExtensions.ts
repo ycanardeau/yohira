@@ -7,7 +7,7 @@ import { IHostEnv } from '@yohira/extensions.hosting.abstractions';
 import { IWebHostEnv } from '@yohira/hosting.abstractions';
 import { existsSync } from 'node:fs';
 
-import { WebHostOptions } from '../internal/WebHostOptions';
+import { WebHostOptions } from './WebHostOptions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Hosting/Internal/HostingEnvironmentExtensions.cs,cfa8d9a4a73c54e3
 export function initialize(

@@ -1,7 +1,7 @@
 import { ServiceLifetime } from '@yohira/extensions.dependency-injection.abstractions';
 
-import { CallSiteResultCacheLocation } from '../service-lookup/CallSiteResultCacheLocation';
-import { ServiceCacheKey } from '../service-lookup/ServiceCacheKey';
+import { CallSiteResultCacheLocation } from './CallSiteResultCacheLocation';
+import { ServiceCacheKey } from './ServiceCacheKey';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ResultCache.cs,29fb1ee4290bb7fa,references
 export class ResultCache {

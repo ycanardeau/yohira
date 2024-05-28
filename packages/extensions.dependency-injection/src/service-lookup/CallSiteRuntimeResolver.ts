@@ -1,13 +1,13 @@
 import { tryGetValue } from '@yohira/base';
 
-import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
-import { ConstantCallSite } from '../service-lookup/ConstantCallSite';
-import { CtorCallSite } from '../service-lookup/CtorCallSite';
-import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
-import { IterableCallSite } from '../service-lookup/IterableCallSite';
-import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
-import { ServiceProviderCallSite } from '../service-lookup/ServiceProviderCallSite';
-import { ServiceProviderEngineScope } from '../service-lookup/ServiceProviderEngineScope';
+import { CallSiteVisitor } from './CallSiteVisitor';
+import { ConstantCallSite } from './ConstantCallSite';
+import { CtorCallSite } from './CtorCallSite';
+import { FactoryCallSite } from './FactoryCallSite';
+import { IterableCallSite } from './IterableCallSite';
+import { ServiceCallSite } from './ServiceCallSite';
+import { ServiceProviderCallSite } from './ServiceProviderCallSite';
+import { ServiceProviderEngineScope } from './ServiceProviderEngineScope';
 
 class RuntimeResolverContext {
 	constructor(readonly scope: ServiceProviderEngineScope) {}

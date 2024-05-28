@@ -18,7 +18,7 @@ import {
 } from '@yohira/http.abstractions';
 
 import { IAppBuilderFactory } from '../builder/IAppBuilderFactory';
-import { GenericWebHostServiceOptions } from '../generic-host/GenericWebHostServiceOptions';
+import { GenericWebHostServiceOptions } from './GenericWebHostServiceOptions';
 import { HostingApp } from '../internal/HostingApp';
 import { parseBoolean } from '../internal/WebHostUtilities';
 

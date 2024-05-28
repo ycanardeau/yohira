@@ -4,10 +4,10 @@ import {
 	ServiceLifetime,
 } from '@yohira/extensions.dependency-injection.abstractions';
 
-import { CallSiteVisitor } from '../service-lookup/CallSiteVisitor';
-import { CtorCallSite } from '../service-lookup/CtorCallSite';
-import { IterableCallSite } from '../service-lookup/IterableCallSite';
-import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
+import { CallSiteVisitor } from './CallSiteVisitor';
+import { CtorCallSite } from './CtorCallSite';
+import { IterableCallSite } from './IterableCallSite';
+import { ServiceCallSite } from './ServiceCallSite';
 
 class CallSiteValidatorState {
 	singleton: ServiceCallSite | undefined;

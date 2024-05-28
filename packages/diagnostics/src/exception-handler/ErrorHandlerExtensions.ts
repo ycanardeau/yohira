@@ -9,8 +9,8 @@ import {
 	use,
 	useMiddleware,
 } from '@yohira/http.abstractions';
-import { globalRouteBuilderKey, reroute } from '@yohira/shared';
 
+import { globalRouteBuilderKey, reroute } from '../Reroute';
 import { ErrorHandlerMiddlewareImpl } from './ErrorHandlerMiddlewareImpl';
 import { ErrorHandlerOptions } from './ErrorHandlerOptions';
 

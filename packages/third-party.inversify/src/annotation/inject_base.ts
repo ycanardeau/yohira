@@ -1,8 +1,8 @@
 import {
 	DecoratorTarget,
 	createTaggedDecorator,
-} from '../annotation/decorator_utils';
-import { ServiceIdentifierOrFunc } from '../annotation/lazy_service_identifier';
+} from './decorator_utils';
+import { ServiceIdentifierOrFunc } from './lazy_service_identifier';
 import { UNDEFINED_INJECT_ANNOTATION } from '../constants/error_msgs';
 import { Metadata } from '../planning/metadata';
 

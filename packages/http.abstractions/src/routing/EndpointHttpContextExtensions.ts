@@ -1,5 +1,5 @@
 import { IHttpContext } from '../IHttpContext';
-import { Endpoint } from '../routing/Endpoint';
+import { Endpoint } from './Endpoint';
 import { IEndpointFeature } from './IEndpointFeature';
 
 class EndpointFeature implements IEndpointFeature {

@@ -1,5 +1,5 @@
-import { CallSiteKind } from '../service-lookup/CallSiteKind';
-import { ResultCache } from '../service-lookup/ResultCache';
+import { CallSiteKind } from './CallSiteKind';
+import { ResultCache } from './ResultCache';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/ServiceCallSite.cs,34b408f4c5680498,references
 export abstract class ServiceCallSite {

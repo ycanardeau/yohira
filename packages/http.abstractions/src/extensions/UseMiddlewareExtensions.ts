@@ -3,7 +3,7 @@ import { getRequiredService } from '@yohira/extensions.dependency-injection.abst
 
 import { IAppBuilder } from '../IAppBuilder';
 import { IMiddleware } from '../IMiddleware';
-import { use } from '../extensions/UseExtensions';
+import { use } from './UseExtensions';
 
 // https://source.dot.net/#Microsoft.AspNetCore.Http.Abstractions/Extensions/UseMiddlewareExtensions.cs,e940dbf3ad65ffe4,references
 export function useMiddleware<T extends IMiddleware>(

@@ -4,16 +4,32 @@
 	"private": true,
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
+		"@types/node": "~20.12.12",
+		"@typescript-eslint/eslint-plugin": "^7.6.0",
+		"@typescript-eslint/parser": "^7.6.0",
+		"@vitest/coverage-v8": "~1.6.0",
+		"@yohira/toolchain": "workspace:*",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-import": "^2.29.1",
+		"eslint-plugin-prettier": "^5.1.3",
+		"prettier": "^3.2.5",
+		"rimraf": "~5.0.7",
+		"tsc-alias": "^1.7.1",
+		"typescript": "^5.4.5",
+		"vitest": "~1.6.0"
+	},
 	"dependencies": {
-		"@yohira/extensions.dependency-injection.abstractions": "*",
-		"@yohira/extensions.options": "*",
-		"@yohira/hosting.abstractions": "*",
-		"@yohira/hosting.server.abstractions": "*",
-		"@yohira/server.node.core": "*"
+		"@yohira/extensions.dependency-injection.abstractions": "workspace:*",
+		"@yohira/extensions.options": "workspace:*",
+		"@yohira/hosting.abstractions": "workspace:*",
+		"@yohira/hosting.server.abstractions": "workspace:*",
+		"@yohira/server.node.core": "workspace:*"
 	},
 	"scripts": {
-		"clean": "rimraf ./dist",
-		"build": "npm run clean && tsc && tsc-alias",
+		"build": "rimraf ./dist && tsc && tsc-alias",
 		"test": "vitest",
 		"coverage": "vitest run --coverage"
 	},

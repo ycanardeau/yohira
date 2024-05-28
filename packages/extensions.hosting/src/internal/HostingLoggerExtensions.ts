@@ -4,7 +4,7 @@ import {
 	logDebug,
 } from '@yohira/extensions.logging.abstractions';
 
-import { Host } from '../internal/Host';
+import { Host } from './Host';
 
 // https://source.dot.net/#Microsoft.Extensions.Hosting/Internal/HostingLoggerExtensions.cs,540da2ba575f0fbd,references
 export function logStarting(logger: ILoggerT<Host>): void {

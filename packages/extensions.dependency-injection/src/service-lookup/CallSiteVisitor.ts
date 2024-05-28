@@ -1,11 +1,11 @@
-import { CallSiteKind } from '../service-lookup/CallSiteKind';
-import { CallSiteResultCacheLocation } from '../service-lookup/CallSiteResultCacheLocation';
-import { ConstantCallSite } from '../service-lookup/ConstantCallSite';
-import { CtorCallSite } from '../service-lookup/CtorCallSite';
-import { FactoryCallSite } from '../service-lookup/FactoryCallSite';
-import { IterableCallSite } from '../service-lookup/IterableCallSite';
-import { ServiceCallSite } from '../service-lookup/ServiceCallSite';
-import { ServiceProviderCallSite } from '../service-lookup/ServiceProviderCallSite';
+import { CallSiteKind } from './CallSiteKind';
+import { CallSiteResultCacheLocation } from './CallSiteResultCacheLocation';
+import { ConstantCallSite } from './ConstantCallSite';
+import { CtorCallSite } from './CtorCallSite';
+import { FactoryCallSite } from './FactoryCallSite';
+import { IterableCallSite } from './IterableCallSite';
+import { ServiceCallSite } from './ServiceCallSite';
+import { ServiceProviderCallSite } from './ServiceProviderCallSite';
 
 // https://source.dot.net/#Microsoft.Extensions.DependencyInjection/ServiceLookup/CallSiteVisitor.cs,830d006141417efa,references
 export abstract class CallSiteVisitor<TArgument, TResult> {

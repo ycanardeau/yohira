@@ -1,7 +1,7 @@
 import { ILoggerFactory } from '@yohira/extensions.logging.abstractions';
 
 import { ISecret } from '../ISecret';
-import { AuthenticatedEncryptorConfig } from '../authenticated-encryption/conifg-model/AuthenticatedEncryptorConfig';
+import { AuthenticatedEncryptorConfig } from './conifg-model/AuthenticatedEncryptorConfig';
 import { IKey } from '../key-management/IKey';
 import { IAuthenticatedEncryptor } from './IAuthenticatedEncryptor';
 import { IAuthenticatedEncryptorFactory } from './IAuthenticatedEncryptorFactory';

@@ -1,6 +1,7 @@
-import { StatusCodes } from '@yohira/http.abstractions';
 import { HeaderNames } from '@yohira/http.headers';
 import { IncomingMessage, ServerResponse } from 'node:http';
+
+import { StatusCodes } from './StatusCodes';
 
 export interface IResponseHeaderDictionary
 	extends Pick<
