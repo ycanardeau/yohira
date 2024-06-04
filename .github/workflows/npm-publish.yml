@@ -32,6 +32,6 @@ jobs:
       - name: Rush rebuild
         run: node common/scripts/install-run-rush.js rebuild --verbose
       # https://github.com/microsoft/rushstack/issues/2057#issuecomment-902362602
-      - run: node common/scripts/install-run-rush.js publish -p -b main --include-all --set-access-level=public
+      - run: node common/scripts/install-run-rush.js publish -p -b main --include-all --set-access-level=public --registry https://registry.npmjs.org/
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
