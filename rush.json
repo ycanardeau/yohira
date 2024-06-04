@@ -223,7 +223,7 @@
      * your PR branch, and in this situation "rush change" will also automatically invoke "git fetch"
      * to retrieve the latest activity for the remote main branch.
      */
-    // "url": "https://github.com/microsoft/rush-example",
+    "url": "https://github.com/ycanardeau/yohira",
 
     /**
      * The default branch name. This tells "rush change" which remote branch to compare against.
@@ -418,235 +418,293 @@
     {
       "packageName": "@yohira/toolchain",
       "projectFolder": "tools/toolchain",
-      "reviewCategory": "tools"
+      "reviewCategory": "tools",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/antiforgery",
-      "projectFolder": "packages/antiforgery"
+      "projectFolder": "packages/antiforgery",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/app",
-      "projectFolder": "packages/app"
+      "projectFolder": "packages/app",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/authentication",
-      "projectFolder": "packages/authentication"
+      "projectFolder": "packages/authentication",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/authentication.abstractions",
-      "projectFolder": "packages/authentication.abstractions"
+      "projectFolder": "packages/authentication.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/authentication.cookies",
-      "projectFolder": "packages/authentication.cookies"
+      "projectFolder": "packages/authentication.cookies",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/authentication.core",
-      "projectFolder": "packages/authentication.core"
+      "projectFolder": "packages/authentication.core",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/base",
-      "projectFolder": "packages/base"
+      "projectFolder": "packages/base",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/core",
-      "projectFolder": "packages/core"
+      "projectFolder": "packages/core",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/cryptography",
-      "projectFolder": "packages/cryptography"
+      "projectFolder": "packages/cryptography",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/data-protection",
-      "projectFolder": "packages/data-protection"
+      "projectFolder": "packages/data-protection",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/data-protection.abstractions",
-      "projectFolder": "packages/data-protection.abstractions"
+      "projectFolder": "packages/data-protection.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/diagnostics",
-      "projectFolder": "packages/diagnostics"
+      "projectFolder": "packages/diagnostics",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.caching.abstractions",
-      "projectFolder": "packages/extensions.caching.abstractions"
+      "projectFolder": "packages/extensions.caching.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.caching.memory",
-      "projectFolder": "packages/extensions.caching.memory"
+      "projectFolder": "packages/extensions.caching.memory",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config",
-      "projectFolder": "packages/extensions.config"
+      "projectFolder": "packages/extensions.config",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config.abstractions",
-      "projectFolder": "packages/extensions.config.abstractions"
+      "projectFolder": "packages/extensions.config.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config.binder",
-      "projectFolder": "packages/extensions.config.binder"
+      "projectFolder": "packages/extensions.config.binder",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config.env-variables",
-      "projectFolder": "packages/extensions.config.env-variables"
+      "projectFolder": "packages/extensions.config.env-variables",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config.file-extensions",
-      "projectFolder": "packages/extensions.config.file-extensions"
+      "projectFolder": "packages/extensions.config.file-extensions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.config.json",
-      "projectFolder": "packages/extensions.config.json"
+      "projectFolder": "packages/extensions.config.json",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.dependency-injection",
-      "projectFolder": "packages/extensions.dependency-injection"
+      "projectFolder": "packages/extensions.dependency-injection",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.dependency-injection.abstractions",
-      "projectFolder": "packages/extensions.dependency-injection.abstractions"
+      "projectFolder": "packages/extensions.dependency-injection.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.dependency-injection.specification.tests",
-      "projectFolder": "packages/extensions.dependency-injection.specification.tests"
+      "projectFolder": "packages/extensions.dependency-injection.specification.tests",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.features",
-      "projectFolder": "packages/extensions.features"
+      "projectFolder": "packages/extensions.features",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.file-providers",
-      "projectFolder": "packages/extensions.file-providers"
+      "projectFolder": "packages/extensions.file-providers",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.hosting",
-      "projectFolder": "packages/extensions.hosting"
+      "projectFolder": "packages/extensions.hosting",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.hosting.abstractions",
-      "projectFolder": "packages/extensions.hosting.abstractions"
+      "projectFolder": "packages/extensions.hosting.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.logging",
-      "projectFolder": "packages/extensions.logging"
+      "projectFolder": "packages/extensions.logging",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.logging.abstractions",
-      "projectFolder": "packages/extensions.logging.abstractions"
+      "projectFolder": "packages/extensions.logging.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.options",
-      "projectFolder": "packages/extensions.options"
+      "projectFolder": "packages/extensions.options",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.options.config-extensions",
-      "projectFolder": "packages/extensions.options.config-extensions"
+      "projectFolder": "packages/extensions.options.config-extensions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.primitives",
-      "projectFolder": "packages/extensions.primitives"
+      "projectFolder": "packages/extensions.primitives",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/extensions.web-encoders",
-      "projectFolder": "packages/extensions.web-encoders"
+      "projectFolder": "packages/extensions.web-encoders",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/hosting",
-      "projectFolder": "packages/hosting"
+      "projectFolder": "packages/hosting",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/hosting.abstractions",
-      "projectFolder": "packages/hosting.abstractions"
+      "projectFolder": "packages/hosting.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/hosting.server.abstractions",
-      "projectFolder": "packages/hosting.server.abstractions"
+      "projectFolder": "packages/hosting.server.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http",
-      "projectFolder": "packages/http"
+      "projectFolder": "packages/http",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http-logging",
-      "projectFolder": "packages/http-logging"
+      "projectFolder": "packages/http-logging",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http.abstractions",
-      "projectFolder": "packages/http.abstractions"
+      "projectFolder": "packages/http.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http.extensions",
-      "projectFolder": "packages/http.extensions"
+      "projectFolder": "packages/http.extensions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http.features",
-      "projectFolder": "packages/http.features"
+      "projectFolder": "packages/http.features",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http.headers",
-      "projectFolder": "packages/http.headers"
+      "projectFolder": "packages/http.headers",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/http.shared",
-      "projectFolder": "packages/http.shared"
+      "projectFolder": "packages/http.shared",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/https-policy",
-      "projectFolder": "packages/https-policy"
+      "projectFolder": "packages/https-policy",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/mvc.abstractions",
-      "projectFolder": "packages/mvc.abstractions"
+      "projectFolder": "packages/mvc.abstractions",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/mvc.core",
-      "projectFolder": "packages/mvc.core"
+      "projectFolder": "packages/mvc.core",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/routing",
-      "projectFolder": "packages/routing"
+      "projectFolder": "packages/routing",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/server.node",
-      "projectFolder": "packages/server.node"
+      "projectFolder": "packages/server.node",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/server.node.core",
-      "projectFolder": "packages/server.node.core"
+      "projectFolder": "packages/server.node.core",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/session",
-      "projectFolder": "packages/session"
+      "projectFolder": "packages/session",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/shared",
-      "projectFolder": "packages/shared"
+      "projectFolder": "packages/shared",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/static-files",
-      "projectFolder": "packages/static-files"
+      "projectFolder": "packages/static-files",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/test-host",
-      "projectFolder": "packages/test-host"
+      "projectFolder": "packages/test-host",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/testing",
-      "projectFolder": "packages/testing"
+      "projectFolder": "packages/testing",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/third-party.inversify",
-      "projectFolder": "packages/third-party.inversify"
+      "projectFolder": "packages/third-party.inversify",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/third-party.ts-results",
-      "projectFolder": "packages/third-party.ts-results"
+      "projectFolder": "packages/third-party.ts-results",
+      "versionPolicyName": "public"
     },
     {
       "packageName": "@yohira/xml",
-      "projectFolder": "packages/xml"
+      "projectFolder": "packages/xml",
+      "versionPolicyName": "public"
     }
   ]
 }
