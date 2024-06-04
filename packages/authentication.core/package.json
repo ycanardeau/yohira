@@ -1,6 +1,6 @@
 {
 	"name": "@yohira/authentication.core",
-	"version": "0.0.0-alpha.55",
+	"version": "0.0.0-alpha.56",
 	"description": "Yohira is an experimental project to port ASP.NET Core to TypeScript.",
 	"main": "dist/index.js",
 	"devDependencies": {
