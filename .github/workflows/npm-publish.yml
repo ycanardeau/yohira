@@ -15,12 +15,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: Verify Change Logs
-        run: node common/scripts/install-run-rush.js change --verify
-      - name: Rush Install
-        run: node common/scripts/install-run-rush.js install
-      - name: Rush rebuild
-        run: node common/scripts/install-run-rush.js rebuild --verbose
 
   publish-npm:
     needs: build
@@ -31,6 +25,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
+      - name: Verify Change Logs
+        run: node common/scripts/install-run-rush.js change --verify
+      - name: Rush Install
+        run: node common/scripts/install-run-rush.js install
+      - name: Rush rebuild
+        run: node common/scripts/install-run-rush.js rebuild --verbose
       # https://github.com/microsoft/rushstack/issues/2057#issuecomment-902362602
       - run: node common/scripts/install-run-rush.js publish -p -b main --include-all --set-access-level=public
         env:
