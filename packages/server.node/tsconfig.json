@@ -1,7 +1,0 @@
-{
-	"extends": "./node_modules/@yohira/toolchain/includes/tsconfig.base.json",
-	"compilerOptions": {
-		"outDir": "./dist"
-	},
-	"include": ["src/**/*"]
-}
