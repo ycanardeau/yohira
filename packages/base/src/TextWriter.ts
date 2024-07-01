@@ -34,4 +34,18 @@ export abstract class TextWriter implements Disposable {
 			this.writeChar(buffer[index + i]);
 		}
 	}
+
+	writeString(value: string | undefined): void {
+		if (value !== undefined) {
+			const chars = value.split('').map((char) => char.charCodeAt(0));
+			this.writeChars(chars, 0, chars.length);
+		}
+	}
+
+	writeLine(value: string | undefined): void {
+		if (value !== undefined) {
+			this.writeString(value);
+		}
+		this.writeString('\n');
+	}
 }

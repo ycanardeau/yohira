@@ -246,6 +246,10 @@ module.exports = {
 				pattern: 'packages/third-party.inversify/*',
 			},
 			{
+				type: '@yohira/third-party.mediatr',
+				pattern: 'packages/third-party.mediatr/*',
+			},
+			{
 				type: '@yohira/third-party.ts-results',
 				pattern: 'packages/third-party.ts-results/*',
 			},
@@ -830,6 +834,13 @@ module.exports = {
 					{
 						from: '@yohira/third-party.inversify',
 						allow: [],
+					},
+					{
+						from: '@yohira/third-party.mediatr',
+						allow: [
+							'@yohira/base',
+							'@yohira/extensions.dependency-injection.abstractions',
+						],
 					},
 					{
 						from: '@yohira/third-party.ts-results',

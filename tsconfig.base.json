@@ -113,6 +113,7 @@
 			"@yohira/third-party.inversify": [
 				"packages/third-party.inversify/src"
 			],
+			"@yohira/third-party.mediatr": ["packages/third-party.mediatr/src"],
 			"@yohira/third-party.ts-results": [
 				"packages/third-party.ts-results/src"
 			],

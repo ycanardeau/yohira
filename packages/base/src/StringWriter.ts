@@ -3,8 +3,11 @@ import { TextWriter } from './TextWriter';
 
 // https://source.dot.net/#System.Private.CoreLib/src/libraries/System.Private.CoreLib/src/System/IO/StringWriter.cs,fd76db5d443fe076,references
 export class StringWriter extends TextWriter {
-	private readonly sb = new StringBuilder();
 	private isOpen = true;
+
+	constructor(private readonly sb: StringBuilder = new StringBuilder()) {
+		super();
+	}
 
 	[Symbol.dispose](): void {
 		this.isOpen = false;

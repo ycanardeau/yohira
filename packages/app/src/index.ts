@@ -41,4 +41,5 @@ export * from '@yohira/server.node';
 export * from '@yohira/server.node.core';
 export * from '@yohira/static-files';
 export * from '@yohira/third-party.inversify';
+export * from '@yohira/third-party.mediatr';
 export * from '@yohira/third-party.ts-results';
