@@ -10,9 +10,17 @@ import {
 	NotificationHandlerWrapper,
 	NotificationHandlerWrapperImpl,
 } from './wrappers/NotificationHandlerWrapper';
+import {
+	RequestHandlerBase,
+	RequestHandlerWrapperImpl,
+} from './wrappers/RequestHandlerWrapper';
 
 // https://github.com/jbogard/MediatR/blob/f4de8196adafd37faff274ce819ada93a3d7531b/src/MediatR/Mediator.cs#L16
 export class Mediator implements IMediator {
+	private readonly requestHandlers = new Map<
+		Ctor<IRequest<unknown>>,
+		RequestHandlerBase
+	>();
 	private readonly notificationHandlers = new Map<
 		Ctor<INotification>,
 		NotificationHandlerWrapper
@@ -26,7 +34,16 @@ export class Mediator implements IMediator {
 	) {}
 
 	send<TResponse>(request: IRequest<TResponse>): Promise<TResponse> {
-		throw new Error('Method not implemented.');
+		const handler = getOrAdd(
+			this.requestHandlers,
+			request.constructor as Ctor<IRequest<TResponse>>,
+			(requestCtor) => {
+				const wrapper = new RequestHandlerWrapperImpl(requestCtor);
+				return wrapper as RequestHandlerBase;
+			},
+		);
+
+		return handler.handle(request, this.serviceProvider);
 	}
 
 	/**

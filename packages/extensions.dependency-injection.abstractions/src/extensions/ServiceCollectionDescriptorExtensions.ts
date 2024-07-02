@@ -20,7 +20,21 @@ export function tryAddServiceDescriptor(
 export function tryAddServiceDescriptorIterable(
 	collection: IServiceCollection,
 	descriptor: ServiceDescriptor,
+): void;
+export function tryAddServiceDescriptorIterable(
+	collection: IServiceCollection,
+	descriptors: ServiceDescriptor[],
+): void;
+export function tryAddServiceDescriptorIterable(
+	collection: IServiceCollection,
+	descriptorOrDescriptors: ServiceDescriptor | ServiceDescriptor[],
 ): void {
-	// TODO
-	tryAddServiceDescriptor(collection, descriptor);
+	if (descriptorOrDescriptors instanceof Array) {
+		for (const descriptor of descriptorOrDescriptors) {
+			tryAddServiceDescriptor(collection, descriptor);
+		}
+	} else {
+		// TODO
+		tryAddServiceDescriptor(collection, descriptorOrDescriptors);
+	}
 }
